@@ -9,4 +9,5 @@ export class TSizes {
   static topbarHeight = "44px";
 
   static borderRadius = "8px";
+  static buttonHeight = "40px";
 }

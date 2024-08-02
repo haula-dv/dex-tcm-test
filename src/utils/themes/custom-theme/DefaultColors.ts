@@ -1,13 +1,13 @@
 const baselightTheme = {
   primary: {
-    main: "#A20069",
-    light: "#fff5fb",
+    main: "#D1D75D",
+    light: "#FEFEE5",
     dark: "#4570EA",
   },
   secondary: {
-    main: "#49BEFF",
-    light: "#E8F7FF",
-    dark: "#23afdb",
+    main: "#D7E4E3",
+    light: "#FAFDFC",
+    dark: "#447784",
   },
   success: {
     main: "#50cd89",
@@ -64,6 +64,10 @@ const baselightTheme = {
     hover: "#f6f9fc",
   },
   divider: "#e5eaef",
+  darkPrimary: {
+    main: "#111",
+    contrastText: "#D1D75D",
+  },
 };
 
 export default baselightTheme;

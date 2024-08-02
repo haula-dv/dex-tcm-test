@@ -1,11 +1,24 @@
 "use client";
-import { TSizes } from "@/utils/themes/sizes";
-import { AppBar, Box, Stack, Toolbar, Typography } from "@mui/material";
+import { WalletContainer } from "@/plugins/wallet/components/WalletContainer";
+import { Mixins } from "@/utils/themes/custom-theme/mixins";
+import { TSizes } from "@/utils/themes/custom-theme/sizes";
+import {
+  AppBar,
+  Box,
+  BoxProps,
+  Stack,
+  Toolbar,
+  Typography,
+} from "@mui/material";
 import { styled } from "@mui/material/styles";
+import { usePathname } from "next/navigation";
 import { MainContainer } from "../container/MainContainer";
 import Logo from "../icons/Logo";
 
 export const Header = () => {
+  const pathName = usePathname();
+  console.log(pathName);
+
   const navItems = [
     { label: "Swap", to: "/" },
     { label: "Pool", to: "/pool" },
@@ -22,13 +35,16 @@ export const Header = () => {
             direction={"row"}
             spacing={TSizes.margin_md}
             pl={TSizes.margin_md}
+            height={"100%"}
           >
             {navItems.map((navItem) => (
-              <NavItem key={navItem.label}>
+              <NavItem key={navItem.label} isActived={pathName === navItem.to}>
                 <Typography>{navItem.label}</Typography>
               </NavItem>
             ))}
           </Stack>
+
+          <WalletContainer />
         </Toolbar>
       </MainContainer>
     </MainAppBar>
@@ -37,10 +53,35 @@ export const Header = () => {
 
 const MainAppBar = styled(AppBar)(({ theme }) => ({
   backgroundColor: "#fff",
+  "& .MuiToolbar-root": {
+    minHeight: "auto",
+  },
 }));
 
-const NavItem = styled(Box)(({ theme }) => ({
+interface INavItemProps extends BoxProps {
+  isActived: boolean;
+}
+
+const NavItem = styled(Box, {
+  shouldForwardProp: (prop) => prop !== "isActived",
+})<INavItemProps>(({ theme, isActived }) => ({
   cursor: "pointer",
+  position: "relative",
+  display: "flex", // Flex display to center content
+  alignItems: "center", // Center the Typography vertically
+  height: "80px",
+
+  "&:after": {
+    ...Mixins.boxFullMixin({
+      top: "auto",
+      bottom: 0,
+      left: 0,
+      height: "2px",
+      width: "100%",
+      backgroundColor: isActived ? theme.palette.common.black : "transparent",
+      borderRadius: "4px",
+    }),
+  },
   "& .MuiTypography-root": {
     color: theme.palette.common.black,
     fontSize: "14px",
@@ -48,6 +89,7 @@ const NavItem = styled(Box)(({ theme }) => ({
     padding: "6px 12px",
     borderRadius: TSizes.borderRadius,
     transition: theme.transitions.create(["background-color"]),
+    backgroundColor: isActived ? theme.palette.grey[50] : "transparent",
 
     "&:hover": {
       backgroundColor: theme.palette.grey[50],

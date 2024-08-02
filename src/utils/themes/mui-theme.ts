@@ -1,10 +1,10 @@
 "use client";
 
 import { createTheme, ThemeOptions } from "@mui/material/styles";
-import components from "./Components";
-import baselightTheme from "./DefaultColors";
-import { shadows } from "./shadow";
-import typography from "./Typography";
+import components from "./custom-theme/Components";
+import baselightTheme from "./custom-theme/DefaultColors";
+import { shadows } from "./custom-theme/shadow";
+import typography from "./custom-theme/Typography";
 
 const baseTheme = createTheme({
   palette: {
@@ -33,6 +33,7 @@ declare module "@mui/material/Button" {
   }
 
   interface ButtonPropsColorOverrides {
+    darkPrimary: true;
     white: true;
     dark: true;
     darkWhite: true;
@@ -51,5 +52,19 @@ declare module "@mui/material/IconButton" {
 declare module "@mui/material/Chip" {
   interface ChipPropsVariantOverrides {
     filledTonal: true;
+  }
+}
+
+declare module "@mui/material/styles" {
+  interface Theme {
+    status: {
+      danger: string;
+    };
+  }
+  // allow configuration using `createTheme`
+  interface ThemeOptions {
+    status?: {
+      danger?: string;
+    };
   }
 }

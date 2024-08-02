@@ -1,8 +1,11 @@
 // project imports
+import { CustomMuiButton } from "./custom-button";
 import "./DefaultColors";
 
 const components = (theme: any) => {
   return {
+    ...CustomMuiButton(theme),
+
     MuiCssBaseline: {
       styleOverrides: {
         "*": {
@@ -96,6 +99,7 @@ const components = (theme: any) => {
           },
       },
     },
+
     MuiButtonGroup: {
       styleOverrides: {
         root: {
@@ -103,6 +107,7 @@ const components = (theme: any) => {
         },
       },
     },
+
     MuiAccordion: {
       styleOverrides: {
         root: {
@@ -147,144 +152,6 @@ const components = (theme: any) => {
       },
     },
 
-    MuiButton: {
-      styleOverrides: {
-        root: {
-          textTransform: "none",
-          boxShadow: "none",
-          fontSize: "14px",
-          height: "42px",
-        },
-
-        contained: {
-          padding: "8px 16px",
-        },
-
-        containedPrimary: {
-          backgroundColor: theme.palette.primary.main,
-          "&:hover": {
-            backgroundColor: theme.palette.primary.main,
-            color: "white",
-          },
-        },
-
-        filledTonal: {
-          padding: "8px 16px",
-        },
-
-        filledTonalInherit: {
-          backgroundColor: theme.palette.grey[100],
-          "&:hover": {
-            backgroundColor: theme.palette.grey[200],
-          },
-        },
-
-        // SIZE
-        sizeSmall: {
-          padding: "4px 12px",
-          fontSize: "12px",
-          height: "32px",
-        },
-
-        text: {
-          padding: "8px 16px",
-        },
-
-        textLink: {
-          minWidth: "auto",
-          height: "auto",
-          padding: "0px !important",
-          fontWeight: "600",
-          "&:hover": {
-            backgroundColor: "transparent",
-          },
-        },
-
-        textLinkPrimary: {
-          color: theme.palette.primary.main,
-        },
-
-        textPrimary: {
-          // backgroundColor: theme.palette.primary.light,
-
-          "&:hover": {
-            // backgroundColor: theme.palette.primary.main,
-            // color: "white",
-          },
-        },
-        textSecondary: {
-          backgroundColor: theme.palette.secondary.light,
-          "&:hover": {
-            backgroundColor: theme.palette.secondary.main,
-            color: "white",
-          },
-        },
-        textSuccess: {
-          backgroundColor: theme.palette.success.light,
-          "&:hover": {
-            backgroundColor: theme.palette.success.main,
-            color: "white",
-          },
-        },
-        textError: {
-          backgroundColor: theme.palette.error.light,
-          "&:hover": {
-            backgroundColor: theme.palette.error.main,
-            color: "white",
-          },
-        },
-        textInfo: {
-          backgroundColor: theme.palette.info.light,
-          "&:hover": {
-            backgroundColor: theme.palette.info.main,
-            color: "white",
-          },
-        },
-        textWarning: {
-          backgroundColor: theme.palette.warning.light,
-          "&:hover": {
-            backgroundColor: theme.palette.warning.main,
-            color: "white",
-          },
-        },
-        outlinedPrimary: {
-          "&:hover": {
-            backgroundColor: theme.palette.primary.main,
-            color: "white",
-          },
-        },
-        outlinedSecondary: {
-          "&:hover": {
-            backgroundColor: theme.palette.secondary.main,
-            color: "white",
-          },
-        },
-        outlinedError: {
-          "&:hover": {
-            backgroundColor: theme.palette.error.main,
-            color: "white",
-          },
-        },
-        outlinedSuccess: {
-          "&:hover": {
-            backgroundColor: theme.palette.success.main,
-            color: "white",
-          },
-        },
-        outlinedInfo: {
-          "&:hover": {
-            backgroundColor: theme.palette.info.main,
-            color: "white",
-          },
-        },
-        outlinedWarning: {
-          "&:hover": {
-            backgroundColor: theme.palette.warning.main,
-            color: "white",
-          },
-        },
-      },
-    },
     MuiCardHeader: {
       styleOverrides: {
         root: {
