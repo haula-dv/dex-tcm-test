@@ -6,6 +6,8 @@ import type { Metadata } from "next";
 import { AppRouterCacheProvider } from "@mui/material-nextjs/v14-appRouter";
 
 import ClientThemeProvider from "@/components/ClientThemeProvider";
+import { Header } from "@/components/layouts/Header";
+import { inter } from "@/utils/themes/Typography";
 import React from "react";
 import { Toaster } from "sonner";
 
@@ -27,11 +29,12 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html lang="en" className={`${inter.variable}`}>
       <head />
       <body>
         <AppRouterCacheProvider options={{ enableCssLayer: true }}>
           <ClientThemeProvider>
+            <Header />
             {children}
 
             <Toaster closeButton position="top-right" />

@@ -1,14 +1,13 @@
-import { Open_Sans } from "next/font/google";
+import { Inter } from "next/font/google";
 
-export const openSan = Open_Sans({
-  weight: ["300", "400", "500", "600", "700"],
+export const inter = Inter({
   subsets: ["latin"],
+  variable: "--font-inter",
   display: "swap",
-  fallback: ["Helvetica", "Arial", "sans-serif"],
 });
 
 const typography = {
-  fontFamily: openSan.style.fontFamily,
+  fontFamily: inter.style.fontFamily,
   h1: {
     fontWeight: 600,
     fontSize: "2.25rem",
