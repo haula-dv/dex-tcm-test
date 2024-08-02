@@ -1,5 +1,4 @@
 import { yupResolver } from "@hookform/resolvers/yup";
-import { TTextString } from "../constants/text_string";
 
 import * as yup from "yup";
 
@@ -9,15 +8,9 @@ export const yupValidator = (schema: any) => {
 
 export class FormValidation {
   static common(required?: boolean, maxLength = 100, minLength?: number) {
-    const maxLengthMsg = TTextString.maxlengthFieldText(
-      "trường này",
-      minLength
-    );
+    const maxLengthMsg = "12";
 
-    const minLengthMsg = TTextString.minlengthFieldText(
-      "trường này",
-      minLength
-    );
+    const minLengthMsg = "12";
 
     const requiredMsg = "Thông tin bắt buộc. Vui lòng nhập đầy đủ.";
 
@@ -59,7 +52,7 @@ export class FormValidation {
   }
 
   static required(label: string) {
-    const requiredMsg = TTextString.requiredFieldText(label);
+    const requiredMsg = "12";
 
     let validation = yup.string();
 
