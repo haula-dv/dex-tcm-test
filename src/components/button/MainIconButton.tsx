@@ -12,11 +12,18 @@ export const MainIconButton = ({
   children,
   isFullRounded,
   variant = "filledTonal",
+  ...props
 }: IProps) => {
   return (
-    <CustomIconButton variant={variant} isFullRounded={isFullRounded}>
-      {children}
-    </CustomIconButton>
+    <>
+      <CustomIconButton
+        variant={variant}
+        isFullRounded={isFullRounded}
+        {...props}
+      >
+        {children}
+      </CustomIconButton>
+    </>
   );
 };
 
@@ -33,7 +40,7 @@ const CustomIconButton = styled(IconButton, {
   borderRadius: isFullRounded ? "50%" : TSizes.borderRadius,
 
   ...(variant === "filledTonal" && {
-    backgroundColor: baselightTheme.secondary.light,
+    backgroundColor: baselightTheme.grey[50],
     color: theme.palette.common.black,
     "&:hover": {
       // backgroundColor: theme.palette.tonalOffsetDark,

@@ -91,6 +91,7 @@ const NavItem = styled(Box, {
       borderRadius: "4px",
     }),
   },
+
   "& .MuiTypography-root": {
     color: theme.palette.common.black,
     fontSize: "14px",
@@ -98,10 +99,10 @@ const NavItem = styled(Box, {
     padding: "6px 12px",
     borderRadius: TSizes.borderRadius,
     transition: theme.transitions.create(["background-color"]),
-    backgroundColor: isActived ? theme.palette.grey[50] : "transparent",
+    // backgroundColor: isActived ? theme.palette.grey[50] : "transparent",
 
     "&:hover": {
-      backgroundColor: theme.palette.grey[50],
+      // backgroundColor: theme.palette.grey[50],
     },
   },
 }));

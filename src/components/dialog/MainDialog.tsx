@@ -1,0 +1,59 @@
+import { TSizes } from "@/utils/themes/custom-theme/sizes";
+import { Box, Dialog, Stack, Typography } from "@mui/material";
+import { styled } from "@mui/material/styles";
+import { IconX } from "@tabler/icons-react";
+import { ReactNode } from "react";
+import { MainIconButton } from "../button/MainIconButton";
+
+interface IProps {
+  children?: ReactNode;
+  title?: string;
+  handleClose: () => void;
+  open: boolean;
+  maxWidth?: "xs" | "sm" | "md" | "lg" | "xl" | false;
+}
+
+export const MainDialog = ({
+  children,
+  title,
+  handleClose,
+  open,
+  maxWidth,
+}: IProps) => {
+  return (
+    <CustomDialog
+      onClose={handleClose}
+      open={open}
+      maxWidth={maxWidth}
+      fullWidth
+      role="dialog"
+      aria-modal="true"
+    >
+      <Stack
+        direction={"row"}
+        justifyContent={"space-between"}
+        alignItems={"center"}
+        py={TSizes.margin_xs}
+        pr={TSizes.margin_xs}
+        pl={TSizes.margin_base}
+      >
+        <Typography fontWeight={700} fontSize={"16px"}>
+          {title}
+        </Typography>
+
+        <MainIconButton isFullRounded onClick={handleClose}>
+          <IconX />
+        </MainIconButton>
+      </Stack>
+
+      <Box p={TSizes.margin_base}>{children}</Box>
+    </CustomDialog>
+  );
+};
+
+const CustomDialog = styled(Dialog)(({ theme }) => ({
+  "& .MuiDialog-paper": {
+    boxShadow: "none",
+    backgroundColor: theme.palette.grey[100],
+  },
+}));

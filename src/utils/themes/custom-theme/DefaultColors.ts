@@ -50,6 +50,9 @@ const baselightTheme = {
     800: "#A4A9B7",
     900: "#989EAE",
   },
+  blue: {
+    500: "#016E89",
+  },
   text: {
     primary: "#2A3547",
     secondary: "#2A3547",
