@@ -68,6 +68,11 @@ const baselightTheme = {
     main: "#111",
     contrastText: "#D1D75D",
   },
+
+  tonalOffset: {
+    main: "#111",
+    contrastText: "#D1D75D",
+  },
 };
 
 export default baselightTheme;

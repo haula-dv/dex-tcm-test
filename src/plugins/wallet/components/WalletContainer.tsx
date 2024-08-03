@@ -5,7 +5,11 @@ import { IconDots } from "@tabler/icons-react";
 
 export const WalletContainer = () => {
   return (
-    <Stack direction={"row"} spacing={TSizes.margin_sm}>
+    <Stack
+      direction={"row"}
+      spacing={TSizes.margin_md}
+      justifyContent={"flex-end"}
+    >
       <Button variant="contained" color="secondary">
         0 SAP
       </Button>
@@ -14,7 +18,7 @@ export const WalletContainer = () => {
         Connect to Wallet
       </Button>
 
-      <MainIconButton>
+      <MainIconButton variant="filledTonal">
         <IconDots />
       </MainIconButton>
     </Stack>

@@ -29,22 +29,31 @@ export const Header = () => {
     <MainAppBar elevation={0}>
       <MainContainer>
         <Toolbar>
-          <Logo />
-
           <Stack
             direction={"row"}
-            spacing={TSizes.margin_md}
-            pl={TSizes.margin_md}
-            height={"100%"}
+            justifyContent={"space-between"}
+            width={"100%"}
+            alignItems={"center"}
           >
-            {navItems.map((navItem) => (
-              <NavItem key={navItem.label} isActived={pathName === navItem.to}>
-                <Typography>{navItem.label}</Typography>
-              </NavItem>
-            ))}
-          </Stack>
+            <Stack
+              direction={"row"}
+              alignItems={"center"}
+              spacing={TSizes.margin_md}
+              height={"100%"}
+            >
+              <Logo />
+              {navItems.map((navItem) => (
+                <NavItem
+                  key={navItem.label}
+                  isActived={pathName === navItem.to}
+                >
+                  <Typography>{navItem.label}</Typography>
+                </NavItem>
+              ))}
+            </Stack>
 
-          <WalletContainer />
+            <WalletContainer />
+          </Stack>
         </Toolbar>
       </MainContainer>
     </MainAppBar>
