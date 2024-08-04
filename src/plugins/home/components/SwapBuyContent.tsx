@@ -1,9 +1,8 @@
 "use client";
-import { TSizes } from "@/utils/themes/custom-theme/sizes";
 import theme from "@/utils/themes/mui-theme";
-import { Box, InputBase, Stack, Typography } from "@mui/material";
-import { styled } from "@mui/material/styles";
+import { InputBase, Stack, Typography } from "@mui/material";
 import { Dispatch, SetStateAction, useState } from "react";
+import { Content } from "./SwapSellContent";
 import { TokenListModal } from "./TokenListModal";
 import { TokenSelect } from "./token/TokenSelect";
 
@@ -19,10 +18,7 @@ interface IProps {
   >;
 }
 
-export const SwapSellContent = ({
-  tokenSelected,
-  setTokenSelected,
-}: IProps) => {
+export const SwapBuyContent = ({ tokenSelected, setTokenSelected }: IProps) => {
   const [openTokenList, setOpenTokenList] = useState(false);
 
   // Function to select a token
@@ -62,21 +58,3 @@ export const SwapSellContent = ({
     </>
   );
 };
-
-export const Content = styled(Box)(({ theme }) => ({
-  borderRadius: TSizes.borderRadiusMd,
-  border: `1px solid ${theme.palette.grey[100]}`,
-  backgroundColor: theme.palette.common.white,
-  padding: theme.spacing(2),
-  display: "flex",
-  alignItems: "center",
-
-  "&:hover": {
-    borderColor: theme.palette.grey[200],
-  },
-
-  "& .MuiInputBase-input": {
-    fontSize: "24px",
-    fontWeight: 600,
-  },
-}));
