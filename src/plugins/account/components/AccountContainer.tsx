@@ -10,10 +10,12 @@ import {
   Stack,
   Typography,
 } from "@mui/material";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { AccountItem } from "./AccountItem";
 
 export const AccountContainer = () => {
+  const router = useRouter();
   const [currentSelect, setCurrentSelect] = useState<number[]>([0]);
 
   const handleSelectAccount = (index: number) => {
@@ -22,6 +24,11 @@ export const AccountContainer = () => {
     } else {
       setCurrentSelect([...currentSelect, index]);
     }
+  };
+
+  // Handle connect wallet
+  const handleConnect = () => {
+    router.push("/");
   };
 
   return (
@@ -67,7 +74,13 @@ export const AccountContainer = () => {
           Cancel
         </Button>
 
-        <Button variant="contained" color="darkPrimary" fullWidth size="large">
+        <Button
+          variant="contained"
+          color="darkPrimary"
+          fullWidth
+          size="large"
+          onClick={handleConnect}
+        >
           Connect
         </Button>
       </Stack>

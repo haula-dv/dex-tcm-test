@@ -11,6 +11,8 @@ interface IProps {
   handleClose: () => void;
   open: boolean;
   maxWidth?: "xs" | "sm" | "md" | "lg" | "xl" | false;
+  disablePadding?: boolean;
+  isBGWhite?: boolean;
 }
 
 export const MainDialog = ({
@@ -19,6 +21,8 @@ export const MainDialog = ({
   handleClose,
   open,
   maxWidth,
+  disablePadding,
+  isBGWhite,
 }: IProps) => {
   return (
     <CustomDialog
@@ -28,6 +32,7 @@ export const MainDialog = ({
       fullWidth
       role="dialog"
       aria-modal="true"
+      isBGWhite={isBGWhite}
     >
       <Stack
         direction={"row"}
@@ -41,19 +46,30 @@ export const MainDialog = ({
           {title}
         </Typography>
 
-        <MainIconButton isFullRounded onClick={handleClose}>
-          <IconX />
+        <MainIconButton
+          isFullRounded
+          onClick={handleClose}
+          color="inherit"
+          size="small"
+        >
+          <IconX size={"1.4rem"} />
         </MainIconButton>
       </Stack>
 
-      <Box p={TSizes.margin_base}>{children}</Box>
+      <Box p={disablePadding ? 0 : TSizes.margin_base}>{children}</Box>
     </CustomDialog>
   );
 };
 
-const CustomDialog = styled(Dialog)(({ theme }) => ({
+interface ICustomDialog {
+  isBGWhite?: boolean;
+}
+
+const CustomDialog = styled(Dialog, {
+  shouldForwardProp: (prop) => prop !== "isBGWhite",
+})<ICustomDialog>(({ theme, isBGWhite }) => ({
   "& .MuiDialog-paper": {
     boxShadow: "none",
-    backgroundColor: theme.palette.grey[100],
+    backgroundColor: isBGWhite ? "#fff" : theme.palette.grey[50],
   },
 }));

@@ -2,11 +2,13 @@
 import { Theme } from "@mui/material";
 import { CustomMuiButton } from "./CustomButton";
 import { CustomFormControl } from "./CustomFormControl";
+import { CustomListItem } from "./CustomListItem";
 
 const components = (theme: Theme) => {
   return {
     ...CustomMuiButton(theme),
     ...CustomFormControl(theme),
+    ...CustomListItem(theme),
 
     MuiCssBaseline: {
       styleOverrides: {
@@ -142,14 +144,6 @@ const components = (theme: Theme) => {
           width: 30,
           height: 30,
           minHeight: 30,
-        },
-      },
-    },
-
-    MuiListItemButton: {
-      styleOverrides: {
-        root: {
-          padding: "5px 15px",
         },
       },
     },

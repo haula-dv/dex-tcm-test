@@ -28,7 +28,7 @@ export const Header = () => {
   return (
     <MainAppBar elevation={0}>
       <MainContainer>
-        <Toolbar>
+        <Toolbar disableGutters>
           <Stack
             direction={"row"}
             justifyContent={"space-between"}
