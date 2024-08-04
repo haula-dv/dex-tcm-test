@@ -1,3 +1,4 @@
+"use client";
 import { MainDialog } from "@/components/dialog/MainDialog";
 import IconCoinBase from "@/components/icons/coinbase";
 import IconCryto from "@/components/icons/cryto";
@@ -8,6 +9,7 @@ import baselightTheme from "@/utils/themes/custom-theme/DefaultColors";
 import { TSizes } from "@/utils/themes/custom-theme/sizes";
 import { Stack, Typography } from "@mui/material";
 import { styled } from "@mui/material/styles";
+import { useRouter } from "next/navigation";
 
 interface IProps {
   isOpen: boolean;
@@ -15,6 +17,8 @@ interface IProps {
 }
 
 export const ModalConnectWallet = ({ isOpen, onClose }: IProps) => {
+  const router = useRouter();
+
   const wallets = [
     { label: "Cyrptooly", icon: <IconCryto /> },
     { label: "WalletConnect", icon: <IconWalletConnect /> },
@@ -22,6 +26,11 @@ export const ModalConnectWallet = ({ isOpen, onClose }: IProps) => {
     { label: "Fortmatic", icon: <IconFortmatic /> },
     { label: "Portis", icon: <IconFortis /> },
   ];
+
+  const handleClickWallet = () => {
+    router.push("/welcome");
+    onClose();
+  };
 
   return (
     <MainDialog
@@ -36,6 +45,7 @@ export const ModalConnectWallet = ({ isOpen, onClose }: IProps) => {
             key={wallet.label}
             direction={"row"}
             justifyContent={"space-between"}
+            onClick={handleClickWallet}
           >
             <Typography fontWeight={600}>{wallet.label}</Typography>
             {wallet.icon}

@@ -1,10 +1,12 @@
 // project imports
 import { CustomMuiButton } from "./custom-button";
+import { CustomFormControl } from "./CustomFormControl";
 import "./DefaultColors";
 
 const components = (theme: any) => {
   return {
     ...CustomMuiButton(theme),
+    ...CustomFormControl(theme),
 
     MuiCssBaseline: {
       styleOverrides: {
@@ -312,29 +314,7 @@ const components = (theme: any) => {
         },
       },
     },
-    MuiOutlinedInput: {
-      styleOverrides: {
-        root: {
-          // padding: "0px 0px 0p 0px",
-          backgroundColor: "#fff",
-          "& .MuiOutlinedInput-notchedOutline": {
-            borderColor:
-              theme.palette.mode === "dark"
-                ? theme.palette.grey[200]
-                : theme.palette.grey[300],
-          },
-          "&:hover .MuiOutlinedInput-notchedOutline": {
-            borderColor: theme.palette.grey[300],
-          },
-        },
-        input: {
-          padding: "12px 14px",
-        },
-        inputSizeSmall: {
-          padding: "8px 14px",
-        },
-      },
-    },
+
     MuiTooltip: {
       styleOverrides: {
         tooltip: {
