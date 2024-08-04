@@ -1,9 +1,9 @@
 // project imports
-import { CustomMuiButton } from "./custom-button";
+import { Theme } from "@mui/material";
+import { CustomMuiButton } from "./CustomButton";
 import { CustomFormControl } from "./CustomFormControl";
-import "./DefaultColors";
 
-const components = (theme: any) => {
+const components = (theme: Theme) => {
   return {
     ...CustomMuiButton(theme),
     ...CustomFormControl(theme),

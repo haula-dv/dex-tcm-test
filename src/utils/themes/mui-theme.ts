@@ -38,7 +38,6 @@ declare module "@mui/material/Button" {
     dark: true;
     darkWhite: true;
     blue: true;
-    cpPrimary: true;
   }
 }
 
@@ -52,5 +51,11 @@ declare module "@mui/material/IconButton" {
 declare module "@mui/material/Chip" {
   interface ChipPropsVariantOverrides {
     filledTonal: true;
+  }
+}
+
+declare module "@mui/material/Checkbox" {
+  interface CheckboxPropsColorOverrides {
+    darkPrimary: true;
   }
 }

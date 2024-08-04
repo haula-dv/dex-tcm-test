@@ -59,8 +59,8 @@ export const CustomFormControl = (theme: Theme) => {
           backgroundColor: theme.palette.common.white,
           borderRadius: TSizes.borderRadius,
           overflow: "hidden",
-          paddingTop: "20px",
-          paddingBottom: "6px",
+          // paddingTop: "20px",
+          // paddingBottom: "6px",
         },
       },
     },
@@ -68,11 +68,11 @@ export const CustomFormControl = (theme: Theme) => {
     MuiInputLabel: {
       styleOverrides: {
         filled: {
-          lineHeight: "180%",
+          // lineHeight: "180%",
           color: theme.palette.grey[700],
           fontSize: "14px",
           paddingLeft: "4px",
-          transform: "translate(14px, 12px) scale(1)",
+          transform: "translate(16px, 18px) scale(1)",
           transition: "transform 200ms cubic-bezier(0.0, 0, 0.2, 1)",
 
           "&.Mui-focused": {

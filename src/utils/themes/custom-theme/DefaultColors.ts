@@ -3,6 +3,15 @@ const baselightTheme = {
     main: "#D1D75D",
     light: "#FEFEE5",
     dark: "#4570EA",
+
+    100: "#FEFEE5",
+    200: "#FDFECC",
+    300: "#FBFDB3",
+    400: "#F8FB9F",
+    500: "#F5FA80",
+    600: "#D1D75D",
+    700: "#AEB340",
+    800: "#8B9028",
   },
   secondary: {
     main: "#D7E4E3",
@@ -49,6 +58,7 @@ const baselightTheme = {
     700: "#AFB4C0",
     800: "#A4A9B7",
     900: "#989EAE",
+    A240: "#090A0B",
   },
   blue: {
     500: "#016E89",

@@ -10,6 +10,16 @@ export const CustomMuiButton = (theme: Theme) => {
           fontSize: "14px",
           height: "40px",
           fontWeight: 700,
+
+          "&.Mui-disabled": {
+            pointerEvents: "all",
+            cursor: "not-allowed !important",
+            backgroundColor: theme.palette.grey[100],
+            color: theme.palette.grey[300],
+            "&:hover": {
+              backgroundColor: theme.palette.grey[100],
+            },
+          },
         },
 
         contained: {
@@ -58,6 +68,10 @@ export const CustomMuiButton = (theme: Theme) => {
           height: "32px",
         },
 
+        sizeLarge: {
+          height: "56px",
+        },
+
         text: {
           padding: "8px 16px",
         },
@@ -84,6 +98,7 @@ export const CustomMuiButton = (theme: Theme) => {
             // color: "white",
           },
         },
+
         textSecondary: {
           backgroundColor: theme.palette.secondary.light,
           "&:hover": {
@@ -91,6 +106,7 @@ export const CustomMuiButton = (theme: Theme) => {
             color: "white",
           },
         },
+
         textSuccess: {
           backgroundColor: theme.palette.success.light,
           "&:hover": {
@@ -98,6 +114,7 @@ export const CustomMuiButton = (theme: Theme) => {
             color: "white",
           },
         },
+
         textError: {
           backgroundColor: theme.palette.error.light,
           "&:hover": {
@@ -105,6 +122,7 @@ export const CustomMuiButton = (theme: Theme) => {
             color: "white",
           },
         },
+
         textInfo: {
           backgroundColor: theme.palette.info.light,
           "&:hover": {
@@ -112,6 +130,7 @@ export const CustomMuiButton = (theme: Theme) => {
             color: "white",
           },
         },
+
         textWarning: {
           backgroundColor: theme.palette.warning.light,
           "&:hover": {
@@ -119,36 +138,42 @@ export const CustomMuiButton = (theme: Theme) => {
             color: "white",
           },
         },
+
         outlinedPrimary: {
           "&:hover": {
             backgroundColor: theme.palette.primary.main,
             color: "white",
           },
         },
+
         outlinedSecondary: {
           "&:hover": {
             backgroundColor: theme.palette.secondary.main,
             color: "white",
           },
         },
+
         outlinedError: {
           "&:hover": {
             backgroundColor: theme.palette.error.main,
             color: "white",
           },
         },
+
         outlinedSuccess: {
           "&:hover": {
             backgroundColor: theme.palette.success.main,
             color: "white",
           },
         },
+
         outlinedInfo: {
           "&:hover": {
             backgroundColor: theme.palette.info.main,
             color: "white",
           },
         },
+
         outlinedWarning: {
           "&:hover": {
             backgroundColor: theme.palette.warning.main,

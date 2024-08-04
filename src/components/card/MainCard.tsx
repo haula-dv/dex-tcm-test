@@ -5,10 +5,15 @@ import { styled } from "@mui/material/styles";
 
 interface IProps {
   children?: React.ReactNode;
+  maxWidth?: string;
 }
 
-export const MainCard = ({ children }: IProps) => {
-  return <CustomCard elevation={0}>{children}</CustomCard>;
+export const MainCard = ({ children, maxWidth }: IProps) => {
+  return (
+    <CustomCard elevation={0} sx={{ maxWidth: maxWidth }}>
+      {children}
+    </CustomCard>
+  );
 };
 
 const CustomCard = styled(Card)(({ theme }) => ({
