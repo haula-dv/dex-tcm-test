@@ -1,11 +1,13 @@
 import { MainIconButton } from "@/components/button/MainIconButton";
 import { MainCard } from "@/components/card/MainCard";
 import { SearchField } from "@/components/form-control/SearchField";
+import SwitchBase from "@/components/form-control/SwitcheBase";
 import { GrayTab } from "@/components/tab/GrayTab";
 import { ITab } from "@/types/components/tab";
 import { TSizes } from "@/utils/themes/custom-theme/sizes";
 import { Box, Stack, Typography } from "@mui/material";
-import { IconArrowLeft, IconX } from "@tabler/icons-react";
+import { IconArrowLeft, IconSettings, IconX } from "@tabler/icons-react";
+import Image from "next/image";
 
 interface IProps {
   onBack: () => void;
@@ -38,8 +40,44 @@ export const ManageTokenList = ({ onBack, handleCloseModal }: IProps) => {
       <Box pt={2} />
       <SearchField />
 
-      <Stack pt={2}>
-        <MainCard>Token</MainCard>
+      <Stack pt={2} spacing={TSizes.margin_xs}>
+        <MainCard isHover>
+          <Stack direction={"row"} justifyContent={"space-between"}>
+            <Stack direction={"row"} spacing={1} alignItems={"center"}>
+              <Image src={"/images/token.png"} height={32} width={32} alt="" />
+
+              <Stack>
+                <Typography fontSize={"16px"}>Liaa</Typography>
+                <Stack direction={"row"} spacing={1}>
+                  <Typography fontSize={"14px"}>21 token</Typography>
+
+                  <IconSettings size={"1.2rem"} />
+                </Stack>
+              </Stack>
+            </Stack>
+
+            <SwitchBase />
+          </Stack>
+        </MainCard>
+
+        <MainCard isHover>
+          <Stack direction={"row"} justifyContent={"space-between"}>
+            <Stack direction={"row"} spacing={1}>
+              <Image src={"/images/token.png"} height={32} width={32} alt="" />
+
+              <Stack>
+                <Typography fontSize={"16px"}>Liaa</Typography>
+                <Stack direction={"row"} spacing={1}>
+                  <Typography fontSize={"14px"}>21 token</Typography>
+
+                  <IconSettings size={"1.2rem"} />
+                </Stack>
+              </Stack>
+            </Stack>
+
+            <SwitchBase />
+          </Stack>
+        </MainCard>
       </Stack>
     </Box>
   );

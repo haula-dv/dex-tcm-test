@@ -26,18 +26,30 @@ export const TransactionPopup = () => {
   };
 
   return (
-    <div>
-      <MainIconButton
-        variant="text"
-        isFullRounded
-        id="transaction-button"
-        aria-controls={open ? "transaction-menu" : undefined}
-        aria-haspopup="true"
-        aria-expanded={open ? "true" : undefined}
-        onClick={handleClick}
+    <>
+      <Stack
+        direction={"row"}
+        width={"100%"}
+        justifyContent={"space-between"}
+        alignItems={"center"}
+        mt={"-10px"}
       >
-        <IconSettings size={"1.5rem"} />
-      </MainIconButton>
+        <Typography fontSize={"18px"} fontWeight={600}>
+          Swap
+        </Typography>
+        <MainIconButton
+          variant="text"
+          isFullRounded
+          id="transaction-button"
+          aria-controls={open ? "transaction-menu" : undefined}
+          aria-haspopup="true"
+          aria-expanded={open ? "true" : undefined}
+          onClick={handleClick}
+          edge="end"
+        >
+          <IconSettings size={"1.5rem"} />
+        </MainIconButton>
+      </Stack>
 
       <MainPopup
         id="transaction-menu"
@@ -90,6 +102,6 @@ export const TransactionPopup = () => {
           </Stack>
         </Box>
       </MainPopup>
-    </div>
+    </>
   );
 };

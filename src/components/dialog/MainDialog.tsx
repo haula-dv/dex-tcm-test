@@ -76,5 +76,7 @@ const CustomDialog = styled(Dialog, {
     position: "relative",
     boxShadow: "none",
     backgroundColor: isBGWhite ? "#fff" : theme.palette.grey[50],
+    width: "100%",
+    margin: "16px",
   },
 }));

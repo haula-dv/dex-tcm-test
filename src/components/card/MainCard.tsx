@@ -6,6 +6,7 @@ import { styled } from "@mui/material/styles";
 interface IProps {
   children?: React.ReactNode;
   maxWidth?: string;
+  isHover?: boolean;
   backgroudColor?: "white" | "grey";
 }
 
@@ -13,11 +14,12 @@ export const MainCard = ({
   children,
   maxWidth,
   backgroudColor = "grey",
+  isHover,
 }: IProps) => {
   return (
     <CustomCard
       elevation={0}
-      sx={{ maxWidth: maxWidth }}
+      sx={{ maxWidth: maxWidth, cursor: isHover ? "pointer" : "" }}
       backgroudColor={backgroudColor}
     >
       {children}
