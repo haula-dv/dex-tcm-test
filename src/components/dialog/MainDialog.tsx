@@ -13,6 +13,7 @@ interface IProps {
   maxWidth?: "xs" | "sm" | "md" | "lg" | "xl" | false;
   disablePadding?: boolean;
   isBGWhite?: boolean;
+  hiddenHeader?: boolean;
 }
 
 export const MainDialog = ({
@@ -23,6 +24,7 @@ export const MainDialog = ({
   maxWidth,
   disablePadding,
   isBGWhite,
+  hiddenHeader,
 }: IProps) => {
   return (
     <CustomDialog
@@ -34,27 +36,29 @@ export const MainDialog = ({
       aria-modal="true"
       isBGWhite={isBGWhite}
     >
-      <Stack
-        direction={"row"}
-        justifyContent={"space-between"}
-        alignItems={"center"}
-        py={TSizes.margin_xs}
-        pr={TSizes.margin_xs}
-        pl={TSizes.margin_base}
-      >
-        <Typography fontWeight={700} fontSize={"16px"}>
-          {title}
-        </Typography>
-
-        <MainIconButton
-          isFullRounded
-          onClick={handleClose}
-          color="inherit"
-          size="small"
+      {!hiddenHeader && (
+        <Stack
+          direction={"row"}
+          justifyContent={"space-between"}
+          alignItems={"center"}
+          py={TSizes.margin_xs}
+          pr={TSizes.margin_xs}
+          pl={TSizes.margin_base}
         >
-          <IconX size={"1.4rem"} />
-        </MainIconButton>
-      </Stack>
+          <Typography fontWeight={700} fontSize={"16px"}>
+            {title}
+          </Typography>
+
+          <MainIconButton
+            isFullRounded
+            onClick={handleClose}
+            color="inherit"
+            size="small"
+          >
+            <IconX size={"1.4rem"} />
+          </MainIconButton>
+        </Stack>
+      )}
 
       <Box p={disablePadding ? 0 : TSizes.margin_base}>{children}</Box>
     </CustomDialog>
@@ -69,6 +73,7 @@ const CustomDialog = styled(Dialog, {
   shouldForwardProp: (prop) => prop !== "isBGWhite",
 })<ICustomDialog>(({ theme, isBGWhite }) => ({
   "& .MuiDialog-paper": {
+    position: "relative",
     boxShadow: "none",
     backgroundColor: isBGWhite ? "#fff" : theme.palette.grey[50],
   },

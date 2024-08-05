@@ -37,6 +37,7 @@ export const CustomMuiButton = (theme: Theme) => {
         // SECONDARY
         containedSecondary: {
           backgroundColor: theme.palette.secondary.main,
+
           "&:hover": {
             backgroundColor: theme.palette.secondary.main,
             color: theme.palette.secondary.dark,
@@ -101,9 +102,10 @@ export const CustomMuiButton = (theme: Theme) => {
 
         textSecondary: {
           backgroundColor: theme.palette.secondary.light,
+          color: theme.palette.secondary.contrastText,
           "&:hover": {
             backgroundColor: theme.palette.secondary.main,
-            color: "white",
+            color: theme.palette.secondary.light,
           },
         },
 

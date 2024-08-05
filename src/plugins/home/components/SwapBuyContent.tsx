@@ -3,7 +3,7 @@ import theme from "@/utils/themes/mui-theme";
 import { InputBase, Stack, Typography } from "@mui/material";
 import { Dispatch, SetStateAction, useState } from "react";
 import { Content } from "./SwapSellContent";
-import { TokenListModal } from "./TokenListModal";
+import { TokenListModal } from "./modal-token/TokenListModal";
 import { TokenSelect } from "./token/TokenSelect";
 
 export type ITypeSwap = "sell" | "buy";

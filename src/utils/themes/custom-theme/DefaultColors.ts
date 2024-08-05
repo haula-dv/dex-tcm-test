@@ -17,6 +17,7 @@ const baselightTheme = {
     main: "#D7E4E3",
     light: "#FAFDFC",
     dark: "#447784",
+    contrastText: "#111",
   },
   success: {
     main: "#50cd89",

@@ -2,10 +2,11 @@
 import { MainIconButton } from "@/components/button/MainIconButton";
 import theme from "@/utils/themes/mui-theme";
 import { Box, Stack, Typography } from "@mui/material";
-import { IconArrowsSort, IconSettings } from "@tabler/icons-react";
+import { IconArrowsSort } from "@tabler/icons-react";
 import { useState } from "react";
 import { SwapBuyContent } from "./SwapBuyContent";
 import { ITypeSwap, SwapSellContent } from "./SwapSellContent";
+import { TransactionPopup } from "./token/TransactionPopup";
 
 export const SwapContainer = () => {
   const [currentTypeSwap, setCurrentTypeSwap] = useState<ITypeSwap>("sell");
@@ -47,9 +48,7 @@ export const SwapContainer = () => {
             Swap
           </Typography>
 
-          <MainIconButton variant="text" isFullRounded>
-            <IconSettings size={"1.5rem"} />
-          </MainIconButton>
+          <TransactionPopup />
         </Stack>
 
         <Stack spacing={1}>

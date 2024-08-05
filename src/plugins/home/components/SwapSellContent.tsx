@@ -4,7 +4,7 @@ import theme from "@/utils/themes/mui-theme";
 import { Box, InputBase, Stack, Typography } from "@mui/material";
 import { styled } from "@mui/material/styles";
 import { Dispatch, SetStateAction, useState } from "react";
-import { TokenListModal } from "./TokenListModal";
+import { TokenListModal } from "./modal-token/TokenListModal";
 import { TokenSelect } from "./token/TokenSelect";
 
 export type ITypeSwap = "sell" | "buy";

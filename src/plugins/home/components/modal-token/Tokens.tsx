@@ -1,41 +1,22 @@
-import { MainDialog } from "@/components/dialog/MainDialog";
+import { MainButton } from "@/components/button/MainButton";
 import { SearchField } from "@/components/form-control/SearchField";
 import { TSizes } from "@/utils/themes/custom-theme/sizes";
 import theme from "@/utils/themes/mui-theme";
-import {
-  Box,
-  Button,
-  Divider,
-  List,
-  ListItemButton,
-  ListItemIcon,
-  ListItemText,
-  Stack,
-  Typography,
-} from "@mui/material";
+import { Box, Button, Divider, List, Stack, Typography } from "@mui/material";
 import { styled } from "@mui/material/styles";
+import { IconEdit } from "@tabler/icons-react";
 import Image from "next/image";
-
+import { Dispatch, SetStateAction } from "react";
+import { TokenItem } from "./TokenItem";
+import { ITokenType } from "./TokenListModal";
 interface IProps {
-  open: boolean;
-  onClose: () => void;
   handleSelectToken: (token: any) => void;
+  setTokenType: Dispatch<SetStateAction<ITokenType>>;
 }
 
-export const TokenListModal = ({
-  open,
-  onClose,
-  handleSelectToken,
-}: IProps) => {
+export const Tokens = ({ handleSelectToken, setTokenType }: IProps) => {
   return (
-    <MainDialog
-      open={open}
-      handleClose={onClose}
-      title="Select a token"
-      maxWidth="xs"
-      disablePadding
-      isBGWhite
-    >
+    <>
       <Stack px={TSizes.margin_base}>
         <SearchField />
 
@@ -65,7 +46,7 @@ export const TokenListModal = ({
 
       <Divider />
 
-      <Box maxHeight={"50vh"} overflow={"auto"}>
+      <Box height={"50vh"} overflow={"auto"} position={"relative"} pb={5}>
         <Typography
           fontWeight={600}
           color={theme.palette.grey[600]}
@@ -77,26 +58,28 @@ export const TokenListModal = ({
         </Typography>
 
         <List>
-          {[...Array(20)].map((item, index) => (
-            <CustomListItem key={index} selected={index == 0}>
-              <ListItemIcon>
-                <Box>
-                  <Image
-                    src={
-                      "https://coin-images.coingecko.com/coins/images/12645/large/aave-token-round.png?1720472354"
-                    }
-                    height={30}
-                    width={30}
-                    alt=""
-                  />
-                </Box>
-              </ListItemIcon>
-              <ListItemText primary="0x Protocol" secondary="ZRX" />
-            </CustomListItem>
+          <TokenItem
+            isImportToken
+            onClick={() => setTokenType("importToken")}
+          />
+
+          {[...Array(10)].map((item, index) => (
+            <TokenItem key={index} />
           ))}
         </List>
       </Box>
-    </MainDialog>
+
+      <ManageButton>
+        <MainButton
+          fullWidth
+          startIcon={<IconEdit />}
+          color="inherit"
+          onClick={() => setTokenType("manageTokens")}
+        >
+          Manage
+        </MainButton>
+      </ManageButton>
+    </>
   );
 };
 
@@ -109,17 +92,12 @@ const Token = styled(Button)(({ theme }) => ({
   borderColor: theme.palette.grey[200],
 }));
 
-const CustomListItem = styled(ListItemButton)(({ theme }) => ({
-  "& .MuiListItemText-primary": {
-    fontSize: "16px",
-  },
-
-  "& .MuiListItemText-secondary": {
-    fontSize: "12px",
-    color: theme.palette.grey[700],
-  },
-
-  "& .MuiListItemIcon-root": {
-    minWidth: "46px",
-  },
+const ManageButton = styled(Box)(({ theme }) => ({
+  position: "absolute",
+  bottom: 0,
+  left: 0,
+  width: "100%",
+  backgroundColor: "#fff",
+  display: "flex",
+  justifyContent: "center",
 }));

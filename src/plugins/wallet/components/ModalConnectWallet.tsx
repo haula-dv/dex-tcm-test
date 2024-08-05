@@ -20,6 +20,7 @@ export const ModalConnectWallet = ({ isOpen, onClose }: IProps) => {
   const router = useRouter();
 
   const wallets = [
+    { label: "Metamask", icon: <IconCryto /> },
     { label: "Cyrptooly", icon: <IconCryto /> },
     { label: "WalletConnect", icon: <IconWalletConnect /> },
     { label: "Coinbase Wallet", icon: <IconCoinBase /> },
@@ -71,7 +72,7 @@ const ItemWallet = styled(Stack)(({ theme }) => ({
   backgroundColor: "#fff",
   borderRadius: TSizes.borderRadius,
   alignItems: "center",
-  padding: TSizes.margin_xs,
+  padding: `${TSizes.margin_xs} ${TSizes.margin_sm}`,
   cursor: "pointer",
   transition: "box-shadow 0.3s ease-in-out", // Smooth transition for boxShadow
   "&:hover": {
