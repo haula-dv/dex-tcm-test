@@ -6,7 +6,9 @@ import { ITab } from "@/types/components/tab";
 import { TSizes } from "@/utils/themes/custom-theme/sizes";
 import theme from "@/utils/themes/mui-theme";
 import { Box, Divider, Stack, Typography } from "@mui/material";
+import { setZustandValue } from "nes-zustand";
 import Image from "next/image";
+import { isTransactionSubmittedState } from "../../store";
 
 interface IProps {
   open: boolean;
@@ -18,6 +20,12 @@ export const ModalConfirmSwap = ({ onClose, open }: IProps) => {
     { label: "Details", value: 1 },
     { label: "Data", value: 2 },
   ];
+
+  const handleConfirm = () => {
+    setZustandValue(isTransactionSubmittedState, true);
+    onClose();
+  };
+
   return (
     <MainDialog
       open={open}
@@ -94,7 +102,12 @@ export const ModalConfirmSwap = ({ onClose, open }: IProps) => {
           Reject
         </MainButton>
 
-        <MainButton variant="contained" color="darkPrimary" fullWidth>
+        <MainButton
+          variant="contained"
+          color="darkPrimary"
+          fullWidth
+          onClick={handleConfirm}
+        >
           Confirm Swap
         </MainButton>
       </Stack>

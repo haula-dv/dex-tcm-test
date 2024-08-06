@@ -11,7 +11,7 @@ export const ButtonSwapToggle = ({ toggleSwapType }: IProps) => {
     <div style={{ margin: "-20px auto -24px auto" }}>
       <MainIconButton
         color="white"
-        sx={{ border: `4px solid ${theme.palette.grey[100]}` }}
+        sx={{ border: `4px solid ${theme.palette.grey[50]}` }}
         onClick={toggleSwapType}
       >
         <IconArrowsSort size={"1rem"} />

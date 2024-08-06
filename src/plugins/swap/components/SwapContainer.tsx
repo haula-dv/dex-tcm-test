@@ -1,16 +1,16 @@
 "use client";
 import { MainButton } from "@/components/button/MainButton";
 import { MainCard } from "@/components/card/MainCard";
+import { SwapBuyContent } from "@/components/swap/SwapBuyContent";
 import theme from "@/utils/themes/mui-theme";
 import { Box, Stack, Typography } from "@mui/material";
 import { IconHelp, IconTransform } from "@tabler/icons-react";
 import { useState } from "react";
 import { useStore } from "zustand";
+import { SwapSellContent } from "../../../components/swap/SwapSellContent";
 import { isTransactionSubmittedState } from "../store";
 import { ConfirmSwapContent } from "./ConfirmSwap";
-import { SwapBuyContent } from "./SwapBuyContent";
 import { ButtonSwapToggle } from "./SwapIconToggle";
-import { SwapSellContent } from "./SwapSellContent";
 import { TransactionPopup } from "./token/TransactionPopup";
 import { TransationSubmittedCard } from "./TransationSubmittedCard";
 

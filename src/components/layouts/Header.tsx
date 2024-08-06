@@ -11,6 +11,7 @@ import {
   Typography,
 } from "@mui/material";
 import { styled } from "@mui/material/styles";
+import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { MainContainer } from "../container/MainContainer";
 import Logo from "../icons/Logo";
@@ -43,12 +44,11 @@ export const Header = () => {
             >
               <Logo />
               {navItems.map((navItem) => (
-                <NavItem
-                  key={navItem.label}
-                  isActived={pathName === navItem.to}
-                >
-                  <Typography>{navItem.label}</Typography>
-                </NavItem>
+                <Link key={navItem.label} href={navItem.to}>
+                  <NavItem isActived={pathName === navItem.to}>
+                    <Typography>{navItem.label}</Typography>
+                  </NavItem>
+                </Link>
               ))}
             </Stack>
 

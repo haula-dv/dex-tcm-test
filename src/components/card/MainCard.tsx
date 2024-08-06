@@ -1,9 +1,9 @@
 "use client";
 import { TSizes } from "@/utils/themes/custom-theme/sizes";
-import { Card } from "@mui/material";
+import { Card, CardProps } from "@mui/material";
 import { styled } from "@mui/material/styles";
 
-interface IProps {
+interface IProps extends CardProps {
   children?: React.ReactNode;
   maxWidth?: string;
   isHover?: boolean;
@@ -17,6 +17,7 @@ export const MainCard = ({
   backgroudColor = "grey",
   isHover,
   disablePadding,
+  ...props
 }: IProps) => {
   return (
     <CustomCard
@@ -24,6 +25,7 @@ export const MainCard = ({
       disablePadding={disablePadding}
       sx={{ maxWidth: maxWidth, cursor: isHover ? "pointer" : "" }}
       backgroudColor={backgroudColor}
+      {...props}
     >
       {children}
     </CustomCard>

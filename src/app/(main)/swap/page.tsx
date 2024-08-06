@@ -1,4 +1,4 @@
-import { SwapContainer } from "@/plugins/home/components/SwapContainer";
+import { SwapContainer } from "@/plugins/swap/components/SwapContainer";
 import { Metadata } from "next";
 
 export const metadata: Metadata = {

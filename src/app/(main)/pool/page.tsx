@@ -1,11 +1,11 @@
-import { SwapContainer } from "@/plugins/swap/components/SwapContainer";
+import { PoolContainer } from "@/plugins/pool/components/PoolContainer";
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Swap",
+  title: "Pool",
   description: "...",
 };
 
 export default function HomePage() {
-  return <SwapContainer />;
+  return <PoolContainer />;
 }
