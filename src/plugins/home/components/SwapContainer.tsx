@@ -5,13 +5,22 @@ import theme from "@/utils/themes/mui-theme";
 import { Box, Stack, Typography } from "@mui/material";
 import { IconHelp, IconTransform } from "@tabler/icons-react";
 import { useState } from "react";
+import { useStore } from "zustand";
+import { isTransactionSubmittedState } from "../store";
 import { ConfirmSwapContent } from "./ConfirmSwap";
 import { SwapBuyContent } from "./SwapBuyContent";
 import { ButtonSwapToggle } from "./SwapIconToggle";
 import { SwapSellContent } from "./SwapSellContent";
 import { TransactionPopup } from "./token/TransactionPopup";
+import { TransationSubmittedCard } from "./TransationSubmittedCard";
 
 export const SwapContainer = () => {
+  // State
+  const isTransactionSubmitted = useStore(
+    isTransactionSubmittedState,
+    (state) => state.value
+  );
+
   const [isEnterAmount, setIsEnterAmount] = useState(false);
   const [isSwaped, setIsSwaped] = useState(false);
   const [currentSellValue, setCurrentSellValue] = useState({
@@ -47,67 +56,75 @@ export const SwapContainer = () => {
 
   return (
     <Box display={"flex"} justifyContent={"center"}>
-      <MainCard maxWidth={"420px"}>
-        <TransactionPopup />
+      {!isTransactionSubmitted ? (
+        <MainCard maxWidth={"420px"}>
+          <TransactionPopup />
 
-        {!isSwaped ? (
-          <>
-            <Stack spacing={1}>
-              <SwapSellContent
-                tokenSelected={currentSellValue}
-                setTokenSelected={setCurrentSellValue}
-              />
+          {!isSwaped ? (
+            <>
+              <Stack spacing={1}>
+                <SwapSellContent
+                  tokenSelected={currentSellValue}
+                  setTokenSelected={setCurrentSellValue}
+                />
 
-              <ButtonSwapToggle toggleSwapType={toggleSwapType} />
+                <ButtonSwapToggle toggleSwapType={toggleSwapType} />
 
-              <SwapBuyContent
-                tokenSelected={currentBuyValue}
-                setTokenSelected={setCurrentBuyValue}
-              />
+                <SwapBuyContent
+                  tokenSelected={currentBuyValue}
+                  setTokenSelected={setCurrentBuyValue}
+                />
 
-              <Stack direction={"row"} justifyContent={"space-between"} pb={2}>
-                <Typography>
-                  {!isEnterAmount ? "Slippage Tolerance" : "Price"}
-                </Typography>
-
-                <Stack direction={"row"} alignItems={"centter"} spacing={1}>
+                <Stack
+                  direction={"row"}
+                  justifyContent={"space-between"}
+                  pb={2}
+                >
                   <Typography>
-                    {!isEnterAmount ? "1%" : "0978787667 ETH Per"}
+                    {!isEnterAmount ? "Slippage Tolerance" : "Price"}
                   </Typography>
 
-                  {isEnterAmount && <IconTransform size={"1.2rem"} />}
+                  <Stack direction={"row"} alignItems={"centter"} spacing={1}>
+                    <Typography>
+                      {!isEnterAmount ? "1%" : "0978787667 ETH Per"}
+                    </Typography>
+
+                    {isEnterAmount && <IconTransform size={"1.2rem"} />}
+                  </Stack>
                 </Stack>
-              </Stack>
 
-              <MainButton
-                variant="contained"
-                color="darkPrimary"
-                size="large"
-                onClick={handleEnterAmount}
-              >
-                {isEnterAmount ? "Swap" : "Enter A Mount"}
-              </MainButton>
-            </Stack>
-
-            {isEnterAmount && (
-              <Stack spacing={1} pt={2}>
-                <Item />
-                <Item />
-                <Item />
-                <MainButton fullWidth color="inherit">
-                  View Pair Analytis
+                <MainButton
+                  variant="contained"
+                  color="darkPrimary"
+                  size="large"
+                  onClick={handleEnterAmount}
+                >
+                  {isEnterAmount ? "Swap" : "Enter A Mount"}
                 </MainButton>
               </Stack>
-            )}
-          </>
-        ) : (
-          <ConfirmSwapContent
-            toggleSwapType={toggleSwapType}
-            tokenSellSelected={currentSellValue}
-            tokenBuySelected={currentBuyValue}
-          />
-        )}
-      </MainCard>
+
+              {isEnterAmount && (
+                <Stack spacing={1} pt={2}>
+                  <Item />
+                  <Item />
+                  <Item />
+                  <MainButton fullWidth color="inherit">
+                    View Pair Analytis
+                  </MainButton>
+                </Stack>
+              )}
+            </>
+          ) : (
+            <ConfirmSwapContent
+              toggleSwapType={toggleSwapType}
+              tokenSellSelected={currentSellValue}
+              tokenBuySelected={currentBuyValue}
+            />
+          )}
+        </MainCard>
+      ) : (
+        <TransationSubmittedCard />
+      )}
     </Box>
   );
 };
