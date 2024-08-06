@@ -1,7 +1,9 @@
 import { MainButton } from "@/components/button/MainButton";
 import { MainCard } from "@/components/card/MainCard";
-import { Stack, Typography } from "@mui/material";
+import { Box, Stack, Typography } from "@mui/material";
 import Link from "next/link";
+import { AccountAnalystic } from "./AccountAnalystic";
+import { TokenSelected } from "./TokenSelected";
 
 export const PoolContainer = () => {
   return (
@@ -31,24 +33,28 @@ export const PoolContainer = () => {
 
           <Stack direction={"row"} maxWidth={"300px"} spacing={2}>
             <Link href={"/pool/create-a-pair"}>
-              <MainButton variant="outlined" color="inherit">
+              <MainButton variant="outlined" color="inherit" size="large">
                 Create A Pair
               </MainButton>
             </Link>
 
             <Link href={"/pool/add"}>
-              <MainButton variant="contained" color="darkPrimary">
+              <MainButton variant="contained" color="darkPrimary" size="large">
                 Add Liquidity
               </MainButton>
             </Link>
           </Stack>
         </Stack>
 
-        <MainCard isHover>
+        {/* <MainCard isHover>
           <Typography textAlign={"center"}>
             Your active V3 liquidity positions will appear here.
           </Typography>
-        </MainCard>
+        </MainCard> */}
+
+        <AccountAnalystic />
+        <Box pt={2} />
+        <TokenSelected />
 
         <Stack
           direction={"row"}
