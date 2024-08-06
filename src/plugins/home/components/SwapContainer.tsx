@@ -1,13 +1,13 @@
 "use client";
 import { MainButton } from "@/components/button/MainButton";
-import { MainIconButton } from "@/components/button/MainIconButton";
 import { MainCard } from "@/components/card/MainCard";
 import theme from "@/utils/themes/mui-theme";
 import { Box, Stack, Typography } from "@mui/material";
-import { IconArrowsSort, IconHelp, IconTransform } from "@tabler/icons-react";
+import { IconHelp, IconTransform } from "@tabler/icons-react";
 import { useState } from "react";
 import { ConfirmSwapContent } from "./ConfirmSwap";
 import { SwapBuyContent } from "./SwapBuyContent";
+import { ButtonSwapToggle } from "./SwapIconToggle";
 import { SwapSellContent } from "./SwapSellContent";
 import { TransactionPopup } from "./token/TransactionPopup";
 
@@ -50,7 +50,7 @@ export const SwapContainer = () => {
       <MainCard maxWidth={"420px"}>
         <TransactionPopup />
 
-        {isSwaped ? (
+        {!isSwaped ? (
           <>
             <Stack spacing={1}>
               <SwapSellContent
@@ -58,19 +58,11 @@ export const SwapContainer = () => {
                 setTokenSelected={setCurrentSellValue}
               />
 
-              <div style={{ margin: "-20px auto -24px auto" }}>
-                <MainIconButton
-                  color="white"
-                  sx={{ border: `4px solid ${theme.palette.grey[100]}` }}
-                  onClick={toggleSwapType}
-                >
-                  <IconArrowsSort size={"1rem"} />
-                </MainIconButton>
-              </div>
+              <ButtonSwapToggle toggleSwapType={toggleSwapType} />
 
               <SwapBuyContent
                 tokenSelected={currentBuyValue}
-                setTokenSelected={setCurrentSellValue}
+                setTokenSelected={setCurrentBuyValue}
               />
 
               <Stack direction={"row"} justifyContent={"space-between"} pb={2}>
@@ -109,14 +101,18 @@ export const SwapContainer = () => {
             )}
           </>
         ) : (
-          <ConfirmSwapContent />
+          <ConfirmSwapContent
+            toggleSwapType={toggleSwapType}
+            tokenSellSelected={currentSellValue}
+            tokenBuySelected={currentBuyValue}
+          />
         )}
       </MainCard>
     </Box>
   );
 };
 
-const Item = () => {
+export const Item = () => {
   return (
     <Stack direction={"row"} justifyContent={"space-between"}>
       <Stack direction={"row"} spacing={1}>

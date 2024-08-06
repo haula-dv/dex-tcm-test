@@ -8,6 +8,7 @@ interface IProps {
   maxWidth?: string;
   isHover?: boolean;
   backgroudColor?: "white" | "grey";
+  disablePadding?: boolean;
 }
 
 export const MainCard = ({
@@ -15,10 +16,12 @@ export const MainCard = ({
   maxWidth,
   backgroudColor = "grey",
   isHover,
+  disablePadding,
 }: IProps) => {
   return (
     <CustomCard
       elevation={0}
+      disablePadding={disablePadding}
       sx={{ maxWidth: maxWidth, cursor: isHover ? "pointer" : "" }}
       backgroudColor={backgroudColor}
     >
@@ -29,11 +32,14 @@ export const MainCard = ({
 
 interface ICard {
   backgroudColor?: "white" | "grey";
+  disablePadding?: boolean;
 }
 
 const CustomCard = styled(Card, {
-  shouldForwardProp: (prop) => prop !== "backgroudColor",
-})<ICard>(({ theme, backgroudColor = "grey" }) => ({
+  shouldForwardProp: (prop) =>
+    prop !== "backgroudColor" && prop !== "disablePadding",
+})<ICard>(({ theme, backgroudColor = "grey", disablePadding }) => ({
+  borderRadius: TSizes.borderRadiusMd,
   ...(backgroudColor === "white" && {
     backgroundColor: "#fff",
   }),
@@ -41,5 +47,5 @@ const CustomCard = styled(Card, {
   ...(backgroudColor === "grey" && {
     backgroundColor: theme.palette.grey[50],
   }),
-  padding: TSizes.margin_base,
+  padding: disablePadding ? 0 : TSizes.margin_base,
 }));

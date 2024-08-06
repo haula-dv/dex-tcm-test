@@ -32,6 +32,9 @@ declare module "@mui/material/Button" {
     textLink: true;
   }
 
+  interface ButtonPropsSizeOverrides {
+    xsmall: true;
+  }
   interface ButtonPropsColorOverrides {
     darkPrimary: true;
     white: true;
