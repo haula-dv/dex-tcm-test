@@ -67,6 +67,7 @@ export const CustomMuiButton = (theme: Theme) => {
           padding: "4px 12px",
           fontSize: "12px",
           height: "32px",
+          borderRadius: "8px !important",
         },
 
         sizeXsmall: {

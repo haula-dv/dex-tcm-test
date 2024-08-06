@@ -6,6 +6,7 @@ import theme from "@/utils/themes/mui-theme";
 import { Collapse, Stack, Typography } from "@mui/material";
 import { IconChevronDown } from "@tabler/icons-react";
 import Image from "next/image";
+import Link from "next/link";
 import { useState } from "react";
 
 export const TokenSelected = () => {
@@ -42,21 +43,18 @@ export const TokenSelected = () => {
           <ItemRow title="Pooled Share" value="0.09087766" />
         </Stack>
 
-        <MainButton color="inherit" fullWidth size="large">
+        <MainButton color="inherit" fullWidth>
           View Pair Analytis
         </MainButton>
 
         <Stack direction={"row"} spacing={2} pt={2}>
-          <MainButton color="inherit" variant="outlined" fullWidth size="large">
-            Remove
-          </MainButton>
+          <Link href={"/pool/remove-liquidity"} style={{ width: "100%" }}>
+            <MainButton color="inherit" variant="outlined" fullWidth>
+              Remove
+            </MainButton>
+          </Link>
 
-          <MainButton
-            color="darkPrimary"
-            fullWidth
-            variant="contained"
-            size="large"
-          >
+          <MainButton color="darkPrimary" fullWidth variant="contained">
             Add
           </MainButton>
         </Stack>
