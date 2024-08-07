@@ -57,7 +57,7 @@ export const SwapContainer = () => {
   return (
     <Box display={"flex"} justifyContent={"center"}>
       {!isTransactionSubmitted ? (
-        <MainCard maxWidth={"420px"}>
+        <MainCard>
           <TransactionPopup />
 
           {!isSwaped ? (

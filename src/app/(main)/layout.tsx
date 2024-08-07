@@ -17,7 +17,11 @@ export default function RootLayout({
         <OrderlyConfigProviderRoot>
           <Header />
           <Box pt={"100px"}>
-            <MainContainer>{children}</MainContainer>
+            <MainContainer>
+              <Box maxWidth={"440px"} mx={"auto"}>
+                {children}
+              </Box>
+            </MainContainer>
           </Box>
         </OrderlyConfigProviderRoot>
       </Web3OnboardProviderRoot>

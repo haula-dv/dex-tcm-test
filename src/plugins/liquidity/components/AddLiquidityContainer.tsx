@@ -10,6 +10,8 @@ import { Box, Stack, Typography } from "@mui/material";
 import { useState } from "react";
 
 export const AddLiquidityContainer = () => {
+  const [isApprove, setIsApprove] = useState(false);
+
   const [currentSellValue, setCurrentSellValue] = useState({
     token: null,
     amount: 0,
@@ -33,6 +35,10 @@ export const AddLiquidityContainer = () => {
     }));
   };
 
+  const handlSubmitInvalid = () => {
+    setIsApprove(true);
+  };
+
   return (
     <Box
       display={"flex"}
@@ -40,7 +46,7 @@ export const AddLiquidityContainer = () => {
       alignItems={"center"}
       width={"100%"}
     >
-      <MainCard variant="outlined" maxWidth="500px">
+      <MainCard variant="outlined">
         <ChildHeader onBackLink="/pool" title="Add liquidity" />
 
         <MainCard variant="outlined">
@@ -95,14 +101,38 @@ export const AddLiquidityContainer = () => {
           </Stack>
         </Stack>
 
-        <MainButton
-          fullWidth
-          size="large"
-          variant="contained"
-          color="darkPrimary"
-        >
-          Invalid Pair
-        </MainButton>
+        {!isApprove ? (
+          <MainButton
+            fullWidth
+            size="large"
+            variant="contained"
+            color="darkPrimary"
+            onClick={handlSubmitInvalid}
+          >
+            Invalid Pair
+          </MainButton>
+        ) : (
+          <Stack spacing={2}>
+            <MainButton
+              fullWidth
+              size="large"
+              variant="contained"
+              color="darkPrimary"
+            >
+              Approve WBTC
+            </MainButton>
+
+            <MainButton
+              fullWidth
+              size="large"
+              variant="contained"
+              color="darkPrimary"
+              disabled
+            >
+              Supply
+            </MainButton>
+          </Stack>
+        )}
       </MainCard>
     </Box>
   );
