@@ -1,4 +1,5 @@
 export class TLocalStorage {
-  static ACCESS_TOKEN_CP_KEY = "admin_access_token";
-  static ACCESS_TOKEN_FRONT_KEY = "student_access_token";
+  static DEX_ORDERLY_MAINNET_ADDRESS_KEY = "dex_orderly_mainnet_address";
+  static DEX_ORDERLY_MAINNET_ACCOUNT_KEY = "dex_orderly_mainnet_account";
+  static DEX_ORDERLY_TESTNET_ADDRESS = "dex_orderly_testnet_address";
 }

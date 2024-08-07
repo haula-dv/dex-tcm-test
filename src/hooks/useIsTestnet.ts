@@ -1,4 +1,3 @@
-"use client";
 import { isTestnet } from "@/utils/lib/network";
 import { useSetChain } from "@web3-onboard/react";
 import { useEffect, useState } from "react";
@@ -7,30 +6,32 @@ export function useIsTestnet() {
   const [networkId, setNetworkId] = useState<"testnet" | "mainnet">();
   const [{ connectedChain }] = useSetChain();
 
-  // Determine if the network is testnet or mainnet
-  const testnet = connectedChain ? isTestnet(connectedChain) : false;
-
-  // Detect network change
+  let testnet: boolean;
+  if (connectedChain != null) {
+    testnet = isTestnet(connectedChain);
+  } else if (typeof window !== "undefined") {
+    testnet = window.localStorage.getItem("networkId") === "testnet";
+  } else {
+    testnet = false;
+  }
   const networkChanged =
     (testnet && networkId === "mainnet") ||
     (!testnet && networkId === "testnet");
 
   useEffect(() => {
-    // Set initial networkId from localStorage
     if (typeof window !== "undefined") {
-      const storedNetworkId = window.localStorage.getItem("networkId") as
-        | "testnet"
-        | "mainnet";
-      setNetworkId(storedNetworkId ?? "mainnet");
+      setNetworkId(
+        (window.localStorage.getItem("networkId") as "testnet" | "mainnet") ??
+          "mainnet"
+      );
     }
   }, []);
 
   useEffect(() => {
-    // Update networkId when connectedChain changes
-    if (connectedChain != null) {
-      setNetworkId(testnet ? "testnet" : "mainnet");
-    }
-  }, [connectedChain, testnet]);
+    if (connectedChain == null) return;
+    setNetworkId(testnet ? "testnet" : "mainnet");
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [connectedChain]);
 
   return [testnet, networkChanged];
 }

@@ -20,19 +20,8 @@ const metadata = {
 const chains = [mainnet, arbitrum] as const;
 export const wagmiConfig = defaultWagmiConfig({ chains, projectId, metadata });
 
-// 3. Define the custom wallet list
-const walletList = [
-  { name: "MetaMask", icon: "path/to/metamask-icon.png", id: "metamask" },
-  {
-    name: "WalletConnect",
-    icon: "path/to/walletconnect-icon.png",
-    id: "walletconnect",
-  },
-  // Add other wallets as needed
-];
-
 // 4. Create modal
-createWeb3Modal({ wagmiConfig, projectId, chains, walletList } as any);
+createWeb3Modal({ wagmiConfig, projectId, chains } as any);
 
 export const WalletConnectProvider: FC<PropsWithChildren<{}>> = (props) => {
   const { account } = useAccount();

@@ -1,8 +1,12 @@
 import { MainIconButton } from "@/components/button/MainIconButton";
+import { supportedChains } from "@/utils/lib/network";
 import { TSizes } from "@/utils/themes/custom-theme/sizes";
 import { Button, Stack } from "@mui/material";
+import { useAccount } from "@orderly.network/hooks";
 import { IconDots } from "@tabler/icons-react";
-import { useState } from "react";
+import { useConnectWallet, useSetChain } from "@web3-onboard/react";
+import { useEffect, useState } from "react";
+import { ConnectWalletButton } from "./ConnectWalletButton";
 import { ModalConnectWallet } from "./ModalConnectWallet";
 
 export const WalletContainer = () => {
@@ -12,6 +16,32 @@ export const WalletContainer = () => {
   const handleToggleModalConnectWallet = () => {
     setIsOpenModalConnectWallet(!isOpenModalConnectWallet);
   };
+
+  const { account } = useAccount();
+  const [{ wallet }, _, disconnectWallet] = useConnectWallet();
+  const [{ connectedChain }, setChain] = useSetChain();
+
+  useEffect(() => {
+    if (!wallet) return;
+    account.setAddress(wallet.accounts[0].address, {
+      provider: wallet.provider,
+      chain: {
+        id: wallet.chains[0].id,
+      },
+    });
+  }, [wallet, account]);
+
+  const chainIcon = supportedChains.find(
+    ({ id }) => id === connectedChain?.id
+  )?.icon;
+
+  const selectChain = (chainId: string) => () => {
+    setChain({
+      chainId,
+    });
+  };
+
+  console.log(wallet);
 
   return (
     <>
@@ -24,13 +54,7 @@ export const WalletContainer = () => {
           0 SAP
         </Button>
 
-        <Button
-          variant="contained"
-          color="darkPrimary"
-          onClick={handleToggleModalConnectWallet}
-        >
-          Connect to Wallet
-        </Button>
+        {wallet ? "111" : <ConnectWalletButton />}
 
         <MainIconButton variant="filledTonal">
           <IconDots />

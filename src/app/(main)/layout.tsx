@@ -40,15 +40,10 @@ export default function RootLayout({
 }>) {
   const [isTestnet, networkChanged] = useIsTestnet();
 
-  React.useEffect(() => {
-    if (networkChanged && typeof window !== "undefined") {
-      window.localStorage.setItem(
-        "networkId",
-        isTestnet ? "testnet" : "mainnet"
-      );
-      window.location.reload();
-    }
-  }, [networkChanged, isTestnet]);
+  if (networkChanged && typeof window !== "undefined") {
+    window.localStorage.setItem("networkId", isTestnet ? "testnet" : "mainnet");
+    // window.location.reload();
+  }
 
   return (
     <OrderlyConfigProvider
