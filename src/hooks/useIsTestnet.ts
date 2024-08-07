@@ -1,3 +1,4 @@
+"use client";
 import { isTestnet } from "@/utils/lib/network";
 import { useSetChain } from "@web3-onboard/react";
 import { useEffect, useState } from "react";

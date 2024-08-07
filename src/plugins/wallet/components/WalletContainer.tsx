@@ -1,15 +1,9 @@
-import { MainIconButton } from "@/components/button/MainIconButton";
-import { TLocalStorage } from "@/utils/constants/localstorage";
 import { supportedChains } from "@/utils/lib/network";
 import { TSizes } from "@/utils/themes/custom-theme/sizes";
 import { Button, Stack } from "@mui/material";
 import { useAccount } from "@orderly.network/hooks";
-import { IconDots } from "@tabler/icons-react";
 import { useConnectWallet, useSetChain } from "@web3-onboard/react";
-import { setZustandValue } from "nes-zustand";
 import { useEffect, useState } from "react";
-import { useStore } from "zustand";
-import { accountWalletState } from "../store";
 import { ConnectWalletButton } from "./ConnectWalletButton";
 import { ModalConnectWallet } from "./ModalConnectWallet";
 import { OrderlyConnect } from "./OrderlyConnect";
@@ -23,8 +17,6 @@ export const WalletContainer = () => {
     setIsOpenModalConnectWallet(!isOpenModalConnectWallet);
   };
 
-  const accountWallet = useStore(accountWalletState, (state) => state.value);
-
   const { account } = useAccount();
   const [{ wallet }, connect, disconnectWallet] = useConnectWallet();
   const [{ connectedChain }, setChain] = useSetChain();
@@ -37,19 +29,6 @@ export const WalletContainer = () => {
         id: wallet.chains[0].id,
       },
     });
-
-    const { name, avatar } = wallet?.accounts[0].ens ?? {};
-    const accountObj = {
-      address: wallet.accounts[0].address,
-      balance: wallet.accounts[0].balance,
-      ens: { name, avatar: "" },
-    };
-    setZustandValue(accountWalletState, accountObj);
-
-    localStorage.setItem(
-      TLocalStorage.DEX_ORDERLY_MAINNET_WALLET_KEY,
-      JSON.stringify(accountObj)
-    );
   }, [wallet, account]);
 
   const chainIcon = supportedChains.find(
@@ -62,6 +41,8 @@ export const WalletContainer = () => {
     });
   };
 
+  console.log(wallet);
+
   return (
     <>
       <Stack
@@ -73,15 +54,11 @@ export const WalletContainer = () => {
           0 SAP
         </Button>
 
-        {accountWallet ? (
-          <WalletConnected accountWallet={accountWallet} />
-        ) : (
-          <ConnectWalletButton />
-        )}
+        {wallet ? <WalletConnected /> : <ConnectWalletButton />}
 
-        <MainIconButton variant="filledTonal" color="inherit">
+        {/* <MainIconButton variant="filledTonal" color="inherit">
           <IconDots />
-        </MainIconButton>
+        </MainIconButton> */}
       </Stack>
 
       <ModalConnectWallet

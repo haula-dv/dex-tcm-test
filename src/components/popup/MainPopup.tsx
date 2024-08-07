@@ -1,3 +1,4 @@
+import { TSizes } from "@/utils/themes/custom-theme/sizes";
 import Menu, { MenuProps } from "@mui/material/Menu";
 import { alpha, styled } from "@mui/material/styles";
 
@@ -16,7 +17,7 @@ export const MainPopup = styled((props: MenuProps) => (
   />
 ))(({ theme }) => ({
   "& .MuiPaper-root": {
-    borderRadius: 6,
+    borderRadius: TSizes.borderRadius,
     marginTop: theme.spacing(1),
     minWidth: 180,
     color:

@@ -9,5 +9,5 @@ const parseAccountWallet = accountWallet ? JSON.parse(accountWallet) : null;
 
 export const accountWalletState = createZustandStore<IAccountWallet | null>({
   key: "accountWalletState",
-  default: parseAccountWallet != null ? parseAccountWallet : null,
+  default: null,
 });

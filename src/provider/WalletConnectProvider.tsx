@@ -1,50 +1,58 @@
 "use client";
-import { WalletConnectorContext, useAccount } from "@orderly.network/hooks";
-import { createWeb3Modal, useWeb3Modal } from "@web3modal/wagmi/react";
-import { defaultWagmiConfig } from "@web3modal/wagmi/react/config";
-import { FC, PropsWithChildren, useCallback, useEffect } from "react";
-import { arbitrum, mainnet } from "viem/chains";
-import { usePublicClient, useAccount as useWagmiAccount } from "wagmi";
+import { supportedChains } from "@/utils/lib/network";
+import coinbaseModule from "@web3-onboard/coinbase";
+import fortmaticModule from "@web3-onboard/fortmatic";
+import injectedModule from "@web3-onboard/injected-wallets";
+import portisModule from "@web3-onboard/portis";
+import { init, Web3OnboardProvider } from "@web3-onboard/react";
+import walletConnectModule from "@web3-onboard/walletconnect";
 
-// 1. Get projectId at https://cloud.walletconnect.com
-const projectId = "8113e540d923482c1bc40bb5e4a14672";
+const injected = injectedModule();
+const coinbase = coinbaseModule();
 
-// 2. Create wagmiConfig
-const metadata = {
-  name: "Web3Modal",
-  description: "Web3Modal Example",
-  url: "https://web3modal.com",
-  icons: ["https://avatars.githubusercontent.com/u/37784886"],
-};
+const portis = portisModule({
+  apiKey: "apiKey",
+});
+const fortmatic = fortmaticModule({
+  apiKey: "apiKey",
+});
 
-const chains = [mainnet, arbitrum] as const;
-export const wagmiConfig = defaultWagmiConfig({ chains, projectId, metadata });
+const walletConnect = walletConnectModule({
+  projectId: "5f4e967f02cf92c8db957c56e877e149",
+  requiredChains: [10, 42161],
+  optionalChains: [421614, 11155420],
+  dappUrl: "https://orderlynetwork.github.io/example-dex",
+});
 
-// 4. Create modal
-createWeb3Modal({ wagmiConfig, projectId, chains } as any);
+const web3Onboard = init({
+  wallets: [injected, walletConnect, coinbase, portis, fortmatic],
+  chains: supportedChains.map(({ id, token, label, rpcUrl }) => ({
+    id,
+    token,
+    label,
+    rpcUrl,
+  })),
+  appMetadata: {
+    name: "Orderly DEX",
+    description: "Fully fledged example DEX using Orderly Network",
+  },
+  accountCenter: {
+    desktop: { enabled: false },
+    mobile: { enabled: false },
+  },
+  connect: {
+    autoConnectLastWallet: true,
+  },
+});
 
-export const WalletConnectProvider: FC<PropsWithChildren<{}>> = (props) => {
-  const { account } = useAccount();
-
-  const publicClient = usePublicClient();
-  const { address, isConnecting, isDisconnected } = useWagmiAccount();
-
-  const { open } = useWeb3Modal();
-
-  useEffect(() => {
-    // call account's setAddress method to update account status;
-  }, []);
-
-  const connect = useCallback(() => {
-    return open().then((res) => {
-      console.log(res);
-      return [];
-    });
-  }, []);
-
+export default function Web3OnboardProviderRoot({
+  children,
+}: Readonly<{
+  children: React.ReactNode;
+}>) {
   return (
-    <WalletConnectorContext.Provider value={{ connect } as any}>
-      {props.children}
-    </WalletConnectorContext.Provider>
+    <Web3OnboardProvider web3Onboard={web3Onboard}>
+      {children}
+    </Web3OnboardProvider>
   );
-};
+}
