@@ -7,6 +7,7 @@ import { AppRouterCacheProvider } from "@mui/material-nextjs/v14-appRouter";
 
 import ClientThemeProvider from "@/components/ClientThemeProvider";
 import { inter } from "@/utils/themes/custom-theme/Typography";
+
 import React from "react";
 import { Toaster } from "sonner";
 
