@@ -18,7 +18,6 @@ import Logo from "../icons/Logo";
 
 export const Header = () => {
   const pathName = usePathname();
-  console.log(pathName);
 
   const navItems = [
     { label: "Swap", to: "/" },

@@ -1,4 +1,5 @@
 import { MainIconButton } from "@/components/button/MainIconButton";
+import { TLocalStorage } from "@/utils/constants/localstorage";
 import { supportedChains } from "@/utils/lib/network";
 import { TSizes } from "@/utils/themes/custom-theme/sizes";
 import { Button, Stack } from "@mui/material";
@@ -18,11 +19,21 @@ export const WalletContainer = () => {
   };
 
   const { account } = useAccount();
-  const [{ wallet }, _, disconnectWallet] = useConnectWallet();
+  const [{ wallet }, connect, disconnectWallet] = useConnectWallet();
   const [{ connectedChain }, setChain] = useSetChain();
 
   useEffect(() => {
     if (!wallet) return;
+
+    if (wallet) {
+      // const jsonString = JSON.stringify(wallet);
+    }
+
+    // localStorage.setItem(
+    //   TLocalStorage.DEX_ORDERLY_MAINNET_WALLET_KEY,
+    //   JSON.stringify(wallet)
+    // );
+
     account.setAddress(wallet.accounts[0].address, {
       provider: wallet.provider,
       chain: {
@@ -30,6 +41,18 @@ export const WalletContainer = () => {
       },
     });
   }, [wallet, account]);
+
+  useEffect(() => {
+    const savedWallet = localStorage.getItem(
+      TLocalStorage.DEX_ORDERLY_MAINNET_WALLET_KEY
+    );
+
+    // console.log(savedWallet);
+
+    if (savedWallet) {
+      // connect(JSON.parse(savedWallet));
+    }
+  }, [connect]);
 
   const chainIcon = supportedChains.find(
     ({ id }) => id === connectedChain?.id
@@ -40,8 +63,6 @@ export const WalletContainer = () => {
       chainId,
     });
   };
-
-  console.log(wallet);
 
   return (
     <>

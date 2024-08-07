@@ -13,20 +13,38 @@ import React from "react";
 const injected = injectedModule();
 const coinbase = coinbaseModule();
 
+// Sign up to get your free API key at https://explorer.blocknative.com/?signup=true
+// Required for Transaction Notifications and Transaction Preview
+const apiKey = "1730eff0-9d50-4382-a3fe-89f0d34a2070";
+const infuraKey = "<INFURA_KEY>";
+
 const onboard = init({
+  apiKey,
   wallets: [injected, coinbase], // initialize wallet
   chains: [
     {
-      id: "0x1", // Ethereum Mainnet
+      id: "0x1",
       token: "ETH",
       label: "Ethereum Mainnet",
-      rpcUrl: "https://arbitrum-one.publicnode.com",
+      rpcUrl: `https://mainnet.infura.io/v3/${infuraKey}`,
     },
     {
-      id: 11155111,
+      id: 42161,
+      token: "ARB-ETH",
+      label: "Arbitrum One",
+      rpcUrl: "https://rpc.ankr.com/arbitrum",
+    },
+    {
+      id: "0xa4ba",
+      token: "ARB",
+      label: "Arbitrum Nova",
+      rpcUrl: "https://nova.arbitrum.io/rpc",
+    },
+    {
+      id: "0x2105",
       token: "ETH",
-      label: "Sepolia",
-      rpcUrl: "https://rpc.sepolia.org/",
+      label: "Base",
+      rpcUrl: "https://mainnet.base.org",
     },
   ],
   appMetadata: {
@@ -55,7 +73,7 @@ export default function RootLayout({
   return (
     <OrderlyConfigProvider
       networkId={isTestnet ? "testnet" : "mainnet"}
-      brokerId="tcmp"
+      brokerId="orderly"
     >
       <main>
         <Header />
