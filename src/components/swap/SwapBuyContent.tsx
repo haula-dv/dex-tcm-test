@@ -2,7 +2,6 @@
 import theme from "@/utils/themes/mui-theme";
 import { InputBase, Stack, Typography } from "@mui/material";
 import { Dispatch, SetStateAction, useState } from "react";
-import { TokenListModal } from "../../plugins/swap/components/modal-token/TokenListModal";
 import { TokenSelect } from "../../plugins/swap/components/token/TokenSelect";
 import { Content } from "./SwapSellContent";
 
@@ -48,13 +47,13 @@ export const SwapBuyContent = ({ tokenSelected, setTokenSelected }: IProps) => {
         />
       </Content>
 
-      {openTokenList && (
+      {/* {openTokenList && (
         <TokenListModal
           open={openTokenList}
           onClose={handleToggleModalTokenList}
           handleSelectToken={handleSelectToken}
         />
-      )}
+      )} */}
     </>
   );
 };

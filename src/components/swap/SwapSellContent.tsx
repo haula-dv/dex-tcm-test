@@ -4,7 +4,6 @@ import theme from "@/utils/themes/mui-theme";
 import { Box, InputBase, Stack, Typography } from "@mui/material";
 import { styled } from "@mui/material/styles";
 import { Dispatch, SetStateAction, useState } from "react";
-import { TokenListModal } from "../../plugins/swap/components/modal-token/TokenListModal";
 import { TokenSelect } from "../../plugins/swap/components/token/TokenSelect";
 
 export type ITypeSwap = "sell" | "buy";
@@ -52,13 +51,13 @@ export const SwapSellContent = ({
         />
       </Content>
 
-      {openTokenList && (
+      {/* {openTokenList && (
         <TokenListModal
           open={openTokenList}
           onClose={handleToggleModalTokenList}
           handleSelectToken={handleSelectToken}
         />
-      )}
+      )} */}
     </>
   );
 };
