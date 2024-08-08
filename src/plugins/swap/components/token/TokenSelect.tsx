@@ -5,10 +5,10 @@ import { styled } from "@mui/material/styles";
 import { IconChevronDown } from "@tabler/icons-react";
 import Image from "next/image";
 
-import { ITokenValue } from "../../type";
+import { ITokenType } from "@/common";
 
 interface IProps {
-  tokenSelected: ITokenValue;
+  tokenSelected: ITokenType | null;
   handleToggleModalTokenList: () => void;
 }
 
@@ -20,19 +20,24 @@ export const TokenSelect = ({
     <Box flexShrink={0}>
       <CustomTokenSelect
         variant="contained"
-        color={tokenSelected.token ? "inherit" : "secondary"}
+        color={tokenSelected ? "inherit" : "secondary"}
         endIcon={<IconChevronDown size={"1.2rem"} />}
         size="small"
         fullRounded
         onClick={handleToggleModalTokenList}
-        isSelectedToken={tokenSelected.token?.name ? true : false}
+        isSelectedToken={tokenSelected?.name ? true : false}
       >
-        {tokenSelected.token ? (
+        {tokenSelected ? (
           <>
-            <Image src={"/images/token.png"} height={24} width={24} alt="" />
+            <Image
+              src={tokenSelected?.project?.logoUrl}
+              height={24}
+              width={24}
+              alt=""
+            />
 
             <Typography pl={0.5} fontSize={"13px"} fontWeight={500}>
-              {tokenSelected.token.name}
+              {tokenSelected?.symbol}
             </Typography>
           </>
         ) : (
@@ -50,6 +55,7 @@ interface ITokenSelect {
 export const CustomTokenSelect = styled(MainButton, {
   shouldForwardProp: (prop) => prop !== "isSelectedToken",
 })<ITokenSelect>(({ theme, isSelectedToken }) => ({
+  borderRadius: "44px !important",
   ...(isSelectedToken && {
     minWidth: "auto",
     padding: "4px",

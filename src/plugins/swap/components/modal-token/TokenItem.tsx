@@ -1,3 +1,4 @@
+import { ITokenType } from "@/common";
 import { MainButton } from "@/components/button/MainButton";
 import {
   Box,
@@ -8,16 +9,21 @@ import {
 } from "@mui/material";
 import { styled } from "@mui/material/styles";
 import Image from "next/image";
-import { ITokenType } from "../../type";
 
 interface IProps extends ListItemButtonProps {
   isImportToken?: boolean;
   item: ITokenType;
+  handleSelectToken: (token: ITokenType) => void;
 }
 
-export const TokenItem = ({ isImportToken, item, ...props }: IProps) => {
+export const TokenItem = ({
+  isImportToken,
+  handleSelectToken,
+  item,
+  ...props
+}: IProps) => {
   return (
-    <CustomListItem {...props}>
+    <CustomListItem {...props} onClick={() => handleSelectToken(item)}>
       <ListItemIcon>
         <Box>
           <Image src={item.project.logoUrl} height={30} width={30} alt="" />

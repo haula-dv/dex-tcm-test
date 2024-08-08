@@ -2,14 +2,18 @@
 import { fetchTokenSpotPriceAPI } from "@/common";
 import { MainButton } from "@/components/button/MainButton";
 import { MainCard } from "@/components/card/MainCard";
-import { SwapBuyContent } from "@/components/swap/SwapBuyContent";
+import { CurrencyField } from "@/components/swap/CurrencyField";
 import theme from "@/utils/themes/mui-theme";
 import { Box, Stack, Typography } from "@mui/material";
 import { IconHelp, IconTransform } from "@tabler/icons-react";
 import { useEffect, useState } from "react";
 import { useStore } from "zustand";
-import { SwapSellContent } from "../../../components/swap/SwapSellContent";
-import { isTransactionSubmittedState, tokenInputState } from "../store";
+import { toggleSwapType } from "../handlers";
+import {
+  isTransactionSubmittedState,
+  tokenInputState,
+  tokenOutputState,
+} from "../store";
 import { ConfirmSwapContent } from "./ConfirmSwap";
 import { ButtonSwapToggle } from "./SwapIconToggle";
 import { TransactionPopup } from "./token/TransactionPopup";
@@ -24,6 +28,7 @@ export const SwapContainer = () => {
 
   // TOKEN
   const tokenInput = useStore(tokenInputState, (state) => state.value);
+  const tokenOutput = useStore(tokenOutputState, (state) => state.value);
 
   const [isEnterAmount, setIsEnterAmount] = useState(false);
   const [isSwaped, setIsSwaped] = useState(false);
@@ -35,20 +40,6 @@ export const SwapContainer = () => {
     token: null,
     amount: 0,
   });
-
-  // Change swap type
-  const toggleSwapType = () => {
-    // Swap the values between sell and buy
-    setCurrentSellValue((prevSellValue) => ({
-      token: currentBuyValue.token,
-      amount: currentBuyValue.amount,
-    }));
-
-    setCurrentBuyValue((prevBuyValue) => ({
-      token: currentSellValue.token,
-      amount: currentSellValue.amount,
-    }));
-  };
 
   const handleEnterAmount = () => {
     setIsEnterAmount(true);
@@ -73,17 +64,9 @@ export const SwapContainer = () => {
           {!isSwaped ? (
             <>
               <Stack spacing={1}>
-                <SwapSellContent
-                  tokenSelected={currentSellValue}
-                  setTokenSelected={setCurrentSellValue}
-                />
-
+                <CurrencyField currentToken={tokenInput} type="input" />
                 <ButtonSwapToggle toggleSwapType={toggleSwapType} />
-
-                <SwapBuyContent
-                  tokenSelected={currentBuyValue}
-                  setTokenSelected={setCurrentBuyValue}
-                />
+                <CurrencyField currentToken={tokenOutput} type="output" />
 
                 <Stack
                   direction={"row"}

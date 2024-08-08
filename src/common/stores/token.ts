@@ -1,6 +1,5 @@
-import { ITokenParamsType } from "@/common/types";
+import { ITokenParamsType, ITokenType } from "@/common/types";
 import { createZustandStore } from "nes-zustand";
-import { ITokenType } from "./../../plugins/swap/type";
 
 export const tokenParamsState = createZustandStore<ITokenParamsType>({
   key: "tokenParamsState",
@@ -22,7 +21,13 @@ export const tokensState = createZustandStore<ITokenType[]>({
   default: [],
 });
 
+// FIRST TOKEN
+export const tokenSpotPriceState = createZustandStore<ITokenType | null>({
+  key: "tokenSpotPriceState",
+  default: null,
+});
+
 export const tokenLoadingState = createZustandStore<boolean>({
-  key: "tokensState",
+  key: "tokenLoadingState",
   default: true,
 });

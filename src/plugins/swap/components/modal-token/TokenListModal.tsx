@@ -1,5 +1,6 @@
 import { fetchTopTokensAPI, tokenParamsState } from "@/common";
 import { MainDialog } from "@/components/dialog/MainDialog";
+import { ITypeSwap } from "@/components/swap/CurrencyField";
 import { useEffect, useState } from "react";
 import { useStore } from "zustand";
 import { ImportToken } from "./ImportToken";
@@ -10,6 +11,7 @@ interface IProps {
   open: boolean;
   onClose: () => void;
   handleSelectToken: (token: any) => void;
+  type: ITypeSwap;
 }
 
 export type ITokenType = "importToken" | "manageTokens" | "tokens";
@@ -18,6 +20,7 @@ export const TokenListModal = ({
   open,
   onClose,
   handleSelectToken,
+  type,
 }: IProps) => {
   const [tokenType, setTokenType] = useState<ITokenType>("tokens");
 
@@ -41,6 +44,7 @@ export const TokenListModal = ({
         <Tokens
           handleSelectToken={handleSelectToken}
           setTokenType={setTokenType}
+          type={type}
         />
       )}
 

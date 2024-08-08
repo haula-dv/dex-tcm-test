@@ -1,5 +1,5 @@
+import { ITokenType } from "@/common";
 import { createZustandStore } from "nes-zustand";
-import { ITokenType } from "./type";
 
 export const isTransactionSubmittedState = createZustandStore<boolean>({
   key: "isTransactionSubmittedState",
