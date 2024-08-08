@@ -3,11 +3,11 @@ import { MainButton } from "@/components/button/MainButton";
 import { MainIconButton } from "@/components/button/MainIconButton";
 import { MainCard } from "@/components/card/MainCard";
 import theme from "@/utils/themes/mui-theme";
-import { Collapse, Stack, Typography } from "@mui/material";
+import { Box, Collapse, Stack, Typography } from "@mui/material";
 import { IconChevronDown } from "@tabler/icons-react";
 import Image from "next/image";
 import Link from "next/link";
-import { useState } from "react";
+import { ReactNode, useState } from "react";
 
 export const TokenSelected = () => {
   const [explained, setExpanded] = useState(false);
@@ -65,20 +65,27 @@ export const TokenSelected = () => {
 
 interface IItemRow {
   title: string;
-  value: string;
+  value: string | ReactNode;
 }
 
-const ItemRow = ({ title, value }: IItemRow) => {
+export const ItemRow = ({ title, value }: IItemRow) => {
   return (
     <Stack
       direction={"row"}
       justifyContent={"space-between"}
       alignItems={"center"}
     >
-      <Typography color={theme.palette.grey[800]}>{title}</Typography>
-      <Typography variant="h6" fontWeight={600}>
-        {value}
+      <Typography color={theme.palette.grey[900]} fontSize={"15px"}>
+        {title}
       </Typography>
+
+      {typeof value === "string" ? (
+        <Typography fontSize={"15px"} fontWeight={600}>
+          {value}
+        </Typography>
+      ) : (
+        <Box fontSize={"15px"}>{value}</Box>
+      )}
     </Stack>
   );
 };

@@ -2,10 +2,14 @@
 import { MainButton } from "@/components/button/MainButton";
 import { MainCard } from "@/components/card/MainCard";
 import { ChildHeader } from "@/components/swap/ChildHeader";
-import { Box, Stack, Typography } from "@mui/material";
+import { ItemRow } from "@/plugins/pool/components/TokenSelected";
+import { Divider, Stack, Typography } from "@mui/material";
 import { useState } from "react";
+import { ModalConfirmLiquidity } from "./ModalConfirmLiquidity";
 
 export const RemoveLiquidityContainer = () => {
+  const [openConfirm, setOpenConfirm] = useState(false);
+
   const [currentSelectedPercentage, setCurrentSelectedPercentage] =
     useState(-1);
 
@@ -13,14 +17,14 @@ export const RemoveLiquidityContainer = () => {
     setCurrentSelectedPercentage(index);
   };
 
+  // Handle open confirmation
+  const handleToggleOpenConfirm = () => {
+    setOpenConfirm(!openConfirm);
+  };
+
   return (
-    <Box
-      display={"flex"}
-      flexDirection={"column"}
-      alignItems={"center"}
-      width={"100%"}
-    >
-      <MainCard variant="outlined" maxWidth="500px" backgroudColor="white">
+    <>
+      <MainCard variant="outlined" backgroudColor="white">
         <ChildHeader onBackLink="/pool" title="Remove liquidity" />
 
         <MainCard variant="outlined">
@@ -67,8 +71,36 @@ export const RemoveLiquidityContainer = () => {
               </MainButton>
             ))}
           </Stack>
+
+          <Stack spacing={2} pt={2}>
+            <ItemRow title="09.00009998888" value="ETH" />
+            <ItemRow title="99900009887" value="AMPL" />
+            <ItemRow title="" value="Recive WETH" />
+            <Divider />
+            <ItemRow title="Price" value="Recive WETH" />
+            <ItemRow title="" value="Recive WETH" />
+          </Stack>
+
+          <Stack spacing={2} direction={"row"} pt={1}>
+            <MainButton variant="outlined" color="inherit" fullWidth>
+              Remove
+            </MainButton>
+            <MainButton
+              variant="contained"
+              color="darkPrimary"
+              fullWidth
+              onClick={handleToggleOpenConfirm}
+            >
+              Approve
+            </MainButton>
+          </Stack>
         </Stack>
       </MainCard>
-    </Box>
+
+      <ModalConfirmLiquidity
+        open={openConfirm}
+        onClose={handleToggleOpenConfirm}
+      />
+    </>
   );
 };
