@@ -1,5 +1,5 @@
+import { LayoutProps } from "@/common/types";
 import { useIsTestnet } from "@/hooks/useIsTestnet";
-import { LayoutProps } from "@/types";
 import { OrderlyConfigProvider } from "@orderly.network/hooks";
 
 export const OrderlyConfigProviderRoot = ({ children }: LayoutProps) => {

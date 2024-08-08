@@ -1,5 +1,5 @@
 "use client";
-import { loadingState } from "@/stores/global-loading";
+import { loadingState } from "@/common/stores/global-loading";
 import { Backdrop, Box } from "@mui/material";
 import { useStore } from "zustand";
 import IconLoading from "../icons/loading";

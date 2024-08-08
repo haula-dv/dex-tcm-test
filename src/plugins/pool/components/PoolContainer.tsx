@@ -1,3 +1,4 @@
+"use client";
 import { MainButton } from "@/components/button/MainButton";
 import { MainCard } from "@/components/card/MainCard";
 import { Box, Stack, Typography } from "@mui/material";

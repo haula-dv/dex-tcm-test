@@ -1,8 +1,8 @@
+import { loadingState } from "@/common/stores/global-loading";
 import { MainButton } from "@/components/button/MainButton";
 import { MainIconButton } from "@/components/button/MainIconButton";
 import IconStarGreen from "@/components/icons/star-green";
 import { MainPopup } from "@/components/popup/MainPopup";
-import { loadingState } from "@/stores/global-loading";
 import { Stack, Typography } from "@mui/material";
 import { IconCopy, IconPlugOff } from "@tabler/icons-react";
 import { useConnectWallet } from "@web3-onboard/react";

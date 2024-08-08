@@ -1,9 +1,9 @@
+import { ITab } from "@/common/types/components/tab";
 import { MainIconButton } from "@/components/button/MainIconButton";
 import { MainCard } from "@/components/card/MainCard";
 import { SearchField } from "@/components/form-control/SearchField";
 import SwitchBase from "@/components/form-control/SwitcheBase";
 import { GrayTab } from "@/components/tab/GrayTab";
-import { ITab } from "@/types/components/tab";
 import { TSizes } from "@/utils/themes/custom-theme/sizes";
 import { Box, Stack, Typography } from "@mui/material";
 import { IconArrowLeft, IconSettings, IconX } from "@tabler/icons-react";

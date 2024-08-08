@@ -1,8 +1,8 @@
+import { ITab } from "@/common/types/components/tab";
 import { MainButton } from "@/components/button/MainButton";
 import { MainCard } from "@/components/card/MainCard";
 import { MainDialog } from "@/components/dialog/MainDialog";
 import { GrayTab } from "@/components/tab/GrayTab";
-import { ITab } from "@/types/components/tab";
 import { TSizes } from "@/utils/themes/custom-theme/sizes";
 import theme from "@/utils/themes/mui-theme";
 import { Box, Divider, Stack, Typography } from "@mui/material";

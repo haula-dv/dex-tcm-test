@@ -1,4 +1,4 @@
-import { ITab } from "@/types/components/tab";
+import { ITab } from "@/common/types/components/tab";
 import { TSizes } from "@/utils/themes/custom-theme/sizes";
 import { Button, Stack } from "@mui/material";
 import { styled } from "@mui/material/styles";

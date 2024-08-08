@@ -5,6 +5,7 @@ import { useAccount } from "@orderly.network/hooks";
 import { useConnectWallet, useSetChain } from "@web3-onboard/react";
 import { useEffect, useState } from "react";
 import { ConnectWalletButton } from "./ConnectWalletButton";
+import { MainnestList } from "./MainnestList";
 import { ModalConnectWallet } from "./ModalConnectWallet";
 import { OrderlyConnect } from "./OrderlyConnect";
 import { WalletConnected } from "./WalletConnected";
@@ -54,11 +55,9 @@ export const WalletContainer = () => {
           0 SAP
         </Button>
 
-        {wallet ? <WalletConnected /> : <ConnectWalletButton />}
+        <MainnestList />
 
-        {/* <MainIconButton variant="filledTonal" color="inherit">
-          <IconDots />
-        </MainIconButton> */}
+        {wallet ? <WalletConnected /> : <ConnectWalletButton />}
       </Stack>
 
       <ModalConnectWallet

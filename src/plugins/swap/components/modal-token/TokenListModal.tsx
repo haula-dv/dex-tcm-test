@@ -1,5 +1,7 @@
+import { fetchCoinGeckoTokenInfo, tokenParamsState } from "@/common";
 import { MainDialog } from "@/components/dialog/MainDialog";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { useStore } from "zustand";
 import { ImportToken } from "./ImportToken";
 import { ManageTokenList } from "./ManageTokenList";
 import { Tokens } from "./Tokens";
@@ -18,6 +20,12 @@ export const TokenListModal = ({
   handleSelectToken,
 }: IProps) => {
   const [tokenType, setTokenType] = useState<ITokenType>("tokens");
+
+  const params = useStore(tokenParamsState, (state) => state.value);
+
+  useEffect(() => {
+    fetchCoinGeckoTokenInfo(params);
+  }, [params]);
 
   return (
     <MainDialog
