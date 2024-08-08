@@ -1,4 +1,4 @@
-import { fetchCoinGeckoTokenInfo, tokenParamsState } from "@/common";
+import { fetchTopTokensAPI, tokenParamsState } from "@/common";
 import { MainDialog } from "@/components/dialog/MainDialog";
 import { useEffect, useState } from "react";
 import { useStore } from "zustand";
@@ -21,11 +21,11 @@ export const TokenListModal = ({
 }: IProps) => {
   const [tokenType, setTokenType] = useState<ITokenType>("tokens");
 
-  const params = useStore(tokenParamsState, (state) => state.value);
+  const tokenParams = useStore(tokenParamsState, (state) => state.value);
 
   useEffect(() => {
-    fetchCoinGeckoTokenInfo(params);
-  }, [params]);
+    fetchTopTokensAPI(tokenParams);
+  }, [tokenParams]);
 
   return (
     <MainDialog
@@ -37,17 +37,17 @@ export const TokenListModal = ({
       isBGWhite
       hiddenHeader={tokenType !== "tokens"}
     >
-      {tokenType === "manageTokens" && (
-        <ManageTokenList
-          handleCloseModal={onClose}
-          onBack={() => setTokenType("tokens")}
-        />
-      )}
-
       {tokenType === "tokens" && (
         <Tokens
           handleSelectToken={handleSelectToken}
           setTokenType={setTokenType}
+        />
+      )}
+
+      {tokenType === "manageTokens" && (
+        <ManageTokenList
+          handleCloseModal={onClose}
+          onBack={() => setTokenType("tokens")}
         />
       )}
 

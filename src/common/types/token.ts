@@ -1,7 +1,11 @@
 export interface ITokenParamsType {
-  page: number;
-  per_page: number;
-  sparkline?: boolean;
-  vs_currency?: string;
-  order?: string;
+  operationName: string;
+  variables: {
+    page?: number;
+    pageSize?: number;
+    orderBy?: string;
+    chain?: string;
+    address?: string | null;
+  };
+  query: string;
 }

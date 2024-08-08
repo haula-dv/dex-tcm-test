@@ -8,28 +8,23 @@ import {
 } from "@mui/material";
 import { styled } from "@mui/material/styles";
 import Image from "next/image";
+import { ITokenType } from "../../type";
 
 interface IProps extends ListItemButtonProps {
   isImportToken?: boolean;
+  item: ITokenType;
 }
 
-export const TokenItem = ({ isImportToken, ...props }: IProps) => {
+export const TokenItem = ({ isImportToken, item, ...props }: IProps) => {
   return (
     <CustomListItem {...props}>
       <ListItemIcon>
         <Box>
-          <Image
-            src={
-              "https://coin-images.coingecko.com/coins/images/12645/large/aave-token-round.png?1720472354"
-            }
-            height={30}
-            width={30}
-            alt=""
-          />
+          <Image src={item.project.logoUrl} height={30} width={30} alt="" />
         </Box>
       </ListItemIcon>
 
-      <ListItemText primary="0x Protocol" secondary="ZRX" />
+      <ListItemText primary={item.name} secondary={item.symbol} />
 
       {isImportToken && (
         <MainButton size="small" variant="contained" color="darkPrimary">

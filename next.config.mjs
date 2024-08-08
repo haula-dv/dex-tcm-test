@@ -29,6 +29,7 @@ export default withPWA({
   env: {
     CURRENT_ENV: process.env.CURRENT_ENV,
     API_URL: process.env.API_URL,
+    TOKEN_API_URL: process.env.TOKEN_API_URL,
     ROLE_ADMIN: process.env.ROLE_ADMIN,
   },
 

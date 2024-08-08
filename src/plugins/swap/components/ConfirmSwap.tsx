@@ -51,6 +51,7 @@ export const ConfirmSwapContent = ({
             />
           </Stack>
         </MainCard>
+
         <ButtonSwapToggle toggleSwapType={toggleSwapType} />
 
         <MainCard backgroudColor="white">

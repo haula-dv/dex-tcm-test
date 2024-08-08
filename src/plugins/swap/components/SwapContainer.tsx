@@ -1,14 +1,15 @@
 "use client";
+import { fetchTokenSpotPriceAPI } from "@/common";
 import { MainButton } from "@/components/button/MainButton";
 import { MainCard } from "@/components/card/MainCard";
 import { SwapBuyContent } from "@/components/swap/SwapBuyContent";
 import theme from "@/utils/themes/mui-theme";
 import { Box, Stack, Typography } from "@mui/material";
 import { IconHelp, IconTransform } from "@tabler/icons-react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useStore } from "zustand";
 import { SwapSellContent } from "../../../components/swap/SwapSellContent";
-import { isTransactionSubmittedState } from "../store";
+import { isTransactionSubmittedState, tokenInputState } from "../store";
 import { ConfirmSwapContent } from "./ConfirmSwap";
 import { ButtonSwapToggle } from "./SwapIconToggle";
 import { TransactionPopup } from "./token/TransactionPopup";
@@ -20,6 +21,9 @@ export const SwapContainer = () => {
     isTransactionSubmittedState,
     (state) => state.value
   );
+
+  // TOKEN
+  const tokenInput = useStore(tokenInputState, (state) => state.value);
 
   const [isEnterAmount, setIsEnterAmount] = useState(false);
   const [isSwaped, setIsSwaped] = useState(false);
@@ -53,6 +57,12 @@ export const SwapContainer = () => {
       setIsSwaped(true);
     }
   };
+
+  useEffect(() => {
+    fetchTokenSpotPriceAPI();
+  }, []);
+
+  console.log(tokenInput);
 
   return (
     <Box display={"flex"} justifyContent={"center"}>
