@@ -1,18 +1,18 @@
+import { ITokenType } from "@/common";
 import { MainButton } from "@/components/button/MainButton";
 import { MainCard } from "@/components/card/MainCard";
 import { MainChip } from "@/components/chip/MainChip";
 import { Stack, Typography } from "@mui/material";
 import Image from "next/image";
 import { useState } from "react";
-import { ITokenValue } from "../type";
 import { Item } from "./SwapContainer";
 import { ButtonSwapToggle } from "./SwapIconToggle";
 import { ModalConfirmSwap } from "./modal-token/ModalConfirmSwap";
 
 interface IProps {
   toggleSwapType: () => void;
-  tokenSellSelected: ITokenValue;
-  tokenBuySelected: ITokenValue;
+  tokenSellSelected: ITokenType | null;
+  tokenBuySelected: ITokenType | null;
 }
 
 export const ConfirmSwapContent = ({
@@ -29,17 +29,20 @@ export const ConfirmSwapContent = ({
   return (
     <>
       <Stack spacing={1}>
-        <MainCard backgroudColor="white">
+        <MainCard backgroudColor="grey">
           <Stack
             direction={"row"}
             justifyContent={"space-between"}
             alignItems={"center"}
           >
-            <Typography fontSize={"18px"}>0990.009</Typography>
+            <Typography fontSize={"18px"} fontWeight={600}>
+              0990.009
+            </Typography>
 
             <MainChip
-              label={tokenSellSelected.token && tokenSellSelected.token.name}
+              label={tokenSellSelected && tokenSellSelected.name}
               variant="outlined"
+              color="white"
               icon={
                 <Image
                   src={"/images/token.png"}
@@ -54,17 +57,20 @@ export const ConfirmSwapContent = ({
 
         <ButtonSwapToggle toggleSwapType={toggleSwapType} />
 
-        <MainCard backgroudColor="white">
+        <MainCard backgroudColor="grey">
           <Stack
             direction={"row"}
             justifyContent={"space-between"}
             alignItems={"center"}
           >
-            <Typography fontSize={"18px"}>0990.009</Typography>
+            <Typography fontSize={"18px"} fontWeight={600}>
+              0990.009
+            </Typography>
 
             <MainChip
-              label={tokenBuySelected.token && tokenBuySelected.token.name}
+              label={tokenBuySelected && tokenBuySelected.name}
               variant="outlined"
+              color="white"
               icon={
                 <Image
                   src={"/images/token.png"}

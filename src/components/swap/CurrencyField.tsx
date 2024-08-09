@@ -7,22 +7,33 @@ import theme from "@/utils/themes/mui-theme";
 import { Box, InputBase, Stack, Typography } from "@mui/material";
 import { styled } from "@mui/material/styles";
 import { setZustandValue } from "nes-zustand";
-import { useState } from "react";
+import { FocusEvent, useState } from "react";
 import { TokenListModal } from "../../plugins/swap/components/modal-token/TokenListModal";
 
 export type ITypeSwap = "input" | "output";
 
 interface IProps {
   currentToken: ITokenType | null;
-  type: ITypeSwap;
+  field: ITypeSwap;
+  handleGetSwapPrice?: (value: number) => void;
 }
 
-export const CurrencyField = ({ currentToken, type }: IProps) => {
+export const CurrencyField = ({
+  currentToken,
+  handleGetSwapPrice,
+  field,
+}: IProps) => {
   const [openTokenList, setOpenTokenList] = useState(false);
+
+  const getPrice = (
+    e: FocusEvent<HTMLInputElement | HTMLTextAreaElement, Element>
+  ) => {
+    handleGetSwapPrice && handleGetSwapPrice(+e.target.value);
+  };
 
   // Function to select a token
   const handleSelectToken = (token: ITokenType) => {
-    if (type == "input") {
+    if (field == "input") {
       setZustandValue(tokenInputState, token);
     } else {
       setZustandValue(tokenOutputState, token);
@@ -40,12 +51,14 @@ export const CurrencyField = ({ currentToken, type }: IProps) => {
     <>
       <Content>
         <Stack>
-          <Typography color={theme.palette.grey[600]}>
-            {type === "input" ? "Sell" : "Buy"}
+          <Typography color={theme.palette.grey[900]} fontWeight={600}>
+            {field === "input" ? "Sell" : "Buy"}
           </Typography>
 
-          <InputBase placeholder="0" />
-          <Typography color={theme.palette.grey[600]}>$7,135.57 </Typography>
+          <InputBase placeholder="0.0" type="number" onBlur={getPrice} />
+          <Typography color={theme.palette.grey[600]}>
+            Balance: 0.00{" "}
+          </Typography>
         </Stack>
 
         <TokenSelect
@@ -58,7 +71,7 @@ export const CurrencyField = ({ currentToken, type }: IProps) => {
         <TokenListModal
           open={openTokenList}
           onClose={handleToggleModalTokenList}
-          type={type}
+          field={field}
           handleSelectToken={handleSelectToken}
         />
       )}
@@ -69,7 +82,7 @@ export const CurrencyField = ({ currentToken, type }: IProps) => {
 export const Content = styled(Box)(({ theme }) => ({
   borderRadius: TSizes.borderRadiusMd,
   border: `1px solid ${theme.palette.grey[100]}`,
-  backgroundColor: theme.palette.common.white,
+  backgroundColor: theme.palette.grey[50],
   padding: theme.spacing(2),
   display: "flex",
   alignItems: "center",

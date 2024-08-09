@@ -1,15 +1,8 @@
 "use client";
 import { MainIconButton } from "@/components/button/MainIconButton";
+import SwitchBase from "@/components/form-control/SwitcheBase";
 import { MainPopup } from "@/components/popup/MainPopup";
-import {
-  Box,
-  Button,
-  Checkbox,
-  FormControlLabel,
-  Stack,
-  TextField,
-  Typography,
-} from "@mui/material";
+import { Box, Button, Stack, TextField, Typography } from "@mui/material";
 import { IconSettings } from "@tabler/icons-react";
 import { useState } from "react";
 
@@ -70,35 +63,36 @@ export const TransactionPopup = () => {
               <Typography>Max. slippage</Typography>
             </Stack>
 
-            <Stack direction={"row"} spacing={1} py={1} alignItems={"center"}>
+            <Stack direction={"row"} spacing={2} py={1} alignItems={"center"}>
               {["0.1%", "0.5%", "1%"].map((item) => (
-                <Button key={item} color="secondary">
+                <Button
+                  key={item}
+                  variant="contained"
+                  color="inherit"
+                  size="small"
+                >
                   {item}
                 </Button>
               ))}
 
-              <TextField placeholder="1.00%" />
+              <TextField placeholder="1.00%" size="small" />
             </Stack>
 
             <Stack>
-              <Typography>Transaction deadline</Typography>
+              <Typography pb={1}>Transaction deadline</Typography>
 
-              <TextField placeholder="20 minutes" />
+              <Stack direction={"row"} spacing={2} alignItems={"center"}>
+                <TextField placeholder="20 minutes" size="small" />
+                <Typography>20 Minutes</Typography>
+              </Stack>
             </Stack>
 
             <Typography fontSize={"16px"} fontWeight={600} pb={1} pt={2}>
               Interface settings
             </Typography>
 
-            <FormControlLabel
-              label="Toggle expert mode"
-              control={<Checkbox />}
-            />
-
-            <FormControlLabel
-              label="Disabled multihop"
-              control={<Checkbox />}
-            />
+            <SwitchBase label="Toggle expert mode" />
+            <SwitchBase label="Disabled multihop" />
           </Stack>
         </Box>
       </MainPopup>

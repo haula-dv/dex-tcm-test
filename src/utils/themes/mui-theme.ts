@@ -55,6 +55,10 @@ declare module "@mui/material/Chip" {
   interface ChipPropsVariantOverrides {
     filledTonal: true;
   }
+
+  interface ChipPropsColorOverrides {
+    white: true;
+  }
 }
 
 declare module "@mui/material/Checkbox" {

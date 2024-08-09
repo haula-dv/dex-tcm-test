@@ -42,8 +42,6 @@ export const WalletContainer = () => {
     });
   };
 
-  console.log(wallet);
-
   return (
     <>
       <Stack
@@ -55,9 +53,8 @@ export const WalletContainer = () => {
           0 SAP
         </Button>
 
-        <MainnestList />
-
         {wallet ? <WalletConnected /> : <ConnectWalletButton />}
+        <MainnestList />
       </Stack>
 
       <ModalConnectWallet

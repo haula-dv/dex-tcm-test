@@ -4,7 +4,8 @@ import { MainButton } from "@/components/button/MainButton";
 import { MainCard } from "@/components/card/MainCard";
 import { CurrencyField } from "@/components/swap/CurrencyField";
 import theme from "@/utils/themes/mui-theme";
-import { Box, Stack, Typography } from "@mui/material";
+import { Stack, Typography } from "@mui/material";
+import { AuthClient } from "@orderly.network/orderly-sdk";
 import { IconHelp, IconTransform } from "@tabler/icons-react";
 import { useEffect, useState } from "react";
 import { useStore } from "zustand";
@@ -19,6 +20,12 @@ import { ButtonSwapToggle } from "./SwapIconToggle";
 import { TransactionPopup } from "./token/TransactionPopup";
 import { TransationSubmittedCard } from "./TransationSubmittedCard";
 
+const apiClient = new AuthClient({
+  networkId: "testnet",
+  contractId: "asset-manager.orderly.testnet",
+  debug: true,
+});
+
 export const SwapContainer = () => {
   // State
   const isTransactionSubmitted = useStore(
@@ -32,14 +39,17 @@ export const SwapContainer = () => {
 
   const [isEnterAmount, setIsEnterAmount] = useState(false);
   const [isSwaped, setIsSwaped] = useState(false);
-  const [currentSellValue, setCurrentSellValue] = useState({
-    token: null,
-    amount: 0,
-  });
-  const [currentBuyValue, setCurrentBuyValue] = useState({
-    token: null,
-    amount: 0,
-  });
+
+  //
+  const [slippageAmount, setSlippageAmount] = useState(2);
+  const [deadlineMinutes, setDeadlineMinutes] = useState(10);
+
+  const [wethAmount, setWethAmount] = useState(undefined);
+  const [inputAmount, setInputAmount] = useState(-1);
+  const [outputAmount, setOutputAmount] = useState(undefined);
+  const [loading, setLoading] = useState(false);
+
+  // ================= //
 
   const handleEnterAmount = () => {
     setIsEnterAmount(true);
@@ -49,24 +59,46 @@ export const SwapContainer = () => {
     }
   };
 
+  // Handle get swap price
+  const getSwapPrice = (inputAmount: number) => {
+    setLoading(true);
+    setInputAmount(inputAmount);
+
+    // const swap = getPrice(
+    //   inputAmount,
+    //   slippageAmount,
+    //   Math.floor(Date.now()/1000 + (deadlineMinutes * 60)),
+    //   signerAddress
+    // ).then(data => {
+    //   setTransaction(data[0])
+    //   setOutputAmount(data[1])
+    //   setRatio(data[2])
+    //   setLoading(false)
+    // })
+  };
+
   useEffect(() => {
     fetchTokenSpotPriceAPI();
   }, []);
 
-  console.log(tokenInput);
-
   return (
-    <Box display={"flex"} justifyContent={"center"}>
+    <>
       {!isTransactionSubmitted ? (
-        <MainCard>
+        <MainCard backgroudColor="white">
           <TransactionPopup />
 
           {!isSwaped ? (
             <>
               <Stack spacing={1}>
-                <CurrencyField currentToken={tokenInput} type="input" />
+                <CurrencyField
+                  handleGetSwapPrice={getSwapPrice}
+                  field="input"
+                  currentToken={tokenInput}
+                />
+
                 <ButtonSwapToggle toggleSwapType={toggleSwapType} />
-                <CurrencyField currentToken={tokenOutput} type="output" />
+
+                <CurrencyField currentToken={tokenOutput} field="output" />
 
                 <Stack
                   direction={"row"}
@@ -110,15 +142,15 @@ export const SwapContainer = () => {
           ) : (
             <ConfirmSwapContent
               toggleSwapType={toggleSwapType}
-              tokenSellSelected={currentSellValue}
-              tokenBuySelected={currentBuyValue}
+              tokenSellSelected={tokenInput}
+              tokenBuySelected={tokenOutput}
             />
           )}
         </MainCard>
       ) : (
         <TransationSubmittedCard />
       )}
-    </Box>
+    </>
   );
 };
 

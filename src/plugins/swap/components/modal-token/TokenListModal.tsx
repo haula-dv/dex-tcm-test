@@ -11,7 +11,7 @@ interface IProps {
   open: boolean;
   onClose: () => void;
   handleSelectToken: (token: any) => void;
-  type: ITypeSwap;
+  field: ITypeSwap;
 }
 
 export type ITokenType = "importToken" | "manageTokens" | "tokens";
@@ -20,7 +20,7 @@ export const TokenListModal = ({
   open,
   onClose,
   handleSelectToken,
-  type,
+  field,
 }: IProps) => {
   const [tokenType, setTokenType] = useState<ITokenType>("tokens");
 
@@ -44,7 +44,7 @@ export const TokenListModal = ({
         <Tokens
           handleSelectToken={handleSelectToken}
           setTokenType={setTokenType}
-          type={type}
+          type={field}
         />
       )}
 

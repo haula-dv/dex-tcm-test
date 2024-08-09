@@ -1,6 +1,7 @@
 // project imports
 import { Theme } from "@mui/material";
 import { CustomMuiButton } from "./CustomButton";
+import { CustomMuiChip } from "./CustomChip";
 import { CustomFormControl } from "./CustomFormControl";
 import { CustomListItem } from "./CustomListItem";
 
@@ -9,6 +10,7 @@ const components = (theme: Theme) => {
     ...CustomMuiButton(theme),
     ...CustomFormControl(theme),
     ...CustomListItem(theme),
+    ...CustomMuiChip(theme),
 
     MuiCssBaseline: {
       styleOverrides: {
@@ -249,14 +251,6 @@ const components = (theme: Theme) => {
       },
     },
 
-    MuiChip: {
-      styleOverrides: {
-        root: {
-          fontWeight: 600,
-          fontSize: "0.75rem",
-        },
-      },
-    },
     MuiAlert: {
       styleOverrides: {
         filledSuccess: {

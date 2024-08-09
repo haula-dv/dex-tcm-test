@@ -9,11 +9,13 @@ import { Box, Button, Divider, List, Stack, Typography } from "@mui/material";
 import { styled } from "@mui/material/styles";
 import { IconEdit } from "@tabler/icons-react";
 import Image from "next/image";
-import { Dispatch, SetStateAction } from "react";
+import { Dispatch, SetStateAction, useState } from "react";
+import InfiniteScroll from "react-infinite-scroll-component";
 import { useStore } from "zustand";
 import { tokenInputState, tokenOutputState } from "../../store";
 import { TokenItem } from "./TokenItem";
 import { ITokenType } from "./TokenListModal";
+
 interface IProps {
   handleSelectToken: (token: any) => void;
   setTokenType: Dispatch<SetStateAction<ITokenType>>;
@@ -25,6 +27,17 @@ export const Tokens = ({ handleSelectToken, setTokenType, type }: IProps) => {
   const tokenLoading = useStore(tokenLoadingState, (state) => state.value);
   const tokenInputCur = useStore(tokenInputState, (state) => state.value);
   const tokenOutputCur = useStore(tokenOutputState, (state) => state.value);
+
+  const [tokenSlice, setTokeSlice] = useState(30);
+  const [hasMore, setHasMore] = useState(true);
+
+  const fetchMoreData = () => {
+    if (tokenSlice === 100) {
+      setHasMore(false);
+      return;
+    }
+    setTokeSlice((prev) => prev + 10);
+  };
 
   return (
     <>
@@ -65,33 +78,39 @@ export const Tokens = ({ handleSelectToken, setTokenType, type }: IProps) => {
 
       <Divider />
 
-      <Box height={"50vh"} overflow={"auto"} position={"relative"} pb={5}>
-        {tokenLoading && (
-          <Typography
-            fontWeight={600}
-            color={theme.palette.grey[600]}
-            px={TSizes.margin_base}
-            pt={TSizes.margin_base}
-            pb={1}
-          >
-            Popular tokens
-          </Typography>
-        )}
+      <Box position={"relative"} pb={5} minHeight={"50vh"}>
+        <Typography
+          fontWeight={600}
+          color={theme.palette.grey[600]}
+          px={TSizes.margin_base}
+          pt={TSizes.margin_base}
+          pb={1}
+        >
+          Popular tokens
+        </Typography>
 
         {tokenLoading ? (
           <TokenLoading />
         ) : (
-          <List>
-            {tokens.length > 0 &&
-              tokens
-                .slice(7, 30)
-                .map((item, index) => (
-                  <TokenItem
-                    key={index}
-                    item={item}
-                    handleSelectToken={handleSelectToken}
-                  />
-                ))}
+          <List sx={{ height: "50vh", overflow: "auto" }} id="scrollableDiv">
+            <InfiniteScroll
+              dataLength={tokenSlice}
+              next={fetchMoreData}
+              hasMore={hasMore}
+              loader={<h4>Loading...</h4>}
+              scrollableTarget="scrollableDiv"
+            >
+              {tokens.length > 0 &&
+                tokens
+                  .slice(7, tokenSlice)
+                  .map((item, index) => (
+                    <TokenItem
+                      key={index}
+                      item={item}
+                      handleSelectToken={handleSelectToken}
+                    />
+                  ))}
+            </InfiniteScroll>
           </List>
         )}
       </Box>

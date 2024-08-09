@@ -25,6 +25,7 @@
     "@mui/material-nextjs": "^5.15.11",
     "@mui/styles": "^5.15.20",
     "@mui/x-date-pickers": "^7.7.0",
+    "@orderly.network/orderly-sdk": "^1.1.12",
     "@orderly.network/react": "^1.5.10",
     "@orderly.network/web3-onboard": "^1.5.10",
     "@tabler/icons-react": "^3.9.0",
