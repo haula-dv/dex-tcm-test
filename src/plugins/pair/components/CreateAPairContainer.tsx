@@ -1,36 +1,29 @@
 "use client";
+import { fetchTokenSpotPriceAPI } from "@/common";
 import { MainButton } from "@/components/button/MainButton";
 import { MainCard } from "@/components/card/MainCard";
 import { ChildHeader } from "@/components/swap/ChildHeader";
-import { SwapBuyContent } from "@/components/swap/SwapBuyContent";
-import { SwapSellContent } from "@/components/swap/SwapSellContent";
+import { CurrencyField } from "@/components/swap/CurrencyField";
 import { ButtonSwapToggle } from "@/plugins/swap/components/SwapIconToggle";
+import { toggleSwapType } from "@/plugins/swap/handlers";
+import { tokenInputState, tokenOutputState } from "@/plugins/swap/store";
 import { Box, Stack, Typography } from "@mui/material";
-import { useState } from "react";
+import { useEffect } from "react";
+import { useStore } from "zustand";
 
 export const CreateAPairContainer = () => {
-  const [currentSellValue, setCurrentSellValue] = useState({
-    token: null,
-    amount: 0,
-  });
-  const [currentBuyValue, setCurrentBuyValue] = useState({
-    token: null,
-    amount: 0,
-  });
+  // TOKEN
+  const tokenInput = useStore(tokenInputState, (state) => state.value);
+  const tokenOutput = useStore(tokenOutputState, (state) => state.value);
 
-  // Change swap type
-  const toggleSwapType = () => {
-    // Swap the values between sell and buy
-    setCurrentSellValue((prevSellValue) => ({
-      token: currentBuyValue.token,
-      amount: currentBuyValue.amount,
-    }));
-
-    setCurrentBuyValue((prevBuyValue) => ({
-      token: currentSellValue.token,
-      amount: currentSellValue.amount,
-    }));
+  // Handle get swap price
+  const getSwapPrice = (inputAmount: number) => {
+    //
   };
+
+  useEffect(() => {
+    fetchTokenSpotPriceAPI();
+  }, []);
 
   return (
     <Box
@@ -53,17 +46,15 @@ export const CreateAPairContainer = () => {
         </MainCard>
 
         <Stack spacing={1} pt={2} pb={2}>
-          <SwapSellContent
-            tokenSelected={currentSellValue}
-            setTokenSelected={setCurrentSellValue}
+          <CurrencyField
+            handleGetSwapPrice={getSwapPrice}
+            field="input"
+            currentToken={tokenInput}
           />
 
           <ButtonSwapToggle toggleSwapType={toggleSwapType} />
 
-          <SwapBuyContent
-            tokenSelected={currentBuyValue}
-            setTokenSelected={setCurrentBuyValue}
-          />
+          <CurrencyField currentToken={tokenOutput} field="output" />
         </Stack>
 
         <MainButton
