@@ -101,15 +101,20 @@ export const Tokens = ({ handleSelectToken, setTokenType, type }: IProps) => {
               scrollableTarget="scrollableDiv"
             >
               {tokens.length > 0 &&
-                tokens
-                  .slice(7, tokenSlice)
-                  .map((item, index) => (
-                    <TokenItem
-                      key={index}
-                      item={item}
-                      handleSelectToken={handleSelectToken}
-                    />
-                  ))}
+                tokens.slice(7, tokenSlice).map((item, index) => (
+                  <TokenItem
+                    key={index}
+                    isImportToken={index == 1}
+                    item={item}
+                    handleSelectToken={() => {
+                      if (index == 1) {
+                        setTokenType("importToken");
+                      } else {
+                        handleSelectToken(item);
+                      }
+                    }}
+                  />
+                ))}
             </InfiniteScroll>
           </List>
         )}

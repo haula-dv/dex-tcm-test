@@ -7,7 +7,7 @@ import { CurrencyField } from "@/components/swap/CurrencyField";
 import { ButtonSwapToggle } from "@/plugins/swap/components/SwapIconToggle";
 import { toggleSwapType } from "@/plugins/swap/handlers";
 import { tokenInputState, tokenOutputState } from "@/plugins/swap/store";
-import { Box, Stack, Typography } from "@mui/material";
+import { Stack, Typography } from "@mui/material";
 import { useEffect } from "react";
 import { useStore } from "zustand";
 
@@ -26,46 +26,39 @@ export const CreateAPairContainer = () => {
   }, []);
 
   return (
-    <Box
-      display={"flex"}
-      flexDirection={"column"}
-      alignItems={"center"}
-      width={"100%"}
-    >
-      <MainCard variant="outlined" maxWidth="500px">
-        <ChildHeader onBackLink="/pool" title="Create A Pair" />
+    <MainCard variant="outlined">
+      <ChildHeader onBackLink="/pool" title="Create A Pair" />
 
-        <MainCard variant="outlined">
-          <Typography fontSize={"16px"} fontWeight={600} pb={1}>
-            You are the first liquidity provider
-          </Typography>
-          <Typography>
-            You are the first liquidity provider You are the first liquidity
-            provider You are the first liquidity provider
-          </Typography>
-        </MainCard>
-
-        <Stack spacing={1} pt={2} pb={2}>
-          <CurrencyField
-            handleGetSwapPrice={getSwapPrice}
-            field="input"
-            currentToken={tokenInput}
-          />
-
-          <ButtonSwapToggle toggleSwapType={toggleSwapType} />
-
-          <CurrencyField currentToken={tokenOutput} field="output" />
-        </Stack>
-
-        <MainButton
-          fullWidth
-          size="large"
-          variant="contained"
-          color="darkPrimary"
-        >
-          Invalid Pair
-        </MainButton>
+      <MainCard variant="outlined">
+        <Typography fontSize={"16px"} fontWeight={600} pb={1}>
+          You are the first liquidity provider
+        </Typography>
+        <Typography>
+          You are the first liquidity provider You are the first liquidity
+          provider You are the first liquidity provider
+        </Typography>
       </MainCard>
-    </Box>
+
+      <Stack spacing={1} pt={2} pb={2}>
+        <CurrencyField
+          handleGetSwapPrice={getSwapPrice}
+          field="input"
+          currentToken={tokenInput}
+        />
+
+        <ButtonSwapToggle toggleSwapType={toggleSwapType} />
+
+        <CurrencyField currentToken={tokenOutput} field="output" />
+      </Stack>
+
+      <MainButton
+        fullWidth
+        size="large"
+        variant="contained"
+        color="darkPrimary"
+      >
+        Invalid Pair
+      </MainButton>
+    </MainCard>
   );
 };
