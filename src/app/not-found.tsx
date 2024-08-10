@@ -17,7 +17,7 @@ const Error = () => (
   >
     <Container maxWidth="md">
       <Image
-        src={"/images/backgrounds/errorimg.svg"}
+        src={"/images/errorimg.svg"}
         alt="404"
         width={500}
         height={500}
@@ -27,7 +27,7 @@ const Error = () => (
         Opps!!!
       </Typography>
       <Typography align="center" variant="h4" mb={4}>
-        Trang này bạn đang tìm kiếm không thể được tìm thấy.
+        Page not found
       </Typography>
       <Button
         color="primary"
@@ -36,7 +36,7 @@ const Error = () => (
         href="/"
         disableElevation
       >
-        Trở về trang chủ
+        Back to home
       </Button>
     </Container>
   </Box>

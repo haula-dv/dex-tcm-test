@@ -59,22 +59,22 @@ export const SwapContainer = () => {
     }
   };
 
+  console.log(tokenInput);
+
   // Handle get swap price
-  const getSwapPrice = (inputAmount: number) => {
+  const getSwapPrice = async (inputAmount: number) => {
     setLoading(true);
     setInputAmount(inputAmount);
 
-    // const swap = getPrice(
-    //   inputAmount,
-    //   slippageAmount,
-    //   Math.floor(Date.now()/1000 + (deadlineMinutes * 60)),
-    //   signerAddress
-    // ).then(data => {
-    //   setTransaction(data[0])
-    //   setOutputAmount(data[1])
-    //   setRatio(data[2])
-    //   setLoading(false)
-    // })
+    // await exchangePriceAPI({
+    //   chain: "ethereum",
+    //   account: "0x0000000000000000000000000000000000000000",
+    //   inTokenAddress: tokenInput?.address ?? "",
+    //   outTokenAddress: tokenOutput?.address ?? "",
+    //   isExactIn: true,
+    //   slippage: slippageAmount,
+    //   inTokenAmount: inputAmount.toString(),
+    // });
   };
 
   useEffect(() => {

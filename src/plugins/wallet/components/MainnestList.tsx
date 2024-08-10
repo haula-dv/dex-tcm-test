@@ -1,5 +1,4 @@
 import { MainIconButton } from "@/components/button/MainIconButton";
-import { MainPopup } from "@/components/popup/MainPopup";
 import { IconDots } from "@tabler/icons-react";
 import { useState } from "react";
 
@@ -27,7 +26,7 @@ export const MainnestList = () => {
         <IconDots />
       </MainIconButton>
 
-      <MainPopup
+      {/* <MainPopup
         id="mainnest-menu"
         anchorEl={anchorEl}
         open={open}
@@ -37,7 +36,7 @@ export const MainnestList = () => {
         }}
       >
         1233
-      </MainPopup>
+      </MainPopup> */}
     </>
   );
 };

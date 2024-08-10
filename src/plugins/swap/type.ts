@@ -1,8 +1,9 @@
-export interface ITokenValue {
-  token: {
-    name: string;
-    symbol: string;
-    image: string;
-  } | null;
-  amount: number;
+export interface IExchangePrice {
+  chain: string;
+  account: string;
+  inTokenAddress: string;
+  outTokenAddress: string;
+  isExactIn: boolean;
+  slippage: number;
+  inTokenAmount: string;
 }
