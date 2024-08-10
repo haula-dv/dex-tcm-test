@@ -6,6 +6,7 @@ import { IconChevronDown } from "@tabler/icons-react";
 import Image from "next/image";
 
 import { ITokenType } from "@/common";
+import { NoToken } from "@/components/swap/NoToken";
 
 interface IProps {
   tokenSelected: ITokenType | null;
@@ -29,12 +30,21 @@ export const TokenSelect = ({
       >
         {tokenSelected ? (
           <>
-            <Image
-              src={tokenSelected?.project?.logoUrl}
-              height={24}
-              width={24}
-              alt=""
-            />
+            {tokenSelected?.project?.logoUrl ? (
+              <Image
+                src={tokenSelected?.project?.logoUrl}
+                height={24}
+                width={24}
+                alt=""
+                style={{ borderRadius: "50%", overflow: "hidden" }}
+              />
+            ) : (
+              <NoToken
+                symbol={tokenSelected?.symbol}
+                sizes="24px"
+                fontSize="8px"
+              />
+            )}
 
             <Typography pl={0.5} fontSize={"13px"} fontWeight={500}>
               {tokenSelected?.symbol}

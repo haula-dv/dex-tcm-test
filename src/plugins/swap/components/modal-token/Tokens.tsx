@@ -1,4 +1,4 @@
-import { tokenLoadingState, tokensState } from "@/common";
+import { tokenLoadingState, tokensState, topTokensState } from "@/common";
 import { MainButton } from "@/components/button/MainButton";
 import { SearchField } from "@/components/form-control/SearchField";
 import { TokenLoading } from "@/components/loading/TokenLoading";
@@ -23,7 +23,9 @@ interface IProps {
 }
 
 export const Tokens = ({ handleSelectToken, setTokenType, type }: IProps) => {
+  const topTokens = useStore(topTokensState, (state) => state.value);
   const tokens = useStore(tokensState, (state) => state.value);
+
   const tokenLoading = useStore(tokenLoadingState, (state) => state.value);
   const tokenInputCur = useStore(tokenInputState, (state) => state.value);
   const tokenOutputCur = useStore(tokenOutputState, (state) => state.value);
@@ -44,12 +46,12 @@ export const Tokens = ({ handleSelectToken, setTokenType, type }: IProps) => {
       <Stack px={TSizes.margin_base}>
         <SearchField />
 
-        {tokenLoading ? (
+        {topTokens.length === 0 ? (
           <TokenLoading style="chip" />
         ) : (
           <Box display={"flex"} flexWrap={"wrap"} gap={1.5} py={2}>
-            {tokens.length > 0 &&
-              tokens.slice(0, 7).map((item, index) => (
+            {topTokens.length > 0 &&
+              topTokens.slice(0, 7).map((item, index) => (
                 <Token
                   key={index}
                   variant="outlined"
@@ -78,7 +80,7 @@ export const Tokens = ({ handleSelectToken, setTokenType, type }: IProps) => {
 
       <Divider />
 
-      <Box position={"relative"} pb={5} minHeight={"50vh"}>
+      <Box position={"relative"} pb={5}>
         <Typography
           fontWeight={600}
           color={theme.palette.grey[600]}
@@ -89,35 +91,42 @@ export const Tokens = ({ handleSelectToken, setTokenType, type }: IProps) => {
           Popular tokens
         </Typography>
 
-        {tokenLoading ? (
-          <TokenLoading />
-        ) : (
-          <List sx={{ height: "50vh", overflow: "auto" }} id="scrollableDiv">
-            <InfiniteScroll
-              dataLength={tokenSlice}
-              next={fetchMoreData}
-              hasMore={hasMore}
-              loader={<h4>Loading...</h4>}
-              scrollableTarget="scrollableDiv"
-            >
-              {tokens.length > 0 &&
-                tokens.slice(7, tokenSlice).map((item, index) => (
-                  <TokenItem
-                    key={index}
-                    isImportToken={index == 1}
-                    item={item}
-                    handleSelectToken={() => {
-                      if (index == 1) {
-                        setTokenType("importToken");
-                      } else {
-                        handleSelectToken(item);
-                      }
-                    }}
-                  />
-                ))}
-            </InfiniteScroll>
-          </List>
-        )}
+        <Box height={"50vh"}>
+          {tokenLoading ? (
+            <TokenLoading />
+          ) : (
+            <List sx={{ height: "50vh", overflow: "auto" }} id="scrollableDiv">
+              <InfiniteScroll
+                dataLength={tokenSlice}
+                next={fetchMoreData}
+                hasMore={hasMore}
+                loader={""}
+                scrollableTarget="scrollableDiv"
+              >
+                {tokens.length > 0 ? (
+                  tokens.map((item, index) => (
+                    <TokenItem
+                      key={index}
+                      isImportToken={index == 1}
+                      item={item}
+                      handleSelectToken={() => {
+                        if (index == 1) {
+                          setTokenType("importToken");
+                        } else {
+                          handleSelectToken(item);
+                        }
+                      }}
+                    />
+                  ))
+                ) : (
+                  <Typography textAlign={"center"} pt={2}>
+                    No results found.
+                  </Typography>
+                )}
+              </InfiniteScroll>
+            </List>
+          )}
+        </Box>
       </Box>
 
       <ManageButton>

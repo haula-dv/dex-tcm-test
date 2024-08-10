@@ -1,5 +1,6 @@
 import { ITokenType } from "@/common";
 import { MainButton } from "@/components/button/MainButton";
+import { NoToken } from "@/components/swap/NoToken";
 import {
   Box,
   ListItemButton,
@@ -26,11 +27,21 @@ export const TokenItem = ({
     <CustomListItem {...props} onClick={() => handleSelectToken(item)}>
       <ListItemIcon>
         <Box>
-          <Image src={item.project.logoUrl} height={30} width={30} alt="" />
+          {item?.project?.logoUrl ? (
+            <Image
+              src={item?.project?.logoUrl}
+              height={30}
+              width={30}
+              alt=""
+              style={{ overflow: "hidden", borderRadius: "50%" }}
+            />
+          ) : (
+            <NoToken symbol={item?.symbol} />
+          )}
         </Box>
       </ListItemIcon>
 
-      <ListItemText primary={item.name} secondary={item.symbol} />
+      <ListItemText primary={item?.name} secondary={item?.symbol} />
 
       {isImportToken && (
         <MainButton size="small" variant="contained" color="darkPrimary">

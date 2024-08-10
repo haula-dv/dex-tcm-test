@@ -21,6 +21,11 @@ export const tokensState = createZustandStore<ITokenType[]>({
   default: [],
 });
 
+export const topTokensState = createZustandStore<ITokenType[]>({
+  key: "topTokensState",
+  default: [],
+});
+
 // FIRST TOKEN
 export const tokenSpotPriceState = createZustandStore<ITokenType | null>({
   key: "tokenSpotPriceState",
