@@ -1,17 +1,25 @@
-import { tokenParamsState, tokensState } from "@/common";
+import {
+  isTokenSearchState,
+  ITokenType,
+  tokenLoadingState,
+  tokensSearchState,
+  tokensState,
+} from "@/common";
 import { TSizes } from "@/utils/themes/custom-theme/sizes";
 import { Box, InputBase, styled } from "@mui/material";
 import { IconX } from "@tabler/icons-react";
 import { debounce } from "lodash";
 import { setZustandValue } from "nes-zustand";
-import { ChangeEvent, useCallback, useState } from "react";
-import { useStore } from "zustand";
+import { ChangeEvent, useCallback, useEffect, useState } from "react";
 import { MainIconButton } from "../button/MainIconButton";
 import IconSearch from "../icons/search";
 
-export const SearchField = () => {
+interface IProps {
+  tokens: ITokenType[];
+}
+
+export const SearchTokenField = ({ tokens }: IProps) => {
   const [value, setValue] = useState("");
-  const tokenParams = useStore(tokenParamsState, (state) => state.value);
 
   const onChange = (e: ChangeEvent<HTMLTextAreaElement | HTMLInputElement>) => {
     setValue(e.target.value);
@@ -20,7 +28,15 @@ export const SearchField = () => {
 
   const handleDebounceFn = async (value: string) => {
     if (value) {
-      // await searchTopTokensAPI(value);
+      setZustandValue(isTokenSearchState, true);
+      setZustandValue(tokenLoadingState, true);
+
+      const filters = tokens.filter((item) =>
+        item.token.toLowerCase().includes(value.toLowerCase())
+      );
+
+      setZustandValue(tokensSearchState, filters);
+      setZustandValue(tokenLoadingState, false);
       return;
     }
 
@@ -30,11 +46,15 @@ export const SearchField = () => {
   // eslint-disable-next-line react-hooks/exhaustive-deps
   const debounceFn = useCallback(debounce(handleDebounceFn, 600), []);
 
-  const handleClear = async () => {
+  const handleClear = () => {
     setValue("");
-    await setZustandValue(tokensState, []);
-    // await fetchTopTokensAPI(tokenParams);
+    setZustandValue(isTokenSearchState, false);
+    setZustandValue(tokensState, tokens);
   };
+
+  useEffect(() => {
+    return () => handleClear();
+  }, []);
 
   return (
     <CustomSearchField>
@@ -45,6 +65,7 @@ export const SearchField = () => {
         sx={{ width: "100%" }}
         onChange={onChange}
         value={value}
+        disabled={tokens.length === 0}
       />
 
       {value && (

@@ -1,6 +1,11 @@
-import { tokenLoadingState, tokensState } from "@/common";
+import {
+  isTokenSearchState,
+  tokenLoadingState,
+  tokensSearchState,
+  tokensState,
+} from "@/common";
 import { MainButton } from "@/components/button/MainButton";
-import { SearchField } from "@/components/form-control/SearchField";
+import { SearchTokenField } from "@/components/form-control/SearchTokenField";
 import { TokenLoading } from "@/components/loading/TokenLoading";
 import { ITypeSwap } from "@/components/swap/CurrencyField";
 import { TSizes } from "@/utils/themes/custom-theme/sizes";
@@ -23,6 +28,8 @@ interface IProps {
 
 export const Tokens = ({ handleSelectToken, setTokenType, type }: IProps) => {
   const tokens = useStore(tokensState, (state) => state.value);
+  const isSearchToken = useStore(isTokenSearchState, (state) => state.value);
+  const tokensSearch = useStore(tokensSearchState, (state) => state.value);
 
   const tokenLoading = useStore(tokenLoadingState, (state) => state.value);
   const tokenInputCur = useStore(tokenInputState, (state) => state.value);
@@ -42,7 +49,7 @@ export const Tokens = ({ handleSelectToken, setTokenType, type }: IProps) => {
   return (
     <>
       <Stack px={TSizes.margin_base}>
-        <SearchField />
+        {tokens.length > 0 && <SearchTokenField tokens={tokens} />}
       </Stack>
 
       <Box position={"relative"} pb={5}>
@@ -68,9 +75,11 @@ export const Tokens = ({ handleSelectToken, setTokenType, type }: IProps) => {
                 loader={""}
                 scrollableTarget="scrollableDiv"
               >
-                {tokens.length > 0 ? (
-                  tokens.map((item, index) => {
-                    const isSelected = (type=='input'?tokenInputCur:tokenOutputCur)?.token=== item.token
+                {(isSearchToken ? tokensSearch : tokens).length > 0 ? (
+                  (isSearchToken ? tokensSearch : tokens).map((item, index) => {
+                    const isSelected =
+                      (type == "input" ? tokenInputCur : tokenOutputCur)
+                        ?.token === item.token;
                     return (
                       <TokenItem
                         key={index}
@@ -85,7 +94,7 @@ export const Tokens = ({ handleSelectToken, setTokenType, type }: IProps) => {
                           }
                         }}
                       />
-                    )
+                    );
                   })
                 ) : (
                   <Typography textAlign={"center"} pt={2}>
