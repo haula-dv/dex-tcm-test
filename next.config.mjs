@@ -31,6 +31,7 @@ export default withPWA({
     API_URL: process.env.API_URL,
     TOKEN_API_URL: process.env.TOKEN_API_URL,
     BROKER_ID: process.env.BROKER_ID,
+    NEXTWORK_URL: process.env.NEXTWORK_URL,
   },
 
   reactStrictMode: true,

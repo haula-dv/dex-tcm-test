@@ -1,47 +1,46 @@
-import { ITokenType } from "@/common";
+import { getImageNextwork, ITokenType } from "@/common";
 import { MainButton } from "@/components/button/MainButton";
-import { NoToken } from "@/components/swap/NoToken";
+import { TokenIcon } from "@/components/token/TokenIcon";
 import {
-  Box,
   ListItemButton,
   ListItemButtonProps,
   ListItemIcon,
   ListItemText,
 } from "@mui/material";
 import { styled } from "@mui/material/styles";
-import Image from "next/image";
 
 interface IProps extends ListItemButtonProps {
   isImportToken?: boolean;
   item: ITokenType;
   handleSelectToken: (token: ITokenType) => void;
+  isSelected: boolean;
 }
 
 export const TokenItem = ({
   isImportToken,
   handleSelectToken,
   item,
+  isSelected,
   ...props
 }: IProps) => {
   return (
-    <CustomListItem {...props} onClick={() => handleSelectToken(item)}>
+    <CustomListItem
+      {...props}
+      onClick={() => handleSelectToken(item)}
+      selected={isSelected}
+    >
       <ListItemIcon>
-        <Box>
-          {item?.project?.logoUrl ? (
-            <Image
-              src={item?.project?.logoUrl}
-              height={30}
-              width={30}
-              alt=""
-              style={{ overflow: "hidden", borderRadius: "50%" }}
-            />
-          ) : (
-            <NoToken symbol={item?.symbol} />
-          )}
-        </Box>
+        <TokenIcon
+          url={getImageNextwork(item.token, "symbol_logo")}
+          size={30}
+          symbol={item?.token}
+        />
       </ListItemIcon>
 
-      <ListItemText primary={item?.name} secondary={item?.symbol} />
+      <ListItemText
+        primary={item?.token}
+        secondary={`${item?.token_account_id?.slice(0, 10)}...`}
+      />
 
       {isImportToken && (
         <MainButton size="small" variant="contained" color="darkPrimary">

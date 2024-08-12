@@ -11,15 +11,10 @@ export interface ITokenParamsType {
 }
 
 export interface ITokenType {
-  id: string;
-  address: string;
-  chain: string;
-  symbol: string;
-  name: string;
+  token: string;
+  token_account_id: string;
   decimals: number;
-  standard: string;
-  project: Project;
-  __typename: string;
+  minimum_increment: number;
 }
 export interface Project {
   id: string;

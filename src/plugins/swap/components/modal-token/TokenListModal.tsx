@@ -1,8 +1,7 @@
-import { fetchTopTokensAPI, tokenParamsState } from "@/common";
+import { getTokensAPI } from "@/common";
 import { MainDialog } from "@/components/dialog/MainDialog";
 import { ITypeSwap } from "@/components/swap/CurrencyField";
 import { useEffect, useState } from "react";
-import { useStore } from "zustand";
 import { ImportToken } from "./ImportToken";
 import { ManageTokenList } from "./ManageTokenList";
 import { Tokens } from "./Tokens";
@@ -24,11 +23,9 @@ export const TokenListModal = ({
 }: IProps) => {
   const [tokenType, setTokenType] = useState<ITokenType>("tokens");
 
-  const tokenParams = useStore(tokenParamsState, (state) => state.value);
-
   useEffect(() => {
-    fetchTopTokensAPI(tokenParams);
-  }, [tokenParams]);
+    if (open) getTokensAPI();
+  }, [open]);
 
   return (
     <MainDialog

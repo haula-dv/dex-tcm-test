@@ -8,7 +8,12 @@ export const isTransactionSubmittedState = createZustandStore<boolean>({
 
 export const tokenInputState = createZustandStore<ITokenType | null>({
   key: "tokenInputState",
-  default: null,
+  default: {
+    token: "ETH",
+    token_account_id: "aurora",
+    decimals: 18,
+    minimum_increment: 0.00000001,
+  },
 });
 
 export const tokenOutputState = createZustandStore<ITokenType | null>({

@@ -3,10 +3,9 @@ import { MainButton } from "@/components/button/MainButton";
 import { Box, Typography } from "@mui/material";
 import { styled } from "@mui/material/styles";
 import { IconChevronDown } from "@tabler/icons-react";
-import Image from "next/image";
 
-import { ITokenType } from "@/common";
-import { NoToken } from "@/components/swap/NoToken";
+import { getImageNextwork, ITokenType } from "@/common";
+import { TokenIcon } from "@/components/token/TokenIcon";
 
 interface IProps {
   tokenSelected: ITokenType | null;
@@ -26,28 +25,19 @@ export const TokenSelect = ({
         size="small"
         fullRounded
         onClick={handleToggleModalTokenList}
-        isSelectedToken={tokenSelected?.name ? true : false}
+        isSelectedToken={tokenSelected?.token ? true : false}
       >
         {tokenSelected ? (
           <>
-            {tokenSelected?.project?.logoUrl ? (
-              <Image
-                src={tokenSelected?.project?.logoUrl}
-                height={24}
-                width={24}
-                alt=""
-                style={{ borderRadius: "50%", overflow: "hidden" }}
-              />
-            ) : (
-              <NoToken
-                symbol={tokenSelected?.symbol}
-                sizes="24px"
-                fontSize="8px"
-              />
-            )}
+            <TokenIcon
+              url={getImageNextwork(tokenSelected.token, "symbol_logo")}
+              size={24}
+              symbol={tokenSelected?.token}
+              fontSize="8px"
+            />
 
             <Typography pl={0.5} fontSize={"13px"} fontWeight={500}>
-              {tokenSelected?.symbol}
+              {tokenSelected?.token}
             </Typography>
           </>
         ) : (

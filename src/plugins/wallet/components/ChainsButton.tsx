@@ -1,6 +1,5 @@
 import { getImageNextwork } from "@/common";
 import { MainButton } from "@/components/button/MainButton";
-import { MainCard } from "@/components/card/MainCard";
 import { MainPopup } from "@/components/popup/MainPopup";
 import { TokenIcon } from "@/components/token/TokenIcon";
 import { hexChainId, idFromHexChainId } from "@/utils/formatters/token";
@@ -100,64 +99,56 @@ export const ChainsButton = () => {
       >
         <Box
           width={"100%"}
-          maxWidth={"370px"}
+          maxWidth={"240px"}
           px={TSizes.margin_sm}
           py={TSizes.margin_xs}
         >
           <Stack pb={2}>
-            <Typography fontWeight={600}>Mainnest</Typography>
+            <Typography fontWeight={600} pb={0.5}>
+              Mainnest
+            </Typography>
 
-            <MainCard
-              variant="outlined"
-              backgroudColor="white"
-              padding={TSizes.margin_xs}
-            >
-              <Grid container spacing={1}>
-                {chains &&
-                  (chains[0].mainnet as any).length > 0 &&
-                  chains[0].mainnet.map((chain, index) => {
-                    const isSelected =
-                      currentChain?.network_infos.chain_id ===
-                      chain.network_infos.chain_id;
-                    return (
-                      <NetworkItem
-                        key={index}
-                        chain={chain}
-                        handleChangeNextwork={handleChangeNextwork}
-                        isSelected={isSelected}
-                      />
-                    );
-                  })}
-              </Grid>
-            </MainCard>
+            <Grid container spacing={1}>
+              {chains &&
+                (chains[0].mainnet as any).length > 0 &&
+                chains[0].mainnet.map((chain, index) => {
+                  const isSelected =
+                    currentChain?.network_infos.chain_id ===
+                    chain.network_infos.chain_id;
+                  return (
+                    <NetworkItem
+                      key={index}
+                      chain={chain}
+                      handleChangeNextwork={handleChangeNextwork}
+                      isSelected={isSelected}
+                    />
+                  );
+                })}
+            </Grid>
           </Stack>
 
           <Stack>
-            <Typography fontWeight={600}>Testnest</Typography>
+            <Typography fontWeight={600} pb={0.5}>
+              Testnest
+            </Typography>
 
-            <MainCard
-              variant="outlined"
-              backgroudColor="white"
-              padding={TSizes.margin_xs}
-            >
-              <Grid container spacing={1}>
-                {chains &&
-                  (chains[0].testnet as any).length > 0 &&
-                  chains[0].testnet.map((chain, index) => {
-                    const isSelected =
-                      currentChain?.network_infos.chain_id ===
-                      chain.network_infos.chain_id;
-                    return (
-                      <NetworkItem
-                        key={index}
-                        chain={chain}
-                        handleChangeNextwork={handleChangeNextwork}
-                        isSelected={isSelected}
-                      />
-                    );
-                  })}
-              </Grid>
-            </MainCard>
+            <Grid container spacing={1}>
+              {chains &&
+                (chains[0].testnet as any).length > 0 &&
+                chains[0].testnet.map((chain, index) => {
+                  const isSelected =
+                    currentChain?.network_infos.chain_id ===
+                    chain.network_infos.chain_id;
+                  return (
+                    <NetworkItem
+                      key={index}
+                      chain={chain}
+                      handleChangeNextwork={handleChangeNextwork}
+                      isSelected={isSelected}
+                    />
+                  );
+                })}
+            </Grid>
           </Stack>
         </Box>
       </MainPopup>

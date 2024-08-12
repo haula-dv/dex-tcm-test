@@ -1,5 +1,4 @@
 "use client";
-import { fetchTokenSpotPriceAPI } from "@/common";
 import { MainButton } from "@/components/button/MainButton";
 import { MainCard } from "@/components/card/MainCard";
 import { CurrencyField } from "@/components/swap/CurrencyField";
@@ -8,7 +7,7 @@ import theme from "@/utils/themes/mui-theme";
 import { Stack, Typography } from "@mui/material";
 import { AuthClient } from "@orderly.network/orderly-sdk";
 import { IconHelp, IconTransform } from "@tabler/icons-react";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useStore } from "zustand";
 import { toggleSwapType } from "../handlers";
 import {
@@ -76,12 +75,6 @@ export const SwapContainer = () => {
     //   inTokenAmount: inputAmount.toString(),
     // });
   };
-
-  // const orderlyClient = new OrderlyClient({ /* cấu hình Orderly Network */ });
-
-  useEffect(() => {
-    fetchTokenSpotPriceAPI();
-  }, []);
 
   return (
     <>

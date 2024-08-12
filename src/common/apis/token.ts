@@ -1,5 +1,6 @@
 import { tokenInputState } from "@/plugins/swap/store";
 import { TDotEnv } from "@/utils/constants/dotenv";
+import { axiosClient } from "@/utils/lib/axios-client";
 import axios from "axios";
 import { getZustandValue, setZustandValue } from "nes-zustand";
 import {
@@ -106,7 +107,32 @@ export const fetchTokenSpotPriceAPI = async () => {
     });
 };
 
+export type IImageNextworkType = "network_logo" | "symbol_logo";
+
 // GET IMAGE NEXTWORK
-export const getImageNextwork = (chain_id: number | string) => {
-  return `${TDotEnv.NEXTWORK_URL}/static/network_logo/${chain_id}.png`;
+export const getImageNextwork = (
+  chain_id: number | string,
+  type: IImageNextworkType = "network_logo"
+) => {
+  return `${TDotEnv.NEXTWORK_URL}static/${type}/${chain_id}.png`;
+};
+
+export const getTokensAPI = async () => {
+  const tokens = getZustandValue(tokensState);
+  if (tokens.length > 0) {
+    return;
+  }
+
+  setZustandValue(tokenLoadingState, true);
+  return await axiosClient
+    .get("/token")
+    .then((res) => {
+      setZustandValue(tokensState, res.data?.rows);
+    })
+    .catch((err) => {
+      console.log(err);
+    })
+    .finally(() => {
+      setZustandValue(tokenLoadingState, false);
+    });
 };

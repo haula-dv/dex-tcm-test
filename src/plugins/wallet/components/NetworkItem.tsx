@@ -18,7 +18,7 @@ export const NetworkItem = ({
   handleChangeNextwork,
 }: IProps) => {
   return (
-    <Grid item md={6}>
+    <Grid item md={12}>
       <MainButton
         size="small"
         color="inherit"

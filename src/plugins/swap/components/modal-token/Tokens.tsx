@@ -1,14 +1,13 @@
-import { tokenLoadingState, tokensState, topTokensState } from "@/common";
+import { tokenLoadingState, tokensState } from "@/common";
 import { MainButton } from "@/components/button/MainButton";
 import { SearchField } from "@/components/form-control/SearchField";
 import { TokenLoading } from "@/components/loading/TokenLoading";
 import { ITypeSwap } from "@/components/swap/CurrencyField";
 import { TSizes } from "@/utils/themes/custom-theme/sizes";
 import theme from "@/utils/themes/mui-theme";
-import { Box, Button, Divider, List, Stack, Typography } from "@mui/material";
+import { Box, Button, List, Stack, Typography } from "@mui/material";
 import { styled } from "@mui/material/styles";
 import { IconEdit } from "@tabler/icons-react";
-import Image from "next/image";
 import { Dispatch, SetStateAction, useState } from "react";
 import InfiniteScroll from "react-infinite-scroll-component";
 import { useStore } from "zustand";
@@ -23,7 +22,6 @@ interface IProps {
 }
 
 export const Tokens = ({ handleSelectToken, setTokenType, type }: IProps) => {
-  const topTokens = useStore(topTokensState, (state) => state.value);
   const tokens = useStore(tokensState, (state) => state.value);
 
   const tokenLoading = useStore(tokenLoadingState, (state) => state.value);
@@ -45,40 +43,7 @@ export const Tokens = ({ handleSelectToken, setTokenType, type }: IProps) => {
     <>
       <Stack px={TSizes.margin_base}>
         <SearchField />
-
-        {topTokens.length === 0 ? (
-          <TokenLoading style="chip" />
-        ) : (
-          <Box display={"flex"} flexWrap={"wrap"} gap={1.5} py={2}>
-            {topTokens.length > 0 &&
-              topTokens.slice(0, 7).map((item, index) => (
-                <Token
-                  key={index}
-                  variant="outlined"
-                  color="inherit"
-                  onClick={() => handleSelectToken(item)}
-                  isSelected={
-                    (type === "input" ? tokenInputCur : tokenOutputCur)
-                      ?.symbol === item.symbol
-                  }
-                >
-                  <Image
-                    src={item.project.logoUrl}
-                    height={24}
-                    width={24}
-                    alt=""
-                  />
-
-                  <Typography fontSize={"14px"} pl={0.5} pr={0.5}>
-                    {item.symbol}
-                  </Typography>
-                </Token>
-              ))}
-          </Box>
-        )}
       </Stack>
-
-      <Divider />
 
       <Box position={"relative"} pb={5}>
         <Typography
@@ -104,20 +69,24 @@ export const Tokens = ({ handleSelectToken, setTokenType, type }: IProps) => {
                 scrollableTarget="scrollableDiv"
               >
                 {tokens.length > 0 ? (
-                  tokens.map((item, index) => (
-                    <TokenItem
-                      key={index}
-                      isImportToken={index == 1}
-                      item={item}
-                      handleSelectToken={() => {
-                        if (index == 1) {
-                          setTokenType("importToken");
-                        } else {
-                          handleSelectToken(item);
-                        }
-                      }}
-                    />
-                  ))
+                  tokens.map((item, index) => {
+                    const isSelected = (type=='input'?tokenInputCur:tokenOutputCur)?.token=== item.token
+                    return (
+                      <TokenItem
+                        key={index}
+                        isImportToken={index == 1}
+                        item={item}
+                        isSelected={isSelected}
+                        handleSelectToken={() => {
+                          if (index == 1) {
+                            setTokenType("importToken");
+                          } else {
+                            handleSelectToken(item);
+                          }
+                        }}
+                      />
+                    )
+                  })
                 ) : (
                   <Typography textAlign={"center"} pt={2}>
                     No results found.

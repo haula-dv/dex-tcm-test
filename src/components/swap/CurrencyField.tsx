@@ -67,14 +67,12 @@ export const CurrencyField = ({
         />
       </Content>
 
-      {openTokenList && (
-        <TokenListModal
-          open={openTokenList}
-          onClose={handleToggleModalTokenList}
-          field={field}
-          handleSelectToken={handleSelectToken}
-        />
-      )}
+      <TokenListModal
+        open={openTokenList}
+        onClose={handleToggleModalTokenList}
+        field={field}
+        handleSelectToken={handleSelectToken}
+      />
     </>
   );
 };
