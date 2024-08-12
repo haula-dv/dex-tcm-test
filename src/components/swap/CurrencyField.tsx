@@ -8,6 +8,7 @@ import { Box, InputBase, Stack, Typography } from "@mui/material";
 import { styled } from "@mui/material/styles";
 import { setZustandValue } from "nes-zustand";
 import { FocusEvent, useState } from "react";
+import { useStore } from "zustand";
 import { TokenListModal } from "../../plugins/swap/components/modal-token/TokenListModal";
 
 export type ITypeSwap = "input" | "output";
@@ -25,6 +26,10 @@ export const CurrencyField = ({
 }: IProps) => {
   const [openTokenList, setOpenTokenList] = useState(false);
 
+  // TOKEN
+  const tokenInput = useStore(tokenInputState, (state) => state.value);
+  const tokenOutput = useStore(tokenOutputState, (state) => state.value);
+
   const getPrice = (
     e: FocusEvent<HTMLInputElement | HTMLTextAreaElement, Element>
   ) => {
@@ -34,8 +39,16 @@ export const CurrencyField = ({
   // Function to select a token
   const handleSelectToken = (token: ITokenType) => {
     if (field == "input") {
+      if (token.token === tokenOutput?.token) {
+        setZustandValue(tokenOutputState, null);
+      }
+
       setZustandValue(tokenInputState, token);
     } else {
+      if (token.token === tokenInput?.token) {
+        setZustandValue(tokenInputState, null);
+      }
+
       setZustandValue(tokenOutputState, token);
     }
 
