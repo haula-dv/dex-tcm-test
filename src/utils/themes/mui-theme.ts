@@ -1,5 +1,4 @@
 "use client";
-
 import { createTheme, ThemeOptions } from "@mui/material/styles";
 import components from "./custom-theme/Components";
 import baselightTheme from "./custom-theme/DefaultColors";
@@ -64,5 +63,11 @@ declare module "@mui/material/Chip" {
 declare module "@mui/material/Checkbox" {
   interface CheckboxPropsColorOverrides {
     darkPrimary: true;
+  }
+}
+
+declare module "@mui/material/TextField" {
+  interface TextFieldPropsSizeOverrides {
+    xsmall: true;
   }
 }

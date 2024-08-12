@@ -4,6 +4,7 @@ import { Button, Stack } from "@mui/material";
 import { useAccount } from "@orderly.network/hooks";
 import { useConnectWallet, useSetChain } from "@web3-onboard/react";
 import { useEffect, useState } from "react";
+import { ChainsButton } from "./ChainsButton";
 import { ConnectWalletButton } from "./ConnectWalletButton";
 import { MainnestList } from "./MainnestList";
 import { ModalConnectWallet } from "./ModalConnectWallet";
@@ -42,6 +43,10 @@ export const WalletContainer = () => {
     });
   };
 
+  useEffect(() => {
+    // getChainsInfoAPI();
+  }, []);
+
   return (
     <>
       <Stack
@@ -52,6 +57,8 @@ export const WalletContainer = () => {
         <Button variant="contained" color="secondary">
           0 SAP
         </Button>
+
+        <ChainsButton />
 
         {wallet ? <WalletConnected /> : <ConnectWalletButton />}
         <MainnestList />

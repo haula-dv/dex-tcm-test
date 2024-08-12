@@ -4,6 +4,7 @@ import { CustomMuiButton } from "./CustomButton";
 import { CustomMuiChip } from "./CustomChip";
 import { CustomFormControl } from "./CustomFormControl";
 import { CustomListItem } from "./CustomListItem";
+import { TSizes } from "./sizes";
 
 const components = (theme: Theme) => {
   return {
@@ -126,6 +127,7 @@ const components = (theme: Theme) => {
     MuiPaper: {
       styleOverrides: {
         root: {
+          borderRadius: TSizes.borderRadius,
           backgroundImage: "none",
         },
       },

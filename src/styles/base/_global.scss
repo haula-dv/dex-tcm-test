@@ -19,3 +19,18 @@ input::-webkit-inner-spin-button {
   -webkit-appearance: none;
   margin: 0;
 }
+
+.toast-success {
+  color: var(--white);
+  background-color: var(--success);
+}
+
+.toast-error {
+  background-color: var(--danger);
+  color: var(--white);
+}
+
+.toast-warning {
+  background-color: var(--warning);
+  color: var(--white);
+}

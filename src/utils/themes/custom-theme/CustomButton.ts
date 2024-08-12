@@ -51,14 +51,18 @@ export const CustomMuiButton = (theme: Theme) => {
           },
         },
 
-        filledTonal: {
-          //   padding: "8px 16px",
-        },
-
         filledTonalInherit: {
           backgroundColor: theme.palette.grey[100],
           "&:hover": {
             backgroundColor: theme.palette.grey[200],
+          },
+        },
+
+        filledTonalSecondary: {
+          backgroundColor: theme.palette.secondary.light,
+          color: theme.palette.common.black,
+          "&:hover": {
+            backgroundColor: theme.palette.secondary.light,
           },
         },
 

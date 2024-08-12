@@ -19,7 +19,7 @@ export const MainPopup = styled((props: MenuProps) => (
   "& .MuiPaper-root": {
     borderRadius: TSizes.borderRadius,
     marginTop: theme.spacing(1),
-    minWidth: 180,
+    minWidth: 100,
     color:
       theme.palette.mode === "light"
         ? "rgb(55, 65, 81)"

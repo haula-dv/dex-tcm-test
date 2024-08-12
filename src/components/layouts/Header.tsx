@@ -61,6 +61,7 @@ export const Header = () => {
 
 const MainAppBar = styled(AppBar)(({ theme }) => ({
   backgroundColor: "#fff",
+  zIndex: 0,
   "& .MuiToolbar-root": {
     minHeight: "auto",
   },

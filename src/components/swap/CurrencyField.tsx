@@ -86,6 +86,7 @@ export const Content = styled(Box)(({ theme }) => ({
   padding: theme.spacing(2),
   display: "flex",
   alignItems: "center",
+  justifyContent: "space-between",
 
   "&:hover": {
     borderColor: theme.palette.grey[200],

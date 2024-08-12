@@ -3,6 +3,7 @@ import { fetchTokenSpotPriceAPI } from "@/common";
 import { MainButton } from "@/components/button/MainButton";
 import { MainCard } from "@/components/card/MainCard";
 import { CurrencyField } from "@/components/swap/CurrencyField";
+import { TSizes } from "@/utils/themes/custom-theme/sizes";
 import theme from "@/utils/themes/mui-theme";
 import { Stack, Typography } from "@mui/material";
 import { AuthClient } from "@orderly.network/orderly-sdk";
@@ -17,8 +18,10 @@ import {
 } from "../store";
 import { ConfirmSwapContent } from "./ConfirmSwap";
 import { ButtonSwapToggle } from "./SwapIconToggle";
-import { TransactionPopup } from "./token/TransactionPopup";
+import { TransactionPopup } from "./token/TransactionSettingPopup";
 import { TransationSubmittedCard } from "./TransationSubmittedCard";
+
+// import {RestClient} from '@orderly.network/orderly-sdk'
 
 const apiClient = new AuthClient({
   networkId: "testnet",
@@ -48,7 +51,6 @@ export const SwapContainer = () => {
   const [inputAmount, setInputAmount] = useState(-1);
   const [outputAmount, setOutputAmount] = useState(undefined);
   const [loading, setLoading] = useState(false);
-
   // ================= //
 
   const handleEnterAmount = () => {
@@ -58,8 +60,6 @@ export const SwapContainer = () => {
       setIsSwaped(true);
     }
   };
-
-  console.log(tokenInput);
 
   // Handle get swap price
   const getSwapPrice = async (inputAmount: number) => {
@@ -77,6 +77,8 @@ export const SwapContainer = () => {
     // });
   };
 
+  // const orderlyClient = new OrderlyClient({ /* cấu hình Orderly Network */ });
+
   useEffect(() => {
     fetchTokenSpotPriceAPI();
   }, []);
@@ -84,8 +86,8 @@ export const SwapContainer = () => {
   return (
     <>
       {!isTransactionSubmitted ? (
-        <MainCard backgroudColor="white">
-          <TransactionPopup />
+        <MainCard backgroudColor="white" padding={`${TSizes.margin_sm}`}>
+          <TransactionPopup slippageAmount={slippageAmount} />
 
           {!isSwaped ? (
             <>

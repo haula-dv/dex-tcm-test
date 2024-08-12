@@ -25,6 +25,18 @@ export const CustomFormControl = (theme: Theme) => {
       },
     },
 
+    MuiInputBase: {
+      styleOverrides: {
+        root: {
+          "&.MuiInputBase-sizeXsmall": {
+            "& input": {
+              padding: "6px 12px !important",
+            },
+          },
+        },
+      },
+    },
+
     MuiFilledInput: {
       styleOverrides: {
         root: {
@@ -59,8 +71,6 @@ export const CustomFormControl = (theme: Theme) => {
           backgroundColor: theme.palette.common.white,
           borderRadius: TSizes.borderRadius,
           overflow: "hidden",
-          // paddingTop: "20px",
-          // paddingBottom: "6px",
         },
       },
     },
