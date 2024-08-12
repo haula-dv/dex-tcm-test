@@ -105,3 +105,8 @@ export const fetchTokenSpotPriceAPI = async () => {
       //
     });
 };
+
+// GET IMAGE NEXTWORK
+export const getImageNextwork = (chain_id: number | string) => {
+  return `${TDotEnv.NEXTWORK_URL}/static/network_logo/${chain_id}.png`;
+};

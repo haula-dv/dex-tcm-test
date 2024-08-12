@@ -7,18 +7,24 @@ interface IProps extends ButtonProps {
   children?: ReactNode;
   fullRounded?: boolean;
   isLoading?: boolean;
+  align?: "start" | "center" | "end";
 }
 
 export const MainButton = ({
   children,
   isLoading,
   fullRounded,
+  align = "center",
   ...props
 }: IProps) => {
   return (
     <Button
       disableElevation
-      sx={{ borderRadius: fullRounded ? "40px" : TSizes.borderRadius }}
+      sx={{
+        borderRadius: fullRounded ? "40px" : TSizes.borderRadius,
+        display: "flex",
+        justifyContent: align,
+      }}
       {...props}
     >
       {isLoading && <IconLoading height="24px" width="24px" />}

@@ -43,15 +43,11 @@ export const WalletContainer = () => {
     });
   };
 
-  useEffect(() => {
-    // getChainsInfoAPI();
-  }, []);
-
   return (
     <>
       <Stack
         direction={"row"}
-        spacing={TSizes.margin_md}
+        spacing={TSizes.margin_xs}
         justifyContent={"flex-end"}
       >
         <Button variant="contained" color="secondary">

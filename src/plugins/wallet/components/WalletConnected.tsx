@@ -62,11 +62,11 @@ export const WalletConnected = () => {
   return (
     <>
       {wallet && (
-        <Stack direction={"row"} spacing={1.5} alignItems={"center"} pb={2}>
-          <Typography fontSize={"18px"} fontWeight={600}>
+        <Stack direction={"row"} spacing={1} alignItems={"center"} pb={2}>
+          {/* <Typography fontSize={"18px"} fontWeight={600}>
             {wallet.accounts[0].balance ? wallet.accounts[0].balance.ETH : 0}{" "}
             ETH
-          </Typography>
+          </Typography> */}
 
           <MainButton
             variant="filledTonal"

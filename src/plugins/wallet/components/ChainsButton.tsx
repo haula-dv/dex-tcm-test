@@ -1,18 +1,24 @@
+import { getImageNextwork } from "@/common";
 import { MainButton } from "@/components/button/MainButton";
+import { MainCard } from "@/components/card/MainCard";
 import { MainPopup } from "@/components/popup/MainPopup";
+import { TokenIcon } from "@/components/token/TokenIcon";
+import { hexChainId, idFromHexChainId } from "@/utils/formatters/token";
 import { TSizes } from "@/utils/themes/custom-theme/sizes";
 import { Box, Grid, Stack, Typography } from "@mui/material";
 import { useChains } from "@orderly.network/hooks";
+import { IconChevronDown } from "@tabler/icons-react";
 import { useSetChain } from "@web3-onboard/react";
 import { setZustandValue } from "nes-zustand";
-import Image from "next/image";
 import { useEffect, useState } from "react";
 import { useStore } from "zustand";
-import { supportedChainsLoadingState, supportedChainsState } from "../store";
+import { supportedChainsLoadingState } from "../store";
+import { NetworkItem } from "./NetworkItem";
 
 export const ChainsButton = () => {
-  const [{ connectedChain }] = useSetChain();
+  const [{ connectedChain }, setChain] = useSetChain();
   const chains = useChains();
+  const [_, { findByChainId }] = useChains();
 
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
@@ -31,18 +37,28 @@ export const ChainsButton = () => {
     (state) => state.value
   );
 
-  const supportedChains = useStore(
-    supportedChainsState,
-    (state) => state.value
+  // Handle change network
+  const handleChangeNextwork = async (chainId: number) => {
+    handleClose();
+    setZustandValue(supportedChainsLoadingState, true);
+
+    await setChain({
+      chainId: hexChainId(chainId),
+      chainNamespace: "evm",
+    });
+    setZustandValue(supportedChainsLoadingState, false);
+  };
+
+  // GET CURRENT CHAIN
+  const currentChain = findByChainId(
+    idFromHexChainId(connectedChain?.id ?? "")
   );
 
-  console.log(connectedChain, chains);
-
   useEffect(() => {
-    if (chains && (chains[0].mainnet as any).length > 0) {
+    if (currentChain) {
       setZustandValue(supportedChainsLoadingState, false);
     }
-  }, [chains]);
+  }, [currentChain]);
 
   return (
     <>
@@ -55,8 +71,22 @@ export const ChainsButton = () => {
         aria-haspopup="true"
         aria-expanded={open ? "true" : undefined}
         onClick={handleClick}
+        endIcon={<IconChevronDown size={"1.5rem"} />}
+        startIcon={
+          supportedChainsLoading ? null : currentChain ? (
+            <TokenIcon
+              url={getImageNextwork(currentChain?.network_infos.chain_id)}
+            />
+          ) : null
+        }
       >
-        {supportedChainsLoading ? "CHAINING" : <>12</>}
+        {supportedChainsLoading ? (
+          "CHAINING"
+        ) : (
+          <Typography>
+            {currentChain?.network_infos?.name.slice(0, 4)}...
+          </Typography>
+        )}
       </MainButton>
 
       <MainPopup
@@ -70,44 +100,64 @@ export const ChainsButton = () => {
       >
         <Box
           width={"100%"}
-          maxWidth={"300px"}
+          maxWidth={"370px"}
           px={TSizes.margin_sm}
           py={TSizes.margin_xs}
         >
-          <Stack>
-            <Typography fontWeight={600} pb={1}>
-              Mainnest
-            </Typography>
+          <Stack pb={2}>
+            <Typography fontWeight={600}>Mainnest</Typography>
 
-            <Grid container spacing={1.5}>
-              {chains &&
-                (chains[0].testnet as any).length > 0 &&
-                chains[0].mainnet
-                  .sort((a, b) =>
-                    a?.network_infos?.name
-                      .toLowerCase()
-                      .localeCompare(b?.network_infos?.name.toLowerCase())
-                  )
-                  .map((chain, index) => (
-                    <Grid item md={6} key={index}>
-                      <MainButton
-                        size="xsmall"
-                        color="inherit"
-                        startIcon={
-                          <Image
-                            src={"/images/token.png"}
-                            height={20}
-                            width={20}
-                            alt=""
-                            style={{ overflow: "hidden", borderRadius: "50%" }}
-                          />
-                        }
-                      >
-                        <Typography>{chain?.network_infos?.name}</Typography>
-                      </MainButton>
-                    </Grid>
-                  ))}
-            </Grid>
+            <MainCard
+              variant="outlined"
+              backgroudColor="white"
+              padding={TSizes.margin_xs}
+            >
+              <Grid container spacing={1}>
+                {chains &&
+                  (chains[0].mainnet as any).length > 0 &&
+                  chains[0].mainnet.map((chain, index) => {
+                    const isSelected =
+                      currentChain?.network_infos.chain_id ===
+                      chain.network_infos.chain_id;
+                    return (
+                      <NetworkItem
+                        key={index}
+                        chain={chain}
+                        handleChangeNextwork={handleChangeNextwork}
+                        isSelected={isSelected}
+                      />
+                    );
+                  })}
+              </Grid>
+            </MainCard>
+          </Stack>
+
+          <Stack>
+            <Typography fontWeight={600}>Testnest</Typography>
+
+            <MainCard
+              variant="outlined"
+              backgroudColor="white"
+              padding={TSizes.margin_xs}
+            >
+              <Grid container spacing={1}>
+                {chains &&
+                  (chains[0].testnet as any).length > 0 &&
+                  chains[0].testnet.map((chain, index) => {
+                    const isSelected =
+                      currentChain?.network_infos.chain_id ===
+                      chain.network_infos.chain_id;
+                    return (
+                      <NetworkItem
+                        key={index}
+                        chain={chain}
+                        handleChangeNextwork={handleChangeNextwork}
+                        isSelected={isSelected}
+                      />
+                    );
+                  })}
+              </Grid>
+            </MainCard>
           </Stack>
         </Box>
       </MainPopup>
