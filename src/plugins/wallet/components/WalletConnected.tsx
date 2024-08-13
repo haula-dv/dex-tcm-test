@@ -61,27 +61,24 @@ export const WalletConnected = () => {
 
   return (
     <>
-      {wallet && (
-        <Stack direction={"row"} spacing={1} alignItems={"center"} pb={2}>
-          {/* <Typography fontSize={"18px"} fontWeight={600}>
+      {/* <Typography fontSize={"18px"} fontWeight={600}>
             {wallet.accounts[0].balance ? wallet.accounts[0].balance.ETH : 0}{" "}
             ETH
           </Typography> */}
-
-          <MainButton
-            variant="filledTonal"
-            color="inherit"
-            startIcon={<IconStarGreen />}
-            id="wallet-button"
-            aria-controls={open ? "wallet-menu" : undefined}
-            aria-haspopup="true"
-            aria-expanded={open ? "true" : undefined}
-            onClick={handleClick}
-          >
-            {wallet.accounts[0].address.substring(0, 6)}...
-            {wallet.accounts[0].address.substr(-4)}
-          </MainButton>
-        </Stack>
+      {wallet && (
+        <MainButton
+          variant="filledTonal"
+          color="inherit"
+          startIcon={<IconStarGreen />}
+          id="wallet-button"
+          aria-controls={open ? "wallet-menu" : undefined}
+          aria-haspopup="true"
+          aria-expanded={open ? "true" : undefined}
+          onClick={handleClick}
+        >
+          {wallet.accounts[0].address.substring(0, 6)}...
+          {wallet.accounts[0].address.substr(-4)}
+        </MainButton>
       )}
 
       <MainPopup
@@ -93,7 +90,7 @@ export const WalletConnected = () => {
           "aria-labelledby": "wallet-button",
         }}
       >
-        <Stack px={2} py={1.8}>
+        <Stack px={1} py={1}>
           {wallet && (
             <Stack direction={"row"} spacing={1.5} alignItems={"center"} pb={2}>
               <Typography fontWeight={600}>

@@ -14,6 +14,7 @@ interface IProps {
   disablePadding?: boolean;
   isBGWhite?: boolean;
   hiddenHeader?: boolean;
+  isFullwidth?: boolean;
 }
 
 export const MainDialog = ({
@@ -25,13 +26,14 @@ export const MainDialog = ({
   disablePadding,
   isBGWhite,
   hiddenHeader,
+  isFullwidth = true,
 }: IProps) => {
   return (
     <CustomDialog
       onClose={handleClose}
       open={open}
       maxWidth={maxWidth}
-      fullWidth
+      fullWidth={isFullwidth}
       role="dialog"
       aria-modal="true"
       isBGWhite={isBGWhite}
@@ -76,7 +78,7 @@ const CustomDialog = styled(Dialog, {
     position: "relative",
     boxShadow: "none",
     backgroundColor: isBGWhite ? "#fff" : theme.palette.grey[50],
-    width: "100%",
+    // width: "100%",
     margin: "16px",
   },
 }));

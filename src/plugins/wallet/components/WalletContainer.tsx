@@ -49,6 +49,7 @@ export const WalletContainer = () => {
         direction={"row"}
         spacing={TSizes.margin_xs}
         justifyContent={"flex-end"}
+        alignItems={"center"}
       >
         <Button variant="contained" color="secondary">
           0 SAP

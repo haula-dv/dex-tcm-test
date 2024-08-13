@@ -26,7 +26,7 @@ export const Header = () => {
   ];
 
   return (
-    <MainAppBar elevation={0}>
+    <MainAppBar elevation={0} position="static">
       <MainContainer>
         <Toolbar disableGutters>
           <Stack
@@ -39,9 +39,9 @@ export const Header = () => {
               direction={"row"}
               alignItems={"center"}
               spacing={TSizes.margin_md}
-              height={"100%"}
             >
               <Logo />
+
               {navItems.map((navItem) => (
                 <Link key={navItem.label} href={navItem.to}>
                   <NavItem isActived={pathName === navItem.to}>
@@ -62,7 +62,10 @@ export const Header = () => {
 const MainAppBar = styled(AppBar)(({ theme }) => ({
   backgroundColor: "#fff",
   zIndex: 0,
+  height: "56px",
+  borderRadius: "0px",
   "& .MuiToolbar-root": {
+    height: "56px",
     minHeight: "auto",
   },
 }));
@@ -78,7 +81,7 @@ const NavItem = styled(Box, {
   position: "relative",
   display: "flex", // Flex display to center content
   alignItems: "center", // Center the Typography vertically
-  height: "80px",
+  height: "56px",
 
   "&:after": {
     ...Mixins.boxFullMixin({

@@ -8,7 +8,7 @@ export const accountWalletState = createZustandStore<IAccountWallet | null>({
 
 export const supportedChainsLoadingState = createZustandStore<boolean>({
   key: "supportedChainsLoadingState",
-  default: true,
+  default: false,
 });
 
 export const supportedChainsState = createZustandStore<ISupportedChain[]>({

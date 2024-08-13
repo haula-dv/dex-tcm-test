@@ -1,6 +1,7 @@
 "use client";
 import { MainContainer } from "@/components/container/MainContainer";
 import { Header } from "@/components/layouts/Header";
+import { UnSupportNextworkAlert } from "@/plugins/wallet/components/UnSupportNextworkAlert";
 import { OrderlyConfigProviderRoot } from "@/provider/OrderlyConfigProviderRoot";
 import Web3OnboardProviderRoot from "@/provider/WalletConnectProvider";
 import { Box } from "@mui/material";
@@ -16,13 +17,12 @@ export default function RootLayout({
       <Web3OnboardProviderRoot>
         <OrderlyConfigProviderRoot>
           <Header />
-          <Box pt={"100px"}>
-            <MainContainer>
-              <Box maxWidth={"440px"} mx={"auto"}>
-                {children}
-              </Box>
-            </MainContainer>
-          </Box>
+          <UnSupportNextworkAlert />
+          <MainContainer sx={{ pt: "40px" }}>
+            <Box maxWidth={"440px"} mx={"auto"}>
+              {children}
+            </Box>
+          </MainContainer>
         </OrderlyConfigProviderRoot>
       </Web3OnboardProviderRoot>
     </main>

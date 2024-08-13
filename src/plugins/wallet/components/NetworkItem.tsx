@@ -20,7 +20,6 @@ export const NetworkItem = ({
   return (
     <Grid item md={12}>
       <MainButton
-        size="small"
         color="inherit"
         fullWidth
         align="start"
