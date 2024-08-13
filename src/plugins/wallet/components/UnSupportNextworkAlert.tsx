@@ -9,13 +9,10 @@ import { useState } from "react";
 import { ChainList } from "./ChainsButton";
 
 export const UnSupportNextworkAlert = () => {
-  const [isSwitchNetwork, setIsSwitchNetwork] = useState(true);
-
   const [openModal, setOpenModal] = useState(false);
 
   const [{ connectedChain }, setChain] = useSetChain();
   const [_, { findByChainId }] = useChains();
-  const chains = useChains();
 
   // GET CURRENT CHAIN
   const currentChain = findByChainId(

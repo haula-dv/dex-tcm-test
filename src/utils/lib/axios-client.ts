@@ -1,6 +1,6 @@
 import axios from "axios";
 import queryString from "query-string";
-import { TDotEnv } from "./../constants/dotenv";
+import { TDotEnv } from "../constants/dotenv";
 
 // Get access token
 const ISSERVER = typeof window === "undefined";
@@ -13,7 +13,9 @@ let tetochaAccessToken = "";
 
 // Set up default config for http requests here
 export const axiosClient = axios.create({
-  baseURL: TDotEnv.API_ENDPOINT_URL,
+  // baseURL: TDotEnv.API_ENDPOINT_URL,
+  baseURL: "https://api-evm.orderly.org/v1/public/",
+
   headers: {
     "Content-Type": "application/json",
     Authorization: "Bearer " + "",
@@ -61,37 +63,6 @@ axiosClientFormData.interceptors.request.use(async (config) => {
 
 // Handle response
 axiosClientFormData.interceptors.response.use(
-  (response) => {
-    if (response && response.data) {
-      return response.data;
-    }
-    return response;
-  },
-  (error) => {
-    // Handle errors
-    return Promise.reject(error);
-  }
-);
-
-////////////////////////////////////////////////////////////
-// Set up default config for http requests here
-export const axiosClientWordpress = axios.create({
-  baseURL: process.env.API_WORDPRESS_URL,
-  headers: {
-    "Content-Type": "application/json",
-    Authorization: "Bearer " + tetochaAccessToken,
-  },
-  paramsSerializer: (params) => queryString.stringify(params),
-});
-
-// Handle request
-axiosClientWordpress.interceptors.request.use(async (config) => {
-  // Handle token here ...
-  return config;
-});
-
-// Handle response
-axiosClientWordpress.interceptors.response.use(
   (response) => {
     if (response && response.data) {
       return response.data;

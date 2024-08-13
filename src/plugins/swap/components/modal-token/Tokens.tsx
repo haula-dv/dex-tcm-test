@@ -86,13 +86,7 @@ export const Tokens = ({ handleSelectToken, setTokenType, type }: IProps) => {
                         isImportToken={index == 1}
                         item={item}
                         isSelected={isSelected}
-                        handleSelectToken={() => {
-                          if (index == 1) {
-                            setTokenType("importToken");
-                          } else {
-                            handleSelectToken(item);
-                          }
-                        }}
+                        handleSelectToken={() => handleSelectToken(item)}
                       />
                     );
                   })
