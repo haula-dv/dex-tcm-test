@@ -4,12 +4,13 @@ import { idFromHexChainId } from "@/utils/formatters/token";
 import { Alert, Stack, Typography } from "@mui/material";
 import { styled } from "@mui/material/styles";
 import { useChains } from "@orderly.network/hooks";
-import { useSetChain } from "@web3-onboard/react";
+import { useConnectWallet, useSetChain } from "@web3-onboard/react";
 import { useState } from "react";
 import { ChainList } from "./ChainsButton";
 
 export const UnSupportNextworkAlert = () => {
   const [openModal, setOpenModal] = useState(false);
+  const [{ wallet }, connect, disconnectWallet] = useConnectWallet();
 
   const [{ connectedChain }, setChain] = useSetChain();
   const [_, { findByChainId }] = useChains();
@@ -23,7 +24,7 @@ export const UnSupportNextworkAlert = () => {
     setOpenModal(!openModal);
   };
 
-  if (!currentChain)
+  if (wallet && !currentChain)
     return (
       <>
         <CustomAlert color="warning" icon={<></>}>

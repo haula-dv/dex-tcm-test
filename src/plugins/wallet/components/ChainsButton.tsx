@@ -66,7 +66,7 @@ export const ChainsButton = () => {
         }
       >
         {supportedChainsLoading ? (
-          "CHAINING"
+          "Requesting"
         ) : (
           <Typography>
             {!connectedChain ? (

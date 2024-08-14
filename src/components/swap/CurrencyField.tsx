@@ -1,5 +1,5 @@
 "use client";
-import { getImageNextwork, ITokenType } from "@/common";
+import { ITokenType } from "@/common";
 import { TokenSelect } from "@/plugins/swap/components/token/TokenSelect";
 import { tokenInputState, tokenOutputState } from "@/plugins/swap/store";
 import { TSizes } from "@/utils/themes/custom-theme/sizes";
@@ -38,7 +38,7 @@ export const CurrencyField = ({
 
   // Function to select a token
   const handleSelectToken = (token: ITokenType) => {
-    if (token.token === "NEAR") {
+    if (token.token === "USDC") {
       handleAddToken(token);
       return;
     }
@@ -67,24 +67,22 @@ export const CurrencyField = ({
 
   // Handle add token
   const handleAddToken = async (token: ITokenType) => {
-    try {
-      const response = await (window as any).ethereum.request({
-        method: "wallet_watchAsset",
-        params: {
-          type: "ERC20", // Loại tài sản (ở đây là token ERC20)
-          options: {
-            address: token.token_account_id, // Địa chỉ token
-            symbol: token.token, // Ký hiệu token
-            decimals: token.decimals, // Số thập phân của token
-            image: getImageNextwork(token.token, "symbol_logo"), // Hình ảnh đại diện (có thể bỏ qua)
-          },
-        },
-      });
-
-      console.log(response);
-    } catch (error) {
-      // console.log(error.error);
-    }
+    // try {
+    //   const response = await (window as any).ethereum.request({
+    //     method: "wallet_watchAsset",
+    //     params: {
+    //       type: "ERC20", // Loại tài sản (ở đây là token ERC20)
+    //       options: {
+    //         address: "0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48", // Địa chỉ token
+    //         symbol: token.token, // Ký hiệu token
+    //         decimals: token.decimals, // Số thập phân của token
+    //         image: getImageNextwork(token.token, "symbol_logo"), // Hình ảnh đại diện (có thể bỏ qua)
+    //       },
+    //     },
+    //   });
+    // } catch (error) {
+    //   // console.log(error.error);
+    // }
   };
 
   return (

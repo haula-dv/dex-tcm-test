@@ -58,22 +58,26 @@ export const OrderlyConnect = () => {
   // Handle Register Account
   const handleRegisterAccount = async () => {
     setLoadingRegister(true);
+
     const { update } = customNotification({
       eventCode: "register",
       type: "pending",
       message: "Registering account...",
     });
+
     try {
-      await account.createAccount();
+      const res = await account.createAccount();
       update({
         eventCode: "registerSuccess",
         type: "success",
         message: "Registration complete!",
         autoDismiss: 5_000,
       });
+
+      console.log(res);
     } catch (err) {
       console.error(err);
-      mainToast("registration failed", "error");
+      // mainToast("registration failed", "error");
 
       update({
         eventCode: "registerError",
@@ -82,7 +86,6 @@ export const OrderlyConnect = () => {
         autoDismiss: 5_000,
       });
       setLoadingRegister(false);
-      throw err;
     } finally {
       setLoadingRegister(false);
     }

@@ -40,7 +40,7 @@ export const ConfirmSwapContent = ({
             </Typography>
 
             <MainChip
-              label={tokenSellSelected && tokenSellSelected.name}
+              label={tokenSellSelected && tokenSellSelected.token}
               variant="outlined"
               color="white"
               icon={
@@ -68,7 +68,7 @@ export const ConfirmSwapContent = ({
             </Typography>
 
             <MainChip
-              label={tokenBuySelected && tokenBuySelected.name}
+              label={tokenBuySelected && tokenBuySelected.token}
               variant="outlined"
               color="white"
               icon={

@@ -13,8 +13,7 @@ let tetochaAccessToken = "";
 
 // Set up default config for http requests here
 export const axiosClient = axios.create({
-  // baseURL: TDotEnv.API_ENDPOINT_URL,
-  baseURL: "https://api-evm.orderly.org/v1/public/",
+  baseURL: TDotEnv.API_ENDPOINT_URL,
 
   headers: {
     "Content-Type": "application/json",
