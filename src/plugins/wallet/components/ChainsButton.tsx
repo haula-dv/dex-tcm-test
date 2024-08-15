@@ -2,21 +2,28 @@ import { getImageNextwork } from "@/common";
 import { MainButton } from "@/components/button/MainButton";
 import { MainPopup } from "@/components/popup/MainPopup";
 import { TokenIcon } from "@/components/token/TokenIcon";
-import { hexChainId, idFromHexChainId } from "@/utils/formatters/token";
-import { Box, Grid, Stack, Typography } from "@mui/material";
+import { idFromHexChainId } from "@/utils/formatters/token";
 import { useChains } from "@orderly.network/hooks";
+import { API } from "@orderly.network/types";
 import { IconChevronDown } from "@tabler/icons-react";
-import { useSetChain } from "@web3-onboard/react";
+import { useConnectWallet, useSetChain } from "@web3-onboard/react";
 import { setZustandValue } from "nes-zustand";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { useStore } from "zustand";
 import { supportedChainsLoadingState } from "../store";
-import { NetworkItem } from "./NetworkItem";
+import { ChainList } from "./ChainList";
 
 export const ChainsButton = () => {
   const [{ connectedChain }, setChain] = useSetChain();
   const [_, { findByChainId }] = useChains();
+  const [{ wallet }, connect, disconnectWallet] = useConnectWallet();
+  const chains = useChains();
 
+  // STATE
+  const [currentChainSelected, setCurrentChainSelected] =
+    useState<API.Chain | null>(null);
+
+  // SHOW POPUP
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
 
@@ -24,6 +31,14 @@ export const ChainsButton = () => {
     setAnchorEl(event.currentTarget);
   };
 
+  // Handle get chain selected
+  const handleGetChainSelected = useCallback((chain?: API.Chain) => {
+    if (chain) {
+      setCurrentChainSelected(chain);
+    }
+  }, []);
+
+  // Handle close popover
   const handleClose = () => {
     setAnchorEl(null);
   };
@@ -45,6 +60,29 @@ export const ChainsButton = () => {
     }
   }, [currentChain]);
 
+  // Handle render chain text
+  const renderChainItem = () => {
+    if (currentChainSelected) {
+      return `${currentChainSelected?.network_infos?.name.slice(0, 4)}...`;
+    }
+
+    if (supportedChainsLoading) {
+      return "Requesting...";
+    }
+
+    if (!currentChain) {
+      const currentChain = chains[0].mainnet[0];
+
+      if (currentChain) {
+        return `${currentChain?.network_infos?.name.slice(0, 4)}...`;
+      } else {
+        return "Unsupported";
+      }
+    } else {
+      return `${currentChain?.network_infos?.name.slice(0, 4)}...`;
+    }
+  };
+
   return (
     <>
       <MainButton
@@ -65,17 +103,7 @@ export const ChainsButton = () => {
           ) : null
         }
       >
-        {supportedChainsLoading ? (
-          "Requesting"
-        ) : (
-          <Typography>
-            {!connectedChain ? (
-              "Unsupported"
-            ) : (
-              <>{currentChain?.network_infos?.name.slice(0, 4)}...</>
-            )}
-          </Typography>
-        )}
+        {renderChainItem()}
       </MainButton>
 
       <MainPopup
@@ -87,86 +115,8 @@ export const ChainsButton = () => {
           "aria-labelledby": "chain-button",
         }}
       >
-        <ChainList />
+        <ChainList handleClose={handleGetChainSelected} />
       </MainPopup>
     </>
-  );
-};
-
-interface IProps {
-  handleClose?: () => void;
-  maxWidth?: string;
-}
-
-export const ChainList = ({ handleClose, maxWidth = "240px" }: IProps) => {
-  const [{ connectedChain }, setChain] = useSetChain();
-  const [_, { findByChainId }] = useChains();
-  const chains = useChains();
-
-  // GET CURRENT CHAIN
-  const currentChain = findByChainId(
-    idFromHexChainId(connectedChain?.id ?? "")
-  );
-
-  // Handle change network
-  const handleChangeNextwork = async (chainId: number) => {
-    handleClose && handleClose();
-    setZustandValue(supportedChainsLoadingState, true);
-
-    await setChain({
-      chainId: hexChainId(chainId),
-      chainNamespace: "evm",
-    });
-    setZustandValue(supportedChainsLoadingState, false);
-  };
-
-  return (
-    <Box width={"100%"} maxWidth={maxWidth} px={1.8} py={0.5}>
-      <Stack pb={1}>
-        <Typography fontWeight={600}>Mainnest</Typography>
-
-        <Grid container spacing={1}>
-          {chains &&
-            (chains[0].mainnet as any).length > 0 &&
-            chains[0].mainnet.map((chain, index) => {
-              const isSelected =
-                currentChain?.network_infos.chain_id ===
-                chain.network_infos.chain_id;
-              return (
-                <NetworkItem
-                  key={index}
-                  chain={chain}
-                  handleChangeNextwork={handleChangeNextwork}
-                  isSelected={isSelected}
-                />
-              );
-            })}
-        </Grid>
-      </Stack>
-
-      <Stack>
-        <Typography fontWeight={600} pb={0.5}>
-          Testnest
-        </Typography>
-
-        <Grid container spacing={1}>
-          {chains &&
-            (chains[0].testnet as any).length > 0 &&
-            chains[0].testnet.map((chain, index) => {
-              const isSelected =
-                currentChain?.network_infos.chain_id ===
-                chain.network_infos.chain_id;
-              return (
-                <NetworkItem
-                  key={index}
-                  chain={chain}
-                  handleChangeNextwork={handleChangeNextwork}
-                  isSelected={isSelected}
-                />
-              );
-            })}
-        </Grid>
-      </Stack>
-    </Box>
   );
 };

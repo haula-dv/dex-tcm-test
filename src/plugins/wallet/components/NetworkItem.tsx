@@ -1,7 +1,7 @@
 import { getImageNextwork } from "@/common";
 import { MainButton } from "@/components/button/MainButton";
 import theme from "@/utils/themes/mui-theme";
-import { Grid } from "@mui/material";
+import { Grid, Typography } from "@mui/material";
 import { API } from "@orderly.network/types";
 import { IconCheck } from "@tabler/icons-react";
 import Image from "next/image";
@@ -9,7 +9,7 @@ import Image from "next/image";
 interface IProps {
   chain: API.Chain;
   isSelected: boolean;
-  handleChangeNextwork: (chainId: number) => void;
+  handleChangeNextwork: (chain: API.Chain) => void;
 }
 
 export const NetworkItem = ({
@@ -18,13 +18,13 @@ export const NetworkItem = ({
   handleChangeNextwork,
 }: IProps) => {
   return (
-    <Grid item md={12}>
+    <Grid item md={12} mx={0.5}>
       <MainButton
         color="inherit"
         fullWidth
         align="start"
         variant={isSelected ? "filledTonal" : "text"}
-        onClick={() => handleChangeNextwork(chain.network_infos.chain_id ?? 0)}
+        onClick={() => handleChangeNextwork(chain)}
         startIcon={
           <Image
             src={getImageNextwork(chain.network_infos.chain_id)}
@@ -37,13 +37,14 @@ export const NetworkItem = ({
             }}
           />
         }
-        endIcon={
-          isSelected ? (
-            <IconCheck size="1rem" color={theme.palette.success.main} />
-          ) : null
-        }
       >
-        {chain?.network_infos?.name}
+        <Typography flex={1} textAlign={"start"}>
+          {chain?.network_infos?.name}
+        </Typography>
+
+        {isSelected ? (
+          <IconCheck size="1rem" color={theme.palette.success.main} />
+        ) : null}
       </MainButton>
     </Grid>
   );

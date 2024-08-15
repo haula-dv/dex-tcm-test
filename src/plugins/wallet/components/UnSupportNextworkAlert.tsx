@@ -6,7 +6,7 @@ import { styled } from "@mui/material/styles";
 import { useChains } from "@orderly.network/hooks";
 import { useConnectWallet, useSetChain } from "@web3-onboard/react";
 import { useState } from "react";
-import { ChainList } from "./ChainsButton";
+import { ChainList } from "./ChainList";
 
 export const UnSupportNextworkAlert = () => {
   const [openModal, setOpenModal] = useState(false);
