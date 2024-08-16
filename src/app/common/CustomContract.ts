@@ -38,7 +38,7 @@ const MantleSepolia = {
 };
 
 export class CustomContractManager extends BaseContractManager {
-	constructor(props) {
+	constructor(props: any) {
 		super(props);
 	}
 
@@ -53,7 +53,7 @@ export class CustomContractManager extends BaseContractManager {
 
 		let targetTestnet = ArbitrumSepolia;
 
-		const testnetChainId = localStorage.getItem('testnet-chain-id');
+		const testnetChainId = typeof window == 'object' && localStorage.getItem('testnet-chain-id');
 
 		if (testnetChainId === '5003') {
 			targetTestnet = MantleSepolia;

@@ -20,7 +20,7 @@ type OrderlyContainerProps = PropsWithChildren<{
 }>;
 
 const OrderlyContainer: React.FC<OrderlyContainerProps> = (props) => {
-	const networkId = (localStorage.getItem('orderly-networkId') ?? 'mainnet') as NetworkId;
+	const networkId = (typeof window == 'object' ? localStorage.getItem('orderly-networkId') : 'mainnet') as NetworkId;
 	const router = useRouter();
 
 	const { onboard, app } = OrderlyConfig();

@@ -1,4 +1,4 @@
- export default ({
+export default {
 	distDir: 'dist',
 	output: 'standalone',
 	// reactStrictMode: true,
@@ -24,5 +24,4 @@
 			},
 		];
 	},
-})
-
+};

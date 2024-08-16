@@ -26,20 +26,20 @@ const NavbarTab: React.FC = () => {
 				title: 'Trade',
 				value: 'trade',
 				path: () => {
-					const symbol = localStorage.getItem(_orderlySymbolKey) ?? 'PERP_ETH_USDC';
+					const symbol = typeof window == 'object' ? localStorage.getItem(_orderlySymbolKey) : 'PERP_ETH_USDC';
 					return `/perp/${symbol}`;
-				}
+				},
 			},
 			{
 				title: 'Portfolio',
 				value: 'portfolio',
-				path: () => '/portfolio'
+				path: () => '/portfolio',
 			},
 			{
 				title: 'Referral',
 				value: 'referral',
-				path: () => '/referral/dashboard'
-			}
+				path: () => '/referral/dashboard',
+			},
 		],
 		[],
 	);
@@ -51,8 +51,7 @@ const NavbarTab: React.FC = () => {
 	useEffect(() => {
 		setActiveTab(pathname === '/portfolio' ? 'portfolio' : 'trade');
 
-		console.log("pathname", pathname);
-		
+		console.log('pathname', pathname);
 	}, [pathname]);
 
 	return (

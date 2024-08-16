@@ -56,11 +56,11 @@ export class CustomConfigStore implements ConfigStore {
 			['operatorUrl', urls['operatorUrl']],
 			['networkId', networkId],
 			['swapSupportApiUrl', 'https://fi-api.woo.org'],
-		]);
+		] as any);
 	}
 	get<T>(key: ConfigKey): T {
 		if (key === Markets_key) {
-			const jsonStr = localStorage.getItem(Markets_key);
+			const jsonStr = typeof window == 'object' && localStorage.getItem(Markets_key);
 			if (jsonStr) {
 				this.map.set(Markets_key, JSON.parse(jsonStr));
 			} else {
