@@ -1,31 +1,26 @@
-import { ITab } from "@/common/types/components/tab";
-import { TSizes } from "@/utils/themes/custom-theme/sizes";
-import { Button, Stack } from "@mui/material";
-import { styled } from "@mui/material/styles";
+import { ITab } from '@/common/types/components/tab';
+import { TSizes } from '@/utils/themes/custom-theme/sizes';
+import { Button, Stack } from '@mui/material';
+import { styled } from '@mui/material/styles';
 
 interface IProps {
-  tabs: ITab[];
+	tabs: ITab[];
 }
 
 export const GrayTab = ({ tabs }: IProps) => {
-  return (
-    <CustomTab direction={"row"} spacing={1}>
-      {tabs.map(({ label, value }) => (
-        <Button
-          fullWidth
-          key={value}
-          variant={value == 1 ? "contained" : "text"}
-          color="darkPrimary"
-        >
-          {label}
-        </Button>
-      ))}
-    </CustomTab>
-  );
+	return (
+		<CustomTab direction={'row'} spacing={1}>
+			{tabs.map(({ label, value }) => (
+				<Button fullWidth key={value} variant={value == 1 ? 'contained' : 'text'} color="darkPrimary">
+					{label}
+				</Button>
+			))}
+		</CustomTab>
+	);
 };
 
 const CustomTab = styled(Stack)(({ theme }) => ({
-  backgroundColor: theme.palette.grey[50],
-  // padding: "5px",
-  borderRadius: TSizes.borderRadius,
+	backgroundColor: theme.palette.grey[50],
+	// padding: "5px",
+	borderRadius: TSizes.borderRadius,
 }));

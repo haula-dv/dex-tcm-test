@@ -1,9 +1,9 @@
 {
-  "editor.defaultFormatter": "esbenp.prettier-vscode",
-  "editor.formatOnSave": true,
-  "prettier.useTabs": false,
-  "prettier.configPath": ".prettierrc.json",
-  "editor.codeActionsOnSave": {
-    "source.organizeImports": "explicit"
-  }
+	"editor.defaultFormatter": "esbenp.prettier-vscode",
+	"editor.formatOnSave": true,
+	"prettier.useTabs": false,
+	"prettier.configPath": ".prettierrc.json",
+	"editor.codeActionsOnSave": {
+		"source.organizeImports": "explicit"
+	}
 }

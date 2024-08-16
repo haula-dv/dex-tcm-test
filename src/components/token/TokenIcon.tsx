@@ -1,33 +1,31 @@
-import Image from "next/image";
-import { useState } from "react";
-import { NoToken } from "../swap/NoToken";
+import Image from 'next/image';
+import { useState } from 'react';
+import { NoToken } from '../swap/NoToken';
 
 interface IProps {
-  size?: number;
-  url: string;
-  symbol?: string;
-  fontSize?: string;
+	size?: number;
+	url: string;
+	symbol?: string;
+	fontSize?: string;
 }
 
 export const TokenIcon = ({ url, size = 20, symbol, fontSize }: IProps) => {
-  const [isError, setIsError] = useState(false);
+	const [isError, setIsError] = useState(false);
 
-  if (isError) {
-    return (
-      <NoToken symbol={symbol ?? "T"} sizes={`${size}px`} fontSize={fontSize} />
-    );
-  } else
-    return (
-      <Image
-        src={url}
-        height={size}
-        width={size}
-        alt=""
-        onError={() => setIsError(true)}
-        style={{
-          overflow: "hidden",
-          borderRadius: "50%",
-        }}
-      />
-    );
+	if (isError) {
+		return <NoToken symbol={symbol ?? 'T'} sizes={`${size}px`} fontSize={fontSize} />;
+	} else
+		return (
+			<Image
+				src={url}
+				height={size}
+				width={size}
+				alt=""
+				onError={() => setIsError(true)}
+				style={{
+					overflow: 'hidden',
+					borderRadius: '50%',
+				}}
+			/>
+		);
 };
