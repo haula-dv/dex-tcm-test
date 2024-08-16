@@ -1,7 +1,7 @@
 import { Metadata } from 'next';
 import ClientThemeProvider from '../components/ClientThemeProvider';
+import OrderlyContainer from '../provider/OrderlyContainer';
 import '../styles/global.scss';
-import OrderlyContainer from './common/OrderlyContainer';
 
 export const metadata: Metadata = {
 	title: 'TCMP Dex Trade',

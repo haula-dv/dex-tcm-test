@@ -1,7 +1,7 @@
 'use client';
-import { ORDERLY_SDK_DEMO_TITLE_KEY } from '@/src/app/config';
+import MainViewContainer from '@/sr@/src/utils/constantw/MainView';
 import { _orderlySymbolKey } from '@/src/app/constant';
-import MainViewContainer from '@/src/plugins/main-view/MainView';
+import { ORDERLY_SDK_DEMO_TITLE_KEY } from '@/src/utils/config/orderly/config';
 import '@orderly.network/react/dist/styles.css';
 import { useRouter } from 'next/navigation';
 import { useCallback, useEffect, useState } from 'react';

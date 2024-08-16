@@ -1,5 +1,5 @@
+import { OrderlyConfig } from '@/src/utils/config/orderly/config';
 import { TradingPage } from '@orderly.network/react';
-import { OrderlyConfig } from '@/src/app/config';
 
 interface Props {
 	onSymbolChange: (symbol: any) => void;

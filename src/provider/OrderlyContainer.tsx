@@ -1,12 +1,12 @@
 'use client';
-import { OrderlyConfig } from '@/src/app/config';
+import { OrderlyConfig } from '@/src/utils/config/orderly/config';
 import { OrderlyAppProvider } from '@orderly.network/react';
 import { ConnectorProvider } from '@orderly.network/web3-onboard';
 import { useRouter } from 'next/navigation';
 import { PropsWithChildren, useCallback } from 'react';
-import { CustomConfigStore, ENV_NAME } from './CustomConfigStore';
-import { CustomContractManager } from './CustomContract';
-import NavbarTab from './NavbarTab';
+import NavbarTab from '../components/NavbarTab';
+import { CustomConfigStore, ENV_NAME } from '../utils/config/orderly/CustomConfigStore';
+import { CustomContractManager } from '../utils/config/orderly/CustomContract';
 export type NetworkId = 'testnet' | 'mainnet';
 
 const HostEnvMap: Record<string, ENV_NAME> = {

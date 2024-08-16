@@ -1,14 +1,8 @@
 {
-  "rest-client.environmentVariables": {
-    "local": {
-      "baseUrl": "https://js-post-api.herokuapp.com/api"
-    },
-    "production": {
-      "baseUrl": "https://js-post-api.herokuapp.com/api"
-    }
-  },
   "editor.defaultFormatter": "esbenp.prettier-vscode",
   "editor.formatOnSave": true,
+  "prettier.useTabs": false,
+  "prettier.configPath": ".prettierrc.json",
   "editor.codeActionsOnSave": {
     "source.organizeImports": "explicit"
   }

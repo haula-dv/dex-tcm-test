@@ -1,5 +1,5 @@
 'use client';
-import { OrderlyConfig } from '@/src/app/config';
+import { OrderlyConfig } from '@/src/utils/config/orderly/config';
 import { useAccount, useOrderbookStream, useOrderEntry, useSymbolsInfo } from '@orderly.network/hooks';
 import { AssetsContext, TradingPage } from '@orderly.network/react';
 import { OrderSide } from '@orderly.network/types';

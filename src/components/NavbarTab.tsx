@@ -1,7 +1,7 @@
 'use client';
 import { usePathname, useRouter } from 'next/navigation';
 import React, { useEffect, useMemo, useState } from 'react';
-import { _orderlySymbolKey } from '../constant';
+import { _orderlySymbolKey } from '../utils/constant';
 
 export type Tab = {
 	title: string;
