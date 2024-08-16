@@ -1,47 +1,32 @@
-import "@/styles/global.scss";
-import "react-toastify/dist/ReactToastify.css";
-
-import type { Metadata } from "next";
-
-import { AppRouterCacheProvider } from "@mui/material-nextjs/v14-appRouter";
-
-import ClientThemeProvider from "@/components/ClientThemeProvider";
-import { inter } from "@/utils/themes/custom-theme/Typography";
-
-import { Loading } from "@/components/loading/loading";
-import Web3OnboardProviderRoot from "@/provider/WalletConnectProvider";
-import React from "react";
-import { Toaster } from "sonner";
+import { Metadata } from 'next';
+import ClientThemeProvider from '../components/ClientThemeProvider';
+import OrderlyContainer from '../provider/OrderlyContainer';
+import '../styles/global.scss';
 
 export const metadata: Metadata = {
-  applicationName: "Dex",
-  title: "Dex",
-  description: "Dex",
-  appleWebApp: {
-    capable: true,
-    statusBarStyle: "default",
-    title: "Dex",
-  },
+	title: 'TCMP Dex Trade',
+	description: 'TCMP Dex Trade',
 };
 
-export default function RootLayout({
-  children,
-}: Readonly<{
-  children: React.ReactNode;
-}>) {
-  return (
-    <html lang="en" className={`${inter.variable}`}>
-      <head />
-      <body>
-        <AppRouterCacheProvider options={{ enableCssLayer: true }}>
-          <ClientThemeProvider>
-            <Web3OnboardProviderRoot>{children}</Web3OnboardProviderRoot>
+export const viewport = {
+	minimumScale: 1.0,
+	maximumScale: 1.0,
+	userScalable: false,
+};
 
-            <Loading />
-            <Toaster closeButton position="top-right" />
-          </ClientThemeProvider>
-        </AppRouterCacheProvider>
-      </body>
-    </html>
-  );
+export default function RootLayout({ children }: { children: React.ReactNode }) {
+	return (
+		<html lang="en">
+			<head>
+				<link rel="icon" type="image/png" href="/apple-touch-icon.png" />
+				<link rel="apple-touch-icon" type="image/png" sizes="16x16" href="/apple-touch-icon.png" />
+			</head>
+
+			<body>
+				<ClientThemeProvider>
+					<OrderlyContainer>{children}</OrderlyContainer>
+				</ClientThemeProvider>
+			</body>
+		</html>
+	);
 }

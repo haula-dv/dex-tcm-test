@@ -1,88 +1,79 @@
-import {
-  isTokenSearchState,
-  ITokenType,
-  tokenLoadingState,
-  tokensSearchState,
-  tokensState,
-} from "@/common";
-import { TSizes } from "@/utils/themes/custom-theme/sizes";
-import { Box, InputBase, styled } from "@mui/material";
-import { IconX } from "@tabler/icons-react";
-import { debounce } from "lodash";
-import { setZustandValue } from "nes-zustand";
-import { ChangeEvent, useCallback, useEffect, useState } from "react";
-import { MainIconButton } from "../button/MainIconButton";
-import IconSearch from "../icons/search";
+import { isTokenSearchState, ITokenType, tokenLoadingState, tokensSearchState, tokensState } from '@/common';
+import { TSizes } from '@/utils/themes/custom-theme/sizes';
+import { Box, InputBase, styled } from '@mui/material';
+import { IconX } from '@tabler/icons-react';
+import { debounce } from 'lodash';
+import { setZustandValue } from 'nes-zustand';
+import { ChangeEvent, useCallback, useEffect, useState } from 'react';
+import { MainIconButton } from '../button/MainIconButton';
+import IconSearch from '../icons/search';
 
 interface IProps {
-  tokens: ITokenType[];
+	tokens: ITokenType[];
 }
 
 export const SearchTokenField = ({ tokens }: IProps) => {
-  const [value, setValue] = useState("");
+	const [value, setValue] = useState('');
 
-  const onChange = (e: ChangeEvent<HTMLTextAreaElement | HTMLInputElement>) => {
-    setValue(e.target.value);
-    debounceFn(e.target.value);
-  };
+	const onChange = (e: ChangeEvent<HTMLTextAreaElement | HTMLInputElement>) => {
+		setValue(e.target.value);
+		debounceFn(e.target.value);
+	};
 
-  const handleDebounceFn = async (value: string) => {
-    if (value) {
-      setZustandValue(isTokenSearchState, true);
-      setZustandValue(tokenLoadingState, true);
+	const handleDebounceFn = async (value: string) => {
+		if (value) {
+			setZustandValue(isTokenSearchState, true);
+			setZustandValue(tokenLoadingState, true);
 
-      const filters = tokens.filter((item) =>
-        item.token.toLowerCase().includes(value.toLowerCase())
-      );
+			const filters = tokens.filter((item) => item.token.toLowerCase().includes(value.toLowerCase()));
 
-      setZustandValue(tokensSearchState, filters);
-      setZustandValue(tokenLoadingState, false);
-      return;
-    }
+			setZustandValue(tokensSearchState, filters);
+			setZustandValue(tokenLoadingState, false);
+			return;
+		}
 
-    await handleClear();
-  };
+		await handleClear();
+	};
 
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  const debounceFn = useCallback(debounce(handleDebounceFn, 600), []);
+	const debounceFn = useCallback(debounce(handleDebounceFn, 600), []);
 
-  const handleClear = () => {
-    setValue("");
-    setZustandValue(isTokenSearchState, false);
-    setZustandValue(tokensState, tokens);
-  };
+	const handleClear = () => {
+		setValue('');
+		setZustandValue(isTokenSearchState, false);
+		setZustandValue(tokensState, tokens);
+	};
 
-  useEffect(() => {
-    return () => handleClear();
-  }, []);
+	useEffect(() => {
+		return () => handleClear();
+	}, []);
 
-  return (
-    <CustomSearchField>
-      <IconSearch />
-      <Box ml={1} />
-      <InputBase
-        placeholder="Search token or address"
-        sx={{ width: "100%" }}
-        onChange={onChange}
-        value={value}
-        disabled={tokens.length === 0}
-      />
+	return (
+		<CustomSearchField>
+			<IconSearch />
+			<Box ml={1} />
+			<InputBase
+				placeholder="Search token or address"
+				sx={{ width: '100%' }}
+				onChange={onChange}
+				value={value}
+				disabled={tokens.length === 0}
+			/>
 
-      {value && (
-        <MainIconButton edge="end" onClick={handleClear}>
-          <IconX />
-        </MainIconButton>
-      )}
-    </CustomSearchField>
-  );
+			{value && (
+				<MainIconButton edge="end" onClick={handleClear}>
+					<IconX />
+				</MainIconButton>
+			)}
+		</CustomSearchField>
+	);
 };
 
 const CustomSearchField = styled(Box)(({ theme }) => ({
-  height: TSizes.fieldSearchHeight,
-  backgroundColor: theme.palette.grey[50],
-  borderRadius: TSizes.borderRadius,
-  border: `1px solid ${theme.palette.grey[100]}`,
-  display: "flex",
-  alignItems: "center",
-  padding: "10px",
+	height: TSizes.fieldSearchHeight,
+	backgroundColor: theme.palette.grey[50],
+	borderRadius: TSizes.borderRadius,
+	border: `1px solid ${theme.palette.grey[100]}`,
+	display: 'flex',
+	alignItems: 'center',
+	padding: '10px',
 }));
