@@ -35,6 +35,7 @@
 		"@web3-onboard/walletconnect": "^2.5.1",
 		"assert": "^2.0.0",
 		"axios": "^1.6.2",
+		"common-es": "^1.0.1",
 		"eslint-plugin-fp": "^2.3.0",
 		"near-api-js": "^0.44.0",
 		"nes-zustand": "^0.2.2",

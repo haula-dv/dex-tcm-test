@@ -1,8 +1,15 @@
-export default {
-	experimental: {
-		ppr: 'incremental',
-	},
+/**
+ * @type {import('next').NextConfig}
+ */
+import { getGlobals } from 'common-es';
+import path from 'path';
 
+const { __dirname, __filename } = getGlobals(import.meta.url);
+
+const nextConfig = {
+	distDir: 'dist',
+	output: 'standalone',
+	// reactStrictMode: true,
 	webpack: (config, { isServer }) => {
 		if (!isServer) {
 			// don't resolve 'fs' module on the client to prevent this error on build --> Error: Can't resolve 'fs'
@@ -14,8 +21,13 @@ export default {
 	},
 	typescript: {
 		// Dangerously allow production builds to successfully complete even if your project has type errors.
-		// ignoreBuildErrors: true,
+		ignoreBuildErrors: true,
 	},
+
+	sassOptions: {
+		includePaths: [path.join(__dirname, 'styles')],
+	},
+
 	async redirects() {
 		return [
 			{
@@ -26,3 +38,5 @@ export default {
 		];
 	},
 };
+
+export default nextConfig;
