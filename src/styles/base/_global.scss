@@ -1,0 +1,36 @@
+body {
+  background-color: var(--gray-100);
+  font-weight: 400;
+}
+
+a {
+  color: inherit !important;
+}
+
+// remove arrow
+/* Chrome, Safari, Edge, Opera */
+input[type="number"] {
+  -moz-appearance: textfield;
+}
+
+/* Firefox */
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+.toast-success {
+  color: var(--white);
+  background-color: var(--success);
+}
+
+.toast-error {
+  background-color: var(--danger);
+  color: var(--white);
+}
+
+.toast-warning {
+  background-color: var(--warning);
+  color: var(--white);
+}

@@ -1,0 +1,43 @@
+// FOCUS
+.Mui-focused .MuiOutlinedInput-notchedOutline {
+  transition: all 0.2s;
+  border: 2px solid var(--input-border-foucused-color) !important;
+}
+
+.MuiOutlinedInput-root.Mui-focused {
+  border-radius: var(--border-radius) !important;
+  outline: 4px solid var(--input-focused-color); /* Outside border effect */
+}
+
+/* Change the white to any color */
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+input:-webkit-autofill:active {
+  -webkit-box-shadow: 0 0 0 30px var(--white) inset !important;
+}
+
+/*Change text in autofill textbox*/
+input:-webkit-autofill {
+  -webkit-text-fill-color: var(--input-color) !important;
+}
+
+.MuiInputAdornment-positionEnd {
+  button {
+    margin-right: -8px !important;
+
+    svg {
+      width: 0.8em;
+      height: 0.8em;
+    }
+  }
+}
+
+.MuiFilledInput-underline {
+  background-color: var(--white) !important;
+  &:hover {
+    &::before {
+      border-bottom: 0px !important;
+    }
+  }
+}

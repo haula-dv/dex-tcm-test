@@ -1,4 +1,3 @@
-// src/components/ClientThemeProvider.tsx
 'use client';
 import theme from '@/utils/themes/mui-theme';
 import { CssBaseline, ThemeProvider } from '@mui/material';

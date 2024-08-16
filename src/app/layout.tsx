@@ -1,10 +1,12 @@
+import { Metadata } from 'next';
+import ClientThemeProvider from '../components/ClientThemeProvider';
+import '../styles/global.scss';
 import OrderlyContainer from './common/OrderlyContainer';
-import './globals.css';
 
-// export const metadata: Metadata = {
-// 	title: 'Orderly SDK Demo',
-// 	description: 'Orderly SDK Demo222'
-// };
+export const metadata: Metadata = {
+	title: 'TCMP Dex Trade',
+	description: 'TCMP Dex Trade',
+};
 
 export const viewport = {
 	minimumScale: 1.0,
@@ -18,21 +20,12 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
 			<head>
 				<link rel="icon" type="image/png" href="/apple-touch-icon.png" />
 				<link rel="apple-touch-icon" type="image/png" sizes="16x16" href="/apple-touch-icon.png" />
-				{/* <link rel="preconnect" href="https://fonts.gstatic.com" />
-				<link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet" />
-				<link rel="preconnect" href="https://fonts.googleapis.com" />
-				<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-				<link
-					href="https://fonts.googleapis.com/css2?family=Manrope:wght@500;600;700&family=Noto+Sans:wght@500;600;700&family=Oswald:wght@200;300;400;500;600;700;800&display=swap"
-					rel="stylesheet"
-				/> */}
 			</head>
-			<title id="orderly_sdk_demo_title_key">Dex</title>
-			<meta name="description" content="Dex" />
+
 			<body>
-				{/* <ClientThemeProvider> */}
-				<OrderlyContainer>{children}</OrderlyContainer>
-				{/* </ClientThemeProvider> */}
+				<ClientThemeProvider>
+					<OrderlyContainer>{children}</OrderlyContainer>
+				</ClientThemeProvider>
 			</body>
 		</html>
 	);

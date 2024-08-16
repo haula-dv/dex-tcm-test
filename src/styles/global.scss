@@ -1,0 +1,14 @@
+/* Importing the files in the abstracts folder. */
+@import "./abstracts/functions";
+@import "./abstracts/mixins";
+@import "./abstracts/variables";
+
+/* Importing all the files in the base folder. */
+@import "./base/animation";
+@import "./base/fonts";
+@import "./base/global";
+@import "./base/reset";
+@import "./base/utilities";
+
+/* Importing all the files in the components folder. */
+@import "./components/input-field";
