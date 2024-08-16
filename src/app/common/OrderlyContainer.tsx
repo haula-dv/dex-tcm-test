@@ -75,17 +75,6 @@ const OrderlyContainer: React.FC<OrderlyContainerProps> = (props) => {
 					},
 				}}
 				theme={undefined}
-
-				// chainFilter={
-				// 	{
-				// 		mainnet: [{ id: 42161 }, { id: 8453 }, { id: 10 }, { id: 169 }],
-				// 		testnet: [{ id: 421614 }, { id: 421613 }],
-				// 	} as any
-				// }
-				// chainFilter={{
-				// 	mainnet: [],
-				// 	testnet: [{ id: ARBITRUM_TESTNET_CHAINID }, { id: MANTLE_TESTNET_CHAINID }],
-				// }}
 			>
 				{props.children}
 			</OrderlyAppProvider>

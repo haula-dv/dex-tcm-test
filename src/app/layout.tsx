@@ -27,10 +27,12 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
 					rel="stylesheet"
 				/> */}
 			</head>
-			<title id="orderly_sdk_demo_title_key">Orderly SDK Demo</title>
-			<meta name="description" content="Orderly SDK Demo" />
+			<title id="orderly_sdk_demo_title_key">Dex</title>
+			<meta name="description" content="Dex" />
 			<body>
+				{/* <ClientThemeProvider> */}
 				<OrderlyContainer>{children}</OrderlyContainer>
+				{/* </ClientThemeProvider> */}
 			</body>
 		</html>
 	);
