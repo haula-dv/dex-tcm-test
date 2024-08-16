@@ -63,7 +63,7 @@ export function OrderlyConfig(ctx?: { url: string; domain: string }) {
 			enableSwapDeposit: false,
 			footerStatusBarProps: {
 				xUrl: 'https://twitter.com/OrderlyNetwork',
-				telegramUrl: "https://orderly.network",
+				telegramUrl: 'https://orderly.network',
 				discordUrl: 'https://discord.com/invite/orderlynetwork',
 			},
 			shareOptions: {
@@ -80,9 +80,9 @@ export function OrderlyConfig(ctx?: { url: string; domain: string }) {
 			},
 		},
 		tradingViewConfig: {
-			scriptSRC: 'https://sdk-demo.orderly.network/tradingview/charting_library/charting_library.js',
-			library_path: 'https://sdk-demo.orderly.network/tradingview/charting_library/',
-			customCssUrl: 'https://sdk-demo.orderly.network/tradingview/chart.css',
+			scriptSRC: '/tradingview/charting_library/charting_library.js',
+			library_path: '/tradingview/charting_library/',
+			customCssUrl: '/tradingview/chart.css',
 			// overrides: {
 			// "paneProperties.backgroundType": "solid",
 			// "paneProperties.background": "#1D1A26",

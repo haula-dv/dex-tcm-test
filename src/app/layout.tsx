@@ -1,6 +1,5 @@
-import dynamic from 'next/dynamic';
+import OrderlyContainer from './common/OrderlyContainer';
 import './globals.css';
-const OrderlyContainer = dynamic(() => import('./common/OrderlyContainer'), { ssr: false });
 
 // export const metadata: Metadata = {
 // 	title: 'Orderly SDK Demo',

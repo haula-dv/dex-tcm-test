@@ -1,14 +1,12 @@
 'use client';
-import { PropsWithChildren, useCallback } from 'react';
-import { ConnectorProvider } from '@orderly.network/web3-onboard';
-import { OrderlyAppProvider } from '@orderly.network/react';
 import { OrderlyConfig } from '@/src/app/config';
-import { CustomConfigStore, ENV_NAME } from './CustomConfigStore';
-import NavbarTab from './NavbarTab';
-import { _orderlySymbolKey } from '../constant';
+import { OrderlyAppProvider } from '@orderly.network/react';
+import { ConnectorProvider } from '@orderly.network/web3-onboard';
 import { useRouter } from 'next/navigation';
+import { PropsWithChildren, useCallback } from 'react';
+import { CustomConfigStore, ENV_NAME } from './CustomConfigStore';
 import { CustomContractManager } from './CustomContract';
-import { ARBITRUM_TESTNET_CHAINID, MANTLE_TESTNET_CHAINID } from '@orderly.network/types';
+import NavbarTab from './NavbarTab';
 export type NetworkId = 'testnet' | 'mainnet';
 
 const HostEnvMap: Record<string, ENV_NAME> = {
@@ -56,7 +54,6 @@ const OrderlyContainer: React.FC<OrderlyContainerProps> = (props) => {
 				onChainChanged={onChainChanged}
 				footerStatusBarProps={app.footerStatusBarProps}
 				shareOptions={app.shareOptions}
-			
 				topBarProps={{
 					left: (
 						<div className="orderly-h-[48px] orderly-p-3">
@@ -78,7 +75,7 @@ const OrderlyContainer: React.FC<OrderlyContainerProps> = (props) => {
 					},
 				}}
 				theme={undefined}
-				
+
 				// chainFilter={
 				// 	{
 				// 		mainnet: [{ id: 42161 }, { id: 8453 }, { id: 10 }, { id: 169 }],
