@@ -1,29 +1,77 @@
 'use client';
-import { createTheme, ThemeOptions } from '@mui/material/styles';
+import * as locales from '@mui/material/locale';
+import { createTheme } from '@mui/material/styles';
+import _ from 'lodash';
+import { useEffect } from 'react';
 import components from './custom-theme/Components';
-import { shadows } from './custom-theme/shadow';
+import { DarkThemeColors } from './custom-theme/DarkThemeColors';
+import { baseDarkTheme, baselightTheme } from './custom-theme/DefaultColors';
+import { LightThemeColors } from './custom-theme/LightThemeColors';
+import { darkshadows, shadows } from './custom-theme/shadow';
 import typography from './custom-theme/Typography';
 
-const baseTheme = createTheme({
-	palette: {
-		mode: 'dark',
-	},
+const themeSelector = {
+	activeMode: 'dark',
+	activeDir: 'lt',
+};
 
-	shadows: shadows,
-	typography: typography,
+export const BuildTheme = (config: any) => {
+	const themeOptions = LightThemeColors.find((theme) => theme.name === config.theme);
+	const darkthemeOptions = DarkThemeColors.find((theme) => theme.name === config.theme);
+	const defaultTheme = themeSelector.activeMode === 'dark' ? baseDarkTheme : baselightTheme;
+	const defaultShadow = themeSelector.activeMode === 'dark' ? darkshadows : shadows;
+	const themeSelect = themeSelector.activeMode === 'dark' ? darkthemeOptions : themeOptions;
 
-	shape: {
-		borderRadius: 8,
-	},
-} as ThemeOptions);
+	const baseMode = {
+		palette: {
+			mode: themeSelector.activeMode,
+		},
 
-// Sau khi tạo theme, thêm các components
-const theme = createTheme({
-	...baseTheme,
-	components: components(baseTheme) as any,
-} as ThemeOptions);
+		shape: {
+			borderRadius: 6,
+		},
 
-export default theme;
+		shadows: defaultShadow,
+		typography: typography,
+	};
+
+	const theme = createTheme(
+		_.merge(
+			{},
+			baseMode,
+			// defaultTheme
+			{},
+			locales,
+			// themeSelect
+			{},
+			{
+				direction: config.direction,
+			},
+		),
+	);
+
+	theme.components = components(theme) as any;
+
+	return theme;
+};
+
+const ThemeSettings = () => {
+	const activDir = themeSelector.activeDir;
+	const activeTheme = 'BLUE_THEME';
+
+	const theme = BuildTheme({
+		direction: activDir,
+		theme: activeTheme,
+	});
+
+	useEffect(() => {
+		document.dir = activDir;
+	}, [activDir]);
+
+	return theme;
+};
+
+export { ThemeSettings };
 
 declare module '@mui/material/Button' {
 	interface ButtonPropsVariantOverrides {
@@ -47,6 +95,7 @@ declare module '@mui/material/Button' {
 declare module '@mui/material/IconButton' {
 	interface IconButtonPropsColorOverrides {
 		white: true;
+		grey: true;
 		cpPrimary: true;
 	}
 }

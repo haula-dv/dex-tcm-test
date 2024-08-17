@@ -8,9 +8,9 @@ export class TSizes {
 
 	static topbarHeight = '44px';
 
-	static borderRadius = '12px';
+	static borderRadius = '6px';
 	static borderRadiusMd = '14px';
-	static buttonHeight = '40px';
-	static buttonHeightSmall = '36px';
-	static fieldSearchHeight = '42px';
+	static buttonHeight = '32px';
+	static buttonHeightSmall = '30px';
+	static fieldSearchHeight = '32px';
 }

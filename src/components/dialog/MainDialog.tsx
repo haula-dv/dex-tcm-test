@@ -51,7 +51,7 @@ export const MainDialog = ({
 						{title}
 					</Typography>
 
-					<MainIconButton isFullRounded onClick={handleClose} color="inherit" size="small">
+					<MainIconButton isFullRounded onClick={handleClose} color={'grey'} size="small">
 						<IconX size={'1.4rem'} />
 					</MainIconButton>
 				</Stack>
@@ -69,12 +69,13 @@ interface ICustomDialog {
 const CustomDialog = styled(Dialog, {
 	shouldForwardProp: (prop) => prop !== 'isBGWhite',
 })<ICustomDialog>(({ theme, isBGWhite }) => ({
-	'zIndex': 9,
+	zIndex: 9,
 	'& .MuiDialog-paper': {
+		border: `1px solid ${theme.palette.grey[900]}`,
 		position: 'relative',
 		boxShadow: 'none',
-		backgroundColor: isBGWhite ? '#fff' : theme.palette.grey[50],
-		// width: "100%",
+		backgroundColor: theme.palette.background.paper,
 		margin: '16px',
+		borderRadius: TSizes.borderRadiusMd,
 	},
 }));

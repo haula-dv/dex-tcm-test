@@ -5,17 +5,19 @@ export const CustomMuiButton = (theme: Theme) => {
 		MuiButton: {
 			styleOverrides: {
 				root: {
-					'textTransform': 'none',
-					'boxShadow': 'none',
-					'fontSize': '14px',
-					'height': '40px',
-					'fontWeight': 700,
+					textTransform: 'none',
+					boxShadow: 'none',
+					fontSize: '13px',
+					height: '32px',
+					fontWeight: 700,
+					padding: '6px 12px',
+					lineHeight: '100%',
 
 					'&.Mui-disabled': {
-						'pointerEvents': 'all',
-						'cursor': 'not-allowed !important',
-						'backgroundColor': theme.palette.grey[100],
-						'color': theme.palette.grey[300],
+						pointerEvents: 'all',
+						cursor: 'not-allowed !important',
+						backgroundColor: theme.palette.grey[100],
+						color: theme.palette.grey[300],
 						'&:hover': {
 							backgroundColor: theme.palette.grey[100],
 						},
@@ -27,7 +29,7 @@ export const CustomMuiButton = (theme: Theme) => {
 				},
 
 				containedPrimary: {
-					'backgroundColor': theme.palette.primary.main,
+					backgroundColor: theme.palette.primary.main,
 					'&:hover': {
 						backgroundColor: theme.palette.primary.main,
 						color: 'white',
@@ -36,7 +38,7 @@ export const CustomMuiButton = (theme: Theme) => {
 
 				// SECONDARY
 				containedSecondary: {
-					'backgroundColor': theme.palette.secondary.main,
+					backgroundColor: theme.palette.secondary.main,
 
 					'&:hover': {
 						backgroundColor: theme.palette.secondary.main,
@@ -52,15 +54,15 @@ export const CustomMuiButton = (theme: Theme) => {
 				},
 
 				filledTonalInherit: {
-					'backgroundColor': theme.palette.grey[100],
+					backgroundColor: theme.palette.grey[100],
 					'&:hover': {
 						backgroundColor: theme.palette.grey[200],
 					},
 				},
 
 				filledTonalSecondary: {
-					'backgroundColor': theme.palette.secondary.light,
-					'color': theme.palette.common.black,
+					backgroundColor: theme.palette.secondary.light,
+					color: theme.palette.common.black,
 					'&:hover': {
 						backgroundColor: theme.palette.secondary.light,
 					},
@@ -81,6 +83,7 @@ export const CustomMuiButton = (theme: Theme) => {
 					minWidth: 'auto',
 					borderRadius: '6px !important',
 				},
+
 				sizeLarge: {
 					height: '56px',
 				},
@@ -90,10 +93,10 @@ export const CustomMuiButton = (theme: Theme) => {
 				},
 
 				textLink: {
-					'minWidth': 'auto',
-					'height': 'auto',
-					'padding': '0px !important',
-					'fontWeight': '600',
+					minWidth: 'auto',
+					height: 'auto',
+					padding: '0px !important',
+					fontWeight: '600',
 					'&:hover': {
 						backgroundColor: 'transparent',
 					},
@@ -113,8 +116,8 @@ export const CustomMuiButton = (theme: Theme) => {
 				},
 
 				textSecondary: {
-					'backgroundColor': theme.palette.secondary.light,
-					'color': theme.palette.secondary.contrastText,
+					backgroundColor: theme.palette.secondary.light,
+					color: theme.palette.secondary.contrastText,
 					'&:hover': {
 						backgroundColor: theme.palette.secondary.main,
 						color: theme.palette.secondary.light,
@@ -122,7 +125,7 @@ export const CustomMuiButton = (theme: Theme) => {
 				},
 
 				textSuccess: {
-					'backgroundColor': theme.palette.success.light,
+					backgroundColor: theme.palette.success.light,
 					'&:hover': {
 						backgroundColor: theme.palette.success.main,
 						color: 'white',
@@ -130,7 +133,7 @@ export const CustomMuiButton = (theme: Theme) => {
 				},
 
 				textError: {
-					'backgroundColor': theme.palette.error.light,
+					backgroundColor: theme.palette.error.light,
 					'&:hover': {
 						backgroundColor: theme.palette.error.main,
 						color: 'white',
@@ -138,7 +141,7 @@ export const CustomMuiButton = (theme: Theme) => {
 				},
 
 				textInfo: {
-					'backgroundColor': theme.palette.info.light,
+					backgroundColor: theme.palette.info.light,
 					'&:hover': {
 						backgroundColor: theme.palette.info.main,
 						color: 'white',
@@ -146,7 +149,7 @@ export const CustomMuiButton = (theme: Theme) => {
 				},
 
 				textWarning: {
-					'backgroundColor': theme.palette.warning.light,
+					backgroundColor: theme.palette.warning.light,
 					'&:hover': {
 						backgroundColor: theme.palette.warning.main,
 						color: 'white',

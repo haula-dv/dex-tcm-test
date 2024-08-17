@@ -1,5 +1,5 @@
 'use client';
-import { WalletContainer } from '@/src/plugins/wallet/components/WalletContainer';
+import WalletContainer from '@/src/plugins/wallet/components/WalletContainer';
 import { Mixins } from '@/utils/themes/custom-theme/mixins';
 import { TSizes } from '@/utils/themes/custom-theme/sizes';
 import { AppBar, Box, BoxProps, Stack, Toolbar, Typography } from '@mui/material';
@@ -44,7 +44,7 @@ export const Header = () => {
 };
 
 const MainAppBar = styled(AppBar)(({ theme }) => ({
-	'backgroundColor': '#fff',
+	// 'backgroundColor': '#fff',
 	'zIndex': 0,
 	'height': '56px',
 	'borderRadius': '0px',

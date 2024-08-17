@@ -15,11 +15,13 @@ export function OrderlyConfig(ctx?: { url: string; domain: string }) {
 	const ledgerInitOptions = {
 		projectId: '93dba83e8d9915dc6a65ffd3ecfd19fd',
 	};
+
 	const walletConnect = walletConnectModule(wcV2InitOptions);
 	// @ts-ignore
 	const ledger = ledgerModule(ledgerInitOptions);
 
 	return {
+		// Wallet configuration
 		onboard: {
 			wallets: [injectedModule(), walletConnect, ledger],
 			appMetadata: {
@@ -42,9 +44,10 @@ export function OrderlyConfig(ctx?: { url: string; domain: string }) {
 				explore: 'https://blocknative.com',
 			},
 		},
+
 		app: {
-			brokerId: 'orderly',
-			brokerName: 'Orderly',
+			brokerId: 'tcmp',
+			brokerName: 'Tcmp Dex Trande',
 			appIcons: {
 				secondary: {
 					img: '/orderly-logo-secondary.svg',
@@ -70,6 +73,7 @@ export function OrderlyConfig(ctx?: { url: string; domain: string }) {
 				},
 			},
 		},
+
 		tradingViewConfig: {
 			scriptSRC: '/tradingview/charting_library/charting_library.js',
 			library_path: '/tradingview/charting_library/',

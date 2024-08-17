@@ -2,7 +2,7 @@
 	"editor.defaultFormatter": "esbenp.prettier-vscode",
 	"editor.formatOnSave": true,
 	"prettier.useTabs": false,
-	"prettier.configPath": "./prettierrc",
+	"prettier.configPath": ".prettierrc",
 	"editor.codeActionsOnSave": {
 		"source.organizeImports": "explicit"
 	}

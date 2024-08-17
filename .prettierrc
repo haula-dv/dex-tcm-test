@@ -1,7 +1,6 @@
 {
-	"printWidth": 120,
+	"printWidth": 100,
 	"useTabs": true,
-	"quoteProps": "consistent",
 	"jsxSingleQuote": false,
 	"bracketSameLine": false,
 	"requirePragma": false,

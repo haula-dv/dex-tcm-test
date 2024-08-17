@@ -1,5 +1,6 @@
 import { Metadata } from 'next';
 import ClientThemeProvider from '../components/ClientThemeProvider';
+import { Header } from '../components/layouts/Header';
 import OrderlyContainer from '../provider/OrderlyContainer';
 import '../styles/global.scss';
 
@@ -24,7 +25,10 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
 
 			<body>
 				<ClientThemeProvider>
-					<OrderlyContainer>{children}</OrderlyContainer>
+					<OrderlyContainer>
+						<Header />
+						{children}
+					</OrderlyContainer>
 				</ClientThemeProvider>
 			</body>
 		</html>

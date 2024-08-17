@@ -1,7 +1,7 @@
 'use client';
 import { OrderlyConfig } from '@/src/utils/config/orderly/config';
 import { useAccount, useOrderbookStream, useOrderEntry, useSymbolsInfo } from '@orderly.network/hooks';
-import { AssetsContext, TradingPage } from '@orderly.network/react';
+import { AssetsContext } from '@orderly.network/react';
 import { OrderSide } from '@orderly.network/types';
 import { useContext, useState } from 'react';
 
@@ -29,7 +29,7 @@ export default function MainViewContainer(props: Props) {
 
 	return (
 		<>
-			<TradingPage symbol={props.symbol} tradingViewConfig={tradingViewConfig} onSymbolChange={props.onSymbolChange} />
+			{/* <TradingPage symbol={props.symbol} tradingViewConfig={tradingViewConfig} onSymbolChange={props.onSymbolChange} /> */}
 			{/* <Deposit />
 			<Withdraw />
 			<div className="bg-neutral-900 px-5 py-3 w-[300px] rounded-lg h-[480px]">
