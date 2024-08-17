@@ -8,6 +8,7 @@ import { useEffect, useState } from 'react';
 import { AccountAvatar } from './AccountAvatar';
 import AccountDetailPopup from './AccountDetailPopup';
 import AccountMenuContainer from './AccountMenuContainer';
+import NetworkContent from './NetworkContent';
 
 export default function WalletContainer() {
 	const [accountAnchorEl, setAccountAnchorEl] = useState<null | HTMLElement>(null);
@@ -62,7 +63,7 @@ export default function WalletContainer() {
 	}, [wallet]);
 
 	return (
-		<Stack direction={'row'}>
+		<Stack direction={'row'} spacing={1} alignItems={'center'}>
 			{connecting ? (
 				<MainButton startIcon={<IconLoading height="20px" width="20px" />} variant="outlined">
 					Connecting
@@ -74,18 +75,22 @@ export default function WalletContainer() {
 							Connect Wallet
 						</MainButton>
 					) : (
-						<MainButton
-							variant="outlined"
-							color="primary"
-							onClick={handleShowMenuAccount}
-							endIcon={<IconSettings size={'1.1rem'} />}
-							id="account-button"
-							aria-controls={openAccountEl ? 'account-menu' : undefined}
-							aria-haspopup="true"
-							aria-expanded={openAccountEl ? 'true' : undefined}
-						>
-							<AccountAvatar />
-						</MainButton>
+						<>
+							<NetworkContent />
+
+							<MainButton
+								variant="outlined"
+								color="primary"
+								onClick={handleShowMenuAccount}
+								endIcon={<IconSettings size={'1.1rem'} />}
+								id="account-button"
+								aria-controls={openAccountEl ? 'account-menu' : undefined}
+								aria-haspopup="true"
+								aria-expanded={openAccountEl ? 'true' : undefined}
+							>
+								<AccountAvatar />
+							</MainButton>
+						</>
 					)}
 				</>
 			)}

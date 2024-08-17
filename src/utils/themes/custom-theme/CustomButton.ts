@@ -9,7 +9,7 @@ export const CustomMuiButton = (theme: Theme) => {
 					boxShadow: 'none',
 					fontSize: '13px',
 					height: '32px',
-					fontWeight: 700,
+					fontWeight: 600,
 					padding: '6px 12px',
 					lineHeight: '100%',
 
