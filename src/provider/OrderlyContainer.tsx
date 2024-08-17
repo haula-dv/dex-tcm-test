@@ -26,7 +26,7 @@ const OrderlyContainer: React.FC<OrderlyContainerProps> = (props) => {
 	const { onboard, app } = OrderlyConfig();
 
 	const onChainChanged = useCallback(
-		(chainId, isTestnet) => {
+		(chainId:any, isTestnet:any) => {
 			// console.log('chain changed', chainId, isTestnet);
 			localStorage.setItem('orderly-networkId', isTestnet ? 'testnet' : 'mainnet');
 			// realod page
