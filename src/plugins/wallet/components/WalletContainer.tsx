@@ -1,11 +1,11 @@
 import { MainButton } from '@/src/components/button/MainButton';
 import IconLoading from '@/src/components/icons/loading';
-import { formartAddress } from '@/src/utils/format/token';
 import { Stack } from '@mui/material';
 import { useAccount } from '@orderly.network/hooks';
 import { IconSettings } from '@tabler/icons-react';
 import { useConnectWallet } from '@web3-onboard/react';
 import { useEffect, useState } from 'react';
+import { AccountAvatar } from './AccountAvatar';
 import AccountDetailPopup from './AccountDetailPopup';
 import AccountMenuContainer from './AccountMenuContainer';
 
@@ -84,7 +84,7 @@ export default function WalletContainer() {
 							aria-haspopup="true"
 							aria-expanded={openAccountEl ? 'true' : undefined}
 						>
-							{formartAddress(wallet.accounts[0].address)}
+							<AccountAvatar />
 						</MainButton>
 					)}
 				</>

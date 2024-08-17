@@ -107,12 +107,7 @@ export const CustomMuiButton = (theme: Theme) => {
 				},
 
 				textPrimary: {
-					// backgroundColor: theme.palette.primary.light,
-
-					'&:hover': {
-						// backgroundColor: theme.palette.primary.main,
-						// color: "white",
-					},
+					'&:hover': {},
 				},
 
 				textSecondary: {
@@ -157,6 +152,10 @@ export const CustomMuiButton = (theme: Theme) => {
 				},
 
 				outlinedPrimary: {
+					color: theme.palette.mode === 'dark' ? '#fff' : '',
+					backgroundColor: 'transparent',
+					borderColor: theme.palette.primary.light,
+
 					'&:hover': {
 						backgroundColor: theme.palette.primary.main,
 						color: 'white',

@@ -2,7 +2,6 @@
 import * as locales from '@mui/material/locale';
 import { createTheme } from '@mui/material/styles';
 import _ from 'lodash';
-import { useEffect } from 'react';
 import components from './custom-theme/Components';
 import { DarkThemeColors } from './custom-theme/DarkThemeColors';
 import { baseDarkTheme, baselightTheme } from './custom-theme/DefaultColors';
@@ -36,18 +35,9 @@ export const BuildTheme = (config: any) => {
 	};
 
 	const theme = createTheme(
-		_.merge(
-			{},
-			baseMode,
-			// defaultTheme
-			{},
-			locales,
-			// themeSelect
-			{},
-			{
-				direction: config.direction,
-			},
-		),
+		_.merge({}, baseMode, defaultTheme, locales, themeSelect, {
+			direction: config.direction,
+		}),
 	);
 
 	theme.components = components(theme) as any;
@@ -64,12 +54,10 @@ const ThemeSettings = () => {
 		theme: activeTheme,
 	});
 
-	useEffect(() => {
-		document.dir = activDir;
-	}, [activDir]);
-
 	return theme;
 };
+
+export const theme = ThemeSettings();
 
 export { ThemeSettings };
 

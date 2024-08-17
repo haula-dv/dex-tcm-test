@@ -22,7 +22,12 @@ export const Header = () => {
 		<MainAppBar elevation={0} position="static">
 			<MainContainer>
 				<Toolbar disableGutters>
-					<Stack direction={'row'} justifyContent={'space-between'} width={'100%'} alignItems={'center'}>
+					<Stack
+						direction={'row'}
+						justifyContent={'space-between'}
+						width={'100%'}
+						alignItems={'center'}
+					>
 						<Stack direction={'row'} alignItems={'center'} spacing={TSizes.margin_md}>
 							<Logo />
 
@@ -44,10 +49,10 @@ export const Header = () => {
 };
 
 const MainAppBar = styled(AppBar)(({ theme }) => ({
-	// 'backgroundColor': '#fff',
-	'zIndex': 0,
-	'height': '56px',
-	'borderRadius': '0px',
+	borderBottom: `1px solid ${theme.palette.divider}`,
+	zIndex: 0,
+	height: '56px',
+	borderRadius: '0px',
 	'& .MuiToolbar-root': {
 		height: '56px',
 		minHeight: 'auto',
@@ -61,11 +66,11 @@ interface INavItemProps extends BoxProps {
 const NavItem = styled(Box, {
 	shouldForwardProp: (prop) => prop !== 'isActived',
 })<INavItemProps>(({ theme, isActived }) => ({
-	'cursor': 'pointer',
-	'position': 'relative',
-	'display': 'flex', // Flex display to center content
-	'alignItems': 'center', // Center the Typography vertically
-	'height': '56px',
+	cursor: 'pointer',
+	position: 'relative',
+	display: 'flex', // Flex display to center content
+	alignItems: 'center', // Center the Typography vertically
+	height: '56px',
 
 	'&:after': {
 		...Mixins.boxFullMixin({
@@ -80,12 +85,12 @@ const NavItem = styled(Box, {
 	},
 
 	'& .MuiTypography-root': {
-		'color': theme.palette.common.black,
-		'fontSize': '14px',
-		'fontWeight': 700,
-		'padding': '6px 12px',
-		'borderRadius': TSizes.borderRadius,
-		'transition': theme.transitions.create(['background-color']),
+		color: theme.palette.common.black,
+		fontSize: '14px',
+		fontWeight: 700,
+		padding: '6px 12px',
+		borderRadius: TSizes.borderRadius,
+		transition: theme.transitions.create(['background-color']),
 		// backgroundColor: isActived ? theme.palette.grey[50] : "transparent",
 
 		'&:hover': {

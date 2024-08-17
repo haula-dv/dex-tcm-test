@@ -11,7 +11,7 @@ const ClientThemeProvider: React.FC<{ children: React.ReactNode }> = ({ children
 		<AppRouterCacheProvider options={{ key: 'css' }}>
 			<ThemeProvider theme={theme}>
 				<CssBaseline />
-				{children}
+				<main className={theme.palette.mode}>{children}</main>
 			</ThemeProvider>
 		</AppRouterCacheProvider>
 	);

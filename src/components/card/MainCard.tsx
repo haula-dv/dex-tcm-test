@@ -10,6 +10,7 @@ interface IProps extends CardProps {
 	backgroudColor?: 'white' | 'grey' | 'darkgrey';
 	disablePadding?: boolean;
 	padding?: string;
+	borderRadius?: string;
 }
 
 export const MainCard = ({
@@ -19,6 +20,7 @@ export const MainCard = ({
 	isHover,
 	disablePadding,
 	padding,
+	borderRadius,
 	...props
 }: IProps) => {
 	return (
@@ -29,6 +31,7 @@ export const MainCard = ({
 				maxWidth: maxWidth,
 				cursor: isHover ? 'pointer' : '',
 				padding: padding,
+				borderRadius: borderRadius,
 			}}
 			backgroudColor={backgroudColor}
 			{...props}
