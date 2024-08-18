@@ -1,10 +1,17 @@
+html {
+	background-color: #20222b !important;
+}
+body {
+	background-color: #20222b !important;
+}
+
 a {
 	color: inherit !important;
 }
 
 // remove arrow
 /* Chrome, Safari, Edge, Opera */
-input[type="number"] {
+input[type='number'] {
 	-moz-appearance: textfield;
 }
 

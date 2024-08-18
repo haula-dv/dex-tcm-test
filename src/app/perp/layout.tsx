@@ -11,14 +11,12 @@ export default function RootLayout({
 	children: React.ReactNode;
 }>) {
 	return (
-		<main>
-			<Web3OnboardProviderRoot>
-				<OrderlyConfigProviderRoot>
-					<Header />
+		<Web3OnboardProviderRoot>
+			<OrderlyConfigProviderRoot>
+				<Header />
 
-					<Box p={2}>{children}</Box>
-				</OrderlyConfigProviderRoot>
-			</Web3OnboardProviderRoot>
-		</main>
+				<Box p={2}>{children}</Box>
+			</OrderlyConfigProviderRoot>
+		</Web3OnboardProviderRoot>
 	);
 }

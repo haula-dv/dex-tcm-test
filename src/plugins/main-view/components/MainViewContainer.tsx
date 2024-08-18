@@ -1,5 +1,8 @@
 import { TradingMainView } from '@/plugins/trading-view/components/TradingView';
+import { Box } from '@mui/material';
+import { Deposit, Withdraw } from '@orderly.network/react';
 import { API } from '@orderly.network/types';
+import { OrderBookContainer } from './OrderBook';
 
 interface IProps {
 	symbol: string;
@@ -9,8 +12,14 @@ interface IProps {
 export const MainViewContainer = ({ onSymbolChange, symbol }: IProps) => {
 	return (
 		<div>
-			{/* <TradingMainView symbol={symbol} /> */}
-			<TradingMainView symbol={symbol} />
+			<TradingMainView />
+
+			<Box maxWidth={'400px'}>
+				<Deposit />
+				<Withdraw />
+
+				<OrderBookContainer />
+			</Box>
 		</div>
 	);
 };

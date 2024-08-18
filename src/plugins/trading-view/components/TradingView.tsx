@@ -1,17 +1,22 @@
 import { OrderlyConfig } from '@/utils/config/orderly';
 import { Box } from '@mui/material';
+import { memo } from 'react';
 import { AdvancedRealTimeChart } from 'react-ts-tradingview-widgets';
 
-interface IProps {
-	symbol: string;
-}
-
-export const TradingMainView = ({ symbol }: IProps) => {
+export const TradingMainView = () => {
 	const { tradingViewConfig } = OrderlyConfig();
 
 	return (
-		<Box height={'60vh'}>
-			<AdvancedRealTimeChart theme="dark" autosize></AdvancedRealTimeChart>
+		<Box height={'600px'}>
+			<AdvancedRealTimeChart
+				disabled_features={['header_symbol_search']}
+				locale="en"
+				calendar
+				theme="dark"
+				symbol="ETH"
+				autosize
+				allow_symbol_change={false}
+			></AdvancedRealTimeChart>
 
 			{/* <TradingView
 			
@@ -42,3 +47,5 @@ export const TradingMainView = ({ symbol }: IProps) => {
 		</Box>
 	);
 };
+
+export default memo(TradingMainView);
