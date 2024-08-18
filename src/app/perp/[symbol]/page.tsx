@@ -15,12 +15,26 @@ export default function PerpPage({ params }: { params: { slug: string } }) {
 		}
 	}, [symbol]);
 
-	const updateTitle = useCallback((title: string) => {
-		var titleElement = document.getElementById(TCMP_ORDERLY_SDK_TITLE_KEY);
-		if (titleElement) {
-			titleElement.textContent = title ?? symbol.toString();
-		}
-	}, []);
+	const updateTitle = useCallback(
+		(title: string) => {
+			var titleElement = document.getElementById(TCMP_ORDERLY_SDK_TITLE_KEY);
+			if (titleElement) {
+				titleElement.textContent = title ?? symbol.toString();
+			}
+		},
+		[symbol],
+	);
 
-	return <MainView />;
+	return (
+		<MainView
+			symbol={symbol || 'PERP_ETH_USDC'}
+			onSymbolChange={(symbol) => {
+				console.log('update symbol', symbol);
+				localStorage.setItem(_orderlySymbolKey, symbol.symbol);
+				router.push(`/perp/${symbol.symbol}`);
+
+				updateTitle(symbol.symbol);
+			}}
+		/>
+	);
 }

@@ -2472,7 +2472,7 @@
     "@nodelib/fs.scandir" "2.1.5"
     fastq "^1.6.0"
 
-"@orderly.network/core@1.5.10":
+"@orderly.network/core@1.5.10", "@orderly.network/core@^1.5.10":
   version "1.5.10"
   resolved "https://registry.yarnpkg.com/@orderly.network/core/-/core-1.5.10.tgz#8d0f29fac636489c779241a1b2336ed22e75deff"
   integrity sha512-DZRiD76Xw3SKQ2WEPfIkm3TpBYuM1BiXo9fXn3iBe3o8YUlAZFBx/ZRySrgONlLf8mpOMVrhl6rQsd0UaNtssg==
@@ -2590,7 +2590,7 @@
     "@orderly.network/types" "1.5.10"
     "@orderly.network/utils" "1.5.10"
 
-"@orderly.network/types@1.5.10":
+"@orderly.network/types@1.5.10", "@orderly.network/types@^1.5.10":
   version "1.5.10"
   resolved "https://registry.yarnpkg.com/@orderly.network/types/-/types-1.5.10.tgz#6edf5111543de869fba8e6d2fc5405440d462c62"
   integrity sha512-wt3+ewl7ak0HggW/pWJ/9I17ZSTNNo7HCZylr+MStVsdB6F3VenCeITrsYmwIcRf61Y+axzDywkN0WM9cFz40A==

@@ -8,7 +8,7 @@ import { usdFormatter } from '@/utils/formatters/number';
 import { Box, Stack, Typography } from '@mui/material';
 import { useChains, useDeposit } from '@orderly.network/hooks';
 import { WalletState } from '@orderly.network/hooks/esm/walletConnectorContext';
-import { IconActivity, IconCopy } from '@tabler/icons-react';
+import { IconActivity, IconCopy, IconLogout } from '@tabler/icons-react';
 import { useConnectWallet } from '@web3-onboard/react';
 import Image from 'next/image';
 import { AccountAvatar } from './AccountAvatar';
@@ -36,13 +36,9 @@ export default function AccountDetailPopup({ onClose, open, wallet }: IProps) {
 		{
 			label: 'Ethereum',
 			icon: (
-				<Image
-					height={30}
-					width={30}
-					alt=""
-					src={'/images/avatar.png'}
-					style={{ borderRadius: '50%' }}
-				/>
+				<IconWrapp size="30px">
+					<Image height={24} width={24} alt="" src={'/images/avatar.png'} style={{ borderRadius: '50%' }} />
+				</IconWrapp>
 			),
 			onClick: function () {
 				console.log('');
@@ -62,8 +58,8 @@ export default function AccountDetailPopup({ onClose, open, wallet }: IProps) {
 		{
 			label: 'Disconnect',
 			icon: (
-				<IconWrapp size="30px">
-					<IconActivity size={'1.2rem'} />
+				<IconWrapp size="30px" bgcolor={theme.palette.grey[800]}>
+					<IconLogout size={'1.2rem'} />
 				</IconWrapp>
 			),
 			onClick: () => handleDisconnect(),
@@ -86,24 +82,13 @@ export default function AccountDetailPopup({ onClose, open, wallet }: IProps) {
 				</Box>
 			</Box>
 
-			<Typography
-				fontSize={'18px'}
-				fontWeight={600}
-				textAlign={'center'}
-				color={theme.palette.grey[500]}
-				pt={1}
-			>
+			<Typography fontSize={'18px'} fontWeight={600} textAlign={'center'} color={theme.palette.grey[500]} pt={1}>
 				{usdFormatter.format(Number(balance))} {chain?.network_infos.currency_symbol}
 			</Typography>
 
 			<Stack spacing={1} pt={6}>
 				{items.map((item) => (
-					<ItemList
-						key={item.label}
-						startIcon={item.icon}
-						primaryText={item.label}
-						onClick={item.onClick}
-					/>
+					<ItemList key={item.label} startIcon={item.icon} primaryText={item.label} onClick={item.onClick} />
 				))}
 			</Stack>
 		</MainDialog>
