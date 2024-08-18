@@ -1,3 +1,3 @@
 export const MainAvatar = () => {
-  return <div>MainAvatar</div>;
+	return <div>MainAvatar</div>;
 };

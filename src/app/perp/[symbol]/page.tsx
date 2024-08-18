@@ -1,0 +1,26 @@
+'use client';
+import { MainView } from '@/plugins/trading-view/components/MainView';
+import { TCMP_ORDERLY_SDK_TITLE_KEY } from '@/utils/config/orderly';
+import { _orderlySymbolKey } from '@/utils/constants/orderly';
+import { useRouter } from 'next/navigation';
+import { useCallback, useEffect, useState } from 'react';
+
+export default function PerpPage({ params }: { params: { slug: string } }) {
+	const router = useRouter();
+	const [symbol, setSymbol] = useState(params.slug);
+
+	useEffect(() => {
+		if (symbol === undefined) {
+			setSymbol(localStorage?.getItem(_orderlySymbolKey)!);
+		}
+	}, [symbol]);
+
+	const updateTitle = useCallback((title: string) => {
+		var titleElement = document.getElementById(TCMP_ORDERLY_SDK_TITLE_KEY);
+		if (titleElement) {
+			titleElement.textContent = title ?? symbol.toString();
+		}
+	}, []);
+
+	return <MainView />;
+}
