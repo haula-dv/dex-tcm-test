@@ -63,9 +63,9 @@ export function OrderlyConfig(ctx?: { url: string; domain: string }) {
 
 		// Trading view
 		tradingViewConfig: {
-			scriptSRC: '/tradingview/charting_library/charting_library.js',
-			library_path: '/tradingview/charting_library/',
-			customCssUrl: '/tradingview/chart.css',
+			scriptSRC: '@/public/tradingview/charting_library/charting_library.js',
+			library_path: '@/public/tradingview/charting_library/bundles',
+			customCssUrl: '@/public/tradingview/chart.css',
 		},
 	};
 }

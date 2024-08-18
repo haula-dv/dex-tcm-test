@@ -1,7 +1,8 @@
 'use client';
-import { MainView } from '@/plugins/trading-view/components/MainView';
+import { MainViewContainer } from '@/plugins/main-view/components/MainViewContainer';
 import { TCMP_ORDERLY_SDK_TITLE_KEY } from '@/utils/config/orderly';
 import { _orderlySymbolKey } from '@/utils/constants/orderly';
+import '@orderly.network/react/dist/styles.css';
 import { useRouter } from 'next/navigation';
 import { useCallback, useEffect, useState } from 'react';
 
@@ -26,7 +27,7 @@ export default function PerpPage({ params }: { params: { slug: string } }) {
 	);
 
 	return (
-		<MainView
+		<MainViewContainer
 			symbol={symbol || 'PERP_ETH_USDC'}
 			onSymbolChange={(symbol) => {
 				console.log('update symbol', symbol);

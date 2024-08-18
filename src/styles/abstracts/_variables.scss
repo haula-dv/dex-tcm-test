@@ -3,64 +3,91 @@
 // ======================================================
 
 :root {
-  // Colors
-  --app-bg-color: #fff;
-  --white: #ffffff;
-  --light: #e9ebec;
+	/* colors */
+	--orderly-color-primary: 182 79 255;
+	--orderly-color-primary-light: 208 140 255;
+	--orderly-color-primary-darken: 152 62 214;
+	--orderly-color-primary-contrast: 255 255 255;
 
-  --primary: #a20069;
-  --secondary: #0d3ff4;
-  --success: #50cd89;
-  --info: #7239ea;
-  --warning: #ffc700;
-  --danger: #ff0000;
-  --dark: #181c32;
-  --dark-lighter: #181c328e;
-  --dark-blue: #1e435a;
-  --dark-blue-lightest: #1e435a28;
+	--orderly-color-link: 182 79 255;
+	--orderly-color-link-light: 208 140 255;
 
-  --blue: #1976d2;
-  --blue-lighter: #1976d227;
+	--orderly-color-secondary: 255 255 255;
+	--orderly-color-tertiary: 218 218 218;
+	--orderly-color-quaternary: 218 218 218;
+	/*--orderly-color-disabled:218 218 218;*/
 
-  --primary-lighter: #fbc90082;
-  --primary-lightest: #fbc90019;
-  --secondary-light: #f9f9f9;
-  --success-light: #e8fff3;
-  --info-light: #f8f5ff;
-  --warning-light: #fff8dd;
-  --danger-light: #fef1f1;
-  --dark-light: #f4f4f4;
+	--orderly-color-danger: 232 88 175;
+	--orderly-color-danger-light: 255 103 191;
+	--orderly-color-danger-darken: 199 68 146;
+	--orderly-color-danger-contrast: 255 255 255;
 
-  --gray-0: #f8f8f9;
-  --gray-100: #f4f4f6;
-  --gray-200: #e8e9ed;
-  --gray-300: #dddfe4;
-  --gray-400: #d1d4db;
-  --gray-500: #c6c8d2;
-  --gray-600: #babec9;
-  --gray-700: #afb4c0;
-  --gray-800: #a4a9b7;
-  --gray-900: #989eae;
-  --gray-A100: #8d93a5;
-  --gray-A200: #81899c;
-  --gray-A300: #767e93;
+	--orderly-color-success: 3 152 134;
+	--orderly-color-success-light: 0 181 159;
+	--orderly-color-success-darken: 0 119 105;
+	--orderly-color-success-contrast: 255 255 255;
 
-  --link-color: #009ef7;
-  --link-hover-color: #0095e8;
+	--orderly-color-warning: 255 207 115;
+	--orderly-color-warning-light: 255 207 115;
+	--orderly-color-warning-darken: 117 88 33;
+	--orderly-color-warning-contrast: 255 255 255;
 
-  // Input colors
-  --input-placeholder-color: #a1a5b7;
-  --input-color: #5e6278;
-  --input-border-color: #e1e3ea;
-  --input-border-color-hover: #b5b5c3;
-  --input-border-color-focus: #181c32;
-  --input-bg: #f9f9f9;
-  --input-bg-focus: #f4f4f4;
-  --input-placeholder-color: #a1a5b7;
+	--orderly-color-fill: 36 32 47;
+	--orderly-color-fill-active: 40 46 58;
 
-  --input-border-foucused-color: #dfe5ef;
-  --input-focused-color: #dfe5ef3c;
+	--orderly-color-base-100: 93 83 123;
+	--orderly-color-base-200: 81 72 107;
+	--orderly-color-base-300: 68 61 89;
+	--orderly-color-base-400: 57 52 74;
+	--orderly-color-base-500: 51 46 66;
+	--orderly-color-base-600: 43 38 56;
+	--orderly-color-base-700: 36 32 47;
+	--orderly-color-base-800: 29 26 38;
+	--orderly-color-base-900: 22 20 28;
 
-  --border-radius: 8px;
-  --border-color: #e5eaef;
+	--orderly-color-base-foreground: 255 255 255;
+
+	--orderly-color-trading-loss: 255 103 194;
+	--orderly-color-trading-loss-contrast: 255 255 255;
+	--orderly-color-trading-profit: 0 181 159;
+	--orderly-color-trading-profit-contrast: 255 255 255;
+
+	/* rounded */
+	--orderly-rounded: 6px;
+	--orderly-rounded-sm: 4px;
+	--orderly-rounded-lg: 8px;
+	--orderly-rounded-xl: 16px;
+	--orderly-rounded-full: 9999px;
+
+	--orderly-button-shadow: none;
+
+	/** custom font sizes, if only provide --orderly-font-size-base var, other font sizes will auto calc */
+	--orderly-font-size-4xs: 11px;
+	--orderly-font-size-3xs: 12px;
+	--orderly-font-size-2xs: 13px;
+	--orderly-font-size-xs: 14px;
+	--orderly-font-size-sm: 15px;
+	--orderly-font-size-base: 16px;
+	--orderly-font-size-lg: 18px;
+	--orderly-font-size-xl: 20px;
+	--orderly-font-size-2xl: 24px;
+	--orderly-font-size-3xl: 30px;
+	--orderly-font-size-4xl: 36px;
+
+	--orderly-color-divider: 42 46 52;
+
+	--orderly-font-family: 'Manrope', sans-serif;
+
+	--orderly-shadow-sm: '0px 12px 20px 0px rgba(0, 0, 0, 0.3)';
+	--orderly-shadow: '0px 12px 20px 0px rgba(0, 0, 0, 0.3)';
+	--orderly-shadow-md: '0px 12px 20px 0px rgba(0, 0, 0, 0.3)';
+	--orderly-shadow-lg: '0px 12px 20px 0px rgba(0, 0, 0, 0.3)';
+	--orderly-shadow-lg: '0px 12px 20px 0px rgba(0, 0, 0, 0.3)';
+	--orderly-shadow-xl: '0px 12px 20px 0px rgba(0, 0, 0, 0.3)';
+	--orderly-shadow-2xl: '0px 12px 20px 0px rgba(0, 0, 0, 0.3)';
+
+	--orderly-referral-bg-gradient-from: 73 31 102;
+	--orderly-referral-bg-gradient-to: 182 79 255;
+	--orderly-referral-text-gradient-from: 73 31 102;
+	--orderly-referral-text-gradient-to: 182 79 255;
 }
