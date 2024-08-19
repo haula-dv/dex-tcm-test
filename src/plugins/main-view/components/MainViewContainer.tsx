@@ -16,7 +16,7 @@ export const MainViewContainer = ({ onSymbolChange, symbol }: IProps) => {
 
 			<TradingMainView symbol={symbol} />
 
-			<Box px={1} mx={1} bgcolor={theme.palette.background.default}>
+			<Box px={1} mx={1} bgcolor={theme.palette.background.default} maxWidth={'400px'}>
 				<Deposit />
 			</Box>
 

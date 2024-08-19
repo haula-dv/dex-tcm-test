@@ -34,8 +34,8 @@ export const TradingMainView = ({ symbol }: IProps) => {
 						timezone="Etc/UTC"
 					/>
 				) : (
-					<Box display={'flex'} justifyContent={'center'} alignItems={'center'}>
-						<IconLoading />
+					<Box display={'flex'} justifyContent={'center'} alignItems={'center'} height={'600px'}>
+						<IconLoading height="20px" width="20px" />
 					</Box>
 				)}
 			</Box>
