@@ -3,7 +3,11 @@ import { Box } from '@mui/material';
 import { memo, useEffect, useState } from 'react';
 import { AdvancedRealTimeChart } from 'react-ts-tradingview-widgets';
 
-export const TradingMainView = () => {
+interface IProps {
+	symbol: string;
+}
+
+export const TradingMainView = ({ symbol }: IProps) => {
 	const [isReady, setIsReady] = useState(false);
 
 	useEffect(() => {
@@ -11,6 +15,8 @@ export const TradingMainView = () => {
 			setIsReady(true);
 		}, 1000);
 	}, []);
+
+	const [_, base] = symbol.split('_');
 
 	return (
 		<>
@@ -21,7 +27,7 @@ export const TradingMainView = () => {
 						locale="en"
 						calendar
 						theme="dark"
-						symbol="ETH"
+						symbol={base}
 						autosize
 						allow_symbol_change={false}
 						interval="1"

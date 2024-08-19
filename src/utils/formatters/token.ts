@@ -7,5 +7,10 @@ export const idFromHexChainId = (hexChainId: string): number => {
 };
 
 export const formartAddress = (address: string) => {
-	return address.slice(0, 6) + "..." + address.slice(-4);
+	return address.slice(0, 6) + '...' + address.slice(-4);
+};
+
+export const spitSymbol = (symbol: string) => {
+	const [_, base] = symbol.split('_');
+	return base;
 };

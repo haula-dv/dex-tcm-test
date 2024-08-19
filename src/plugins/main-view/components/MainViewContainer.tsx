@@ -1,29 +1,24 @@
 import { TradingMainView } from '@/plugins/trading-view/components/TradingView';
 import { theme } from '@/utils';
-import { Box, Grid } from '@mui/material';
+import { Box, Stack } from '@mui/material';
 import { Deposit } from '@orderly.network/react';
-import { API } from '@orderly.network/types';
 import { SymbolHeader } from './SymbolHeader';
 
 interface IProps {
 	symbol: string;
-	onSymbolChange: (symbol: API.Symbol) => void;
+	onSymbolChange: (symbol: string) => void;
 }
 
 export const MainViewContainer = ({ onSymbolChange, symbol }: IProps) => {
 	return (
-		<Grid container>
-			<Grid item md={3}>
-				<Box px={1} mx={1} bgcolor={theme.palette.background.default}>
-					<Deposit />
-				</Box>
-			</Grid>
+		<Stack>
+			<SymbolHeader onSymbolChange={onSymbolChange} symbol={symbol} />
 
-			<Grid item md={9}>
-				<SymbolHeader />
+			<TradingMainView symbol={symbol} />
 
-				<TradingMainView />
-			</Grid>
+			<Box px={1} mx={1} bgcolor={theme.palette.background.default}>
+				<Deposit />
+			</Box>
 
 			{/* <Box maxWidth={'400px'} bgcolor={theme.palette.background.paper} p={2}>
 				<Deposit />
@@ -35,6 +30,6 @@ export const MainViewContainer = ({ onSymbolChange, symbol }: IProps) => {
 					<OrderEntryContainer />
 				</AssetsProvider>
 			</Box> */}
-		</Grid>
+		</Stack>
 	);
 };

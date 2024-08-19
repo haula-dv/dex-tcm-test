@@ -14,6 +14,7 @@ interface IProps extends ListItemButtonProps {
 	isHiddenEndIcon?: boolean;
 	onClick?: () => void;
 	isSelected?: boolean;
+	children?: ReactNode;
 }
 
 export const ItemList = ({
@@ -26,14 +27,24 @@ export const ItemList = ({
 	isHiddenEndIcon,
 	onClick,
 	isSelected,
+	children,
 	...props
 }: IProps) => {
 	return (
-		<CustomListItem borderRadius={borderRadius} size={size} disabledBg={disabledBg} onClick={onClick} isSelected={isSelected} {...props}>
+		<CustomListItem
+			borderRadius={borderRadius}
+			size={size}
+			disabledBg={disabledBg}
+			onClick={onClick}
+			isSelected={isSelected}
+			{...props}
+		>
 			<Stack direction={'row'} alignItems={'center'} width={'100%'} spacing={1}>
 				<Box display={'flex'} alignItems={'center'}>
 					{startIcon}
 				</Box>
+
+				{children}
 
 				<Typography fontWeight={600} flex={1}>
 					{primaryText}
@@ -53,7 +64,8 @@ interface IItemProps {
 }
 
 const CustomListItem = styled(ListItemButton, {
-	shouldForwardProp: (prop) => prop !== 'borderRadius' && prop !== 'disabledBg' && prop !== 'size' && prop !== 'isSelected',
+	shouldForwardProp: (prop) =>
+		prop !== 'borderRadius' && prop !== 'disabledBg' && prop !== 'size' && prop !== 'isSelected',
 })<IItemProps>(({ theme, borderRadius, disabledBg, size, isSelected }) => ({
 	borderRadius: borderRadius,
 

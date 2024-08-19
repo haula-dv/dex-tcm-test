@@ -1,3 +1,4 @@
+import { Box } from '@mui/material';
 import Image from 'next/image';
 import { useState } from 'react';
 
@@ -15,18 +16,19 @@ export const TokenIcon = ({ url, size = 20, symbol, fontSize }: IProps) => {
 		return <></>;
 	} else
 		return (
-			<Image
-				src={url}
-				height={size}
-				width={size}
-				alt=""
-				onError={() => setIsError(true)}
-				style={{
-					overflow: 'hidden',
-					borderRadius: '50%',
-				}}
-			/>
+			<Box flexShrink={0}>
+				<Image
+					src={url}
+					height={size}
+					width={size}
+					alt=""
+					onError={() => setIsError(true)}
+					style={{
+						overflow: 'hidden',
+						borderRadius: '50%',
+						flexShrink: 0,
+					}}
+				/>
+			</Box>
 		);
-
-	return <></>;
 };
