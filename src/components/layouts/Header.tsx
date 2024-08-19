@@ -40,7 +40,6 @@ export const Header = () => {
 };
 
 const MainAppBar = styled(AppBar)(({ theme }) => ({
-	borderBottom: `1px solid ${theme.palette.divider}`,
 	zIndex: 0,
 	height: '56px',
 	borderRadius: '0px',

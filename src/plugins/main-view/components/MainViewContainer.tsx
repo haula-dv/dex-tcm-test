@@ -1,8 +1,9 @@
 import { TradingMainView } from '@/plugins/trading-view/components/TradingView';
-import { Box } from '@mui/material';
-import { Deposit, Withdraw } from '@orderly.network/react';
+import { theme } from '@/utils';
+import { Box, Grid } from '@mui/material';
+import { Deposit } from '@orderly.network/react';
 import { API } from '@orderly.network/types';
-import { OrderBookContainer } from './OrderBook';
+import { SymbolHeader } from './SymbolHeader';
 
 interface IProps {
 	symbol: string;
@@ -11,15 +12,29 @@ interface IProps {
 
 export const MainViewContainer = ({ onSymbolChange, symbol }: IProps) => {
 	return (
-		<div>
-			<TradingMainView />
+		<Grid container>
+			<Grid item md={3}>
+				<Box px={1} mx={1} bgcolor={theme.palette.background.default}>
+					<Deposit />
+				</Box>
+			</Grid>
 
-			<Box maxWidth={'400px'}>
+			<Grid item md={9}>
+				<SymbolHeader />
+
+				<TradingMainView />
+			</Grid>
+
+			{/* <Box maxWidth={'400px'} bgcolor={theme.palette.background.paper} p={2}>
 				<Deposit />
 				<Withdraw />
 
 				<OrderBookContainer />
-			</Box>
-		</div>
+
+				<AssetsProvider>
+					<OrderEntryContainer />
+				</AssetsProvider>
+			</Box> */}
+		</Grid>
 	);
 };

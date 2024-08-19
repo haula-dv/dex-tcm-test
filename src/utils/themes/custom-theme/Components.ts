@@ -18,14 +18,14 @@ const components = (theme: Theme) => {
 				'*': {
 					boxSizing: 'border-box',
 				},
-				'html': {
+				html: {
 					height: '100%',
 					width: '100%',
 				},
-				'a': {
+				a: {
 					textDecoration: 'none',
 				},
-				'body': {
+				body: {
 					height: '100%',
 					margin: 0,
 					padding: 0,
@@ -180,17 +180,17 @@ const components = (theme: Theme) => {
 		MuiTableCell: {
 			styleOverrides: {
 				root: {
-					'borderBottom': `1px solid ${theme.palette.divider}`,
-					'fontSize': '14px',
-					'color': theme.palette.grey[500],
-					'fontWeight': 500,
+					borderBottom: `1px solid ${theme.palette.divider}`,
+					fontSize: '14px',
+					color: theme.palette.grey[500],
+					fontWeight: 500,
 
 					'& .MuiButtonBase-root': {
-						'fontSize': '12px',
-						'fontWeight': 500,
-						'color': theme.palette.grey[400],
-						'textTransform': 'uppercase',
-						'letterSpacing': '0.5px',
+						fontSize: '12px',
+						fontWeight: 500,
+						color: theme.palette.grey[400],
+						textTransform: 'uppercase',
+						letterSpacing: '0.5px',
 						'& .MuiTableSortLabel-icon': {
 							color: theme.palette.grey[400],
 						},
@@ -207,7 +207,7 @@ const components = (theme: Theme) => {
 
 					'&.Mui-selected': {
 						// backgroundColor: theme.palette.grey[100],
-						'backgroundColor': 'transparent !important',
+						backgroundColor: 'transparent !important',
 
 						'&:hover': {
 							// backgroundColor: `${theme.palette.grey[100]}`,

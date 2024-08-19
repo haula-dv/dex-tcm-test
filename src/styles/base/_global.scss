@@ -36,3 +36,19 @@ input::-webkit-inner-spin-button {
 	background-color: var(--warning);
 	color: var(--white);
 }
+
+.apply-common-tooltip {
+	div {
+		color: #20222b !important;
+	}
+}
+
+.tradingview-widget-copyright {
+	display: none !important;
+}
+
+iframe {
+	html.theme-dark #widget-container {
+		border-color: #fff !important;
+	}
+}

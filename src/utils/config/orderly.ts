@@ -9,7 +9,7 @@ export function OrderlyConfig(ctx?: { url: string; domain: string }) {
 		projectId: '93dba83e8d9915dc6a65ffd3ecfd19fd',
 		requiredChains: [42161],
 		optionalChains: [421613, 42161],
-		dappUrl: typeof window === 'object' ? window.location.host : 'http://localhost:3344/',
+		dappUrl: typeof window === 'object' ? window.location.host : 'http://localhost:3000/',
 	};
 
 	const ledgerInitOptions = {
@@ -25,7 +25,7 @@ export function OrderlyConfig(ctx?: { url: string; domain: string }) {
 		web3Onboard: {
 			wallets: [injectedModule(), walletConnect, ledger],
 			appMetadata: {
-				name: 'Orderly',
+				name: 'Tcmp',
 				icon: '/Orderly.svg',
 				description: 'Orderly',
 
@@ -63,9 +63,29 @@ export function OrderlyConfig(ctx?: { url: string; domain: string }) {
 
 		// Trading view
 		tradingViewConfig: {
-			scriptSRC: '@/public/tradingview/charting_library/charting_library.js',
-			library_path: '@/public/tradingview/charting_library/bundles',
-			customCssUrl: '@/public/tradingview/chart.css',
+			scriptSRC: '/tradingview/charting_library/charting_library.js',
+			library_path: '/tradingview/charting_library/bundles',
+			customCssUrl: '/tradingview/chart.css',
+			overrides: {
+				'paneProperties.backgroundType': 'solid',
+				'paneProperties.background': '#1D1A26',
+
+				'mainSeriesProperties.candleStyle.upColor': '#00B59F',
+				'mainSeriesProperties.candleStyle.downColor': '#FF67C2',
+				'mainSeriesProperties.candleStyle.borderColor': '#00B59F',
+				'mainSeriesProperties.candleStyle.borderUpColor': '#00B59F',
+				'mainSeriesProperties.candleStyle.borderDownColor': '#FF67C2',
+				'mainSeriesProperties.candleStyle.wickUpColor': '#00B59F',
+				'mainSeriesProperties.candleStyle.wickDownColor': '#FF67C2',
+
+				// GRID lines
+				'paneProperties.vertGridProperties.color': '#26232F',
+				'paneProperties.horzGridProperties.color': '#26232F',
+
+				// text color
+				'scalesProperties.textColor': '#97969B',
+				'scalesProperties.lineColor': '#2B2833',
+			},
 		},
 	};
 }

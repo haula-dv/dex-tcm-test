@@ -15,7 +15,7 @@ export default function RootLayout({
 			<OrderlyConfigProviderRoot>
 				<Header />
 
-				<Box p={2}>{children}</Box>
+				<Box>{children}</Box>
 			</OrderlyConfigProviderRoot>
 		</Web3OnboardProviderRoot>
 	);
