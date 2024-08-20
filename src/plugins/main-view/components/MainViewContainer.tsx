@@ -1,8 +1,8 @@
-import { TradingMainView } from '@/plugins/trading-view/components/TradingView';
+import { OrderBookContainer } from '@/plugins/order-book/OrderBookContainer';
+import { OrderViewContainer } from '@/plugins/order-view/OrderViewContainer';
 import { theme } from '@/utils';
 import { Box, Stack } from '@mui/material';
-import { Deposit } from '@orderly.network/react';
-import { SymbolHeader } from './SymbolHeader';
+import { Divider, SystemStatusBar } from '@orderly.network/react';
 
 interface IProps {
 	symbol: string;
@@ -11,25 +11,35 @@ interface IProps {
 
 export const MainViewContainer = ({ onSymbolChange, symbol }: IProps) => {
 	return (
-		<Stack>
-			<SymbolHeader onSymbolChange={onSymbolChange} symbol={symbol} />
+		<Stack bgcolor={theme.palette.background.paper}>
+			<Stack direction={'row'}>
+				<Box width={'100%'}>
+					{/* <SymbolHeader onSymbolChange={onSymbolChange} symbol={symbol} />
 
-			<TradingMainView symbol={symbol} />
+					<TradingMainView symbol={symbol} /> */}
+				</Box>
 
-			<Box px={1} mx={1} bgcolor={theme.palette.background.default} maxWidth={'400px'}>
-				<Deposit />
+				<OrderBookContainer symbol={symbol} />
+
+				<Box width={'400px'} flexShrink={0}>
+					123
+				</Box>
+			</Stack>
+
+			<Box px={1} bgcolor={theme.palette.background.default}>
+				{/* <Box maxWidth={'400px'}>
+					<Deposit />
+					<AssetAndMarginSheet />
+					<Withdraw />
+					<WalletConnect status={1} />
+					<DepositAndWithdraw activeTab="deposit" />
+				</Box> */}
 			</Box>
 
-			{/* <Box maxWidth={'400px'} bgcolor={theme.palette.background.paper} p={2}>
-				<Deposit />
-				<Withdraw />
-
-				<OrderBookContainer />
-
-				<AssetsProvider>
-					<OrderEntryContainer />
-				</AssetsProvider>
-			</Box> */}
+			<Divider />
+			<OrderViewContainer />
+			{/* <PositionMainView symbol={symbol} /> */}
+			<SystemStatusBar />
 		</Stack>
 	);
 };

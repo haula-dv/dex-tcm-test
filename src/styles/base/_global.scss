@@ -1,7 +1,9 @@
 html {
 	background-color: #20222b !important;
+	font-family: var(--orderly-font-family) !important;
 }
 body {
+	font-family: var(--orderly-font-family) !important;
 	background-color: #20222b !important;
 }
 
@@ -50,5 +52,20 @@ input::-webkit-inner-spin-button {
 iframe {
 	html.theme-dark #widget-container {
 		border-color: #fff !important;
+	}
+}
+
+.tcmp-orderbook {
+	#orderly-order-book-depth {
+		display: none !important;
+	}
+}
+
+.orderly-select {
+	.orderly-select-btn {
+		height: 28px !important;
+	}
+	.orderly-select-none {
+		height: 28px !important;
 	}
 }

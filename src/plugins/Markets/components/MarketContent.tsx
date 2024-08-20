@@ -30,7 +30,7 @@ export const MarketsContent = ({ handleClose, marketEl, openMarketEl, onSymbolCh
 				open={openMarketEl}
 				onClose={handleClose}
 			>
-				<Box width={'600px'} height={'400px'} overflow={'auto'} px={2}>
+				<Box width={'400px'} height={'400px'} overflow={'auto'} px={2}>
 					<Markets
 						dataSource={markets as any[]}
 						onItemClick={(e) => {

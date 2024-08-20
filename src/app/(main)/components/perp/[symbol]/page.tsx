@@ -27,13 +27,15 @@ export default function PerpPage({ params }: { params: { slug: string } }) {
 	);
 
 	return (
-		<MainViewContainer
-			symbol={symbol || 'PERP_ETH_USDC'}
-			onSymbolChange={(symbol) => {
-				localStorage.setItem(_orderlySymbolKey, symbol);
-				router.push(`/components/perp/${symbol}`);
-				updateTitle(symbol);
-			}}
-		/>
+		<>
+			<MainViewContainer
+				symbol={symbol || 'PERP_ETH_USDC'}
+				onSymbolChange={(symbol) => {
+					localStorage.setItem(_orderlySymbolKey, symbol);
+					router.push(`/components/perp/${symbol}`);
+					updateTitle(symbol);
+				}}
+			/>
+		</>
 	);
 }
