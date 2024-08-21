@@ -9,11 +9,10 @@ import { useCallback, useEffect, useState } from 'react';
 export default function PerpPage({ params }: { params: { symbol: string } }) {
 	const router = useRouter();
 	const [symbol, setSymbol] = useState(params.symbol);
-	console.log(params);
 
 	useEffect(() => {
 		if (params.symbol) {
-			setSymbol(params.symbol);
+			// setSymbol(params.symbol);
 		}
 	}, [params.symbol]);
 
