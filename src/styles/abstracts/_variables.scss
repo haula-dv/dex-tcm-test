@@ -3,6 +3,7 @@
 // ======================================================
 
 :root {
+<<<<<<< HEAD
 	// Colors
 	--app-bg-color: #fff;
 	--white: #ffffff;
@@ -107,6 +108,50 @@
 	--orderly-color-base-800: 29 26 38;
 	--orderly-color-base-900: 22 20 28;
 
+=======
+	/* colors */
+	--orderly-color-primary: 182 79 255;
+	--orderly-color-primary-light: 208 140 255;
+	--orderly-color-primary-darken: 152 62 214;
+	--orderly-color-primary-contrast: 255 255 255;
+
+	--orderly-color-link: 182 79 255;
+	--orderly-color-link-light: 208 140 255;
+
+	--orderly-color-secondary: 255 255 255;
+	--orderly-color-tertiary: 218 218 218;
+	--orderly-color-quaternary: 218 218 218;
+	/*--orderly-color-disabled:218 218 218;*/
+
+	--orderly-color-danger: 232 88 175;
+	--orderly-color-danger-light: 255 103 191;
+	--orderly-color-danger-darken: 199 68 146;
+	--orderly-color-danger-contrast: 255 255 255;
+
+	--orderly-color-success: 3 152 134;
+	--orderly-color-success-light: 0 181 159;
+	--orderly-color-success-darken: 0 119 105;
+	--orderly-color-success-contrast: 255 255 255;
+
+	--orderly-color-warning: 255 207 115;
+	--orderly-color-warning-light: 255 207 115;
+	--orderly-color-warning-darken: 117 88 33;
+	--orderly-color-warning-contrast: 255 255 255;
+
+	--orderly-color-fill: 36 32 47;
+	--orderly-color-fill-active: 40 46 58;
+
+	--orderly-color-base-100: 93 83 123;
+	--orderly-color-base-200: 81 72 107;
+	--orderly-color-base-300: 68 61 89;
+	--orderly-color-base-400: 57 52 74;
+	--orderly-color-base-500: 51 46 66;
+	--orderly-color-base-600: 43 38 56;
+	--orderly-color-base-700: 36 32 47;
+	--orderly-color-base-800: 29 26 38;
+	--orderly-color-base-900: 22 20 28;
+
+>>>>>>> feat/swap
 	--orderly-color-base-foreground: 255 255 255;
 
 	--orderly-color-trading-loss: 255 103 194;
@@ -153,3 +198,36 @@
 	--orderly-referral-text-gradient-from: 73 31 102;
 	--orderly-referral-text-gradient-to: 182 79 255;
 }
+
+// .theme-dark:root {
+// 	--tv-color-platform-background: #111;
+// 	--tv-color-pane-background: #111;
+// 	--tv-color-toolbar-button-background-hover: #111;
+// 	--tv-color-toolbar-button-background-expanded: #111;
+// 	--tv-color-toolbar-button-background-active: #111;
+// 	--tv-color-toolbar-button-background-active-hover: #111;
+// 	--tv-color-toolbar-button-text: #111;
+// 	--tv-color-toolbar-button-text-hover: rgb(74, 20, 140);
+// 	--tv-color-toolbar-button-text-active: red;
+// 	--tv-color-toolbar-button-text-active-hover: red;
+// 	--tv-color-item-active-text: #111;
+// 	--tv-color-toolbar-toggle-button-background-active: red;
+// 	--tv-color-toolbar-toggle-button-background-active-hover: magenta;
+// 	--tv-color-toolbar-divider-background: rgb(251, 223, 244);
+// 	--tv-color-toolbar-save-layout-loader: rgb(134, 137, 147);
+
+// 	--tv-color-popup-background: #111;
+// 	--tv-color-popup-element-text: #111;
+// 	--tv-color-popup-element-text-hover: rgb(74, 20, 140);
+// 	--tv-color-popup-element-background-hover: #111;
+// 	--tv-color-popup-element-divider-background: rgb(251, 223, 244);
+// 	--tv-color-popup-element-secondary-text: rgb(74, 20, 140);
+// 	--tv-color-popup-element-hint-text: rgb(74, 20, 140);
+// 	--tv-color-popup-element-text-active: rgb(6, 6, 255);
+// 	--tv-color-popup-element-background-active: red;
+// 	--tv-color-popup-element-toolbox-text: #111;
+// 	--tv-color-popup-element-toolbox-text-hover: rgb(74, 20, 140);
+// 	--tv-color-popup-element-toolbox-text-active-hover: rgb(74, 20, 140);
+// 	--tv-color-popup-element-toolbox-background-hover: rgb(222, 89, 132);
+// 	--tv-color-popup-element-toolbox-background-active-hover: magenta;
+// }

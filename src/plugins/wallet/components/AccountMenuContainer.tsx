@@ -1,8 +1,16 @@
+<<<<<<< HEAD
 import { StyledMenu } from '@/src/components/menu/StyledMenu';
 import { TSizes } from '@/src/utils/themes/custom-theme/sizes';
 import { Box, Stack } from '@mui/material';
 import { styled } from '@mui/material/styles';
 import { IconWallet } from '@tabler/icons-react';
+=======
+import { StyledMenu } from "@/components/menu/StyledMenu";
+import { TSizes } from "@/utils/themes/custom-theme/sizes";
+import { Box, Stack } from "@mui/material";
+import { styled } from "@mui/material/styles";
+import { IconWallet } from "@tabler/icons-react";
+>>>>>>> feat/swap
 
 interface IProps {
 	anchorEl: HTMLElement | null;
@@ -12,20 +20,33 @@ interface IProps {
 
 export default function AccountMenuContainer({ anchorEl, handleClose, open }: IProps) {
 	const menus = [
+<<<<<<< HEAD
 		{ label: 'My orders', id: 'orders', icon: <></> },
 		{ label: 'My wallet', id: 'wallet', icon: <IconWallet size={'1rem'} /> },
+=======
+		{ label: "My orders", id: "orders", icon: <></> },
+		{ label: "My wallet", id: "wallet", icon: <IconWallet size={"1rem"} /> },
+>>>>>>> feat/swap
 	];
 
 	return (
 		<StyledMenu
 			id="account-menu"
 			MenuListProps={{
+<<<<<<< HEAD
 				'aria-labelledby': 'account-button',
 			}}
 			anchorEl={anchorEl}
 			open={open}
 			onClose={handleClose}
 		>
+=======
+				"aria-labelledby": "account-button",
+			}}
+			anchorEl={anchorEl}
+			open={open}
+			onClose={handleClose}>
+>>>>>>> feat/swap
 			<Stack p={0.5}>
 				{menus.map(({ label, id, icon }) => (
 					<MenuItem key={id} onClick={() => handleClose(id)}>
@@ -38,6 +59,7 @@ export default function AccountMenuContainer({ anchorEl, handleClose, open }: IP
 }
 
 const MenuItem = styled(Box)(({ theme }) => ({
+<<<<<<< HEAD
 	width: '200px',
 	height: TSizes.buttonHeight,
 	display: 'flex',
@@ -47,6 +69,17 @@ const MenuItem = styled(Box)(({ theme }) => ({
 	padding: '0 12px',
 	cursor: 'pointer',
 	'&:hover': {
+=======
+	width: "200px",
+	height: TSizes.buttonHeight,
+	display: "flex",
+	alignItems: "center",
+	justifyContent: "space-between",
+	borderRadius: TSizes.borderRadius,
+	padding: "0 12px",
+	cursor: "pointer",
+	"&:hover": {
+>>>>>>> feat/swap
 		backgroundColor: theme.palette.grey[800],
 	},
 }));

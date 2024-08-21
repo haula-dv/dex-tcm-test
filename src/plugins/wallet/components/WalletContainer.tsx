@@ -25,13 +25,6 @@ export default function WalletContainer() {
 		await connect();
 	};
 
-	// Handle disconnect wallet button
-	const handleDisconnect = async () => {
-		if (wallet) {
-			disconnect(wallet);
-		}
-	};
-
 	// Handle show menu account button
 	const handleShowMenuAccount = (event: React.MouseEvent<HTMLElement>) => {
 		setAccountAnchorEl(event.currentTarget);
@@ -60,10 +53,12 @@ export default function WalletContainer() {
 				},
 			});
 		}
-	}, [wallet]);
+	}, [account, wallet]);
 
 	return (
 		<Stack direction={'row'} spacing={1} alignItems={'center'}>
+			<NetworkContent />
+
 			{connecting ? (
 				<MainButton startIcon={<IconLoading height="20px" width="20px" />} variant="outlined">
 					Connecting
@@ -71,26 +66,22 @@ export default function WalletContainer() {
 			) : (
 				<>
 					{!wallet ? (
-						<MainButton onClick={handleConnectWallet} variant="contained">
+						<MainButton onClick={handleConnectWallet} variant="outlined" color="primary">
 							Connect Wallet
 						</MainButton>
 					) : (
-						<>
-							<NetworkContent />
-
-							<MainButton
-								variant="outlined"
-								color="primary"
-								onClick={handleShowMenuAccount}
-								endIcon={<IconSettings size={'1.1rem'} />}
-								id="account-button"
-								aria-controls={openAccountEl ? 'account-menu' : undefined}
-								aria-haspopup="true"
-								aria-expanded={openAccountEl ? 'true' : undefined}
-							>
-								<AccountAvatar />
-							</MainButton>
-						</>
+						<MainButton
+							variant="outlined"
+							color="primary"
+							onClick={handleShowMenuAccount}
+							endIcon={<IconSettings size={'1.1rem'} />}
+							id="account-button"
+							aria-controls={openAccountEl ? 'account-menu' : undefined}
+							aria-haspopup="true"
+							aria-expanded={openAccountEl ? 'true' : undefined}
+						>
+							<AccountAvatar />
+						</MainButton>
 					)}
 				</>
 			)}

@@ -1,36 +1,71 @@
+html {
+	background-color: #20222b !important;
+	font-family: var(--orderly-font-family) !important;
+}
 body {
-  background-color: var(--gray-100);
-  font-weight: 400;
+	font-family: var(--orderly-font-family) !important;
+	background-color: #20222b !important;
 }
 
 a {
-  color: inherit !important;
+	color: inherit !important;
 }
 
 // remove arrow
 /* Chrome, Safari, Edge, Opera */
-input[type="number"] {
-  -moz-appearance: textfield;
+input[type='number'] {
+	-moz-appearance: textfield;
 }
 
 /* Firefox */
 input::-webkit-outer-spin-button,
 input::-webkit-inner-spin-button {
-  -webkit-appearance: none;
-  margin: 0;
+	-webkit-appearance: none;
+	margin: 0;
 }
 
 .toast-success {
-  color: var(--white);
-  background-color: var(--success);
+	color: var(--white);
+	background-color: var(--success);
 }
 
 .toast-error {
-  background-color: var(--danger);
-  color: var(--white);
+	background-color: var(--danger);
+	color: var(--white);
 }
 
 .toast-warning {
-  background-color: var(--warning);
-  color: var(--white);
+	background-color: var(--warning);
+	color: var(--white);
+}
+
+.apply-common-tooltip {
+	div {
+		color: #20222b !important;
+	}
+}
+
+.tradingview-widget-copyright {
+	display: none !important;
+}
+
+iframe {
+	html.theme-dark #widget-container {
+		border-color: #fff !important;
+	}
+}
+
+.tcmp-orderbook {
+	#orderly-order-book-depth {
+		display: none !important;
+	}
+}
+
+.orderly-select {
+	.orderly-select-btn {
+		height: 28px !important;
+	}
+	.orderly-select-none {
+		height: 28px !important;
+	}
 }

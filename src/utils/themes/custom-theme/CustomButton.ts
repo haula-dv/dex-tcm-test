@@ -7,8 +7,7 @@ export const CustomMuiButton = (theme: Theme) => {
 				root: {
 					textTransform: 'none',
 					boxShadow: 'none',
-					fontSize: '13px',
-					height: '32px',
+
 					fontWeight: 600,
 					padding: '6px 12px',
 					lineHeight: '100%',
@@ -22,10 +21,6 @@ export const CustomMuiButton = (theme: Theme) => {
 							backgroundColor: theme.palette.grey[100],
 						},
 					},
-				},
-
-				contained: {
-					//   padding: "8px 16px",
 				},
 
 				containedPrimary: {
@@ -54,9 +49,9 @@ export const CustomMuiButton = (theme: Theme) => {
 				},
 
 				filledTonalInherit: {
-					backgroundColor: theme.palette.grey[100],
+					backgroundColor: theme.palette.mode === 'dark' ? theme.palette.grey[900] : '',
 					'&:hover': {
-						backgroundColor: theme.palette.grey[200],
+						backgroundColor: theme.palette.mode === 'dark' ? theme.palette.grey[900] : '',
 					},
 				},
 
@@ -68,12 +63,21 @@ export const CustomMuiButton = (theme: Theme) => {
 					},
 				},
 
-				// SIZE
-				sizeSmall: {
-					padding: '4px 12px',
-					fontSize: '12px',
+				//========================= SIZE =====================//
+				sizeLarge: {
+					height: '40px',
+				},
+
+				sizeMedium: {
+					fontSize: '13px',
 					height: '32px',
-					borderRadius: '8px !important',
+				},
+
+				sizeSmall: {
+					padding: '2px 8px',
+					fontSize: '12px',
+					height: '24px',
+					borderRadius: '6px !important',
 				},
 
 				sizeXsmall: {
@@ -82,10 +86,6 @@ export const CustomMuiButton = (theme: Theme) => {
 					padding: '0px 8px',
 					minWidth: 'auto',
 					borderRadius: '6px !important',
-				},
-
-				sizeLarge: {
-					height: '56px',
 				},
 
 				text: {

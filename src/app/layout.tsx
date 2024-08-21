@@ -1,34 +1,33 @@
-import { Metadata } from 'next';
-import ClientThemeProvider from '../components/ClientThemeProvider';
-import { Header } from '../components/layouts/Header';
-import OrderlyContainer from '../provider/OrderlyContainer';
-import '../styles/global.scss';
+import "@/styles/global.scss";
+import "react-toastify/dist/ReactToastify.css";
+
+import type { Metadata } from "next";
+
+import ClientThemeProvider from "@/components/ClientThemeProvider";
+import { Loading } from "@/components/loading/loading";
+import Web3OnboardProviderRoot from "@/provider/WalletConnectProvider";
+import React from "react";
+import { Toaster } from "sonner";
 
 export const metadata: Metadata = {
-	title: 'TCMP Dex Trade',
-	description: 'TCMP Dex Trade',
+	title: "Dex",
+	description: "Dex",
 };
 
-export const viewport = {
-	minimumScale: 1.0,
-	maximumScale: 1.0,
-	userScalable: false,
-};
-
-export default function RootLayout({ children }: { children: React.ReactNode }) {
+export default function RootLayout({
+	children,
+}: Readonly<{
+	children: React.ReactNode;
+}>) {
 	return (
 		<html lang="en">
-			<head>
-				<link rel="icon" type="image/png" href="/apple-touch-icon.png" />
-				<link rel="apple-touch-icon" type="image/png" sizes="16x16" href="/apple-touch-icon.png" />
-			</head>
-
+			<head />
 			<body>
 				<ClientThemeProvider>
-					<OrderlyContainer>
-						<Header />
-						{children}
-					</OrderlyContainer>
+					<Web3OnboardProviderRoot>{children}</Web3OnboardProviderRoot>
+
+					<Loading />
+					<Toaster closeButton position="top-right" />
 				</ClientThemeProvider>
 			</body>
 		</html>

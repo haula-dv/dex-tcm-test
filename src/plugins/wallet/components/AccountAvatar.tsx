@@ -1,12 +1,20 @@
+<<<<<<< HEAD
 import { formartAddress } from '@/src/utils/format/token';
 import { Stack, Typography } from '@mui/material';
 import { useConnectWallet } from '@web3-onboard/react';
 import Image from 'next/image';
+=======
+import { formartAddress } from "@/utils/formatters/token";
+import { Stack, Typography } from "@mui/material";
+import { useConnectWallet } from "@web3-onboard/react";
+import Image from "next/image";
+>>>>>>> feat/swap
 
 export const AccountAvatar = () => {
 	const [{ wallet, connecting }, connect, disconnect] = useConnectWallet();
 
 	return (
+<<<<<<< HEAD
 		<Stack direction={'row'} alignItems={'center'} spacing={1}>
 			<Image
 				src={'/images/avatar.png'}
@@ -15,6 +23,10 @@ export const AccountAvatar = () => {
 				width={20}
 				style={{ borderRadius: '50%' }}
 			/>
+=======
+		<Stack direction={"row"} alignItems={"center"} spacing={1}>
+			<Image src={"/images/avatar.png"} alt="" height={20} width={20} style={{ borderRadius: "50%" }} />
+>>>>>>> feat/swap
 
 			{wallet && <Typography>{formartAddress(wallet.accounts[0].address)}</Typography>}
 		</Stack>

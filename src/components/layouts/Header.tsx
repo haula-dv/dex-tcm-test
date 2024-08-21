@@ -1,12 +1,10 @@
 'use client';
-import WalletContainer from '@/src/plugins/wallet/components/WalletContainer';
+import WalletContainer from '@/plugins/wallet/components/WalletContainer';
 import { Mixins } from '@/utils/themes/custom-theme/mixins';
 import { TSizes } from '@/utils/themes/custom-theme/sizes';
-import { AppBar, Box, BoxProps, Stack, Toolbar, Typography } from '@mui/material';
+import { AppBar, Box, BoxProps, Stack, Toolbar } from '@mui/material';
 import { styled } from '@mui/material/styles';
-import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { MainContainer } from '../container/MainContainer';
 import Logo from '../icons/Logo';
 
 export const Header = () => {
@@ -20,36 +18,28 @@ export const Header = () => {
 
 	return (
 		<MainAppBar elevation={0} position="static">
-			<MainContainer>
-				<Toolbar disableGutters>
-					<Stack
-						direction={'row'}
-						justifyContent={'space-between'}
-						width={'100%'}
-						alignItems={'center'}
-					>
-						<Stack direction={'row'} alignItems={'center'} spacing={TSizes.margin_md}>
-							<Logo />
+			<Toolbar>
+				<Stack direction={'row'} justifyContent={'space-between'} width={'100%'} alignItems={'center'}>
+					<Stack direction={'row'} alignItems={'center'} spacing={TSizes.margin_md}>
+						<Logo />
 
-							{navItems.map((navItem) => (
+						{/* {navItems.map((navItem) => (
 								<Link key={navItem.label} href={navItem.to}>
 									<NavItem isActived={pathName === navItem.to}>
 										<Typography>{navItem.label}</Typography>
 									</NavItem>
 								</Link>
-							))}
-						</Stack>
-
-						<WalletContainer />
+							))} */}
 					</Stack>
-				</Toolbar>
-			</MainContainer>
+
+					<WalletContainer />
+				</Stack>
+			</Toolbar>
 		</MainAppBar>
 	);
 };
 
 const MainAppBar = styled(AppBar)(({ theme }) => ({
-	borderBottom: `1px solid ${theme.palette.divider}`,
 	zIndex: 0,
 	height: '56px',
 	borderRadius: '0px',

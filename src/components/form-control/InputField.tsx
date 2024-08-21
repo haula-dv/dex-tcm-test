@@ -1,46 +1,58 @@
 'use client';
-import { Stack } from '@mui/material';
 import { styled } from '@mui/material/styles';
-import { FieldValues, Path, UseFormReturn } from 'react-hook-form';
+import { Input } from '@orderly.network/react';
+import { Controller, FieldValues, Path, RegisterOptions, UseFormReturn } from 'react-hook-form';
 import { TextFieldElement, TextFieldElementProps } from 'react-hook-form-mui';
+import { RenderFormError } from './RenderErrors';
 
 interface InputFieldProps<V extends FieldValues> {
 	formContext: UseFormReturn<V>;
 	name: Path<V>;
-	type?: 'text' | 'number' | 'email';
-	label?: string;
-	required?: boolean;
-	rows?: number;
+	prefix?: string | React.ReactNode;
+	suffix?: React.ReactNode;
 	placeholder?: string;
-	disabled?: boolean;
+	decimals?: number;
+	inputMode?: 'numeric' | 'decimal' | 'amount';
+	readOnly?: boolean | null;
+	rules?: Omit<RegisterOptions<V, Path<V>>, 'disabled' | 'valueAsNumber' | 'valueAsDate' | 'setValueAs'> | undefined;
 }
 
 const InputField = <V extends FieldValues>({
 	name,
-	type = 'text',
-	label = '',
-	required = false,
-	placeholder = '',
-	rows = 1,
-	disabled = false,
 	formContext,
+	prefix,
+	decimals,
+	placeholder,
+	inputMode,
+	readOnly,
+	suffix,
+	rules,
 }: InputFieldProps<V>) => {
 	return (
-		<Stack width={'100%'}>
-			<TextFieldElement
-				name={name}
-				control={formContext.control as any}
-				multiline={rows > 1}
-				minRows={rows}
-				maxRows={rows}
-				fullWidth
-				type={type}
-				required={required}
-				placeholder={placeholder}
-				disabled={disabled}
-				variant="filled"
-			/>
-		</Stack>
+		<Controller
+			name={name}
+			control={formContext.control}
+			rules={rules}
+			render={({ field: { name, value, onBlur, onChange }, fieldState: { error } }) => (
+				<>
+					<Input
+						value={value}
+						className="orderly-text-right"
+						placeholder={placeholder}
+						inputMode={inputMode}
+						prefix={prefix}
+						suffix={suffix}
+						name={name}
+						onBlur={onBlur}
+						onChange={onChange}
+						readOnly={readOnly as any}
+						autoComplete={'off'}
+					/>
+
+					<RenderFormError error={error?.message ?? ''} />
+				</>
+			)}
+		/>
 	);
 };
 
