@@ -6,9 +6,16 @@ import '@orderly.network/react/dist/styles.css';
 import { useRouter } from 'next/navigation';
 import { useCallback, useEffect, useState } from 'react';
 
-export default function PerpPage({ params }: { params: { slug: string } }) {
+export default function PerpPage({ params }: { params: { symbol: string } }) {
 	const router = useRouter();
-	const [symbol, setSymbol] = useState(params.slug);
+	const [symbol, setSymbol] = useState(params.symbol);
+	console.log(params);
+
+	useEffect(() => {
+		if (params.symbol) {
+			setSymbol(params.symbol);
+		}
+	}, [params.symbol]);
 
 	useEffect(() => {
 		if (symbol === undefined) {
@@ -26,16 +33,11 @@ export default function PerpPage({ params }: { params: { slug: string } }) {
 		[symbol],
 	);
 
-	return (
-		<>
-			<MainViewContainer
-				symbol={symbol || 'PERP_ETH_USDC'}
-				onSymbolChange={(symbol) => {
-					localStorage.setItem(_orderlySymbolKey, symbol);
-					router.push(`/components/perp/${symbol}`);
-					updateTitle(symbol);
-				}}
-			/>
-		</>
-	);
+	const onSymbolChange = (symbol: string) => {
+		localStorage.setItem(_orderlySymbolKey, symbol);
+		router.push(`/components/perp/${symbol}`);
+		updateTitle(symbol);
+	};
+
+	return <MainViewContainer symbol={symbol || 'PERP_ETH_USDC'} onSymbolChange={onSymbolChange} />;
 }

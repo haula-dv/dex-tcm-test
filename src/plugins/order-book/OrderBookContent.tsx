@@ -1,5 +1,5 @@
 import IconLoading from '@/components/icons/loading';
-import { Box, Stack } from '@mui/material';
+import { Stack } from '@mui/material';
 import { useOrderbookStream, useSymbolsInfo } from '@orderly.network/hooks';
 import { DesktopOrderBook } from '@orderly.network/react/esm/block';
 
@@ -17,9 +17,9 @@ export const OrderBookContent = ({ symbol }: IProps) => {
 
 	if (isLoading) {
 		return (
-			<Box>
+			<>
 				<IconLoading />
-			</Box>
+			</>
 		);
 	}
 

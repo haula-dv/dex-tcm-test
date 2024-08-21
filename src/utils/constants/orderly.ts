@@ -1,1 +1,1 @@
-export const _orderlySymbolKey = 'orderly-sdk-demo-symbol';
+export const _orderlySymbolKey = 'orderly-sdk-symbol';

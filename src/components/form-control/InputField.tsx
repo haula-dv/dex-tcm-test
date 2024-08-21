@@ -1,8 +1,9 @@
 'use client';
 import { styled } from '@mui/material/styles';
 import { Input } from '@orderly.network/react';
-import { Controller, FieldValues, Path, UseFormReturn } from 'react-hook-form';
+import { Controller, FieldValues, Path, RegisterOptions, UseFormReturn } from 'react-hook-form';
 import { TextFieldElement, TextFieldElementProps } from 'react-hook-form-mui';
+import { RenderFormError } from './RenderErrors';
 
 interface InputFieldProps<V extends FieldValues> {
 	formContext: UseFormReturn<V>;
@@ -13,6 +14,7 @@ interface InputFieldProps<V extends FieldValues> {
 	decimals?: number;
 	inputMode?: 'numeric' | 'decimal' | 'amount';
 	readOnly?: boolean | null;
+	rules?: Omit<RegisterOptions<V, Path<V>>, 'disabled' | 'valueAsNumber' | 'valueAsDate' | 'setValueAs'> | undefined;
 }
 
 const InputField = <V extends FieldValues>({
@@ -24,25 +26,32 @@ const InputField = <V extends FieldValues>({
 	inputMode,
 	readOnly,
 	suffix,
+	rules,
 }: InputFieldProps<V>) => {
 	return (
 		<Controller
 			name={name}
 			control={formContext.control}
-			render={({ field: { name, onBlur, onChange }, fieldState: { error } }) => (
-				<Input
-					className="orderly-text-right"
-					placeholder={placeholder}
-					inputMode={inputMode}
-					prefix={prefix}
-					suffix={suffix}
-					decimals={decimals}
-					name={name}
-					onBlur={onBlur}
-					onChange={onChange}
-					readOnly={readOnly as any}
-					autoComplete={'off'}
-				/>
+			rules={rules}
+			render={({ field: { name, value, onBlur, onChange }, fieldState: { error } }) => (
+				<>
+					<Input
+						value={value}
+						className="orderly-text-right"
+						placeholder={placeholder}
+						inputMode={inputMode}
+						prefix={prefix}
+						suffix={suffix}
+						decimals={decimals}
+						name={name}
+						onBlur={onBlur}
+						onChange={onChange}
+						readOnly={readOnly as any}
+						autoComplete={'off'}
+					/>
+
+					<RenderFormError error={error?.message ?? ''} />
+				</>
 			)}
 		/>
 	);
