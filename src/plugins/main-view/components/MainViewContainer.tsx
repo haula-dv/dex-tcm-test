@@ -3,6 +3,7 @@ import { OrderViewContainer } from '@/plugins/order-view/OrderViewContainer';
 import { theme } from '@/utils';
 import { Box, Stack } from '@mui/material';
 import { Divider, SystemStatusBar } from '@orderly.network/react';
+import { CreateOrderContainer } from './create-order/CreateOrderContainer';
 
 interface IProps {
 	symbol: string;
@@ -21,9 +22,7 @@ export const MainViewContainer = ({ onSymbolChange, symbol }: IProps) => {
 
 				<OrderBookContainer symbol={symbol} />
 
-				<Box width={'400px'} flexShrink={0}>
-					123
-				</Box>
+				<CreateOrderContainer symbol={symbol} />
 			</Stack>
 
 			<Box px={1} bgcolor={theme.palette.background.default}>
@@ -33,11 +32,11 @@ export const MainViewContainer = ({ onSymbolChange, symbol }: IProps) => {
 					<Withdraw />
 					<WalletConnect status={1} />
 					<DepositAndWithdraw activeTab="deposit" />
-				</Box> */}
+					</Box> */}
 			</Box>
 
 			<Divider />
-			<OrderViewContainer />
+			<OrderViewContainer symbol={symbol} />
 			{/* <PositionMainView symbol={symbol} /> */}
 			<SystemStatusBar />
 		</Stack>

@@ -1,54 +1,29 @@
 'use client';
 import { styled } from '@mui/material/styles';
-import { Input } from '@orderly.network/react';
+import { Select } from '@orderly.network/react';
+import { SelectOption } from '@orderly.network/react/esm/select/select';
 import { Controller, FieldValues, Path, UseFormReturn } from 'react-hook-form';
 import { TextFieldElement, TextFieldElementProps } from 'react-hook-form-mui';
 
-interface InputFieldProps<V extends FieldValues> {
+interface SelectFieldProps<V extends FieldValues> {
 	formContext: UseFormReturn<V>;
 	name: Path<V>;
-	prefix?: string | React.ReactNode;
-	suffix?: React.ReactNode;
-	placeholder?: string;
-	decimals?: number;
-	inputMode?: 'numeric' | 'decimal' | 'amount';
-	readOnly?: boolean | null;
+	options: SelectOption[];
 }
 
-const InputField = <V extends FieldValues>({
-	name,
-	formContext,
-	prefix,
-	decimals,
-	placeholder,
-	inputMode,
-	readOnly,
-	suffix,
-}: InputFieldProps<V>) => {
+const SelectField = <V extends FieldValues>({ name, formContext, options }: SelectFieldProps<V>) => {
 	return (
 		<Controller
 			name={name}
 			control={formContext.control}
-			render={({ field: { name, onBlur, onChange }, fieldState: { error } }) => (
-				<Input
-					className="orderly-text-right"
-					placeholder={placeholder}
-					inputMode={inputMode}
-					prefix={prefix}
-					suffix={suffix}
-					decimals={decimals}
-					name={name}
-					onBlur={onBlur}
-					onChange={onChange}
-					readOnly={readOnly as any}
-					autoComplete={'off'}
-				/>
+			render={({ field: { name, value, onBlur, onChange }, fieldState: { error } }) => (
+				<Select options={options} value={value} onChange={onChange} name={name} onBlur={onBlur} />
 			)}
 		/>
 	);
 };
 
-export default InputField;
+export default SelectField;
 
 const CustomTextField = styled((props: TextFieldElementProps) => <TextFieldElement {...props} />)(({ theme }) => ({
 	'& .MuiOutlinedInput-input::-webkit-input-placeholder': {

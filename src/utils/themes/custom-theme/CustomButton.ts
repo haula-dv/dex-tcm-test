@@ -7,8 +7,7 @@ export const CustomMuiButton = (theme: Theme) => {
 				root: {
 					textTransform: 'none',
 					boxShadow: 'none',
-					fontSize: '13px',
-					height: '32px',
+
 					fontWeight: 600,
 					padding: '6px 12px',
 					lineHeight: '100%',
@@ -22,10 +21,6 @@ export const CustomMuiButton = (theme: Theme) => {
 							backgroundColor: theme.palette.grey[100],
 						},
 					},
-				},
-
-				contained: {
-					//   padding: "8px 16px",
 				},
 
 				containedPrimary: {
@@ -68,7 +63,16 @@ export const CustomMuiButton = (theme: Theme) => {
 					},
 				},
 
-				// SIZE
+				//========================= SIZE =====================//
+				sizeLarge: {
+					height: '40px',
+				},
+
+				sizeMedium: {
+					fontSize: '13px',
+					height: '32px',
+				},
+
 				sizeSmall: {
 					padding: '2px 8px',
 					fontSize: '12px',
@@ -82,10 +86,6 @@ export const CustomMuiButton = (theme: Theme) => {
 					padding: '0px 8px',
 					minWidth: 'auto',
 					borderRadius: '6px !important',
-				},
-
-				sizeLarge: {
-					height: '56px',
 				},
 
 				text: {
