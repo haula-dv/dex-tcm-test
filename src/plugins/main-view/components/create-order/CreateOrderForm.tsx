@@ -48,6 +48,7 @@ const items: SelectOption[] = [
 ];
 
 export const CreateOrderForm = ({ symbol }: IProps) => {
+	const [checked, setChecked] = useState(false);
 	const [loading, setLoading] = useState(false);
 	const formContext = useForm<Inputs>({
 		defaultValues,
@@ -137,8 +138,6 @@ export const CreateOrderForm = ({ symbol }: IProps) => {
 	): Promise<ReturnType<ReturnType<typeof useOrderEntry>['helper']['validator']>> {
 		return validator(getInput(data, symbol));
 	}
-
-	const [checked, setChecked] = useState(false);
 
 	const handleChange = () => {
 		setChecked((prev) => !prev);
