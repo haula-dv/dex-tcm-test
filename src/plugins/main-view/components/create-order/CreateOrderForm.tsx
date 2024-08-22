@@ -1,17 +1,19 @@
 import { MainButton } from '@/components/button/MainButton';
+import { MainIconButton } from '@/components/button/MainIconButton';
 import InputField from '@/components/form-control/InputField';
 import SelectField from '@/components/form-control/SelectField';
 import IconLoading from '@/components/icons/loading';
 import { theme } from '@/utils';
 import { getDecimalsFromTick } from '@/utils/formatters/api';
 import { usdFormatter } from '@/utils/formatters/number';
-import { Box, Stack, Typography } from '@mui/material';
+import { Box, Collapse, Stack, Typography } from '@mui/material';
 import { useOrderEntry, useSymbolsInfo, useWithdraw } from '@orderly.network/hooks';
-import { Divider } from '@orderly.network/react';
+import { Divider, Tooltip } from '@orderly.network/react';
 import { SelectOption } from '@orderly.network/react/esm/select/select';
 import { OrderEntity, OrderSide, OrderType } from '@orderly.network/types';
+import { IconChevronDown, IconPencil } from '@tabler/icons-react';
 import { useConnectWallet, useNotifications } from '@web3-onboard/react';
-import { useEffect, useState } from 'react';
+import { ReactNode, useEffect, useState } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { match } from 'ts-pattern';
 import { OrderMaxQty } from './OrderMaxQty';
@@ -136,140 +138,212 @@ export const CreateOrderForm = ({ symbol }: IProps) => {
 		return validator(getInput(data, symbol));
 	}
 
-	return (
-		<form onSubmit={formContext.handleSubmit(submitForm)}>
-			<Box p={1}>
-				<Stack direction={'row'} spacing={1}>
-					<MainButton
-						size="large"
-						color="success"
-						variant="contained"
-						fullWidth
-						{...formContext.register('direction')}
-						value="Buy"
-					>
-						Buy
-					</MainButton>
+	const [checked, setChecked] = useState(false);
 
-					<MainButton size="large" color="inherit" variant="contained" fullWidth>
-						Sell
-					</MainButton>
-				</Stack>
-				<Stack direction={'row'} justifyContent={'space-between'} py={1}>
-					<Typography color={theme.palette.grey[600]}>
-						Available {usdFormatter.format(availableWithdraw)} {quote}
+	const handleChange = () => {
+		setChecked((prev) => !prev);
+	};
+
+	return (
+		<>
+			<Stack
+				direction={'row'}
+				justifyContent={'space-between'}
+				className="pointer"
+				p={1}
+				alignItems={'center'}
+				onClick={handleChange}
+			>
+				<Stack>
+					<Typography fontSize={'12px'} color={theme.palette.grey[600]}>
+						Total balance
 					</Typography>
 
-					<MainButton>Desposit</MainButton>
+					<Typography fontWeight={600}>0.00 USDC</Typography>
 				</Stack>
 
-				<Stack spacing={1} pb={4}>
-					<SelectField formContext={formContext} name="type" options={items} />
+				<IconChevronDown />
+			</Stack>
 
-					{match(formContext.watch('type', 'StopMarket'))
-						.with('StopMarket', () => (
-							<InputField
-								name="triggerPrice"
-								formContext={formContext}
-								inputMode="decimal"
-								prefix={'Trigger'}
-								suffix={quote}
-								rules={{
-									validate: {
-										custom: async (_, data) => {
-											const errors = await getValidationErrors(data, symbol, helper.validator);
-											return errors?.trigger_price != null ? errors.trigger_price.message : true;
+			<Collapse in={checked}>
+				<Stack spacing={1} p={1}>
+					<Item label="Free collateral" value={'0.00 USDC'} />
+
+					<Item label="Unsettled" value={'PnL 0.00 USDC'} />
+				</Stack>
+			</Collapse>
+			<Divider />
+
+			<Stack direction={'row'} justifyContent={'space-between'} p={1}>
+				<Stack>
+					<Tooltip
+						style={{ maxWidth: '300px' }}
+						align="center"
+						content={
+							(
+								<div>
+									Your actual Leverage of the whole account / Your max Leverage of the whole account
+									<Divider />
+									Margin ratio = Total collateral / Total position notional
+								</div>
+							) as any
+						}
+					>
+						<Box display={'inline-flex'}>
+							<Typography fontSize={'12px'} color={theme.palette.grey[600]} className="pointer">
+								Margin ratio
+							</Typography>
+						</Box>
+					</Tooltip>
+
+					<Typography color={theme.palette.success.main}>1000.00%</Typography>
+				</Stack>
+
+				<Stack>
+					<Typography fontSize={'12px'} color={theme.palette.grey[600]}>
+						Account leverage
+					</Typography>
+
+					<Box>
+						0.00x / 50x
+						<MainIconButton size="small" edge="end">
+							<IconPencil size={'1rem'} />
+						</MainIconButton>
+					</Box>
+				</Stack>
+			</Stack>
+
+			<Divider />
+
+			<form onSubmit={formContext.handleSubmit(submitForm)}>
+				<Box p={1}>
+					<Stack direction={'row'} spacing={1}>
+						<MainButton
+							size="large"
+							color="success"
+							variant="contained"
+							fullWidth
+							{...formContext.register('direction')}
+							value="Buy"
+						>
+							Buy
+						</MainButton>
+
+						<MainButton size="large" color="inherit" variant="contained" fullWidth>
+							Sell
+						</MainButton>
+					</Stack>
+
+					<Stack direction={'row'} justifyContent={'space-between'} py={1}>
+						<Typography color={theme.palette.grey[600]}>
+							Available {usdFormatter.format(availableWithdraw)} {quote}
+						</Typography>
+
+						<MainButton>Desposit</MainButton>
+					</Stack>
+
+					<Stack spacing={1} pb={4}>
+						<SelectField formContext={formContext} name="type" options={items} />
+
+						{match(formContext.watch('type', 'StopMarket'))
+							.with('StopMarket', () => (
+								<InputField
+									name="triggerPrice"
+									formContext={formContext}
+									inputMode="decimal"
+									prefix={'Trigger'}
+									suffix={quote}
+									rules={{
+										validate: {
+											custom: async (_, data) => {
+												const errors = await getValidationErrors(data, symbol, helper.validator);
+												return errors?.trigger_price != null ? errors.trigger_price.message : true;
+											},
 										},
-									},
-								}}
-							/>
-						))
-						.otherwise(() => null)}
-
-					<InputField
-						name="price"
-						formContext={formContext}
-						readOnly={match(formContext.watch('type', 'StopMarket'))
-							.with('StopMarket', () => true)
+									}}
+								/>
+							))
 							.otherwise(() => null)}
-						inputMode="decimal"
-						prefix={'Price'}
-						suffix={quote}
-						decimals={quoteDecimals}
-						rules={{
-							validate: {
-								custom: async (_, data) => {
-									const errors = await getValidationErrors(data, symbol, helper.validator);
-									return errors?.order_price != null ? errors.order_price.message : true;
+
+						<InputField
+							name="price"
+							formContext={formContext}
+							readOnly={match(formContext.watch('type', 'StopMarket'))
+								.with('StopMarket', () => true)
+								.otherwise(() => null)}
+							inputMode="decimal"
+							prefix={'Price'}
+							suffix={quote}
+							decimals={quoteDecimals}
+							rules={{
+								validate: {
+									custom: async (_, data) => {
+										const errors = await getValidationErrors(data, symbol, helper.validator);
+										return errors?.order_price != null ? errors.order_price.message : true;
+									},
 								},
-							},
-						}}
-					/>
+							}}
+						/>
 
-					<InputField
-						formContext={formContext}
-						name="quantity"
-						prefix="Quantity"
-						inputMode="decimal"
-						suffix={base}
-						decimals={baseDecimals}
-						rules={{
-							validate: {
-								custom: async (_, data) => {
-									const errors = await getValidationErrors(data, symbol, helper.validator);
-									return errors?.order_quantity != null ? errors.order_quantity.message : true;
+						<InputField
+							formContext={formContext}
+							name="quantity"
+							prefix="Quantity"
+							inputMode="decimal"
+							suffix={base}
+							decimals={baseDecimals}
+							rules={{
+								validate: {
+									custom: async (_, data) => {
+										const errors = await getValidationErrors(data, symbol, helper.validator);
+										return errors?.order_quantity != null ? errors.order_quantity.message : true;
+									},
 								},
-							},
-						}}
-					/>
+							}}
+						/>
 
-					<OrderMaxQty maxQty={formatter.format(maxQty)} base={base} />
+						<OrderMaxQty maxQty={formatter.format(maxQty)} base={base} />
 
-					<Divider />
+						<Divider />
 
-					<InputField
-						formContext={formContext}
-						name="baseQuantityTotal"
-						inputMode="decimal"
-						prefix={'Total ≈'}
-						suffix={base}
-					/>
+						<InputField
+							formContext={formContext}
+							name="baseQuantityTotal"
+							inputMode="decimal"
+							prefix={'Total ≈'}
+							suffix={base}
+						/>
 
-					<Divider />
+						<Divider />
 
-					<Stack direction={'row'} justifyContent={'space-between'}>
-						<Typography fontSize={'12px'} color={theme.palette.grey[600]}>
-							Est. Liq. price:
-						</Typography>
+						<Item
+							label="Est. Liq. price:"
+							value={
+								<>
+									{estLiqPrice ? `${usdFormatter.format(estLiqPrice)}` : '-'}{' '}
+									<span style={{ color: theme.palette.grey[600] }}>{quote}</span>{' '}
+								</>
+							}
+						/>
 
-						<Typography fontSize={'12px'}>
-							{estLiqPrice ? `${usdFormatter.format(estLiqPrice)}` : '-'}{' '}
-							<span style={{ color: theme.palette.grey[600] }}>{quote}</span>{' '}
-						</Typography>
+						<Item
+							label="Account leverage"
+							value={estLeverage != null ? `⇒ ${formatter.format(estLeverage)}` : '0.00x'}
+						/>
 					</Stack>
 
-					<Stack direction={'row'} justifyContent={'space-between'}>
-						<Typography fontSize={'12px'} color={theme.palette.grey[600]}>
-							Account leverage
-						</Typography>
-
-						<Typography fontSize={'12px'}>
-							{estLeverage != null ? `⇒ ${formatter.format(estLeverage)}` : '0.00x'}
-						</Typography>
-					</Stack>
-				</Stack>
-
-				{wallet ? (
-					<MainButton type="submit" variant="contained" color="success" size="large" fullWidth>
-						Buy/Long
-					</MainButton>
-				) : (
-					<MainButton variant="contained" color="primary" size="large" fullWidth>
-						Connect wallet
-					</MainButton>
-				)}
-			</Box>
-		</form>
+					{wallet ? (
+						<MainButton type="submit" variant="contained" color="success" size="large" fullWidth>
+							Buy/Long
+						</MainButton>
+					) : (
+						<MainButton variant="contained" color="primary" size="large" fullWidth>
+							Connect wallet
+						</MainButton>
+					)}
+				</Box>
+			</form>
+		</>
 	);
 };
 
@@ -291,3 +365,20 @@ function getInput(data: Inputs, symbol: string): OrderEntity {
 		trigger_price: data.triggerPrice,
 	};
 }
+
+interface IIttemProps {
+	value: ReactNode | string;
+	label: ReactNode | string;
+}
+
+const Item = ({ value, label }: IIttemProps) => {
+	return (
+		<Stack direction={'row'} justifyContent={'space-between'}>
+			<Typography fontSize={'12px'} color={theme.palette.grey[600]}>
+				{label}
+			</Typography>
+
+			<Typography fontSize={'14px'}>{value}</Typography>
+		</Stack>
+	);
+};
