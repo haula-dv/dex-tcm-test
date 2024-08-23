@@ -1,21 +1,21 @@
 import { MainButton } from '@/components/button/MainButton';
-import { MainIconButton } from '@/components/button/MainIconButton';
 import InputField from '@/components/form-control/InputField';
 import SelectField from '@/components/form-control/SelectField';
 import IconLoading from '@/components/icons/loading';
 import { theme } from '@/utils';
 import { getDecimalsFromTick } from '@/utils/formatters/api';
 import { usdFormatter } from '@/utils/formatters/number';
-import { Box, Collapse, Stack, Typography } from '@mui/material';
+import { Box, Stack, Typography } from '@mui/material';
 import { useOrderEntry, useSymbolsInfo, useWithdraw } from '@orderly.network/hooks';
-import { Divider, Tooltip } from '@orderly.network/react';
+import { Divider } from '@orderly.network/react';
 import { SelectOption } from '@orderly.network/react/esm/select/select';
 import { OrderEntity, OrderSide, OrderType } from '@orderly.network/types';
-import { IconChevronDown, IconPencil } from '@tabler/icons-react';
 import { useConnectWallet, useNotifications } from '@web3-onboard/react';
 import { ReactNode, useEffect, useState } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { match } from 'ts-pattern';
+import { Balance } from '../common/Balance';
+import { LeverageContent } from '../common/Leverage';
 import { OrderMaxQty } from './OrderMaxQty';
 
 interface IProps {
@@ -48,7 +48,6 @@ const items: SelectOption[] = [
 ];
 
 export const CreateOrderForm = ({ symbol }: IProps) => {
-	const [checked, setChecked] = useState(false);
 	const [loading, setLoading] = useState(false);
 	const formContext = useForm<Inputs>({
 		defaultValues,
@@ -139,96 +138,47 @@ export const CreateOrderForm = ({ symbol }: IProps) => {
 		return validator(getInput(data, symbol));
 	}
 
-	const handleChange = () => {
-		setChecked((prev) => !prev);
+	const handleChangeDirection = (side: any) => {
+		formContext.setValue('direction', side);
 	};
+
+	const watchDirection = formContext.watch('direction');
 
 	return (
 		<>
-			<Stack
-				direction={'row'}
-				justifyContent={'space-between'}
-				className="pointer"
-				p={1}
-				alignItems={'center'}
-				onClick={handleChange}
-			>
-				<Stack>
-					<Typography fontSize={'12px'} color={theme.palette.grey[600]}>
-						Total balance
-					</Typography>
-
-					<Typography fontWeight={600}>0.00 USDC</Typography>
-				</Stack>
-
-				<IconChevronDown />
-			</Stack>
-
-			<Collapse in={checked}>
-				<Stack spacing={1} p={1}>
-					<Item label="Free collateral" value={'0.00 USDC'} />
-
-					<Item label="Unsettled" value={'PnL 0.00 USDC'} />
-				</Stack>
-			</Collapse>
-			<Divider />
-
-			<Stack direction={'row'} justifyContent={'space-between'} p={1}>
-				<Stack>
-					<Tooltip
-						style={{ maxWidth: '300px' }}
-						align="center"
-						content={
-							(
-								<div>
-									Your actual Leverage of the whole account / Your max Leverage of the whole account
-									<Divider />
-									Margin ratio = Total collateral / Total position notional
-								</div>
-							) as any
-						}
-					>
-						<Box display={'inline-flex'}>
-							<Typography fontSize={'12px'} color={theme.palette.grey[600]} className="pointer">
-								Margin ratio
-							</Typography>
-						</Box>
-					</Tooltip>
-
-					<Typography color={theme.palette.success.main}>1000.00%</Typography>
-				</Stack>
-
-				<Stack>
-					<Typography fontSize={'12px'} color={theme.palette.grey[600]}>
-						Account leverage
-					</Typography>
-
-					<Box>
-						0.00x / 50x
-						<MainIconButton size="small" edge="end">
-							<IconPencil size={'1rem'} />
-						</MainIconButton>
-					</Box>
-				</Stack>
-			</Stack>
-
-			<Divider />
+			<Balance />
+			<LeverageContent />
 
 			<form onSubmit={formContext.handleSubmit(submitForm)}>
 				<Box p={1}>
 					<Stack direction={'row'} spacing={1}>
 						<MainButton
 							size="large"
-							color="success"
+							color={
+								match(watchDirection)
+									.with('Buy', () => 'success')
+									.otherwise(() => 'inherit') as any
+							}
 							variant="contained"
 							fullWidth
-							{...formContext.register('direction')}
-							value="Buy"
+							onClick={() => handleChangeDirection('Buy')}
+							disabled={!wallet}
 						>
 							Buy
 						</MainButton>
 
-						<MainButton size="large" color="inherit" variant="contained" fullWidth>
+						<MainButton
+							size="large"
+							color={
+								match(watchDirection)
+									.with('Sell', () => 'error')
+									.otherwise(() => 'inherit') as any
+							}
+							variant="contained"
+							fullWidth
+							disabled={!wallet}
+							onClick={() => handleChangeDirection('Sell')}
+						>
 							Sell
 						</MainButton>
 					</Stack>
@@ -332,8 +282,21 @@ export const CreateOrderForm = ({ symbol }: IProps) => {
 					</Stack>
 
 					{wallet ? (
-						<MainButton type="submit" variant="contained" color="success" size="large" fullWidth>
-							Buy/Long
+						<MainButton
+							type="submit"
+							variant="contained"
+							color={
+								match(watchDirection)
+									.with('Sell', () => 'error')
+									.otherwise(() => 'success') as any
+							}
+							size="large"
+							fullWidth
+						>
+							{match(watchDirection)
+								.with('Buy', () => 'Buy')
+								.otherwise(() => 'Sell')}
+							/Long
 						</MainButton>
 					) : (
 						<MainButton variant="contained" color="primary" size="large" fullWidth>
@@ -370,7 +333,7 @@ interface IIttemProps {
 	label: ReactNode | string;
 }
 
-const Item = ({ value, label }: IIttemProps) => {
+export const Item = ({ value, label }: IIttemProps) => {
 	return (
 		<Stack direction={'row'} justifyContent={'space-between'}>
 			<Typography fontSize={'12px'} color={theme.palette.grey[600]}>

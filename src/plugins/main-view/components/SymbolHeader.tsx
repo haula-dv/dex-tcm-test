@@ -4,9 +4,9 @@ import { TokenIcon } from '@/components/token/TokenIcon';
 import { theme } from '@/utils';
 import { usdFormatter } from '@/utils/formatters/number';
 import { spitSymbol } from '@/utils/formatters/token';
-import { Divider as DividerMui, Stack, Tooltip, Typography } from '@mui/material';
+import { Divider as DividerMui, Stack, Typography } from '@mui/material';
 import { useFundingRate, useTickerStream } from '@orderly.network/hooks';
-import { Divider } from '@orderly.network/react';
+import { Divider, Tooltip } from '@orderly.network/react';
 import { Decimal } from '@orderly.network/utils';
 import { IconChevronDown } from '@tabler/icons-react';
 import { useState } from 'react';
@@ -80,7 +80,11 @@ export const SymbolHeader = ({ onSymbolChange, symbol }: IProps) => {
 		},
 		{ label: 'Mark', value: stream ? usdFormatter.format(stream.mark_price) : '_' },
 		{ label: 'Index', value: stream ? usdFormatter.format(stream.index_price) : '_' },
-		{ label: '24h volume', value: stream ? stream['24h_amount'].toLocaleString() : '_' },
+		{
+			label: '24h volume',
+			value: stream ? stream['24h_amount'].toLocaleString() : '_',
+			hint: '24 hour total trading volume on the Orderly Network.',
+		},
 
 		{
 			label: 'Pred. funding rate',
@@ -130,17 +134,20 @@ export const SymbolHeader = ({ onSymbolChange, symbol }: IProps) => {
 
 					<DividerMui orientation="vertical" flexItem />
 
-					<Typography fontWeight={600} fontSize={'18px'}>
+					<Typography fontWeight={600} pr={1}>
 						0,990
 					</Typography>
 
 					{datas.map((ite, index) => (
-						<Tooltip key={index} title={ite?.hint}>
+						<Tooltip key={index} content={ite?.hint} style={{ maxWidth: '200px' }}>
 							<Stack sx={{ cursor: 'pointer' }}>
 								<Typography color={theme.palette.grey[600]} fontSize={'11px'}>
 									{ite.label}
 								</Typography>
-								<Typography fontWeight={600}>{ite.value}</Typography>
+
+								<Typography fontWeight={600} fontSize={'13px'}>
+									{ite.value}
+								</Typography>
 							</Stack>
 						</Tooltip>
 					))}

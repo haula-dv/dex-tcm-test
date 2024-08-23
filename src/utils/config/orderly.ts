@@ -2,6 +2,7 @@ import { Arbitrum, Base, Ethereum, Optimism } from '@orderly.network/types';
 import injectedModule from '@web3-onboard/injected-wallets';
 import ledgerModule from '@web3-onboard/ledger';
 import walletConnectModule from '@web3-onboard/walletconnect';
+import { AppInfo } from '../constants/key_store';
 
 export function OrderlyConfig(ctx?: { url: string; domain: string }) {
 	const wcV2InitOptions = {
@@ -50,8 +51,8 @@ export function OrderlyConfig(ctx?: { url: string; domain: string }) {
 
 		// Main App
 		app: {
-			brokerId: 'tcmp',
-			brokerName: 'Tcmp Dex Trande',
+			brokerId: AppInfo.BROKER_ID,
+			brokerName: AppInfo.BROKER_NAME,
 			appIcons: {
 				secondary: {
 					img: '/orderly-logo-secondary.svg',
@@ -89,5 +90,3 @@ export function OrderlyConfig(ctx?: { url: string; domain: string }) {
 		},
 	};
 }
-
-export const TCMP_ORDERLY_SDK_TITLE_KEY = 'tcmp_orderly_sdk_title_key';

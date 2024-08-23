@@ -23,15 +23,22 @@ export const TradingMainView = ({ symbol }: IProps) => {
 			<Box height={'600px'}>
 				{isReady ? (
 					<AdvancedRealTimeChart
-						disabled_features={['header_symbol_search']}
+						disabled_features={['header_symbol_search', 'header_compare']}
+						enabled_features={[
+							'side_toolbar_in_fullscreen_mode',
+							'header_settings',
+							'go_to_date',
+							'uppercase_instrument_names',
+						]}
 						locale="en"
 						calendar
 						theme="dark"
 						symbol={base}
 						autosize
 						allow_symbol_change={false}
-						interval="1"
+						interval="W"
 						timezone="Etc/UTC"
+						style="9"
 					/>
 				) : (
 					<Box display={'flex'} justifyContent={'center'} alignItems={'center'} height={'600px'}>

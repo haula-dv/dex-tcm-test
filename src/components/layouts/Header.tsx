@@ -4,7 +4,9 @@ import { Mixins } from '@/utils/themes/custom-theme/mixins';
 import { TSizes } from '@/utils/themes/custom-theme/sizes';
 import { AppBar, Box, BoxProps, Stack, Toolbar } from '@mui/material';
 import { styled } from '@mui/material/styles';
+import Link from 'next/link';
 import { usePathname } from 'next/navigation';
+import { MainButton } from '../button/MainButton';
 import Logo from '../icons/Logo';
 
 export const Header = () => {
@@ -22,6 +24,11 @@ export const Header = () => {
 				<Stack direction={'row'} justifyContent={'space-between'} width={'100%'} alignItems={'center'}>
 					<Stack direction={'row'} alignItems={'center'} spacing={TSizes.margin_md}>
 						<Logo />
+						<MainButton variant="contained">
+							<Link href={pathName.startsWith('/perp') ? '/components/perp/PERP_ETH_USDC' : '/perp/PERP_ETH_USDC'}>
+								{pathName.startsWith('/perp') ? 'Block Component >' : '< Trading Page full theme'}
+							</Link>
+						</MainButton>
 
 						{/* {navItems.map((navItem) => (
 								<Link key={navItem.label} href={navItem.to}>

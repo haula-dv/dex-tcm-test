@@ -1,4 +1,5 @@
 import { ConfigKey, ConfigStore } from '@orderly.network/core';
+import { AppInfo } from '../constants/key_store';
 
 export type ENV_NAME = 'prod' | 'staging' | 'qa' | 'dev';
 
@@ -48,7 +49,7 @@ export class CustomConfigStore implements ConfigStore {
 		const urls = API_URLS[env];
 
 		this.map = new Map<ConfigKey, any>([
-			['brokerId', 'orderly'],
+			['brokerId', AppInfo.BROKER_ID],
 			['env', env],
 			['apiBaseUrl', urls['apiBaseUrl']],
 			['publicWsUrl', urls['publicWsUrl']],
