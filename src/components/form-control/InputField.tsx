@@ -42,6 +42,7 @@ const InputField = <V extends FieldValues>({
 						inputMode={inputMode}
 						prefix={prefix}
 						suffix={suffix}
+						decimals={decimals}
 						name={name}
 						onBlur={onBlur}
 						onChange={onChange}

@@ -1,4 +1,4 @@
-import { getImageNextwork } from '@/common/apis/token';
+import { getImageNextwork } from '@/common';
 import { MainButton } from '@/components/button/MainButton';
 import { ItemList } from '@/components/list/ItemList';
 import { StyledMenu } from '@/components/menu/StyledMenu';

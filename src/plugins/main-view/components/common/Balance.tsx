@@ -5,6 +5,7 @@ import { IconChevronDown } from '@tabler/icons-react';
 import { memo, useState } from 'react';
 import { Item } from '../create-order/CreateOrderForm';
 
+// eslint-disable-next-line react/display-name
 export const Balance = memo(() => {
 	const [checked, setChecked] = useState(false);
 	const handleChange = () => {

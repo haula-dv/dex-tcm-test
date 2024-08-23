@@ -1,5 +1,5 @@
-import { MainButton } from '@/src/components/button/MainButton';
-import IconLoading from '@/src/components/icons/loading';
+import { MainButton } from '@/components/button/MainButton';
+import IconLoading from '@/components/icons/loading';
 import { Stack } from '@mui/material';
 import { useAccount } from '@orderly.network/hooks';
 import { IconSettings } from '@tabler/icons-react';

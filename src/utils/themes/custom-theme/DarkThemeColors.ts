@@ -24,4 +24,3 @@ const DarkThemeColors = [
 ];
 
 export { DarkThemeColors };
-

@@ -17,6 +17,7 @@ import { Divider, toast, Tooltip } from '@orderly.network/react';
 import { IconPencil } from '@tabler/icons-react';
 import { memo, useState } from 'react';
 
+// eslint-disable-next-line react/display-name
 export const LeverageContent = memo(() => {
 	const [checked, setChecked] = useState(false);
 	const [activeStep, setActiveStep] = useState(0);
