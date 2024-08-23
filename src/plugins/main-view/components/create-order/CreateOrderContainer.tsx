@@ -1,5 +1,6 @@
 import { MainButton } from '@/components/button/MainButton';
 import { MainIconButton } from '@/components/button/MainIconButton';
+import { theme } from '@/utils';
 import { Box, Dialog, Stack, Typography } from '@mui/material';
 import { Deposit, Divider, Withdraw } from '@orderly.network/react';
 import { IconX } from '@tabler/icons-react';
@@ -20,7 +21,7 @@ export const CreateOrderContainer = ({ symbol }: IProps) => {
 	};
 
 	return (
-		<Box>
+		<Box borderLeft={1} borderColor={theme.palette.divider} borderRadius={0}>
 			<Divider />
 
 			<Stack

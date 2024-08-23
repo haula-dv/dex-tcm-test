@@ -1,4 +1,3 @@
-import { theme } from '@/utils';
 import { Box } from '@mui/material';
 import { Divider, TabPane, Tabs } from '@orderly.network/react';
 import { useState } from 'react';
@@ -18,14 +17,7 @@ export const OrderBookContainer = ({ symbol }: IProps) => {
 	};
 
 	return (
-		<Box
-			width={'400px'}
-			flexShrink={0}
-			borderRight={1}
-			borderRadius={0}
-			borderColor={theme.palette.divider}
-			height={'660px'}
-		>
+		<Box width={'400px'} flexShrink={0} borderRadius={0} height={'660px'}>
 			<Divider />
 
 			<Tabs value={value} onTabChange={handleChange} fullWidth tabBarClassName="orderly-tab-header-orderbook">

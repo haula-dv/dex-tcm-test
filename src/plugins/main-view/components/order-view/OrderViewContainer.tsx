@@ -1,65 +1,47 @@
-import { Box, Stack } from '@mui/material';
-import { useOrderStream, usePositionStream } from '@orderly.network/hooks';
-import { OrdersView, PositionsView, TabPane, Tabs } from '@orderly.network/react';
+import { Stack } from '@mui/material';
+import { TabPane, Tabs } from '@orderly.network/react';
 import { OrderStatus } from '@orderly.network/types';
 import { useState } from 'react';
+import PositionContent from '../position/PositionContent';
+import OrderTableContent from './OrderTableContent';
 
 interface IProps {
 	symbol: string;
 }
 
 export const OrderViewContainer = ({ symbol }: IProps) => {
-	const [
-		data,
-		{
-			updateOrder,
-			cancelAlgoOrder,
-			cancelAlgoOrdersByTypes,
-			cancelAllOrders,
-			cancelAllTPSLOrders,
-			cancelOrder,
-			cancelTPSLChildOrder,
-			errors,
-			isLoading,
-			loadMore,
-			refresh,
-			updateAlgoOrder,
-			updateTPSLOrder,
-		},
-	] = useOrderStream({ status: OrderStatus.NEW });
-	const [{ aggregated, rows, totalCollateral, totalUnrealizedROI, totalValue }] = usePositionStream(symbol);
 	const [currentTab, setCurrentTab] = useState('positions');
 
 	const tabs = [
 		{
 			title: 'Positions',
 			value: 'positions',
-			children: <PositionsView dataSource={rows as any} aggregated={aggregated} />,
+			children: <PositionContent symbol={symbol} />,
 		},
 		{
 			title: 'Pending',
 			value: 'pending',
-			children: <Box>12</Box>,
+			children: <OrderTableContent orderBookStatus={OrderStatus.INCOMPLETE} />,
 		},
 		{
 			title: 'Filled',
 			value: 'filled',
-			children: <Box>12</Box>,
+			children: <OrderTableContent orderBookStatus={OrderStatus.FILLED} />,
 		},
 		{
 			title: 'Cancelled',
 			value: 'cancelled',
-			children: <Box>12</Box>,
+			children: <OrderTableContent orderBookStatus={OrderStatus.CANCELLED} />,
 		},
 		{
 			title: 'Rejected',
 			value: 'rejected',
-			children: <Box>12</Box>,
+			children: <OrderTableContent orderBookStatus={OrderStatus.REJECTED} />,
 		},
 		{
 			title: 'Order History',
 			value: 'order-history',
-			children: <Box>12</Box>,
+			children: <OrderTableContent orderBookStatus={OrderStatus.COMPLETED} />,
 		},
 	];
 
@@ -68,7 +50,7 @@ export const OrderViewContainer = ({ symbol }: IProps) => {
 	};
 
 	return (
-		<div>
+		<>
 			<Stack>
 				<Tabs value={currentTab} onTabChange={onTabChange}>
 					{tabs.map((item) => (
@@ -78,7 +60,8 @@ export const OrderViewContainer = ({ symbol }: IProps) => {
 					))}
 				</Tabs>
 			</Stack>
-			<OrdersView
+
+			{/* <OrdersView
 				dataSource={data as any}
 				symbol="PERP_ETH_USDC"
 				cancelOrder={cancelOrder}
@@ -88,7 +71,7 @@ export const OrderViewContainer = ({ symbol }: IProps) => {
 				editOrder={updateOrder}
 				isLoading={isLoading}
 				loadMore={loadMore}
-			/>
-		</div>
+			/> */}
+		</>
 	);
 };

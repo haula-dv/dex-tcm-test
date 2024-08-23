@@ -9,6 +9,7 @@ import { AccountAvatar } from './AccountAvatar';
 import AccountDetailPopup from './AccountDetailPopup';
 import AccountMenuContainer from './AccountMenuContainer';
 import NetworkContent from './NetworkContent';
+import { OrderlyConnect } from './OrderlyConnect';
 
 export default function WalletContainer() {
 	const [accountAnchorEl, setAccountAnchorEl] = useState<null | HTMLElement>(null);
@@ -23,6 +24,7 @@ export default function WalletContainer() {
 	// Handle connect wallet button
 	const handleConnectWallet = async () => {
 		await connect();
+		localStorage.setItem('networkId', 'mainnet');
 	};
 
 	// Handle show menu account button
@@ -86,11 +88,7 @@ export default function WalletContainer() {
 				</>
 			)}
 
-			<AccountMenuContainer
-				anchorEl={accountAnchorEl}
-				open={openAccountEl}
-				handleClose={handleCloseAccountMenu}
-			/>
+			<AccountMenuContainer anchorEl={accountAnchorEl} open={openAccountEl} handleClose={handleCloseAccountMenu} />
 
 			{wallet && (
 				<AccountDetailPopup
@@ -99,6 +97,8 @@ export default function WalletContainer() {
 					wallet={wallet}
 				/>
 			)}
+
+			<OrderlyConnect />
 		</Stack>
 	);
 }

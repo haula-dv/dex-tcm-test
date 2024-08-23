@@ -11,9 +11,11 @@ import { Divider } from '@orderly.network/react';
 import { SelectOption } from '@orderly.network/react/esm/select/select';
 import { OrderEntity, OrderSide, OrderType } from '@orderly.network/types';
 import { useConnectWallet, useNotifications } from '@web3-onboard/react';
-import { useEffect, useState } from 'react';
+import { ReactNode, useEffect, useState } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { match } from 'ts-pattern';
+import { Balance } from '../common/Balance';
+import { LeverageContent } from '../common/Leverage';
 import { OrderMaxQty } from './OrderMaxQty';
 
 interface IProps {
@@ -136,140 +138,174 @@ export const CreateOrderForm = ({ symbol }: IProps) => {
 		return validator(getInput(data, symbol));
 	}
 
+	const handleChangeDirection = (side: any) => {
+		formContext.setValue('direction', side);
+	};
+
+	const watchDirection = formContext.watch('direction');
+
 	return (
-		<form onSubmit={formContext.handleSubmit(submitForm)}>
-			<Box p={1}>
-				<Stack direction={'row'} spacing={1}>
-					<MainButton
-						size="large"
-						color="success"
-						variant="contained"
-						fullWidth
-						{...formContext.register('direction')}
-						value="Buy"
-					>
-						Buy
-					</MainButton>
+		<>
+			<Balance />
+			<LeverageContent />
 
-					<MainButton size="large" color="inherit" variant="contained" fullWidth>
-						Sell
-					</MainButton>
-				</Stack>
-				<Stack direction={'row'} justifyContent={'space-between'} py={1}>
-					<Typography color={theme.palette.grey[600]}>
-						Available {usdFormatter.format(availableWithdraw)} {quote}
-					</Typography>
+			<form onSubmit={formContext.handleSubmit(submitForm)}>
+				<Box p={1}>
+					<Stack direction={'row'} spacing={1}>
+						<MainButton
+							size="large"
+							color={
+								match(watchDirection)
+									.with('Buy', () => 'success')
+									.otherwise(() => 'inherit') as any
+							}
+							variant="contained"
+							fullWidth
+							onClick={() => handleChangeDirection('Buy')}
+							disabled={!wallet}
+						>
+							Buy
+						</MainButton>
 
-					<MainButton>Desposit</MainButton>
-				</Stack>
+						<MainButton
+							size="large"
+							color={
+								match(watchDirection)
+									.with('Sell', () => 'error')
+									.otherwise(() => 'inherit') as any
+							}
+							variant="contained"
+							fullWidth
+							disabled={!wallet}
+							onClick={() => handleChangeDirection('Sell')}
+						>
+							Sell
+						</MainButton>
+					</Stack>
 
-				<Stack spacing={1} pb={4}>
-					<SelectField formContext={formContext} name="type" options={items} />
+					<Stack direction={'row'} justifyContent={'space-between'} py={1}>
+						<Typography color={theme.palette.grey[600]}>
+							Available {usdFormatter.format(availableWithdraw)} {quote}
+						</Typography>
 
-					{match(formContext.watch('type', 'StopMarket'))
-						.with('StopMarket', () => (
-							<InputField
-								name="triggerPrice"
-								formContext={formContext}
-								inputMode="decimal"
-								prefix={'Trigger'}
-								suffix={quote}
-								rules={{
-									validate: {
-										custom: async (_, data) => {
-											const errors = await getValidationErrors(data, symbol, helper.validator);
-											return errors?.trigger_price != null ? errors.trigger_price.message : true;
+						<MainButton>Desposit</MainButton>
+					</Stack>
+
+					<Stack spacing={1} pb={4}>
+						<SelectField formContext={formContext} name="type" options={items} />
+
+						{match(formContext.watch('type', 'StopMarket'))
+							.with('StopMarket', () => (
+								<InputField
+									name="triggerPrice"
+									formContext={formContext}
+									inputMode="decimal"
+									prefix={'Trigger'}
+									suffix={quote}
+									rules={{
+										validate: {
+											custom: async (_, data) => {
+												const errors = await getValidationErrors(data, symbol, helper.validator);
+												return errors?.trigger_price != null ? errors.trigger_price.message : true;
+											},
 										},
-									},
-								}}
-							/>
-						))
-						.otherwise(() => null)}
-
-					<InputField
-						name="price"
-						formContext={formContext}
-						readOnly={match(formContext.watch('type', 'StopMarket'))
-							.with('StopMarket', () => true)
+									}}
+								/>
+							))
 							.otherwise(() => null)}
-						inputMode="decimal"
-						prefix={'Price'}
-						suffix={quote}
-						decimals={quoteDecimals}
-						rules={{
-							validate: {
-								custom: async (_, data) => {
-									const errors = await getValidationErrors(data, symbol, helper.validator);
-									return errors?.order_price != null ? errors.order_price.message : true;
+
+						<InputField
+							name="price"
+							formContext={formContext}
+							readOnly={match(formContext.watch('type', 'StopMarket'))
+								.with('StopMarket', () => true)
+								.otherwise(() => null)}
+							inputMode="decimal"
+							prefix={'Price'}
+							suffix={quote}
+							decimals={quoteDecimals}
+							rules={{
+								validate: {
+									custom: async (_, data) => {
+										const errors = await getValidationErrors(data, symbol, helper.validator);
+										return errors?.order_price != null ? errors.order_price.message : true;
+									},
 								},
-							},
-						}}
-					/>
+							}}
+						/>
 
-					<InputField
-						formContext={formContext}
-						name="quantity"
-						prefix="Quantity"
-						inputMode="decimal"
-						suffix={base}
-						decimals={baseDecimals}
-						rules={{
-							validate: {
-								custom: async (_, data) => {
-									const errors = await getValidationErrors(data, symbol, helper.validator);
-									return errors?.order_quantity != null ? errors.order_quantity.message : true;
+						<InputField
+							formContext={formContext}
+							name="quantity"
+							prefix="Quantity"
+							inputMode="decimal"
+							suffix={base}
+							decimals={baseDecimals}
+							rules={{
+								validate: {
+									custom: async (_, data) => {
+										const errors = await getValidationErrors(data, symbol, helper.validator);
+										return errors?.order_quantity != null ? errors.order_quantity.message : true;
+									},
 								},
-							},
-						}}
-					/>
+							}}
+						/>
 
-					<OrderMaxQty maxQty={formatter.format(maxQty)} base={base} />
+						<OrderMaxQty maxQty={formatter.format(maxQty)} base={base} />
 
-					<Divider />
+						<Divider />
 
-					<InputField
-						formContext={formContext}
-						name="baseQuantityTotal"
-						inputMode="decimal"
-						prefix={'Total ≈'}
-						suffix={base}
-					/>
+						<InputField
+							formContext={formContext}
+							name="baseQuantityTotal"
+							inputMode="decimal"
+							prefix={'Total ≈'}
+							suffix={base}
+						/>
 
-					<Divider />
+						<Divider />
 
-					<Stack direction={'row'} justifyContent={'space-between'}>
-						<Typography fontSize={'12px'} color={theme.palette.grey[600]}>
-							Est. Liq. price:
-						</Typography>
+						<Item
+							label="Est. Liq. price:"
+							value={
+								<>
+									{estLiqPrice ? `${usdFormatter.format(estLiqPrice)}` : '-'}{' '}
+									<span style={{ color: theme.palette.grey[600] }}>{quote}</span>{' '}
+								</>
+							}
+						/>
 
-						<Typography fontSize={'12px'}>
-							{estLiqPrice ? `${usdFormatter.format(estLiqPrice)}` : '-'}{' '}
-							<span style={{ color: theme.palette.grey[600] }}>{quote}</span>{' '}
-						</Typography>
+						<Item
+							label="Account leverage"
+							value={estLeverage != null ? `⇒ ${formatter.format(estLeverage)}` : '0.00x'}
+						/>
 					</Stack>
 
-					<Stack direction={'row'} justifyContent={'space-between'}>
-						<Typography fontSize={'12px'} color={theme.palette.grey[600]}>
-							Account leverage
-						</Typography>
-
-						<Typography fontSize={'12px'}>
-							{estLeverage != null ? `⇒ ${formatter.format(estLeverage)}` : '0.00x'}
-						</Typography>
-					</Stack>
-				</Stack>
-
-				{wallet ? (
-					<MainButton type="submit" variant="contained" color="success" size="large" fullWidth>
-						Buy/Long
-					</MainButton>
-				) : (
-					<MainButton variant="contained" color="primary" size="large" fullWidth>
-						Connect wallet
-					</MainButton>
-				)}
-			</Box>
-		</form>
+					{wallet ? (
+						<MainButton
+							type="submit"
+							variant="contained"
+							color={
+								match(watchDirection)
+									.with('Sell', () => 'error')
+									.otherwise(() => 'success') as any
+							}
+							size="large"
+							fullWidth
+						>
+							{match(watchDirection)
+								.with('Buy', () => 'Buy')
+								.otherwise(() => 'Sell')}
+							/Long
+						</MainButton>
+					) : (
+						<MainButton variant="contained" color="primary" size="large" fullWidth>
+							Connect wallet
+						</MainButton>
+					)}
+				</Box>
+			</form>
+		</>
 	);
 };
 
@@ -291,3 +327,20 @@ function getInput(data: Inputs, symbol: string): OrderEntity {
 		trigger_price: data.triggerPrice,
 	};
 }
+
+interface IIttemProps {
+	value: ReactNode | string;
+	label: ReactNode | string;
+}
+
+export const Item = ({ value, label }: IIttemProps) => {
+	return (
+		<Stack direction={'row'} justifyContent={'space-between'}>
+			<Typography fontSize={'12px'} color={theme.palette.grey[600]}>
+				{label}
+			</Typography>
+
+			<Typography fontSize={'14px'}>{value}</Typography>
+		</Stack>
+	);
+};

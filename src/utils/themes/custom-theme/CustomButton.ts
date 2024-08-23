@@ -15,10 +15,10 @@ export const CustomMuiButton = (theme: Theme) => {
 					'&.Mui-disabled': {
 						pointerEvents: 'all',
 						cursor: 'not-allowed !important',
-						backgroundColor: theme.palette.grey[100],
+						backgroundColor: theme.palette.grey[900],
 						color: theme.palette.grey[300],
 						'&:hover': {
-							backgroundColor: theme.palette.grey[100],
+							backgroundColor: theme.palette.grey[900],
 						},
 					},
 				},
@@ -45,6 +45,13 @@ export const CustomMuiButton = (theme: Theme) => {
 				containedDarkPrimary: {
 					'&:hover': {
 						backgroundColor: 'rgba(0, 0, 0, 0.8)',
+					},
+				},
+
+				// SUCCESS
+				containedSuccess: {
+					'&:hover': {
+						backgroundColor: theme.palette.success.main,
 					},
 				},
 

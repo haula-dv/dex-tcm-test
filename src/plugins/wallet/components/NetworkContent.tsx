@@ -43,7 +43,7 @@ export default function NetworkContent() {
 				chainNamespace: 'evm',
 			});
 
-			localStorage.setItem('orderly-networkId', isTestnet ? 'testnet' : 'mainnet');
+			localStorage.setItem('networkId', isTestnet ? 'testnet' : 'mainnet');
 
 			// realod page
 			setTimeout(() => {
