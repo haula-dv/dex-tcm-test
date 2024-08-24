@@ -1,48 +1,55 @@
 'use client';
 import { TSizes } from '@/utils/themes/custom-theme/sizes';
-import { Card, CardProps } from '@mui/material';
+import { Card, CardProps, Stack } from '@mui/material';
 import { styled } from '@mui/material/styles';
+import IconNotchCard from '../icons/notch';
 
 interface IProps extends CardProps {
 	children?: React.ReactNode;
 	maxWidth?: string;
 	isHover?: boolean;
-	backgroudColor?: 'white' | 'grey' | 'darkgrey';
+	backgroudColor?: 'primary' | 'white' | 'grey' | 'darkgrey';
 	disablePadding?: boolean;
 	padding?: string;
 	borderRadius?: string;
+	isNotch?: boolean;
 }
 
 export const MainCard = ({
 	children,
 	maxWidth,
-	backgroudColor = 'darkgrey',
+	backgroudColor = 'white',
 	isHover,
 	disablePadding,
 	padding,
 	borderRadius,
+	isNotch,
 	...props
 }: IProps) => {
 	return (
-		<CustomCard
-			elevation={0}
-			disablePadding={disablePadding}
-			sx={{
-				maxWidth: maxWidth,
-				cursor: isHover ? 'pointer' : '',
-				padding: padding,
-				borderRadius: borderRadius,
-			}}
-			backgroudColor={backgroudColor}
-			{...props}
-		>
-			{children}
-		</CustomCard>
+		<Stack width={'100%'}>
+			{isNotch && <IconNotchCard />}
+
+			<CustomCard
+				elevation={0}
+				disablePadding={disablePadding}
+				sx={{
+					maxWidth: maxWidth,
+					cursor: isHover ? 'pointer' : '',
+					padding: padding,
+					borderRadius: borderRadius,
+				}}
+				backgroudColor={backgroudColor}
+				{...props}
+			>
+				{children}
+			</CustomCard>
+		</Stack>
 	);
 };
 
 interface ICard {
-	backgroudColor?: 'white' | 'grey' | 'darkgrey';
+	backgroudColor?: 'primary' | 'white' | 'grey' | 'darkgrey';
 	disablePadding?: boolean;
 }
 
@@ -53,6 +60,10 @@ const CustomCard = styled(Card, {
 	'&.MuiPaper-root': {
 		boxShadow: 'none',
 	},
+	...(backgroudColor === 'primary' && {
+		backgroundColor: theme.palette.primary.main,
+	}),
+
 	...(backgroudColor === 'white' && {
 		backgroundColor: '#fff',
 	}),

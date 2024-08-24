@@ -1,4 +1,5 @@
 import { Theme } from '@mui/material';
+import { TSizes } from './sizes';
 
 export const CustomMuiButton = (theme: Theme) => {
 	return {
@@ -7,26 +8,27 @@ export const CustomMuiButton = (theme: Theme) => {
 				root: {
 					textTransform: 'none',
 					boxShadow: 'none',
-
 					fontWeight: 600,
-					padding: '6px 12px',
+					padding: '8px 16px',
 					lineHeight: '100%',
+					borderRadius: TSizes.borderRadius,
 
 					'&.Mui-disabled': {
 						pointerEvents: 'all',
 						cursor: 'not-allowed !important',
-						backgroundColor: theme.palette.grey[900],
+						backgroundColor: theme.palette.grey[200],
 						color: theme.palette.grey[300],
 						'&:hover': {
-							backgroundColor: theme.palette.grey[900],
+							color: theme.palette.grey[300],
+							backgroundColor: theme.palette.grey[200],
 						},
 					},
 				},
 
 				containedPrimary: {
-					backgroundColor: theme.palette.primary.main,
+					backgroundColor: theme.palette.primary.dark,
 					'&:hover': {
-						backgroundColor: theme.palette.primary.main,
+						backgroundColor: theme.palette.primary.dark,
 						color: 'white',
 					},
 				},
@@ -45,6 +47,16 @@ export const CustomMuiButton = (theme: Theme) => {
 				containedDarkPrimary: {
 					'&:hover': {
 						backgroundColor: 'rgba(0, 0, 0, 0.8)',
+					},
+				},
+
+				// Grey Primary
+				containedDarkGrey: {
+					'& p': {
+						color: theme.palette.primary.light,
+					},
+					'& svg': {
+						// color: '#fff',
 					},
 				},
 
@@ -72,12 +84,13 @@ export const CustomMuiButton = (theme: Theme) => {
 
 				//========================= SIZE =====================//
 				sizeLarge: {
-					height: '40px',
+					height: '56px !important',
+					padding: '2px 8px',
 				},
 
 				sizeMedium: {
-					fontSize: '13px',
-					height: '32px',
+					fontSize: '14px',
+					height: '40px',
 				},
 
 				sizeSmall: {
@@ -159,13 +172,13 @@ export const CustomMuiButton = (theme: Theme) => {
 				},
 
 				outlinedPrimary: {
-					color: theme.palette.mode === 'dark' ? '#fff' : '',
+					color: theme.palette.mode === 'dark' ? '#fff' : theme.palette.primary.dark,
 					backgroundColor: 'transparent',
 					borderColor: theme.palette.primary.light,
 
 					'&:hover': {
 						backgroundColor: theme.palette.primary.main,
-						color: 'white',
+						color: theme.palette.primary.dark,
 					},
 				},
 

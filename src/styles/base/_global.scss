@@ -1,10 +1,22 @@
 html {
-	background-color: #20222b !important;
+	background-color: #f7f4f0 !important;
 	font-family: var(--orderly-font-family) !important;
+	color: var(--grey900);
 }
 body {
 	font-family: var(--orderly-font-family) !important;
-	background-color: #20222b !important;
+	background-color: #f7f4f0 !important;
+	color: var(--grey900);
+}
+
+div p,
+span,
+h1,
+h2,
+h3,
+h4,
+h5 {
+	color: var(--grey900);
 }
 
 a {

@@ -62,21 +62,21 @@ export default function WalletContainer() {
 			<NetworkContent />
 
 			{connecting ? (
-				<MainButton startIcon={<IconLoading height="20px" width="20px" />} variant="outlined">
+				<MainButton startIcon={<IconLoading height="20px" width="20px" />} variant="contained" color="darkGrey">
 					Connecting
 				</MainButton>
 			) : (
 				<>
 					{!wallet ? (
-						<MainButton onClick={handleConnectWallet} variant="outlined" color="primary">
-							Connect Wallet
+						<MainButton onClick={handleConnectWallet} variant="contained" color="darkGrey">
+							Connect to Wallet
 						</MainButton>
 					) : (
 						<MainButton
-							variant="outlined"
-							color="primary"
+							variant="contained"
+							color="darkGrey"
 							onClick={handleShowMenuAccount}
-							endIcon={<IconSettings size={'1.1rem'} />}
+							endIcon={<IconSettings size={'1.1rem'} color="#fff" />}
 							id="account-button"
 							aria-controls={openAccountEl ? 'account-menu' : undefined}
 							aria-haspopup="true"

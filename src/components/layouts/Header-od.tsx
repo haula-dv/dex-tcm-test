@@ -2,52 +2,54 @@
 import WalletContainer from '@/plugins/wallet/components/WalletContainer';
 import { Mixins } from '@/utils/themes/custom-theme/mixins';
 import { TSizes } from '@/utils/themes/custom-theme/sizes';
-import { AppBar, Box, BoxProps, Stack, Toolbar, Typography } from '@mui/material';
+import { AppBar, Box, BoxProps, Stack, Toolbar } from '@mui/material';
 import { styled } from '@mui/material/styles';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { MainContainer } from '../container/MainContainer';
+import { MainButton } from '../button/MainButton';
 import Logo from '../icons/Logo';
 
 export const Header = () => {
 	const pathName = usePathname();
 
 	const navItems = [
-		{ label: 'Swap', to: '/swap' },
-		{ label: 'Trade', to: '/trade' },
+		{ label: 'Swap', to: '/' },
 		{ label: 'Pool', to: '/pool' },
 		{ label: 'Vote', to: '/vote' },
 	];
 
 	return (
 		<MainAppBar elevation={0} position="static">
-			<MainContainer>
-				<Toolbar disableGutters>
-					<Stack direction={'row'} justifyContent={'space-between'} width={'100%'} alignItems={'center'}>
-						<Stack direction={'row'} alignItems={'center'} spacing={TSizes.margin_md}>
-							<Logo width="140px" height="40px" />
+			<Toolbar>
+				<Stack direction={'row'} justifyContent={'space-between'} width={'100%'} alignItems={'center'}>
+					<Stack direction={'row'} alignItems={'center'} spacing={TSizes.margin_md}>
+						<Logo />
+						<MainButton variant="contained">
+							<Link href={pathName.startsWith('/perp') ? '/components/perp/PERP_ETH_USDC' : '/perp/PERP_ETH_USDC'}>
+								{pathName.startsWith('/perp') ? 'Block Component >' : '< Trading Page full theme'}
+							</Link>
+						</MainButton>
 
-							{navItems.map((navItem) => (
+						{/* {navItems.map((navItem) => (
 								<Link key={navItem.label} href={navItem.to}>
 									<NavItem isActived={pathName === navItem.to}>
 										<Typography>{navItem.label}</Typography>
 									</NavItem>
 								</Link>
-							))}
-						</Stack>
-
-						<WalletContainer />
+							))} */}
 					</Stack>
-				</Toolbar>
-			</MainContainer>
+
+					<WalletContainer />
+				</Stack>
+			</Toolbar>
 		</MainAppBar>
 	);
 };
 
 const MainAppBar = styled(AppBar)(({ theme }) => ({
-	backgroundColor: '#fff',
 	zIndex: 0,
 	height: '56px',
+
 	borderRadius: '0px',
 	'& .MuiToolbar-root': {
 		height: '56px',

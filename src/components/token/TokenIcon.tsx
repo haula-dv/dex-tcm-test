@@ -16,7 +16,7 @@ export const TokenIcon = ({ url, size = 20, symbol, fontSize }: IProps) => {
 		return <></>;
 	} else
 		return (
-			<Box flexShrink={0}>
+			<Box flexShrink={0} height={size} width={size}>
 				<Image
 					src={url}
 					height={size}

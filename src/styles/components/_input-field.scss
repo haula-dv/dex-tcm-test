@@ -34,7 +34,7 @@ input:-webkit-autofill {
 }
 
 .MuiFilledInput-underline {
-	background-color: var(--white) !important;
+	background-color: #fff !important;
 	&:hover {
 		&::before {
 			border-bottom: 0px !important;

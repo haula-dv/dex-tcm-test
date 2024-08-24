@@ -6,7 +6,7 @@ export const CustomFormControl = (theme: Theme) => {
 		MuiOutlinedInput: {
 			styleOverrides: {
 				root: {
-					'backgroundColor': '#fff',
+					backgroundColor: '#fff',
 					'& .MuiOutlinedInput-notchedOutline': {
 						borderColor: theme.palette.grey[100],
 					},
@@ -40,18 +40,18 @@ export const CustomFormControl = (theme: Theme) => {
 		MuiFilledInput: {
 			styleOverrides: {
 				root: {
-					'border': `1px solid ${theme.palette.grey[100]}`,
-					'backgroundColor': theme.palette.common.white,
-					'borderRadius': TSizes.borderRadius,
-					'overflow': 'hidden',
-					'paddingLeft': '4px',
+					border: '0px',
+					backgroundColor: theme.palette.common.white,
+					borderRadius: TSizes.borderRadius,
+					overflow: 'hidden',
+					paddingLeft: '4px',
 
 					'&:before': {
 						borderBottom: 0,
 					},
 
 					'&:hover': {
-						'backgroundColor': theme.palette.common.white,
+						backgroundColor: theme.palette.common.white,
 
 						'&:before': {
 							borderBottom: 0,
@@ -63,6 +63,9 @@ export const CustomFormControl = (theme: Theme) => {
 					},
 
 					'& .Mui-focused': {
+						backgroundColor: theme.palette.common.white,
+					},
+					'&.MuiFilledInput-root': {
 						backgroundColor: theme.palette.common.white,
 					},
 				},
@@ -79,11 +82,12 @@ export const CustomFormControl = (theme: Theme) => {
 			styleOverrides: {
 				filled: {
 					// lineHeight: "180%",
-					'color': theme.palette.grey[700],
-					'fontSize': '14px',
-					'paddingLeft': '4px',
-					'transform': 'translate(16px, 18px) scale(1)',
-					'transition': 'transform 200ms cubic-bezier(0.0, 0, 0.2, 1)',
+					color: theme.palette.grey[500],
+					fontSize: '14px',
+					paddingLeft: '4px',
+					transform: 'translate(16px, 18px) scale(1)',
+					transition: 'transform 200ms cubic-bezier(0.0, 0, 0.2, 1)',
+					fontWeight: 700,
 
 					'&.Mui-focused': {
 						transform: 'translate(14px, 7px) scale(0.75)',

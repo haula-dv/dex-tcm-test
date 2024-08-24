@@ -3,21 +3,33 @@ const DarkThemeColors = [
 		name: 'BLUE_THEME',
 		palette: {
 			primary: {
-				main: '#00A9FF',
-				light: '#253662',
-				dark: '#4570EA',
-				contrastText: '#ffffff',
+				light: '#F7F4F0',
+				main: '#E9E4DE',
+				dark: '#B37350',
 			},
-			secondary: {
-				main: '#49BEFF',
-				light: '#1C455D',
-				dark: '#23afdb',
-				contrastText: '#ffffff',
+			grey: {
+				50: '#F2F2F2',
+				100: '#D8D8D8',
+				200: '#BFBFBF',
+				300: '#A5A5A5',
+				400: '#8C8C8C',
+				500: '#727272',
+				600: '#595959',
+				700: '#3F3F3F',
+				800: '#262626',
+				900: '#413A36',
 			},
-			background: {
-				default: '#10121A',
-				dark: '#10121A',
-				paper: '#10121A',
+			info: {
+				main: '#8C8C8C',
+				contrastText: '#fff',
+			},
+			success: {
+				main: '#0BA111',
+				contrastText: '#fff',
+			},
+			error: {
+				main: '#DE4242',
+				contrastText: '#fff',
 			},
 		},
 	},

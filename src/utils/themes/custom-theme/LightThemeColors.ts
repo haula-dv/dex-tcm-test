@@ -1,146 +1,65 @@
 const LightThemeColors = [
-  {
-    name: 'BLUE_THEME',
-    palette: {
-      primary: {
-        main: '#5D87FF',
-        light: '#ECF2FF',
-        dark: '#4570EA',
-        contrastText: '#ffffff',
-      },
-      secondary: {
-        main: '#49BEFF',
-        light: '#E8F7FF',
-        dark: '#23afdb',
-        contrastText: '#ffffff',
-      },
-    },
-  },
-  {
-    name: 'AQUA_THEME',
-    palette: {
-      primary: {
-        main: '#0074BA',
-        light: '#EFF9FF',
-        dark: '#006DAF',
-        contrastText: '#ffffff',
-      },
-      secondary: {
-        main: '#47D7BC',
-        light: '#EDFBF7',
-        dark: '#39C7AD',
-        contrastText: '#ffffff',
-      },
-    },
-  },
-  {
-    name: 'PURPLE_THEME',
-    palette: {
-      primary: {
-        main: '#763EBD',
-        light: '#F2ECF9',
-        dark: '#6E35B7',
-        contrastText: '#ffffff',
-      },
-      secondary: {
-        main: '#95CFD5',
-        light: '#EDF8FA',
-        dark: '#8BC8CE',
-        contrastText: '#ffffff',
-      },
-    },
-  },
-  {
-    name: 'GREEN_THEME',
-    palette: {
-      primary: {
-        main: '#0A7EA4',
-        light: '#F4F9FB',
-        dark: '#06769A',
-        contrastText: '#ffffff',
-      },
-      secondary: {
-        main: '#CCDA4E',
-        light: '#FAFBEF',
-        dark: '#C3D046',
-        contrastText: '#ffffff',
-      },
-    },
-  },
-  {
-    name: 'CYAN_THEME',
-    palette: {
-      primary: {
-        main: '#01C0C8',
-        light: '#EBF9FA',
-        dark: '#00B9C0',
-        contrastText: '#ffffff',
-      },
-      secondary: {
-        main: '#FB9678',
-        light: '#FFF5F2',
-        dark: '#F48B6C',
-        contrastText: '#ffffff',
-      },
-    },
-  },
-  {
-    name: 'ORANGE_THEME',
-    palette: {
-      primary: {
-        main: '#FA896B',
-        light: '#FBF2EF',
-        dark: '#F48162',
-        contrastText: '#ffffff',
-      },
-      secondary: {
-        main: '#0074BA',
-        light: '#EFF9FF',
-        dark: '#006FB1',
-        contrastText: '#ffffff',
-      },
-    },
-  },
-  {
-    name: 'PINK_THEME',
-    palette: {
-      primary: {
-        main: '#b40b7c',
-        light: '#EFF9FF',
-        dark: '#6b084a',
-        contrastText: '#ffffff',
-      },
-      secondary: {
-        main: '#ff9210',
-        light: '#EFF9FF',
-        dark: '#F48B6C',
-        contrastText: '#ffffff',
-      },
-      info: {
-        main: '#3c82f6',
-        light: '#1B3C48',
-        dark: '#2c65c4',
-        contrastText: '#ffffff',
-      },
-      success: {
-        main: '#17a34a',
-        light: '#1B3C48',
-        dark: '#0f7936',
-        contrastText: '#ffffff',
-      },
-      error: {
-        main: '#FA896B',
-        light: '#4B313D',
-        dark: '#f3704d',
-        contrastText: '#ffffff',
-      },
-      white: {
-        main: '#ffffff',
-        light: '#ffffff',
-        dark: '#ffffff',
-      },
-    },
-  },
+	{
+		name: 'BLUE_THEME',
+		palette: {
+			primary: {
+				light: '#F7F4F0',
+				main: '#E9E4DE',
+				dark: '#B37350',
+				contrastText: '#fff',
+			},
+			grey: {
+				50: '#F2F2F2',
+				100: '#D8D8D8',
+				200: '#BFBFBF',
+				300: '#A5A5A5',
+				400: '#8C8C8C',
+				500: '#727272',
+				600: '#595959',
+				700: '#3F3F3F',
+				800: '#262626',
+				900: '#413A36',
+			},
+			info: {
+				main: '#8C8C8C',
+				contrastText: '#fff',
+			},
+			blue: {
+				main: '#8C8C8C',
+				contrastText: '#fff',
+			},
+			success: {
+				main: '#0BA111',
+				contrastText: '#fff',
+			},
+			error: {
+				main: '#DE4242',
+				contrastText: '#fff',
+			},
+
+			darkPrimary: {
+				main: '#000000',
+				contrastText: '#fff',
+			},
+
+			darkGrey: {
+				main: '#3F3F3F',
+				contrastText: '#F7F4F0',
+			},
+		},
+	},
 ];
 
 export { LightThemeColors };
+
+// --white: #fff;
+// --grey50: #f2f2f2;
+// --grey100: #d8d8d8;
+// --grey200: #bfbfbf;
+// --grey300: #a5a5a5;
+// --grey400: #8c8c8c;
+// --grey500: #727272;
+// --grey600: #595959;
+// --grey700: #3f3f3f;
+// --grey800: #262626;
+// --grey900: #413a36;

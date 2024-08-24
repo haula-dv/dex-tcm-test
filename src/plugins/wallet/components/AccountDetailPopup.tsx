@@ -70,7 +70,7 @@ export default function AccountDetailPopup({ onClose, open, wallet }: IProps) {
 		<MainDialog title="Account Details" open={open} handleClose={onClose} maxWidth="xs">
 			<Box display={'flex'} justifyContent={'center'}>
 				<Box display={'inline-flex'}>
-					<MainCard maxWidth="auto" borderRadius="30px">
+					<MainCard maxWidth="auto" borderRadius="30px" backgroudColor="grey">
 						<Stack direction={'row'} alignItems={'center'} justifyContent={'space-between'}>
 							<AccountAvatar />
 
