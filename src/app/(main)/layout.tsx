@@ -1,8 +1,5 @@
 'use client';
 import { Header } from '@/components/layouts/Header';
-import { OrderlyConfigProviderRoot } from '@/provider/OrderlyConfigProviderRoot';
-import Web3OnboardProviderRoot from '@/provider/WalletConnectProvider';
-import { Box } from '@mui/material';
 import React from 'react';
 
 export default function RootLayout({
@@ -11,12 +8,10 @@ export default function RootLayout({
 	children: React.ReactNode;
 }>) {
 	return (
-		<Web3OnboardProviderRoot>
-			<OrderlyConfigProviderRoot>
-				<Header />
+		<>
+			<Header />
 
-				<Box>{children}</Box>
-			</OrderlyConfigProviderRoot>
-		</Web3OnboardProviderRoot>
+			{children}
+		</>
 	);
 }

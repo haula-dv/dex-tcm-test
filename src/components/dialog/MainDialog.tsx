@@ -71,10 +71,9 @@ const CustomDialog = styled(Dialog, {
 })<ICustomDialog>(({ theme, isBGWhite }) => ({
 	zIndex: 9,
 	'& .MuiDialog-paper': {
-		border: `1px solid ${theme.palette.grey[900]}`,
 		position: 'relative',
 		boxShadow: 'none',
-		backgroundColor: theme.palette.background.paper,
+		backgroundColor: theme.palette.primary.light,
 		margin: '16px',
 		borderRadius: TSizes.borderRadiusMd,
 	},

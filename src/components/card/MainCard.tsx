@@ -1,6 +1,6 @@
 'use client';
 import { TSizes } from '@/utils/themes/custom-theme/sizes';
-import { Card, CardProps, Stack } from '@mui/material';
+import { Box, Card, CardProps, Stack } from '@mui/material';
 import { styled } from '@mui/material/styles';
 import IconNotchCard from '../icons/notch';
 
@@ -13,6 +13,7 @@ interface IProps extends CardProps {
 	padding?: string;
 	borderRadius?: string;
 	isNotch?: boolean;
+	width?: string;
 }
 
 export const MainCard = ({
@@ -24,27 +25,30 @@ export const MainCard = ({
 	padding,
 	borderRadius,
 	isNotch,
+	width,
 	...props
 }: IProps) => {
 	return (
-		<Stack width={'100%'}>
-			{isNotch && <IconNotchCard />}
+		<Box width={width}>
+			<Stack display={'inline-flex'} flexDirection={'column'} width={width}>
+				{isNotch && <IconNotchCard />}
 
-			<CustomCard
-				elevation={0}
-				disablePadding={disablePadding}
-				sx={{
-					maxWidth: maxWidth,
-					cursor: isHover ? 'pointer' : '',
-					padding: padding,
-					borderRadius: borderRadius,
-				}}
-				backgroudColor={backgroudColor}
-				{...props}
-			>
-				{children}
-			</CustomCard>
-		</Stack>
+				<CustomCard
+					elevation={0}
+					disablePadding={disablePadding}
+					sx={{
+						maxWidth: maxWidth,
+						cursor: isHover ? 'pointer' : '',
+						padding: padding,
+						borderRadius: borderRadius,
+					}}
+					backgroudColor={backgroudColor}
+					{...props}
+				>
+					{children}
+				</CustomCard>
+			</Stack>
+		</Box>
 	);
 };
 

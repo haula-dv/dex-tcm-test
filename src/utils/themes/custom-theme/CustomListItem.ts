@@ -5,12 +5,13 @@ export const CustomListItem = (theme: Theme) => {
 		MuiListItemButton: {
 			styleOverrides: {
 				root: {
-					'padding': '5px 15px',
+					padding: '6px 16px',
+					transition: '0.4s',
 
 					'&.Mui-selected': {
-						'backgroundColor': theme.palette.grey[100],
+						backgroundColor: theme.palette.grey[50],
 						'&:hover': {
-							backgroundColor: theme.palette.grey[100],
+							backgroundColor: theme.palette.grey[50],
 						},
 					},
 				},

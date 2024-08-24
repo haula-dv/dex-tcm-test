@@ -4,6 +4,7 @@ import { CustomMuiButton } from './CustomButton';
 import { CustomMuiChip } from './CustomChip';
 import { CustomFormControl } from './CustomFormControl';
 import { CustomListItem } from './CustomListItem';
+import { CustomTextField } from './CustomTextField';
 import { TSizes } from './sizes';
 
 const components = (theme: Theme) => {
@@ -12,6 +13,7 @@ const components = (theme: Theme) => {
 		...CustomFormControl(theme),
 		...CustomListItem(theme),
 		...CustomMuiChip(theme),
+		...CustomTextField(theme),
 
 		MuiCssBaseline: {
 			styleOverrides: {

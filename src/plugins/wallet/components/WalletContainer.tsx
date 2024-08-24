@@ -1,8 +1,10 @@
 import { MainButton } from '@/components/button/MainButton';
+import { MainIconButton } from '@/components/button/MainIconButton';
 import IconLoading from '@/components/icons/loading';
 import { Stack } from '@mui/material';
 import { useAccount } from '@orderly.network/hooks';
-import { IconSettings } from '@tabler/icons-react';
+import { toast } from '@orderly.network/react';
+import { IconDots, IconSettings } from '@tabler/icons-react';
 import { useConnectWallet } from '@web3-onboard/react';
 import { useEffect, useState } from 'react';
 import { AccountAvatar } from './AccountAvatar';
@@ -57,6 +59,13 @@ export default function WalletContainer() {
 		}
 	}, [account, wallet]);
 
+	// Check when wallet connection is successful
+	useEffect(() => {
+		if (wallet && !connecting) {
+			toast.success('Wallet connected successfully!');
+		}
+	}, [wallet, connecting]);
+
 	return (
 		<Stack direction={'row'} spacing={1} alignItems={'center'}>
 			<NetworkContent />
@@ -99,6 +108,10 @@ export default function WalletContainer() {
 			)}
 
 			<OrderlyConnect />
+
+			<MainIconButton color="inherit">
+				<IconDots />
+			</MainIconButton>
 		</Stack>
 	);
 }

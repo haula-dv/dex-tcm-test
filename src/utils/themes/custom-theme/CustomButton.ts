@@ -68,9 +68,16 @@ export const CustomMuiButton = (theme: Theme) => {
 				},
 
 				filledTonalInherit: {
-					backgroundColor: theme.palette.mode === 'dark' ? theme.palette.grey[900] : '',
+					backgroundColor: theme.palette.mode === 'dark' ? theme.palette.grey[900] : theme.palette.grey[50],
 					'&:hover': {
-						backgroundColor: theme.palette.mode === 'dark' ? theme.palette.grey[900] : '',
+						backgroundColor: theme.palette.mode === 'dark' ? theme.palette.grey[900] : theme.palette.grey[50],
+					},
+				},
+
+				filledTonalDarkGrey: {
+					backgroundColor: theme.palette.grey[100],
+					'&:hover': {
+						backgroundColor: theme.palette.grey[200],
 					},
 				},
 
@@ -96,12 +103,12 @@ export const CustomMuiButton = (theme: Theme) => {
 				sizeSmall: {
 					padding: '2px 8px',
 					fontSize: '12px',
-					height: '24px',
+					height: '30px',
 					borderRadius: '6px !important',
 				},
 
 				sizeXsmall: {
-					height: '26px',
+					height: '28px',
 					fontSize: '11px',
 					padding: '0px 8px',
 					minWidth: 'auto',

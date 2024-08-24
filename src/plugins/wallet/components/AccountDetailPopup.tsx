@@ -58,7 +58,7 @@ export default function AccountDetailPopup({ onClose, open, wallet }: IProps) {
 		{
 			label: 'Disconnect',
 			icon: (
-				<IconWrapp size="30px" bgcolor={theme.palette.grey[800]}>
+				<IconWrapp size="30px" bgcolor={theme.palette.grey[50]}>
 					<IconLogout size={'1.2rem'} />
 				</IconWrapp>
 			),
@@ -72,7 +72,7 @@ export default function AccountDetailPopup({ onClose, open, wallet }: IProps) {
 				<Box display={'inline-flex'}>
 					<MainCard maxWidth="auto" borderRadius="30px" backgroudColor="grey">
 						<Stack direction={'row'} alignItems={'center'} justifyContent={'space-between'}>
-							<AccountAvatar />
+							<AccountAvatar fontSize="18px" />
 
 							<MainIconButton size="small">
 								<IconCopy size={'1rem'} />
