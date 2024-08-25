@@ -86,7 +86,7 @@ const CustomListItem = styled(ListItemButton, {
 
 	...(isSelected
 		? {
-				backgroundColor: theme.palette.grey[50],
+				backgroundColor: theme.palette.primary.light,
 		  }
 		: {
 				backgroundColor: disabledBg ? 'transparent' : 'rgba(255, 255, 255, 0.02)',

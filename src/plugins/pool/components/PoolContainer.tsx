@@ -48,8 +48,10 @@ export const PoolContainer = () => {
 							</Stack>
 						</Stack>
 
-						<MainCard isHover variant="outlined" width="100%">
-							<Typography textAlign={'center'}>Your active V3 liquidity positions will appear here.</Typography>
+						<MainCard isHover variant="outlined" width="100%" backgroudColor="darkgrey">
+							<Typography textAlign={'center'} color={'#fff'}>
+								Your active V3 liquidity positions will appear here.
+							</Typography>
 						</MainCard>
 
 						<Box pt={2} />

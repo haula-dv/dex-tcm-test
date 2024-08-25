@@ -77,7 +77,7 @@ const CustomCard = styled(Card, {
 	}),
 
 	...(backgroudColor === 'darkgrey' && {
-		backgroundColor: theme.palette.grey[900],
+		backgroundColor: theme.palette.grey[600],
 	}),
 	padding: disablePadding ? 0 : TSizes.margin_base,
 }));

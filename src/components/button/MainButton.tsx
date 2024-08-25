@@ -8,9 +8,10 @@ interface IProps extends ButtonProps {
 	fullRounded?: boolean;
 	isLoading?: boolean;
 	align?: 'start' | 'center' | 'end';
+	borderWidth?: string;
 }
 
-export const MainButton = ({ children, isLoading, fullRounded, align = 'center', ...props }: IProps) => {
+export const MainButton = ({ children, isLoading, fullRounded, align = 'center', borderWidth, ...props }: IProps) => {
 	return (
 		<Button
 			disableElevation
@@ -18,6 +19,11 @@ export const MainButton = ({ children, isLoading, fullRounded, align = 'center',
 				borderRadius: fullRounded ? '40px' : TSizes.borderRadius,
 				display: 'flex',
 				justifyContent: align,
+				borderWidth: borderWidth,
+
+				'&:hover': {
+					borderWidth: borderWidth,
+				},
 			}}
 			{...props}
 		>

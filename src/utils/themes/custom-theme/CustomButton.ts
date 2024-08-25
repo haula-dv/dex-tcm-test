@@ -89,6 +89,16 @@ export const CustomMuiButton = (theme: Theme) => {
 					},
 				},
 
+				filledTonalDarkPrimary: {
+					backgroundColor: theme.palette.grey[400],
+					color: theme.palette.common.white,
+
+					'&:hover': {
+						backgroundColor: theme.palette.grey[400],
+						color: theme.palette.common.white,
+					},
+				},
+
 				//========================= SIZE =====================//
 				sizeLarge: {
 					height: '56px !important',
