@@ -1,5 +1,5 @@
 import { OrderViewContainer } from '@/plugins/main-view/components/order-view/OrderViewContainer';
-import { OrderBookContainer } from '@/plugins/order-book/OrderBookContainer';
+import { OrderBookContainer } from '@/plugins/main-view/order-book/OrderBookContainer';
 import { TradingMainView } from '@/plugins/trading-view/components/TradingView';
 import { theme } from '@/utils';
 import { Box, Stack } from '@mui/material';

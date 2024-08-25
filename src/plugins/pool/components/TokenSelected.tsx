@@ -17,7 +17,7 @@ export const TokenSelected = () => {
 	};
 
 	return (
-		<MainCard variant="outlined">
+		<MainCard variant="outlined" width="100%">
 			<Stack direction={'row'} justifyContent={'space-between'} alignItems={'center'}>
 				<Stack direction={'row'} spacing={1} alignItems={'center'}>
 					<Image src={'/images/token.png'} height={34} width={34} alt="" />
@@ -26,7 +26,7 @@ export const TokenSelected = () => {
 					<Typography>ETH/AMPL</Typography>
 				</Stack>
 
-				<MainIconButton onClick={handleToggleExplanation}>
+				<MainIconButton onClick={handleToggleExplanation} size="small">
 					<IconChevronDown color={theme.palette.common.black} />
 				</MainIconButton>
 			</Stack>

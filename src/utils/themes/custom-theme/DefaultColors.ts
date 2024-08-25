@@ -47,6 +47,10 @@ const baselightTheme = {
 			main: '#fff',
 			contrastText: '#F7F4F0',
 		},
+		whitePrimary: {
+			main: '#F2F2F2',
+			contrastText: '#B37350',
+		},
 	},
 };
 

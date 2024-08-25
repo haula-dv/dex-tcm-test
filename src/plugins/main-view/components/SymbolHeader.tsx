@@ -10,7 +10,7 @@ import { Divider, Tooltip } from '@orderly.network/react';
 import { Decimal } from '@orderly.network/utils';
 import { IconChevronDown } from '@tabler/icons-react';
 import { useState } from 'react';
-import { MarketsContent } from '../../Markets/components/MarketContent';
+import { MarketsContent } from '../Markets/components/MarketContent';
 
 interface IProps {
 	symbol: string;
@@ -121,7 +121,6 @@ export const SymbolHeader = ({ onSymbolChange, symbol }: IProps) => {
 					<MainButton
 						startIcon={<TokenIcon url={getImageNextwork(symbol ? spitSymbol(symbol) : '', 'symbol_logo')} />}
 						variant="textLink"
-						color="white"
 						id="market-button"
 						aria-controls={openMarketEl ? 'market-menu' : undefined}
 						aria-haspopup="true"

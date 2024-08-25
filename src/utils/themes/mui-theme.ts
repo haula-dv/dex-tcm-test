@@ -70,6 +70,7 @@ declare module '@mui/material/Button' {
 		xsmall: true;
 	}
 	interface ButtonPropsColorOverrides {
+		whitePrimary: true;
 		darkPrimary: true;
 		darkGrey: true;
 		dark: true;
