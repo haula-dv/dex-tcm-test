@@ -26,6 +26,7 @@ const LightThemeColors = [
 			},
 			blue: {
 				main: '#8C8C8C',
+				light: '#C7F9F4',
 				contrastText: '#fff',
 			},
 			success: {

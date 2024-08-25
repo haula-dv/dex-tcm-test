@@ -8,25 +8,24 @@ import { ItemRow } from '@/plugins/pool/components/TokenSelected';
 import { theme } from '@/utils';
 import { Divider, Stack, Typography } from '@mui/material';
 import { useState } from 'react';
-import { ModalConfirmLiquidity } from './ModalConfirmLiquidity';
 
 interface IProps {
 	open: boolean;
 	onClose: () => void;
+	handleToggleOpenConfirm: () => void;
+	handleToggleSignatureRequest: () => void;
 }
 
-export const RemoveLiquidityModal = ({ open, onClose }: IProps) => {
-	const [openConfirm, setOpenConfirm] = useState(false);
-
+export const RemoveLiquidityModal = ({
+	open,
+	onClose,
+	handleToggleOpenConfirm,
+	handleToggleSignatureRequest,
+}: IProps) => {
 	const [currentSelectedPercentage, setCurrentSelectedPercentage] = useState(0);
 
 	const handleSelectPercentage = (index: number) => {
 		setCurrentSelectedPercentage(index);
-	};
-
-	// Handle open confirmation
-	const handleToggleOpenConfirm = () => {
-		setOpenConfirm(!openConfirm);
 	};
 
 	return (
@@ -100,17 +99,15 @@ export const RemoveLiquidityModal = ({ open, onClose }: IProps) => {
 				</Stack>
 
 				<Stack spacing={2} direction={'row'} pt={1}>
-					<MainButton variant="outlined" color="darkGrey" borderWidth="2px" fullWidth>
+					<MainButton variant="outlined" color="darkGrey" borderWidth="2px" fullWidth onClick={handleToggleOpenConfirm}>
 						Remove
 					</MainButton>
 
-					<MainButton variant="contained" color="darkGrey" fullWidth onClick={handleToggleOpenConfirm}>
+					<MainButton variant="contained" color="darkGrey" fullWidth onClick={handleToggleSignatureRequest}>
 						Approve
 					</MainButton>
 				</Stack>
 			</Stack>
-
-			<ModalConfirmLiquidity open={openConfirm} onClose={handleToggleOpenConfirm} />
 		</MainDialog>
 	);
 };

@@ -1,11 +1,11 @@
-import { AddLiquidityContainer } from "@/plugins/liquidity/components/AddLiquidityContainer";
-import { Metadata } from "next";
+import { AddLiquidityContainer } from '@/plugins/pool/liquidity/AddLiquidityContainer';
+import { Metadata } from 'next';
 
 export const metadata: Metadata = {
-  title: "Add liquidity",
-  description: "...",
+	title: 'Add liquidity',
+	description: '...',
 };
 
 export default function AddLiquidityPage() {
-  return <AddLiquidityContainer />;
+	return <AddLiquidityContainer />;
 }
