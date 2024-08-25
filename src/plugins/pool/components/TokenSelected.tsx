@@ -9,12 +9,14 @@ import { IconChevronDown } from '@tabler/icons-react';
 import Image from 'next/image';
 import { ReactNode, useState } from 'react';
 import { ModalConfirmLiquidity } from '../liquidity/ModalConfirmLiquidity';
+import { SignatureRequestConfirmModal } from '../liquidity/SignatureRequestConfirmModal';
 import { SignatureRequestModal } from '../liquidity/SignatureRequestModal';
 
 export const TokenSelected = () => {
 	const [openRemoveLiquidityModal, setRemoveLiquidityModal] = useState(false);
 	const [isOpenConfirmRemoveLiquidity, setOpenConfirmRemoveLiquidity] = useState(false);
 	const [isOpenSignatureRequest, setOpenSignatureRequest] = useState(false);
+	const [isOpenSignatureRequestConfirm, setIsOpenSignatureRequestConfirm] = useState(false);
 	const [explained, setExpanded] = useState(false);
 
 	const handleToggleExplanation = () => {
@@ -34,6 +36,11 @@ export const TokenSelected = () => {
 	// Signature request modal
 	const handleToggleSignatureRequest = () => {
 		setOpenSignatureRequest(!isOpenSignatureRequest);
+	};
+
+	const handleToggleSignatureRequestConfirm = () => {
+		setIsOpenSignatureRequestConfirm(!isOpenSignatureRequestConfirm);
+		setOpenSignatureRequest(false);
 	};
 
 	return (
@@ -110,7 +117,16 @@ export const TokenSelected = () => {
 
 			<ModalConfirmLiquidity open={isOpenConfirmRemoveLiquidity} onClose={handleToggleOpenConfirm} />
 
-			<SignatureRequestModal open={isOpenSignatureRequest} onClose={handleToggleSignatureRequest} />
+			<SignatureRequestModal
+				open={isOpenSignatureRequest}
+				onClose={handleToggleSignatureRequest}
+				handleToggleSignatureRequestConfirm={handleToggleSignatureRequestConfirm}
+			/>
+
+			<SignatureRequestConfirmModal
+				open={isOpenSignatureRequestConfirm}
+				onClose={handleToggleSignatureRequestConfirm}
+			/>
 		</>
 	);
 };

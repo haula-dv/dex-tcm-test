@@ -1,29 +1,39 @@
 import { TSizes } from '@/utils/themes/custom-theme/sizes';
+import TabContext from '@mui/lab/TabContext';
 import { Button, Stack } from '@mui/material';
 import { styled } from '@mui/material/styles';
-import { useState } from 'react';
+import { ReactNode, useState } from 'react';
 
 interface IProps {
-	tabs: any[];
+	tabs: {
+		label: string;
+		value: string;
+	}[];
+
+	children?: ReactNode;
 }
 
-export const GrayTab = ({ tabs }: IProps) => {
-	const [tab, setTab] = useState(1);
+export const GrayTab = ({ tabs, children }: IProps) => {
+	const [tab, setTab] = useState<string>('1');
 
 	return (
-		<CustomTab direction={'row'} spacing={1}>
-			{tabs.map(({ label, value }) => (
-				<Button
-					fullWidth
-					key={value}
-					variant={value == tab ? 'contained' : 'text'}
-					color="darkGrey"
-					onClick={() => setTab(value)}
-				>
-					{label}
-				</Button>
-			))}
-		</CustomTab>
+		<TabContext value={tab}>
+			<CustomTab direction={'row'} spacing={1}>
+				{tabs.map(({ label, value }) => (
+					<Button
+						fullWidth
+						key={value}
+						variant={value == tab ? 'contained' : 'text'}
+						color="darkGrey"
+						onClick={() => setTab(value)}
+					>
+						{label}
+					</Button>
+				))}
+			</CustomTab>
+
+			{children}
+		</TabContext>
 	);
 };
 

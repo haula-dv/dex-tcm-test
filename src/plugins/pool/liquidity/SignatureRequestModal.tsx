@@ -8,9 +8,10 @@ import { ItemRow } from '../components/TokenSelected';
 interface IProps {
 	open: boolean;
 	onClose: () => void;
+	handleToggleSignatureRequestConfirm: () => void;
 }
 
-export const SignatureRequestModal = ({ onClose, open }: IProps) => {
+export const SignatureRequestModal = ({ onClose, handleToggleSignatureRequestConfirm, open }: IProps) => {
 	return (
 		<MainDialog open={open} handleClose={onClose} hiddenHeader maxWidth="xs">
 			<Stack direction={'row'} spacing={1} alignItems={'center'}>
@@ -47,7 +48,10 @@ export const SignatureRequestModal = ({ onClose, open }: IProps) => {
 				</Box>
 
 				<Stack>
-					<Typography fontWeight={600}>Swaplux V2</Typography>
+					<Typography fontWeight={600} fontSize={'17px'}>
+						Swaplux V2
+					</Typography>
+
 					<Typography fontSize={'13px'} color={theme.palette.grey[600]}>
 						https://app.bazaar.org/0xod1738...9932ecdb
 					</Typography>
@@ -71,10 +75,11 @@ export const SignatureRequestModal = ({ onClose, open }: IProps) => {
 			</Stack>
 
 			<Stack direction={'row'} spacing={1} pt={2}>
-				<MainButton fullWidth variant="outlined" color="darkGrey" borderWidth="2px">
+				<MainButton fullWidth variant="outlined" color="darkGrey" borderWidth="2px" onClick={onClose}>
 					Cancel
 				</MainButton>
-				<MainButton fullWidth variant="contained" color="darkGrey">
+
+				<MainButton fullWidth variant="contained" color="darkGrey" onClick={handleToggleSignatureRequestConfirm}>
 					Sign
 				</MainButton>
 			</Stack>

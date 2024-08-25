@@ -140,11 +140,15 @@ export const CustomMuiButton = (theme: Theme) => {
 				},
 
 				textLinkPrimary: {
-					color: theme.palette.primary.main,
+					color: theme.palette.primary.dark,
 				},
 
 				textPrimary: {
-					'&:hover': {},
+					color: theme.palette.primary.dark,
+
+					'&:hover': {
+						backgroundColor: theme.palette.primary.light,
+					},
 				},
 
 				textSecondary: {
