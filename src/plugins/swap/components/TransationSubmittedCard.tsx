@@ -1,22 +1,20 @@
 import { MainButton } from '@/components/button/MainButton';
-import { MainCard } from '@/components/card/MainCard';
-import { theme } from '@/utils';
+import { MainDialog } from '@/components/dialog/MainDialog';
+import IconTransaction from '@/components/icons/transaction';
 import { Box, Stack, Typography } from '@mui/material';
-import { setZustandValue } from 'nes-zustand';
-import { isTransactionSubmittedState } from '../store';
 
-export const TransationSubmittedCard = () => {
+interface IProps {
+	open: boolean;
+	onClose: () => void;
+}
+
+export const TransationSubmittedCard = ({ open, onClose }: IProps) => {
 	return (
-		<Box width={'100%'} display={'flex'} alignItems={'center'} justifyContent={'center'}>
-			<MainCard maxWidth="320px">
-				<Box
-					height={100}
-					width={100}
-					bgcolor={theme.palette.grey[200]}
-					display={'flex'}
-					justifyContent={'center'}
-					mx={'auto'}
-				/>
+		<MainDialog open={open} handleClose={onClose} maxWidth="xs" hiddenHeader>
+			<Box width={'100%'}>
+				<Box display={'flex'} justifyContent={'center'} mx={'auto'}>
+					<IconTransaction />
+				</Box>
 
 				<Typography fontSize={'18px'} fontWeight={600} textAlign={'center'} pt={2}>
 					Transaction Submitted
@@ -31,16 +29,11 @@ export const TransationSubmittedCard = () => {
 						View on Therscan
 					</MainButton>
 
-					<MainButton
-						size="large"
-						variant="contained"
-						color="darkPrimary"
-						onClick={() => setZustandValue(isTransactionSubmittedState, false)}
-					>
+					<MainButton size="large" variant="contained" color="darkGrey" onClick={onClose}>
 						Close
 					</MainButton>
 				</Stack>
-			</MainCard>
-		</Box>
+			</Box>
+		</MainDialog>
 	);
 };

@@ -2,11 +2,12 @@
 import { MainButton } from '@/components/button/MainButton';
 import { MainIconButton } from '@/components/button/MainIconButton';
 import { MainCard } from '@/components/card/MainCard';
-import SwitchBase from '@/components/form-control/SwitcheBase';
+import CustomSwitch from '@/components/form-control/CustomSwitch';
 import { MainPopup } from '@/components/popup/MainPopup';
+import { theme } from '@/utils';
 import { TSizes } from '@/utils/themes/custom-theme/sizes';
-import { Box, InputAdornment, Stack, TextField, Typography } from '@mui/material';
-import { IconSettings } from '@tabler/icons-react';
+import { Box, InputAdornment, Stack, TextField, Tooltip, Typography } from '@mui/material';
+import { IconHelpCircle, IconSettings } from '@tabler/icons-react';
 import { useState } from 'react';
 
 interface IProps {
@@ -68,7 +69,7 @@ export const TransactionPopup = ({ slippageAmount }: IProps) => {
 
 	return (
 		<>
-			<Stack direction={'row'} width={'100%'} justifyContent={'space-between'} alignItems={'center'} pb="28px">
+			<Stack direction={'row'} width={'100%'} justifyContent={'space-between'} alignItems={'center'} pb="16px">
 				<Typography variant="h1" fontWeight={600}>
 					Swap
 				</Typography>
@@ -96,16 +97,26 @@ export const TransactionPopup = ({ slippageAmount }: IProps) => {
 				open={open}
 				onClose={handleClose}
 			>
-				<Box p={TSizes.margin_xs}>
-					<Typography fontSize={'16px'} fontWeight={600} pb={1}>
+				<Box px={TSizes.margin_xs} pt={TSizes.margin_xs}>
+					<Typography fontSize={'16px'} fontWeight={600}>
 						Transactions setting
 					</Typography>
 
-					<Stack spacing={2}>
+					<Stack spacing={1}>
 						<MainCard variant="outlined">
-							<Typography lineHeight={'100%'} pb={1}>
-								Max. slippage
-							</Typography>
+							<Stack direction={'row'} alignItems={'center'} spacing={1} pb={1}>
+								<Typography lineHeight={'100%'} color={theme.palette.grey[700]}>
+									Max. slippage
+								</Typography>
+
+								<Tooltip
+									arrow
+									title={`Your transaction will revert if the price changes unfavorably by more than this percentage.`}
+									sx={{ maxWidth: '300px' }}
+								>
+									<IconHelpCircle />
+								</Tooltip>
+							</Stack>
 
 							<Stack direction={'row'} spacing={TSizes.margin_xs} alignItems={'center'}>
 								{slippages.map((item) => (
@@ -136,7 +147,16 @@ export const TransactionPopup = ({ slippageAmount }: IProps) => {
 						</MainCard>
 
 						<MainCard variant="outlined" width="100%">
-							<Typography pb={1}>Transaction deadline</Typography>
+							<Stack direction={'row'} alignItems={'center'} spacing={1} pb={1}>
+								<Typography color={theme.palette.grey[700]}>Transaction deadline</Typography>
+								<Tooltip
+									arrow
+									title={`Your transaction will revert if it is pending for more than this long`}
+									sx={{ maxWidth: '300px' }}
+								>
+									<IconHelpCircle />
+								</Tooltip>
+							</Stack>
 
 							<Stack direction={'row'} spacing={1.5} alignItems={'center'}>
 								<TextField
@@ -156,8 +176,9 @@ export const TransactionPopup = ({ slippageAmount }: IProps) => {
 								Interface settings
 							</Typography>
 
-							<SwitchBase label="Toggle expert mode" />
-							<SwitchBase label="Disabled multihop" />
+							<CustomSwitch label="Toggle expert mode" />
+
+							<CustomSwitch label="Disabled multihop" />
 						</Stack>
 					</Stack>
 				</Box>

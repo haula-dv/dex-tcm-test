@@ -40,7 +40,11 @@ const baselightTheme = {
 			contrastText: '#fff',
 		},
 		darkGrey: {
-			main: '#3F3F3F',
+			main: '#727272',
+			contrastText: '#F7F4F0',
+		},
+		white: {
+			main: '#fff',
 			contrastText: '#F7F4F0',
 		},
 	},

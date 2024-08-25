@@ -11,7 +11,7 @@ export const CustomFormControl = (theme: Theme) => {
 						borderColor: theme.palette.grey[100],
 					},
 					'&:hover .MuiOutlinedInput-notchedOutline': {
-						borderColor: theme.palette.grey[200],
+						borderColor: theme.palette.grey[100],
 					},
 				},
 

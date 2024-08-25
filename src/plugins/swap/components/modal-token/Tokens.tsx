@@ -93,7 +93,13 @@ export const Tokens = ({ handleSelectToken, setTokenType, type }: IProps) => {
 			</Box>
 
 			<ManageButton>
-				<MainButton fullWidth startIcon={<IconEdit />} color="inherit" onClick={() => setTokenType('manageTokens')}>
+				<MainButton
+					fullWidth
+					startIcon={<IconEdit />}
+					color="inherit"
+					variant="textLink"
+					onClick={() => setTokenType('manageTokens')}
+				>
 					Manage
 				</MainButton>
 			</ManageButton>

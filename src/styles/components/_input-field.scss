@@ -1,12 +1,12 @@
 // FOCUS
 .Mui-focused .MuiOutlinedInput-notchedOutline {
 	transition: all 0.2s;
-	border: 2px solid var(--input-border-foucused-color) !important;
+	// border: 2px solid var(--input-border-foucused-color) !important;
 }
 
 .MuiOutlinedInput-root.Mui-focused {
-	border-radius: var(--border-radius) !important;
-	outline: 4px solid var(--input-focused-color); /* Outside border effect */
+	// border-radius: var(--border-radius) !important;
+	// outline: 4px solid var(--input-focused-color); /* Outside border effect */
 }
 
 /* Change the white to any color */

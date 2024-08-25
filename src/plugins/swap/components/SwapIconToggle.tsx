@@ -9,12 +9,8 @@ interface IProps {
 export const ButtonSwapToggle = ({ toggleSwapType }: IProps) => {
 	return (
 		<div style={{ margin: '-20px auto -24px auto' }}>
-			<MainIconButton
-				color="inherit"
-				sx={{ border: `4px solid ${theme.palette.common.white}` }}
-				onClick={toggleSwapType}
-			>
-				<IconArrowsSort size={'1rem'} />
+			<MainIconButton color="white" sx={{ border: `5px solid ${theme.palette.primary.main}` }} onClick={toggleSwapType}>
+				<IconArrowsSort size={'1rem'} color="#000" />
 			</MainIconButton>
 		</div>
 	);

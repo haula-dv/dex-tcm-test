@@ -29,21 +29,23 @@ export const ModalConfirmSwap = ({ onClose, open }: IProps) => {
 	return (
 		<MainDialog open={open} handleClose={onClose} maxWidth="xs" title="Swap Exact ETH for Token" isBGWhite>
 			<Stack direction={'row'} alignItems={'center'} spacing={1} pb={0.5}>
-				<Typography fontSize={'22px'}>0.5</Typography>
+				<Typography fontSize={'24px'}>0.5</Typography>
 				<Image src={'/images/token.png'} height={24} width={24} alt="" />
 			</Stack>
 
-			<Typography pb={2}>Balance: $099998</Typography>
+			<Typography pb={2} color={theme.palette.grey[500]}>
+				Balance: $099998
+			</Typography>
 
 			<GrayTab tabs={tabs} />
 
 			<Box pt={2} />
 
-			<MainCard disablePadding>
+			<MainCard disablePadding width="100%">
 				<Stack direction={'row'} justifyContent={'space-between'} p={TSizes.margin_base}>
 					<Stack>
 						<Typography>Gas fee</Typography>
-						<MainButton color="secondary" size="xsmall" variant="contained">
+						<MainButton color="darkGrey" size="xsmall" variant="contained">
 							Edit
 						</MainButton>
 					</Stack>
@@ -71,11 +73,11 @@ export const ModalConfirmSwap = ({ onClose, open }: IProps) => {
 			</MainCard>
 
 			<Stack direction={'row'} spacing={2} pt={2}>
-				<MainButton onClick={onClose} variant="outlined" color="inherit" fullWidth>
+				<MainButton onClick={onClose} variant="outlined" color="darkGrey" size="large" fullWidth>
 					Reject
 				</MainButton>
 
-				<MainButton variant="contained" color="darkPrimary" fullWidth onClick={handleConfirm}>
+				<MainButton variant="contained" color="darkGrey" fullWidth onClick={handleConfirm} size="large">
 					Confirm Swap
 				</MainButton>
 			</Stack>

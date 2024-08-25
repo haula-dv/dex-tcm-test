@@ -1,11 +1,13 @@
 'use client';
 import { MainButton } from '@/components/button/MainButton';
+import { MainIconButton } from '@/components/button/MainIconButton';
 import { MainCard } from '@/components/card/MainCard';
 import { CurrencyField } from '@/components/swap/CurrencyField';
 import { theme } from '@/utils';
 import { TSizes } from '@/utils/themes/custom-theme/sizes';
 import { Box, Stack, Typography } from '@mui/material';
 import { IconHelp, IconTransform } from '@tabler/icons-react';
+import { setZustandValue } from 'nes-zustand';
 import { useState } from 'react';
 import { useStore } from 'zustand';
 import { toggleSwapType } from '../handlers';
@@ -62,75 +64,97 @@ export const SwapContainer = () => {
 
 	return (
 		<Box display={'flex'} alignItems={'center'} justifyContent={'center'} height={'calc(100vh - 56px)'}>
-			{!isTransactionSubmitted ? (
-				<MainCard
-					backgroudColor="primary"
-					borderRadius="0px"
-					isNotch
-					padding={`${TSizes.margin_sm}`}
-					maxWidth={TSizes.widthCommonCard}
-				>
-					<TransactionPopup slippageAmount={slippageAmount} />
+			<MainCard
+				backgroudColor="primary"
+				borderRadius="0px"
+				isNotch
+				padding={`${TSizes.margin_sm}`}
+				maxWidth={TSizes.widthCommonCard}
+			>
+				<TransactionPopup slippageAmount={slippageAmount} />
 
-					{!isSwaped ? (
-						<>
-							<Stack spacing={1.5}>
-								<CurrencyField handleGetSwapPrice={getSwapPrice} field="input" currentToken={tokenInput} />
+				{!isSwaped ? (
+					<>
+						<Stack spacing={1.5}>
+							<CurrencyField handleGetSwapPrice={getSwapPrice} field="input" currentToken={tokenInput} />
 
-								<ButtonSwapToggle toggleSwapType={toggleSwapType} />
+							<ButtonSwapToggle toggleSwapType={toggleSwapType} />
 
-								<CurrencyField currentToken={tokenOutput} field="output" />
+							<CurrencyField currentToken={tokenOutput} field="output" />
 
-								<Stack direction={'row'} justifyContent={'space-between'} pb={2}>
-									<Typography>{!isEnterAmount ? 'Slippage Tolerance' : 'Price'}</Typography>
+							<Stack direction={'row'} justifyContent={'space-between'} pb={2} alignItems={'center'}>
+								<Typography>{!isEnterAmount ? 'Slippage Tolerance' : 'Price'}</Typography>
 
-									<Stack direction={'row'} alignItems={'centter'} spacing={1}>
-										<Typography>{!isEnterAmount ? '1%' : '0978787667 ETH Per'}</Typography>
+								<Stack direction={'row'} alignItems={'center'} spacing={1}>
+									<Typography>{!isEnterAmount ? '1%' : '0978787667 ETH Per'}</Typography>
 
-										{isEnterAmount && <IconTransform size={'1.2rem'} />}
-									</Stack>
+									{isEnterAmount && (
+										<MainIconButton size="small">
+											<IconTransform size={'1.2rem'} color={theme.palette.common.black} />
+										</MainIconButton>
+									)}
 								</Stack>
-
-								<MainButton variant="contained" color="primary" size="large" onClick={handleEnterAmount}>
-									{isEnterAmount ? 'Swap' : 'Enter A Mount'}
-								</MainButton>
 							</Stack>
 
-							{isEnterAmount && (
-								<Stack spacing={1} pt={2}>
-									<Item />
-									<Item />
-									<Item />
-									<MainButton fullWidth color="inherit">
-										View Pair Analytis
-									</MainButton>
-								</Stack>
-							)}
-						</>
-					) : (
-						<ConfirmSwapContent
-							toggleSwapType={toggleSwapType}
-							tokenSellSelected={tokenInput}
-							tokenBuySelected={tokenOutput}
-						/>
-					)}
-				</MainCard>
-			) : (
-				<TransationSubmittedCard />
-			)}
+							<MainButton variant="contained" color="primary" size="large" onClick={handleEnterAmount}>
+								{isEnterAmount ? 'Swap' : 'Enter A Mount'}
+							</MainButton>
+						</Stack>
+
+						{isEnterAmount && (
+							<Stack spacing={1} pt={2}>
+								<Item title="Minimum recevied" value="9747.969 AMPL" />
+
+								<Item
+									title="Price Impact"
+									value={<span style={{ color: theme.palette.success.main }}> {'<0.01%'}</span>}
+								/>
+
+								<Item title="Liquidity Provider Fee" value={'0.0015ETH'} />
+
+								<MainButton fullWidth color="inherit">
+									View Pair Analytis
+								</MainButton>
+							</Stack>
+						)}
+					</>
+				) : (
+					<ConfirmSwapContent
+						toggleSwapType={toggleSwapType}
+						tokenSellSelected={tokenInput}
+						tokenBuySelected={tokenOutput}
+					/>
+				)}
+			</MainCard>
+
+			<TransationSubmittedCard
+				open={isTransactionSubmitted}
+				onClose={() => {
+					setIsSwaped(false);
+					setIsEnterAmount(false);
+					setZustandValue(isTransactionSubmittedState, false);
+				}}
+			/>
 		</Box>
 	);
 };
 
-export const Item = () => {
+interface IProps {
+	title: string;
+	value: any;
+}
+
+export const Item = ({ title, value }: IProps) => {
 	return (
 		<Stack direction={'row'} justifyContent={'space-between'}>
-			<Stack direction={'row'} spacing={1}>
-				<Typography color={theme.palette.grey[900]}>Minimum recevied</Typography>
+			<Stack direction={'row'} spacing={0.5} alignItems={'center'}>
+				<Typography color={theme.palette.grey[900]}>{title}</Typography>
 
-				<IconHelp color={theme.palette.grey[900]} />
+				<MainIconButton size="small">
+					<IconHelp size={'1.2rem'} color={theme.palette.grey[900]} />
+				</MainIconButton>
 			</Stack>
-			<Typography>80099 AMPL</Typography>
+			<Typography>{value}</Typography>
 		</Stack>
 	);
 };

@@ -1,84 +1,86 @@
-import { ITab } from "@/common/types/components/tab";
-import { MainIconButton } from "@/components/button/MainIconButton";
-import { MainCard } from "@/components/card/MainCard";
-import { SearchField } from "@/components/form-control/SearchField";
-import SwitchBase from "@/components/form-control/SwitcheBase";
-import { GrayTab } from "@/components/tab/GrayTab";
-import { TSizes } from "@/utils/themes/custom-theme/sizes";
-import { Box, Stack, Typography } from "@mui/material";
-import { IconArrowLeft, IconSettings, IconX } from "@tabler/icons-react";
-import Image from "next/image";
+import { ITab } from '@/common/types/components/tab';
+import { MainIconButton } from '@/components/button/MainIconButton';
+import { MainCard } from '@/components/card/MainCard';
+import { SearchField } from '@/components/form-control/SearchField';
+import SwitchBase from '@/components/form-control/SwitcheBase';
+import { GrayTab } from '@/components/tab/GrayTab';
+import { TSizes } from '@/utils/themes/custom-theme/sizes';
+import { Box, Stack, Typography } from '@mui/material';
+import { IconArrowLeft, IconSettings, IconX } from '@tabler/icons-react';
+import Image from 'next/image';
 
 interface IProps {
-  onBack: () => void;
-  handleCloseModal: () => void;
+	onBack: () => void;
+	handleCloseModal: () => void;
 }
 
 export const ManageTokenList = ({ onBack, handleCloseModal }: IProps) => {
-  const tabs: ITab[] = [
-    { label: "Lists", value: 1 },
-    { label: "Tokens", value: 2 },
-  ];
+	const tabs: ITab[] = [
+		{ label: 'Lists', value: 1 },
+		{ label: 'Tokens', value: 2 },
+	];
 
-  return (
-    <Box p={TSizes.margin_xs}>
-      <Stack direction={"row"} alignItems={"center"} pb={TSizes.margin_xs}>
-        <MainIconButton isFullRounded onClick={onBack}>
-          <IconArrowLeft />
-        </MainIconButton>
+	return (
+		<Box p={TSizes.margin_xs}>
+			<Stack direction={'row'} alignItems={'center'} pb={TSizes.margin_sm}>
+				<MainIconButton isFullRounded onClick={onBack} size="small">
+					<IconArrowLeft />
+				</MainIconButton>
 
-        <Typography flex={1} fontWeight={600} fontSize={"16px"}>
-          Manage
-        </Typography>
+				<Typography flex={1} fontWeight={600} pl={1} fontSize={'16px'}>
+					Manage
+				</Typography>
 
-        <MainIconButton isFullRounded onClick={handleCloseModal}>
-          <IconX />
-        </MainIconButton>
-      </Stack>
+				<MainIconButton isFullRounded onClick={handleCloseModal} size="small">
+					<IconX />
+				</MainIconButton>
+			</Stack>
 
-      <GrayTab tabs={tabs} />
-      <Box pt={2} />
-      <SearchField />
+			<GrayTab tabs={tabs} />
+			<Box pt={2} />
+			<SearchField />
 
-      <Stack pt={2} spacing={TSizes.margin_xs}>
-        <MainCard isHover>
-          <Stack direction={"row"} justifyContent={"space-between"}>
-            <Stack direction={"row"} spacing={1} alignItems={"center"}>
-              <Image src={"/images/token.png"} height={32} width={32} alt="" />
+			<Stack pt={2} spacing={TSizes.margin_xs}>
+				<MainCard isHover width="100%">
+					<Stack direction={'row'} justifyContent={'space-between'} alignItems={'center'}>
+						<Stack direction={'row'} spacing={1} alignItems={'center'}>
+							<Image src={'/images/token.png'} height={32} width={32} alt="" />
 
-              <Stack>
-                <Typography fontSize={"16px"}>Liaa</Typography>
-                <Stack direction={"row"} spacing={1}>
-                  <Typography fontSize={"14px"}>21 token</Typography>
+							<Stack>
+								<Typography fontSize={'16px'}>Liaa</Typography>
 
-                  <IconSettings size={"1.2rem"} />
-                </Stack>
-              </Stack>
-            </Stack>
+								<Stack direction={'row'} spacing={1}>
+									<Typography fontSize={'14px'}>21 token</Typography>
 
-            <SwitchBase />
-          </Stack>
-        </MainCard>
+									<IconSettings size={'1.2rem'} />
+								</Stack>
+							</Stack>
+						</Stack>
 
-        <MainCard isHover>
-          <Stack direction={"row"} justifyContent={"space-between"}>
-            <Stack direction={"row"} spacing={1}>
-              <Image src={"/images/token.png"} height={32} width={32} alt="" />
+						<SwitchBase />
+					</Stack>
+				</MainCard>
 
-              <Stack>
-                <Typography fontSize={"16px"}>Liaa</Typography>
-                <Stack direction={"row"} spacing={1}>
-                  <Typography fontSize={"14px"}>21 token</Typography>
+				<MainCard isHover width="100%">
+					<Stack direction={'row'} justifyContent={'space-between'} alignItems={'center'}>
+						<Stack direction={'row'} spacing={1} alignItems={'center'}>
+							<Image src={'/images/token.png'} height={32} width={32} alt="" />
 
-                  <IconSettings size={"1.2rem"} />
-                </Stack>
-              </Stack>
-            </Stack>
+							<Stack>
+								<Typography fontSize={'16px'}>Liaa</Typography>
 
-            <SwitchBase />
-          </Stack>
-        </MainCard>
-      </Stack>
-    </Box>
-  );
+								<Stack direction={'row'} spacing={1}>
+									<Typography fontSize={'14px'}>21 token</Typography>
+
+									<IconSettings size={'1.2rem'} />
+								</Stack>
+							</Stack>
+						</Stack>
+
+						<SwitchBase />
+					</Stack>
+				</MainCard>
+			</Stack>
+		</Box>
+	);
 };
