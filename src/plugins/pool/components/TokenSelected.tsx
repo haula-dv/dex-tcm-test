@@ -88,7 +88,7 @@ export const TokenSelected = () => {
 					<ItemRow title="Pooled Share" value="<0.01%" />
 				</Stack>
 
-				<MainButton color="inherit" fullWidth>
+				<MainButton color="inherit" fullWidth size="large">
 					View Pair Analytis
 				</MainButton>
 

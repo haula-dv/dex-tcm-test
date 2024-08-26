@@ -70,7 +70,7 @@ export default function AccountDetailPopup({ onClose, open, wallet }: IProps) {
 		<MainDialog title="Account Details" open={open} handleClose={onClose} maxWidth="xs">
 			<Box display={'flex'} justifyContent={'center'}>
 				<Box display={'inline-flex'}>
-					<MainCard maxWidth="auto" borderRadius="30px" backgroudColor="grey">
+					<MainCard maxWidth="auto" borderRadius="30px">
 						<Stack direction={'row'} alignItems={'center'} justifyContent={'space-between'}>
 							<AccountAvatar fontSize="18px" />
 
@@ -88,7 +88,13 @@ export default function AccountDetailPopup({ onClose, open, wallet }: IProps) {
 
 			<Stack spacing={1} pt={6}>
 				{items.map((item) => (
-					<ItemList key={item.label} startIcon={item.icon} primaryText={item.label} onClick={item.onClick} />
+					<ItemList
+						key={item.label}
+						startIcon={item.icon}
+						primaryText={item.label}
+						onClick={item.onClick}
+						backgroundColor="#fff"
+					/>
 				))}
 			</Stack>
 		</MainDialog>

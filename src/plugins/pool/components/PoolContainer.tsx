@@ -30,13 +30,13 @@ export const PoolContainer = () => {
 
 						<Stack direction={'row'} maxWidth={'300px'} spacing={2}>
 							<Link href={'/pool/create-a-pair'}>
-								<MainButton variant="outlined" color="darkGrey">
+								<MainButton variant="outlined" color="darkGrey" borderWidth="2px" size="large">
 									Create A Pair
 								</MainButton>
 							</Link>
 
 							<Link href={'/pool/add'}>
-								<MainButton variant="contained" color="darkGrey">
+								<MainButton variant="contained" color="darkGrey" size="large">
 									Add Liquidity
 								</MainButton>
 							</Link>

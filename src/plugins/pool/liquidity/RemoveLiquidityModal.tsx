@@ -30,7 +30,7 @@ export const RemoveLiquidityModal = ({
 
 	return (
 		<MainDialog open={open} handleClose={onClose} hiddenHeader>
-			<ChildHeader onBackLink="/pool" title="Remove liquidity" />
+			<ChildHeader onBackLink={onClose} title="Remove liquidity" />
 			<Stack spacing={2}>
 				<MainCard variant="outlined">
 					<Typography>

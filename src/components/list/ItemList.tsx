@@ -15,6 +15,7 @@ interface IProps extends ListItemButtonProps {
 	onClick?: () => void;
 	isSelected?: boolean;
 	children?: ReactNode;
+	backgroundColor?: string;
 }
 
 export const ItemList = ({
@@ -28,6 +29,7 @@ export const ItemList = ({
 	onClick,
 	isSelected,
 	children,
+	backgroundColor,
 	...props
 }: IProps) => {
 	return (
@@ -37,6 +39,7 @@ export const ItemList = ({
 			disabledBg={disabledBg}
 			onClick={onClick}
 			isSelected={isSelected}
+			backgroundColor={backgroundColor}
 			{...props}
 		>
 			<Stack direction={'row'} alignItems={'center'} width={'100%'} spacing={1}>
@@ -61,40 +64,47 @@ interface IItemProps {
 	disabledBg?: boolean;
 	size?: 'small' | 'medium' | 'large';
 	isSelected?: boolean;
+	backgroundColor?: string;
 }
 
 const CustomListItem = styled(ListItemButton, {
 	shouldForwardProp: (prop) =>
-		prop !== 'borderRadius' && prop !== 'disabledBg' && prop !== 'size' && prop !== 'isSelected',
-})<IItemProps>(({ theme, borderRadius, disabledBg, size, isSelected }) => ({
-	borderRadius: borderRadius,
+		prop !== 'borderRadius' &&
+		prop !== 'disabledBg' &&
+		prop !== 'size' &&
+		prop !== 'isSelected' &&
+		prop !== 'backgroundColor',
+})<IItemProps>(
+	({ theme, borderRadius, disabledBg, size, isSelected, backgroundColor = 'rgba(255, 255, 255, 0.02)' }) => ({
+		borderRadius: borderRadius,
 
-	...(size == 'small' && {
-		padding: '6px 6px',
+		...(size == 'small' && {
+			padding: '6px 6px',
 
-		'& .MuiTypography-root': {
-			fontSize: '13px',
+			'& .MuiTypography-root': {
+				fontSize: '13px',
+			},
+		}),
+
+		...(size == 'medium' && {
+			padding: '12px 12px',
+			'& .MuiTypography-root': {
+				fontSize: '16px',
+			},
+		}),
+
+		...(isSelected
+			? {
+					backgroundColor: theme.palette.primary.light,
+			  }
+			: {
+					backgroundColor: disabledBg ? 'transparent' : backgroundColor,
+			  }),
+		display: 'flex',
+		alignItems: 'center',
+
+		'&:hover': {
+			backgroundColor: theme.palette.primary.light,
 		},
 	}),
-
-	...(size == 'medium' && {
-		padding: '12px 12px',
-		'& .MuiTypography-root': {
-			fontSize: '16px',
-		},
-	}),
-
-	...(isSelected
-		? {
-				backgroundColor: theme.palette.primary.light,
-		  }
-		: {
-				backgroundColor: disabledBg ? 'transparent' : 'rgba(255, 255, 255, 0.02)',
-		  }),
-	display: 'flex',
-	alignItems: 'center',
-
-	'&:hover': {
-		backgroundColor: theme.palette.primary.light,
-	},
-}));
+);

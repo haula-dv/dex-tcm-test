@@ -4,18 +4,24 @@ import Link from 'next/link';
 import { MainIconButton } from '../button/MainIconButton';
 
 interface IProps {
-	onBackLink: string;
+	onBackLink: () => void | string;
 	title: string;
 }
 
 export const ChildHeader = ({ onBackLink, title }: IProps) => {
 	return (
 		<Stack direction={'row'} alignItems={'center'} justifyContent={'space-between'} pb={2}>
-			<Link href={onBackLink}>
-				<MainIconButton size="small">
+			{typeof onBackLink === 'string' ? (
+				<Link href={onBackLink}>
+					<MainIconButton size="small">
+						<IconArrowLeft />
+					</MainIconButton>
+				</Link>
+			) : (
+				<MainIconButton size="small" onClick={onBackLink}>
 					<IconArrowLeft />
 				</MainIconButton>
-			</Link>
+			)}
 
 			<Typography variant="h4" fontWeight={600}>
 				{title}
