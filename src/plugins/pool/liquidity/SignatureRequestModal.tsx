@@ -75,11 +75,17 @@ export const SignatureRequestModal = ({ onClose, handleToggleSignatureRequestCon
 			</Stack>
 
 			<Stack direction={'row'} spacing={1} pt={2}>
-				<MainButton fullWidth variant="outlined" color="darkGrey" borderWidth="2px" onClick={onClose}>
+				<MainButton fullWidth variant="outlined" color="darkGrey" borderWidth="2px" onClick={onClose} size="large">
 					Cancel
 				</MainButton>
 
-				<MainButton fullWidth variant="contained" color="darkGrey" onClick={handleToggleSignatureRequestConfirm}>
+				<MainButton
+					fullWidth
+					variant="contained"
+					color="darkGrey"
+					onClick={handleToggleSignatureRequestConfirm}
+					size="large"
+				>
 					Sign
 				</MainButton>
 			</Stack>

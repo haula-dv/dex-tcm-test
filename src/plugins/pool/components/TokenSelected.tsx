@@ -57,6 +57,7 @@ export const TokenSelected = () => {
 					<MainButton
 						onClick={handleToggleExplanation}
 						endIcon={<IconChevronDown color={theme.palette.common.white} />}
+						color="whitePrimary"
 					>
 						Manage
 					</MainButton>
@@ -70,7 +71,7 @@ export const TokenSelected = () => {
 						title="Pooled ETH"
 						value={
 							<Stack direction={'row'} spacing={0.5} alignItems={'center'}>
-								<Typography>0.000000230791</Typography>
+								<Typography fontSize={'15px'}>0.000000230791</Typography>
 								<TokenIcon url="/images/token.png" />
 							</Stack>
 						}
@@ -79,7 +80,7 @@ export const TokenSelected = () => {
 						title="Pooled AML"
 						value={
 							<Stack direction={'row'} spacing={0.5} alignItems={'center'}>
-								<Typography>0.000000230791</Typography>
+								<Typography fontSize={'15px'}>0.000000230791</Typography>
 								<TokenIcon url="/images/token.png" />
 							</Stack>
 						}
@@ -98,11 +99,12 @@ export const TokenSelected = () => {
 						fullWidth
 						borderWidth="2px"
 						onClick={handleToogleModalRemoveLiquidity}
+						size="large"
 					>
 						Remove
 					</MainButton>
 
-					<MainButton color="darkGrey" fullWidth variant="contained">
+					<MainButton color="darkGrey" fullWidth variant="contained" size="large">
 						Add
 					</MainButton>
 				</Stack>
@@ -132,16 +134,30 @@ export const TokenSelected = () => {
 };
 
 interface IItemRow {
-	title: string;
+	title: string | ReactNode;
 	value: string | ReactNode;
 }
 
 export const ItemRow = ({ title, value }: IItemRow) => {
 	return (
 		<Stack direction={'row'} justifyContent={'space-between'} alignItems={'center'}>
-			<Typography color={theme.palette.grey[500]}>{title}</Typography>
+			{typeof value === 'string' ? (
+				<Typography fontSize={'15px'} color={theme.palette.grey[500]}>
+					{title}
+				</Typography>
+			) : (
+				<Box color={theme.palette.grey[500]} fontSize={'15px'}>
+					{title}
+				</Box>
+			)}
 
-			{typeof value === 'string' ? <Typography fontWeight={600}>{value}</Typography> : <Box>{value}</Box>}
+			{typeof value === 'string' ? (
+				<Typography fontWeight={600} fontSize={'15px'}>
+					{value}
+				</Typography>
+			) : (
+				<Box fontSize={'15px'}>{value}</Box>
+			)}
 		</Stack>
 	);
 };

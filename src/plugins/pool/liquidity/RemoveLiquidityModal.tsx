@@ -31,79 +31,109 @@ export const RemoveLiquidityModal = ({
 	return (
 		<MainDialog open={open} handleClose={onClose} hiddenHeader>
 			<ChildHeader onBackLink="/pool" title="Remove liquidity" />
+			<Stack spacing={2}>
+				<MainCard variant="outlined">
+					<Typography>
+						<strong>Tips:</strong> You are the first liquidity provider You are the first liquidity provider You are the
+						first liquidity provider You are the first liquidity provider You are the first liquidity provider You are
+						the first liquidity provider
+					</Typography>
+				</MainCard>
 
-			<MainCard variant="outlined">
-				<Typography>
-					<strong>Tips:</strong> You are the first liquidity provider You are the first liquidity provider You are the
-					first liquidity provider You are the first liquidity provider You are the first liquidity provider You are the
-					first liquidity provider
-				</Typography>
-			</MainCard>
+				<MainCard width="100%">
+					<Stack direction={'row'} justifyContent={'space-between'} alignItems={'center'}>
+						<Typography fontSize={'16px'} fontWeight={600}>
+							Amount
+						</Typography>
 
-			<Stack pt={2} direction={'row'} justifyContent={'space-between'} alignItems={'center'}>
-				<Typography fontSize={'16px'} fontWeight={600}>
-					Amount
-				</Typography>
-
-				<MainButton size="small" variant="contained" color="darkGrey">
-					Detailed
-				</MainButton>
-			</Stack>
-
-			<Stack pt={2} spacing={1.5}>
-				<Typography fontSize={'28px'}>62%</Typography>
-
-				<Stack direction={'row'} spacing={2}>
-					{['25%', '50%', '75%', 'Max'].map((value, index) => (
-						<MainButton
-							size="small"
-							variant={currentSelectedPercentage === index ? 'contained' : 'filledTonal'}
-							onClick={() => handleSelectPercentage(index)}
-							color={'darkGrey'}
-							key={index}
-						>
-							{value}
+						<MainButton size="small" variant="contained" color="darkGrey">
+							Detailed
 						</MainButton>
-					))}
-				</Stack>
+					</Stack>
 
-				<Stack spacing={2} pt={2}>
-					<ItemRow
-						title="09.00009998888"
-						value={
-							<Stack direction={'row'} alignItems={'center'} spacing={0.5}>
-								<Typography fontWeight={700}>ETH</Typography>
-								<TokenIcon url="/images/token.png" />
-							</Stack>
-						}
-					/>
-					<ItemRow
-						title="99900009887"
-						value={
-							<Stack direction={'row'} alignItems={'center'} spacing={0.5}>
-								<Typography fontWeight={700}>AMPL</Typography>
-								<TokenIcon url="/images/token.png" />
-							</Stack>
-						}
-					/>
-					<ItemRow title="" value="Recive WETH" />
-					<Divider />
-					<ItemRow
-						title="Price"
-						value={<Typography fontSize={theme.palette.grey[300]}>1 ETH = 981.33 BNB</Typography>}
-					/>
-					<ItemRow
-						title=""
-						value={<Typography fontSize={theme.palette.grey[300]}>1 BNB = 0.00101903 ETH</Typography>}
-					/>
-				</Stack>
+					<Typography fontSize={'28px'} py={1.5}>
+						62%
+					</Typography>
 
-				<Stack spacing={2} direction={'row'} pt={1}>
-					<MainButton variant="outlined" color="darkGrey" borderWidth="2px" fullWidth onClick={handleToggleOpenConfirm}>
+					<Stack direction={'row'} spacing={1.5}>
+						{['25%', '50%', '75%', 'Max'].map((value, index) => (
+							<MainButton
+								size="small"
+								variant={currentSelectedPercentage === index ? 'contained' : 'filledTonal'}
+								onClick={() => handleSelectPercentage(index)}
+								color={'darkGrey'}
+								key={index}
+							>
+								{value}
+							</MainButton>
+						))}
+					</Stack>
+				</MainCard>
+
+				<MainCard width="100%">
+					<Stack spacing={2}>
+						<ItemRow
+							title="09.00009998888"
+							value={
+								<Stack direction={'row'} alignItems={'center'} spacing={0.5}>
+									<Typography fontSize={'15px'} fontWeight={700}>
+										ETH
+									</Typography>
+									<TokenIcon url="/images/token.png" />
+								</Stack>
+							}
+						/>
+						<ItemRow
+							title="99900009887"
+							value={
+								<Stack direction={'row'} alignItems={'center'} spacing={0.5}>
+									<Typography fontSize={'15px'} fontWeight={700}>
+										AMPL
+									</Typography>
+									<TokenIcon url="/images/token.png" />
+								</Stack>
+							}
+						/>
+						<ItemRow title="" value="Recive WETH" />
+						<Divider />
+						<ItemRow
+							title="Price"
+							value={
+								<Typography fontSize={'15px'} color={theme.palette.grey[300]}>
+									1 ETH = 981.33 BNB
+								</Typography>
+							}
+						/>
+						<ItemRow
+							title=""
+							value={
+								<Typography fontSize={'15px'} color={theme.palette.grey[300]}>
+									1 BNB = 0.00101903 ETH
+								</Typography>
+							}
+						/>
+					</Stack>
+				</MainCard>
+
+				<Stack spacing={2} direction={'row'}>
+					<MainButton
+						variant="outlined"
+						color="darkGrey"
+						borderWidth="2px"
+						fullWidth
+						onClick={handleToggleOpenConfirm}
+						size="large"
+					>
 						Remove
 					</MainButton>
 
-					<MainButton variant="contained" color="darkGrey" fullWidth onClick={handleToggleSignatureRequest}>
+					<MainButton
+						variant="contained"
+						color="darkGrey"
+						fullWidth
+						onClick={handleToggleSignatureRequest}
+						size="large"
+					>
 						Approve
 					</MainButton>
 				</Stack>

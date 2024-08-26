@@ -67,7 +67,14 @@ export const SignatureRequestConfirmModal = ({ onClose, open }: IProps) => {
 
 						<Divider />
 						<ItemRow title="A fee is associated" value="$6.72" />
-						<ItemRow title="" value={<Typography color={theme.palette.grey[400]}>0.004871ETH </Typography>} />
+						<ItemRow
+							title=""
+							value={
+								<Typography fontSize={'15px'} color={theme.palette.grey[400]}>
+									0.004871ETH{' '}
+								</Typography>
+							}
+						/>
 					</Stack>
 				</MainCard>
 
@@ -77,11 +84,11 @@ export const SignatureRequestConfirmModal = ({ onClose, open }: IProps) => {
 					</MainButton>
 
 					<Stack direction={'row'} spacing={1} pt={2}>
-						<MainButton fullWidth variant="outlined" color="darkGrey" borderWidth="2px">
+						<MainButton fullWidth variant="outlined" color="darkGrey" borderWidth="2px" size="large">
 							Reject
 						</MainButton>
 
-						<MainButton fullWidth variant="contained" color="darkGrey">
+						<MainButton fullWidth variant="contained" color="darkGrey" size="large">
 							Confirm
 						</MainButton>
 					</Stack>

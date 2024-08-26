@@ -1,4 +1,5 @@
 'use client';
+import { theme } from '@/utils';
 import { TSizes } from '@/utils/themes/custom-theme/sizes';
 import { Box, Card, CardProps, Stack } from '@mui/material';
 import { styled } from '@mui/material/styles';
@@ -13,6 +14,7 @@ interface IProps extends CardProps {
 	padding?: string;
 	borderRadius?: string;
 	isNotch?: boolean;
+	isSelected?: boolean;
 	width?: string;
 }
 
@@ -26,6 +28,7 @@ export const MainCard = ({
 	borderRadius,
 	isNotch,
 	width,
+	isSelected,
 	...props
 }: IProps) => {
 	return (
@@ -41,6 +44,8 @@ export const MainCard = ({
 						cursor: isHover ? 'pointer' : '',
 						padding: padding,
 						borderRadius: borderRadius,
+						border: isSelected ? `1px solid ${theme.palette.primary.dark}` : '',
+						transition: '0.6s',
 					}}
 					backgroudColor={backgroudColor}
 					{...props}

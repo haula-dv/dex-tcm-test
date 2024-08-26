@@ -19,7 +19,9 @@ export const ModalConfirmLiquidity = ({ onClose, open }: IProps) => {
 					title="0.00000014309"
 					value={
 						<Stack direction={'row'} spacing={1} alignItems={'center'}>
-							<Typography fontWeight={600}>ETH</Typography>
+							<Typography fontWeight={600} fontSize={'15px'}>
+								ETH
+							</Typography>
 							<TokenIcon url="/images/token.png" size={20} />
 						</Stack>
 					}
@@ -29,7 +31,9 @@ export const ModalConfirmLiquidity = ({ onClose, open }: IProps) => {
 					title="0.000140418"
 					value={
 						<Stack direction={'row'} spacing={1} alignItems={'center'}>
-							<Typography fontWeight={600}>BNB</Typography>
+							<Typography fontWeight={600} fontSize={'15px'}>
+								BNB
+							</Typography>
 							<TokenIcon url="/images/token.png" size={20} />
 						</Stack>
 					}
@@ -51,7 +55,7 @@ export const ModalConfirmLiquidity = ({ onClose, open }: IProps) => {
 								title="UNI ETH/BNB"
 								value={
 									<Stack direction={'row'} alignItems={'center'} spacing={0.5}>
-										<Typography>0.0000000000430254</Typography>
+										<Typography fontSize={'15px'}>0.0000000000430254</Typography>
 										<TokenIcon url="/images/token.png" size={20} />
 										<TokenIcon url="/images/token.png" size={20} />
 									</Stack>
@@ -66,15 +70,26 @@ export const ModalConfirmLiquidity = ({ onClose, open }: IProps) => {
 						<Stack spacing={1} p={2}>
 							<ItemRow
 								title="Price"
-								value={<Typography color={theme.palette.grey[500]}>1 ETH = 981.33 BNB</Typography>}
+								value={
+									<Typography color={theme.palette.grey[500]} fontSize={'15px'}>
+										1 ETH = 981.33 BNB
+									</Typography>
+								}
 							/>
 
-							<ItemRow title="" value={<Typography color={theme.palette.grey[500]}>1 ETH = 981.33 BNB</Typography>} />
+							<ItemRow
+								title=""
+								value={
+									<Typography color={theme.palette.grey[500]} fontSize={'15px'}>
+										1 ETH = 981.33 BNB
+									</Typography>
+								}
+							/>
 						</Stack>
 					</MainCard>
 				</Stack>
 
-				<MainButton variant="contained" color="darkGrey" onClick={onClose}>
+				<MainButton variant="contained" color="darkGrey" onClick={onClose} size="large">
 					Confirm
 				</MainButton>
 			</Stack>
