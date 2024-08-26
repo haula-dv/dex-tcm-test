@@ -47,5 +47,12 @@ interface IProps {
 }
 
 export default function SwitchBase({ label }: IProps) {
-	return <FormControlLabel control={<Android12Switch defaultChecked />} label={label} sx={{ pr: 0, mr: 0 }} />;
+	return (
+		<FormControlLabel
+			labelPlacement="start"
+			control={<Android12Switch defaultChecked />}
+			label={label}
+			sx={{ pr: 0, mr: 0 }}
+		/>
+	);
 }

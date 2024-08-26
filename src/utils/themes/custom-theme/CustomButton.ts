@@ -111,10 +111,11 @@ export const CustomMuiButton = (theme: Theme) => {
 				},
 
 				sizeSmall: {
-					padding: '2px 8px',
+					padding: '2px 4px',
 					fontSize: '12px',
-					height: '30px',
+					height: TSizes.buttonHeightSmall,
 					borderRadius: '6px !important',
+					minWidth: 'auto',
 				},
 
 				sizeXsmall: {

@@ -1,5 +1,5 @@
 import { MainCard } from '@/components/card/MainCard';
-import InputField from '@/components/form-control/InputField';
+import CurrencyInputField from '@/components/form-control/CurrencyInputField';
 import IconLoading from '@/components/icons/loading';
 import { theme } from '@/utils';
 import { getDecimalsFromTick } from '@/utils/formatters/api';
@@ -145,7 +145,7 @@ const CreateOrderForm = ({ symbol }: IProps) => {
 					</Stack>
 
 					<Stack direction={'row'} alignItems={'center'} spacing={'10px'}>
-						<InputField
+						<CurrencyInputField
 							name="price"
 							formContext={formContext}
 							inputMode="decimal"
@@ -162,7 +162,7 @@ const CreateOrderForm = ({ symbol }: IProps) => {
 							}}
 						/>
 
-						<InputField
+						<CurrencyInputField
 							name="price"
 							formContext={formContext}
 							inputMode="decimal"
@@ -182,7 +182,7 @@ const CreateOrderForm = ({ symbol }: IProps) => {
 
 					<Divider>or</Divider>
 
-					<AmountSetOrderSide />
+					<AmountSetOrderSide formContext={formContext} />
 				</Stack>
 			</form>
 			{/* <form onSubmit={formContext.handleSubmit(submitForm)}>
