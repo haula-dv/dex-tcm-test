@@ -39,6 +39,10 @@ const CurrencyInputField = <V extends FieldValues>({
 						<CustomTextField
 							id={`outlined-adornment-${suffix}`}
 							placeholder={placeholder}
+							value={value}
+							onChange={onChange}
+							onBlur={onBlur}
+							name={name}
 							endAdornment={
 								<InputAdornment position="end">
 									<Typography

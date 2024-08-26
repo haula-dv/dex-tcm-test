@@ -9,7 +9,7 @@ interface IProps extends CardProps {
 	children?: React.ReactNode;
 	maxWidth?: string;
 	isHover?: boolean;
-	backgroudColor?: 'primary' | 'white' | 'grey' | 'darkgrey';
+	backgroudColor?: 'primary' | 'primaryLight' | 'white' | 'grey' | 'darkgrey';
 	disablePadding?: boolean;
 	padding?: string;
 	borderRadius?: string;
@@ -58,7 +58,7 @@ export const MainCard = ({
 };
 
 interface ICard {
-	backgroudColor?: 'primary' | 'white' | 'grey' | 'darkgrey';
+	backgroudColor?: 'primary' | 'primaryLight' | 'white' | 'grey' | 'darkgrey';
 	disablePadding?: boolean;
 }
 
@@ -71,6 +71,10 @@ const CustomCard = styled(Card, {
 	},
 	...(backgroudColor === 'primary' && {
 		backgroundColor: theme.palette.primary.main,
+	}),
+
+	...(backgroudColor === 'primaryLight' && {
+		backgroundColor: theme.palette.primary.light,
 	}),
 
 	...(backgroudColor === 'white' && {

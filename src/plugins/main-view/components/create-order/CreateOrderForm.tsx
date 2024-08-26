@@ -11,6 +11,7 @@ import { memo, ReactNode, useEffect, useState } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { match } from 'ts-pattern';
 import AmountSetOrderSide from './AmountSetOrderSide';
+import Details from './Details';
 import OrderDirection from './OrderDirection';
 import OrderTypeTab from './OrderTypeTab';
 
@@ -183,6 +184,7 @@ const CreateOrderForm = ({ symbol }: IProps) => {
 					<Divider>or</Divider>
 
 					<AmountSetOrderSide formContext={formContext} />
+					<Details />
 				</Stack>
 			</form>
 			{/* <form onSubmit={formContext.handleSubmit(submitForm)}>

@@ -32,6 +32,10 @@ interface IProps {
 }
 
 const AmountSetOrderSide = ({ formContext }: IProps) => {
+	const handleChangeSlippage = (val: string) => {
+		formContext.setValue('price', val);
+	};
+
 	return (
 		<>
 			<Stack direction={'row'} alignItems={'center'} justifyContent={'space-between'}>
@@ -49,7 +53,7 @@ const AmountSetOrderSide = ({ formContext }: IProps) => {
 
 			<Stack direction={'row'} spacing={TSizes.margin_xs} alignItems={'center'}>
 				<Box width={'100%'}>
-					<CurrencyInputField placeholder="0.000" name="price" formContext={formContext} suffix="NONE" />
+					<CurrencyInputField placeholder="0.00 x" name="price" formContext={formContext} suffix="NONE" />
 				</Box>
 
 				<Stack direction={'row'} spacing={'5px'} alignItems={'center'} width={'100%'}>
@@ -57,8 +61,7 @@ const AmountSetOrderSide = ({ formContext }: IProps) => {
 						<ButtonPercent
 							key={item.value}
 							variant="filledTonal"
-							// color={currentSlippageAmount === item.percentValue ? 'darkGrey' : 'inherit'}
-							// onClick={() => handleChangeSlippage(item.percentValue)}
+							onClick={() => handleChangeSlippage(item.percentValue)}
 							size="small"
 							color="inherit"
 							fullWidth
@@ -76,6 +79,6 @@ export default memo(AmountSetOrderSide);
 
 const ButtonPercent = styled(MainButton)(({ theme }) => ({
 	backgroundColor: theme.palette.primary.light,
-	borderRadius: '8px',
+	borderRadius: '10px !important',
 	fontSize: '13px',
 }));
