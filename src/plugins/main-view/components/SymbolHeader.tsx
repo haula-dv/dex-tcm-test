@@ -10,7 +10,7 @@ import { Divider, Tooltip } from '@orderly.network/react';
 import { Decimal } from '@orderly.network/utils';
 import { IconChevronDown } from '@tabler/icons-react';
 import { useState } from 'react';
-import { MarketsContent } from '../Markets/components/MarketContent';
+import { MarketsContent } from '../markets/components/MarketContent';
 
 interface IProps {
 	symbol: string;

@@ -41,7 +41,18 @@ export default withPWA({
 			{
 				source: '/',
 				destination: '/swap',
-				// destination: "/perp/PERP_ETH_USDC",
+				permanent: false,
+			},
+
+			{
+				source: '/trade/perp',
+				destination: '/trade/perp/PERP_ETH_USDC',
+				permanent: false,
+			},
+
+			{
+				source: '/trade',
+				destination: '/trade/perp/PERP_ETH_USDC',
 				permanent: false,
 			},
 		];

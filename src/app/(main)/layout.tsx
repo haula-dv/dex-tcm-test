@@ -1,4 +1,5 @@
 'use client';
+import { MainContainer } from '@/components/container/MainContainer';
 import { Header } from '@/components/layouts/Header';
 import React from 'react';
 
@@ -11,7 +12,7 @@ export default function RootLayout({
 		<>
 			<Header />
 
-			{children}
+			<MainContainer maxWidth="xl">{children}</MainContainer>
 		</>
 	);
 }

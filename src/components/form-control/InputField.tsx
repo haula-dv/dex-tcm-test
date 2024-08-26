@@ -1,9 +1,9 @@
 'use client';
+import { theme } from '@/utils';
+import { TSizes } from '@/utils/themes/custom-theme/sizes';
+import { FormControl, InputAdornment, OutlinedInput, Typography } from '@mui/material';
 import { styled } from '@mui/material/styles';
-import { Input } from '@orderly.network/react';
 import { Controller, FieldValues, Path, RegisterOptions, UseFormReturn } from 'react-hook-form';
-import { TextFieldElement, TextFieldElementProps } from 'react-hook-form-mui';
-import { RenderFormError } from './RenderErrors';
 
 interface InputFieldProps<V extends FieldValues> {
 	formContext: UseFormReturn<V>;
@@ -29,47 +29,72 @@ const InputField = <V extends FieldValues>({
 	rules,
 }: InputFieldProps<V>) => {
 	return (
-		<Controller
-			name={name}
-			control={formContext.control}
-			rules={rules}
-			render={({ field: { name, value, onBlur, onChange }, fieldState: { error } }) => (
-				<>
-					<Input
-						value={value}
-						className="orderly-text-right"
-						placeholder={placeholder}
-						inputMode={inputMode}
-						prefix={prefix}
-						suffix={suffix}
-						decimals={decimals}
-						name={name}
-						onBlur={onBlur}
-						onChange={onChange}
-						readOnly={readOnly as any}
-						autoComplete={'off'}
-					/>
+		<FormControl fullWidth>
+			<Controller
+				name={name}
+				control={formContext.control}
+				rules={rules}
+				render={({ field: { name, value, onBlur, onChange }, fieldState: { error } }) => (
+					<>
+						<CustomTextField
+							id={`outlined-adornment-${suffix}`}
+							placeholder={placeholder}
+							endAdornment={
+								<InputAdornment position="end">
+									<Typography
+										px={'4px'}
+										bgcolor={theme.palette.primary.main}
+										fontWeight={600}
+										borderRadius={'40px'}
+										fontSize={'12px'}
+									>
+										{suffix}
+									</Typography>
+								</InputAdornment>
+							}
+							aria-describedby="outlined-weight-helper-text"
+							inputProps={{
+								'aria-label': 'weight',
+							}}
+						/>
+						{/* <FormHelperText id="outlined-weight-helper-text">Weight</FormHelperText> */}
 
-					<RenderFormError error={error?.message ?? ''} />
-				</>
-			)}
-		/>
+						{/* <RenderFormError error={error?.message ?? ''} /> */}
+					</>
+				)}
+			/>
+		</FormControl>
 	);
 };
 
 export default InputField;
 
-const CustomTextField = styled((props: TextFieldElementProps) => <TextFieldElement {...props} />)(({ theme }) => ({
+const CustomTextField = styled(OutlinedInput)(({ theme }) => ({
+	fontWeight: 600,
+	borderRadius: TSizes.borderRadius,
+	fontSize: '13px',
+	backgroundColor: theme.palette.primary.light,
+	height: TSizes.buttonHeightSmall,
+
+	'& input': {
+		padding: '12px 0px 12px 14px',
+	},
+
+	'& .MuiInputAdornment-root': {
+		marginLeft: '0px',
+		marginRight: '-8px',
+	},
+
 	'& .MuiOutlinedInput-input::-webkit-input-placeholder': {
-		color: theme.palette.text.secondary,
-		opacity: '0.4',
+		color: theme.palette.grey[900],
+		opacity: '1',
 	},
 	'& .MuiOutlinedInput-input.Mui-disabled::-webkit-input-placeholder': {
 		color: theme.palette.text.secondary,
 		opacity: '1',
 	},
 	'& .MuiOutlinedInput-notchedOutline': {
-		borderColor: theme.palette.grey[100],
+		border: 0,
 	},
 
 	'& .Mui-disabled .MuiOutlinedInput-notchedOutline': {

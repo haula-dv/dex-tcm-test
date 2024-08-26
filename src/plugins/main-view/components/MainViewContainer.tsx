@@ -1,12 +1,7 @@
-import { OrderViewContainer } from '@/plugins/main-view/components/order-view/OrderViewContainer';
-import { OrderBookContainer } from '@/plugins/main-view/order-book/OrderBookContainer';
-import { TradingMainView } from '@/plugins/trading-view/components/TradingView';
-import { theme } from '@/utils';
-import { Box, Stack } from '@mui/material';
-import { AssetAndMarginSheet, Deposit, Divider, SystemStatusBar, Withdraw } from '@orderly.network/react';
-import { DepositAndWithdraw } from '@orderly.network/react/esm/block/depositAndwithdraw';
-import { CreateOrderContainer } from './create-order/CreateOrderContainer';
-import { SymbolHeader } from './SymbolHeader';
+import BoxConnectWallet from '@/plugins/wallet/components/BoxConnectWallet';
+import { Stack } from '@mui/material';
+import MarketsContainer from '../markets/components/MarketsContainer';
+import CreateOrderForm from './create-order/CreateOrderForm';
 
 interface IProps {
 	symbol: string;
@@ -15,8 +10,14 @@ interface IProps {
 
 export const MainViewContainer = ({ onSymbolChange, symbol }: IProps) => {
 	return (
-		<Stack bgcolor={theme.palette.background.paper}>
-			<Stack direction={'row'} width={'100%'}>
+		<Stack pt="42px">
+			<Stack spacing={'10px'} width={'295px'}>
+				<MarketsContainer onSymbolChange={onSymbolChange} symbol={symbol} />
+				<BoxConnectWallet />
+				<CreateOrderForm symbol={symbol} />
+			</Stack>
+
+			{/* <Stack direction={'row'} width={'100%'}>
 				<Stack width={'100%'}>
 					<Stack direction={'row'} width={'100%'}>
 						<Box width={'100%'}>
@@ -48,7 +49,7 @@ export const MainViewContainer = ({ onSymbolChange, symbol }: IProps) => {
 					<AssetAndMarginSheet />
 					<DepositAndWithdraw activeTab="deposit" />
 				</Stack>
-			</Box>
+			</Box> */}
 		</Stack>
 	);
 };

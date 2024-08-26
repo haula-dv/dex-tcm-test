@@ -14,7 +14,7 @@ export const Header = () => {
 
 	const navItems = [
 		{ label: 'Swap', to: '/swap' },
-		{ label: 'Trade', to: '/trade' },
+		{ label: 'Trade', to: '/trade/perp' },
 		{ label: 'Pool', to: '/pool' },
 		{ label: 'Vote', to: '/vote' },
 	];
