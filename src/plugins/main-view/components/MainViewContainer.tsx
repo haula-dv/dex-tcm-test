@@ -1,8 +1,10 @@
+import { TradingMainView } from '@/plugins/trading-view/components/TradingView';
 import BoxConnectWallet from '@/plugins/wallet/components/BoxConnectWallet';
 import { Grid, Stack } from '@mui/material';
 import MarketsContainer from '../markets/components/MarketsContainer';
 import { OrderBookContainer } from '../order-book/OrderBookContainer';
 import CreateOrderForm from './create-order/CreateOrderForm';
+import SymbolHeader from './SymbolHeader';
 
 interface IProps {
 	symbol: string;
@@ -12,7 +14,7 @@ interface IProps {
 export const MainViewContainer = ({ onSymbolChange, symbol }: IProps) => {
 	return (
 		<Grid container pt={'48px'} spacing={'16px'} height={'calc(100vh - 68px)'}>
-			<Grid item md={3.5}>
+			<Grid item md={2.5}>
 				<Stack spacing={'10px'} height={'100%'}>
 					<MarketsContainer onSymbolChange={onSymbolChange} symbol={symbol} />
 					<BoxConnectWallet />
@@ -20,8 +22,15 @@ export const MainViewContainer = ({ onSymbolChange, symbol }: IProps) => {
 				</Stack>
 			</Grid>
 
-			<Grid item md={3.5}>
+			<Grid item md={2.5}>
 				<OrderBookContainer symbol={symbol} />
+			</Grid>
+
+			<Grid item md={7}>
+				<Stack spacing={'16px'}>
+					<SymbolHeader onSymbolChange={onSymbolChange} symbol={symbol} />
+					<TradingMainView symbol={symbol} />
+				</Stack>
 			</Grid>
 
 			{/* <Stack direction={'row'} width={'100%'}>

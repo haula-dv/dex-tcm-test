@@ -1,7 +1,7 @@
-import IconLoading from '@/components/icons/loading';
-import { Box } from '@mui/material';
+import { ITab } from '@/common/types/components/tab';
+import { MainCard } from '@/components/card/MainCard';
+import MainTab from '@/components/tab/MainTab';
 import { memo, useEffect, useState } from 'react';
-import { AdvancedRealTimeChart } from 'react-ts-tradingview-widgets';
 
 interface IProps {
 	symbol: string;
@@ -18,10 +18,18 @@ export const TradingMainView = ({ symbol }: IProps) => {
 
 	const [_, base] = symbol.split('_');
 
+	const tabs: ITab[] = [
+		{ label: 'Price', value: 'price' },
+		{ label: 'Depth', value: 'depth' },
+		{ label: 'Details', value: 'details' },
+	];
+
 	return (
 		<>
-			<Box height={'600px'}>
-				{isReady ? (
+			<MainCard height={'100%'} backgroudColor="primary" width="100%">
+				<MainTab tabs={tabs} />
+
+				{/* {isReady ? (
 					<AdvancedRealTimeChart
 						disabled_features={['header_symbol_search', 'header_compare']}
 						enabled_features={[
@@ -44,8 +52,8 @@ export const TradingMainView = ({ symbol }: IProps) => {
 					<Box display={'flex'} justifyContent={'center'} alignItems={'center'} height={'600px'}>
 						<IconLoading height="20px" width="20px" />
 					</Box>
-				)}
-			</Box>
+				)} */}
+			</MainCard>
 		</>
 	);
 };

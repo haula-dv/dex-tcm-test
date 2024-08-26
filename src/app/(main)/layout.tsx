@@ -1,6 +1,6 @@
 'use client';
-import { MainContainer } from '@/components/container/MainContainer';
 import { Header } from '@/components/layouts/Header';
+import { Box } from '@mui/material';
 import React from 'react';
 
 export default function RootLayout({
@@ -12,7 +12,7 @@ export default function RootLayout({
 		<>
 			<Header />
 
-			<MainContainer maxWidth="xl">{children}</MainContainer>
+			<Box px={{ md: '60px' }}>{children}</Box>
 		</>
 	);
 }
