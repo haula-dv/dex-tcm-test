@@ -1,8 +1,9 @@
-import { Box } from '@mui/material';
-import { Divider, TabPane, Tabs } from '@orderly.network/react';
+import { MainButton } from '@/components/button/MainButton';
+import { MainCard } from '@/components/card/MainCard';
+import { Stack } from '@mui/material';
 import { useState } from 'react';
-import { OrderBookContent } from './OrderBookContent';
-import { OrderLastTradeContent } from './OrderLastTradeContent';
+import OrderBookContentCustom from './OrderBookContentCustom';
+import OrderLastTradeContent from './OrderLastTradeContent';
 
 interface IProps {
 	symbol: string;
@@ -10,25 +11,35 @@ interface IProps {
 }
 
 export const OrderBookContainer = ({ symbol }: IProps) => {
-	const [value, setValue] = useState('1');
+	const [value, setValue] = useState('orderbook');
 
 	const handleChange = (newValue: string) => {
 		setValue(newValue);
 	};
 
+	const tabs = [
+		{ label: 'Orderbook', value: 'orderbook' },
+		{ label: 'Trades', value: 'trades' },
+	];
+
 	return (
-		<Box width={'400px'} flexShrink={0} borderRadius={0} height={'660px'}>
-			<Divider />
+		<MainCard backgroudColor="primary" width="100%" height="100%">
+			<Stack direction={'row'} pb={'16px'} spacing={'6px'}>
+				{tabs.map((item) => (
+					<MainButton
+						key={item.value}
+						fullWidth
+						variant={value == item.value ? 'contained' : 'text'}
+						color={value == item.value ? 'white' : 'inherit'}
+						onClick={() => handleChange(item.value)}
+					>
+						{item.label}
+					</MainButton>
+				))}
+			</Stack>
 
-			<Tabs value={value} onTabChange={handleChange} fullWidth tabBarClassName="orderly-tab-header-orderbook">
-				<TabPane title="Orderbook" value="1">
-					<OrderBookContent symbol={symbol} />
-				</TabPane>
-
-				<TabPane title="Last trades" value="2">
-					<OrderLastTradeContent symbol={symbol} />
-				</TabPane>
-			</Tabs>
-		</Box>
+			{value == 'orderbook' && <OrderBookContentCustom symbol={symbol} />}
+			{value == 'trades' && <OrderLastTradeContent symbol={symbol} />}
+		</MainCard>
 	);
 };

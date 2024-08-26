@@ -1,6 +1,7 @@
 import BoxConnectWallet from '@/plugins/wallet/components/BoxConnectWallet';
-import { Stack } from '@mui/material';
+import { Grid, Stack } from '@mui/material';
 import MarketsContainer from '../markets/components/MarketsContainer';
+import { OrderBookContainer } from '../order-book/OrderBookContainer';
 import CreateOrderForm from './create-order/CreateOrderForm';
 
 interface IProps {
@@ -10,12 +11,18 @@ interface IProps {
 
 export const MainViewContainer = ({ onSymbolChange, symbol }: IProps) => {
 	return (
-		<Stack pt="42px">
-			<Stack spacing={'10px'} width={'295px'}>
-				<MarketsContainer onSymbolChange={onSymbolChange} symbol={symbol} />
-				<BoxConnectWallet />
-				<CreateOrderForm symbol={symbol} />
-			</Stack>
+		<Grid container pt={'48px'} spacing={'16px'} height={'calc(100vh - 68px)'}>
+			<Grid item md={3.5}>
+				<Stack spacing={'10px'} height={'100%'}>
+					<MarketsContainer onSymbolChange={onSymbolChange} symbol={symbol} />
+					<BoxConnectWallet />
+					<CreateOrderForm symbol={symbol} />
+				</Stack>
+			</Grid>
+
+			<Grid item md={3.5}>
+				<OrderBookContainer symbol={symbol} />
+			</Grid>
 
 			{/* <Stack direction={'row'} width={'100%'}>
 				<Stack width={'100%'}>
@@ -50,6 +57,6 @@ export const MainViewContainer = ({ onSymbolChange, symbol }: IProps) => {
 					<DepositAndWithdraw activeTab="deposit" />
 				</Stack>
 			</Box> */}
-		</Stack>
+		</Grid>
 	);
 };

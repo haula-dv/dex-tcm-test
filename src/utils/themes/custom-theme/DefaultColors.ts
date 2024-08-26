@@ -35,6 +35,7 @@ const baselightTheme = {
 		},
 		error: {
 			main: '#DE4242',
+			light: '#F5C6C6',
 			contrastText: '#fff',
 		},
 		darkPrimary: {
@@ -47,7 +48,7 @@ const baselightTheme = {
 		},
 		white: {
 			main: '#fff',
-			contrastText: '#F7F4F0',
+			contrastText: '#413A36',
 		},
 		whitePrimary: {
 			main: '#F2F2F2',

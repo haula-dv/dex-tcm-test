@@ -130,7 +130,7 @@ const CreateOrderForm = ({ symbol }: IProps) => {
 	}
 
 	return (
-		<MainCard backgroudColor="primary" width="100%">
+		<MainCard backgroudColor="primary" width="100%" height="100%">
 			<form onSubmit={formContext.handleSubmit(submitForm)}>
 				<Stack spacing={'10px'}>
 					<OrderTypeTab formContext={formContext} />

@@ -1,17 +1,77 @@
-import { Box } from '@mui/material';
-import { useMarketTradeStream } from '@orderly.network/hooks';
-import { TradeHistory } from '@orderly.network/react';
+import { MainCard } from '@/components/card/MainCard';
+import IconLoading from '@/components/icons/loading';
+import { theme } from '@/utils';
+import { Box, Grid, Stack, Typography } from '@mui/material';
+import { useMarketTradeStream, useSymbolsInfo } from '@orderly.network/hooks';
+import dayjs from 'dayjs';
+import { memo } from 'react';
 
 interface IProps {
 	symbol: string;
 }
 
-export const OrderLastTradeContent = ({ symbol }: IProps) => {
+const OrderLastTradeContent = ({ symbol }: IProps) => {
+	const config = useSymbolsInfo();
+	const symbolInfo = config ? config[symbol] : ({} as any);
 	const { data: tradeHistory, isLoading: tradeHistoryLoading } = useMarketTradeStream(symbol);
 
+	if (tradeHistoryLoading) {
+		return <IconLoading />;
+	}
+
 	return (
-		<Box height={'600px'}>
-			<TradeHistory dataSource={tradeHistory} loading={tradeHistoryLoading} />;
-		</Box>
+		<MainCard backgroudColor="primaryLight" width="100%" height="98%">
+			<Box maxHeight={'calc(100vh - 240px)'} overflow={'auto'}>
+				<Stack direction={'row'} pb={0.5}>
+					<Typography width={'100%'} fontSize={'12px'} fontWeight={700}>
+						Time
+					</Typography>
+
+					<Typography width={'100%'} fontSize={'12px'} textAlign="center" fontWeight={700}>
+						Price({symbolInfo('quote')})
+					</Typography>
+
+					<Typography width={'100%'} fontSize={'12px'} fontWeight={700} textAlign="end">
+						Qty({symbolInfo('base')})
+					</Typography>
+				</Stack>
+
+				<Stack>
+					{tradeHistory.length > 0 &&
+						tradeHistory.map((item: any, index) => (
+							<Grid key={index} container>
+								<Grid item md={4}>
+									<Typography fontSize={'11px'} color={theme.palette.grey[700]} fontWeight={600}>
+										{dayjs(item.ts).format('HH:mm:ss')}
+									</Typography>
+								</Grid>
+								<Grid item md={4}>
+									<Typography
+										fontSize={'11px'}
+										color={item.side === 'BUY' ? theme.palette.success.main : theme.palette.error.main}
+										fontWeight={600}
+										textAlign={'center'}
+									>
+										{item.price}
+									</Typography>
+								</Grid>
+								<Grid item md={4}>
+									<Typography
+										fontSize={'11px'}
+										textAlign={'end'}
+										color={item.side === 'BUY' ? theme.palette.success.main : theme.palette.error.main}
+										fontWeight={600}
+									>
+										{item.size}
+									</Typography>
+								</Grid>
+							</Grid>
+						))}
+				</Stack>
+				{/* <TradeHistory dataSource={tradeHistory} loading={tradeHistoryLoading} /> */}
+			</Box>
+		</MainCard>
 	);
 };
+
+export default memo(OrderLastTradeContent);
