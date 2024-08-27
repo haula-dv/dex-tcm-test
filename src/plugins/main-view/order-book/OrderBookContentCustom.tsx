@@ -1,6 +1,6 @@
 import { MainCard } from '@/components/card/MainCard';
 import IconLoading from '@/components/icons/loading';
-import { Stack, Typography } from '@mui/material';
+import { Grid, Stack, Typography } from '@mui/material';
 import { useOrderbookStream } from '@orderly.network/hooks';
 import { memo } from 'react';
 import OrderBookItem from './OrderBookItem';
@@ -11,33 +11,39 @@ interface IProps {
 
 const OrderBookContentCustom = ({ symbol }: IProps) => {
 	const [data, { isLoading }] = useOrderbookStream(symbol, undefined, {
-		level: 15,
+		level: 14,
 	});
 
 	if (isLoading) {
 		return <IconLoading />;
 	}
-
+	const [_, base, quote] = symbol.split('_');
 	let firstAsk: number;
 	let firstBid: number;
 
 	return (
-		<MainCard backgroudColor="primaryLight" width="100%" height="100%">
-			<Stack direction={'row'} pb={0.5}>
-				<Typography width={'100%'} fontSize={'12px'} fontWeight={700}>
-					PRICE
-				</Typography>
+		<MainCard backgroudColor="primaryLight" width="100%">
+			<Grid container pb={'6px'}>
+				<Grid item md={4}>
+					<Typography width={'100%'} fontSize={'12px'} fontWeight={700}>
+						PRICE
+					</Typography>
+				</Grid>
 
-				<Typography width={'100%'} fontSize={'12px'} textAlign="center" fontWeight={700}>
-					Qty
-				</Typography>
+				<Grid item md={3}>
+					<Typography width={'100%'} fontSize={'12px'} textAlign="center" fontWeight={700}>
+						Qty
+					</Typography>
+				</Grid>
 
-				<Typography width={'100%'} fontSize={'12px'} fontWeight={700} textAlign="center">
-					Total
-				</Typography>
-			</Stack>
+				<Grid item md={5}>
+					<Typography width={'100%'} fontSize={'12px'} fontWeight={700} textAlign="center">
+						Total
+					</Typography>
+				</Grid>
+			</Grid>
 
-			<Stack spacing={0.5}>
+			<Stack spacing={0.2}>
 				{data.asks
 					?.filter(([price]) => !Number.isNaN(price))
 					.map(([price, quantity, aggregated], index) => {
@@ -54,6 +60,8 @@ const OrderBookContentCustom = ({ symbol }: IProps) => {
 								price={price}
 								quantity={quantity}
 								isFirstAsk
+								base={base}
+								quote={quote}
 							/>
 						);
 					})}
@@ -86,6 +94,8 @@ const OrderBookContentCustom = ({ symbol }: IProps) => {
 								gradient={gradient}
 								price={price}
 								quantity={quantity}
+								base={base}
+								quote={quote}
 							/>
 						);
 					})

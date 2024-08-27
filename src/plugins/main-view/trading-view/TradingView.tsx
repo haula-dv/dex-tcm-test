@@ -1,17 +1,18 @@
 import { ITab } from '@/common/types/components/tab';
-import { MainCard } from '@/components/card/MainCard';
 import MainTab from '@/components/tab/MainTab';
 import { theme } from '@/utils';
 import { TSizes } from '@/utils/themes/custom-theme/sizes';
-import { Box } from '@mui/material';
+import { Box, Divider } from '@mui/material';
 import { memo, useEffect, useRef, useState } from 'react';
+import SymbolHeader from '../components/SymbolHeader';
 import TimeLine from './TimeLine';
 
 interface IProps {
 	symbol: string;
+	onSymbolChange: (symbol: string) => void;
 }
 
-export const TradingMainView = ({ symbol }: IProps) => {
+export const TradingMainView = ({ symbol, onSymbolChange }: IProps) => {
 	const [isReady, setIsReady] = useState(false);
 	const [currentInterval, setCurrentInterval] = useState('1');
 
@@ -64,11 +65,13 @@ export const TradingMainView = ({ symbol }: IProps) => {
 			container.current.innerHTML = '';
 			container.current.appendChild(script);
 		}
-	}, [theme, symbol, currentInterval]);
+	}, [symbol, currentInterval, base]);
 
 	return (
-		<>
-			<MainCard height={'100%'} backgroudColor="primary" width="100%">
+		<Box>
+			<SymbolHeader onSymbolChange={onSymbolChange} symbol={symbol} />
+			<Divider />
+			<Box p="10px">
 				<MainTab tabs={tabs} />
 
 				{/* {isReady && (
@@ -121,8 +124,8 @@ export const TradingMainView = ({ symbol }: IProps) => {
 						></div>
 					</div>
 				</Box>
-			</MainCard>
-		</>
+			</Box>
+		</Box>
 	);
 };
 

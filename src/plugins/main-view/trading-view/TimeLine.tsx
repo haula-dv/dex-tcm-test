@@ -48,8 +48,10 @@ const TimeLine = ({ handleChangeInterval }: IProps) => {
 					key={index}
 					width={'56px'}
 					sx={{ cursor: 'pointer' }}
+					fontSize={'12px'}
 					onClick={() => onChange(item.value)}
 					fontWeight={currentIn === item.value ? 700 : 500}
+					color={currentIn === item.value ? theme.palette.primary.dark : theme.palette.grey[600]}
 				>
 					{item.label}
 				</Typography>

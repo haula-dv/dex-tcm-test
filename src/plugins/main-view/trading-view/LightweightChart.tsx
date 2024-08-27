@@ -84,10 +84,10 @@ export const LightweightChart: FC<{ symbol: string }> = ({ symbol }) => {
 				height: chartRef.current.clientHeight,
 				layout: {
 					background: {
-						color: '#26272a',
+						color: '#fff',
 					},
-					textColor: '#fff',
-					fontSize: 15,
+					textColor: '#111',
+					fontSize: 14,
 				},
 				timeScale: {
 					timeVisible: true,

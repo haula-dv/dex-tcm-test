@@ -1,7 +1,8 @@
 import { TSizes } from '@/utils/themes/custom-theme/sizes';
+import TabContext from '@mui/lab/TabContext';
 import { Button, Stack } from '@mui/material';
 import { styled } from '@mui/material/styles';
-import { memo, useState } from 'react';
+import { memo, ReactElement, useState } from 'react';
 
 interface ITab {
 	label: string;
@@ -12,9 +13,10 @@ interface IProps {
 	tabs: ITab[];
 	onChange?: (tab: ITab) => void;
 	fullWidth?: boolean;
+	children?: ReactElement;
 }
 
-const MainTab = ({ tabs, onChange, fullWidth }: IProps) => {
+const MainTab = ({ tabs, onChange, fullWidth, children }: IProps) => {
 	const [value, setValue] = useState<any>(tabs[0].value);
 
 	const handleChange = (val: ITab) => {
@@ -23,15 +25,24 @@ const MainTab = ({ tabs, onChange, fullWidth }: IProps) => {
 	};
 
 	return (
-		<Stack direction={'row'} spacing={'10px'}>
-			{tabs.slice(0, 3).map((item, index) => {
-				return (
-					<TabItem actived={value === item.value} key={index} fullWidth={fullWidth} onClick={(e) => handleChange(item)}>
-						{item.label}
-					</TabItem>
-				);
-			})}
-		</Stack>
+		<TabContext value={value}>
+			<Stack direction={'row'} spacing={'10px'}>
+				{tabs.map((item, index) => {
+					return (
+						<TabItem
+							actived={value === item.value}
+							key={index}
+							fullWidth={fullWidth}
+							onClick={(e) => handleChange(item)}
+						>
+							{item.label}
+						</TabItem>
+					);
+				})}
+			</Stack>
+
+			{children}
+		</TabContext>
 	);
 };
 

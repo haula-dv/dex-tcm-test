@@ -1,5 +1,5 @@
 'use client';
-import { TradingMainViewContainer } from '@/plugins/trading-view/components/TradingMainViewContainer';
+import { TradingMainViewContainer } from '@/plugins/main-view/trading-view/components/TradingMainViewContainer';
 import { TCMP_ORDERLY_SDK_TITLE_KEY } from '@/utils/constants/key_store';
 import { _orderlySymbolKey } from '@/utils/constants/orderly';
 import '@orderly.network/react/dist/styles.css';

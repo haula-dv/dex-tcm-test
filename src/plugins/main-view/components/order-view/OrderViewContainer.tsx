@@ -1,8 +1,9 @@
-import { Stack } from '@mui/material';
-import { TabPane, Tabs } from '@orderly.network/react';
+import { ITab } from '@/common/types/components/tab';
+import MainTab from '@/components/tab/MainTab';
+import TabPanel from '@mui/lab/TabPanel';
+import { Box } from '@mui/material';
 import { OrderStatus } from '@orderly.network/types';
 import { useState } from 'react';
-import PositionContent from '../position/PositionContent';
 import OrderTableContent from './OrderTableContent';
 
 interface IProps {
@@ -14,53 +15,52 @@ export const OrderViewContainer = ({ symbol }: IProps) => {
 
 	const tabs = [
 		{
-			title: 'Positions',
+			label: 'Positions',
 			value: 'positions',
-			children: <PositionContent symbol={symbol} />,
+			children: <Box>Positions</Box>,
 		},
 		{
-			title: 'Pending',
+			label: 'Pending',
 			value: 'pending',
 			children: <OrderTableContent orderBookStatus={OrderStatus.INCOMPLETE} />,
 		},
 		{
-			title: 'Filled',
+			label: 'Filled',
 			value: 'filled',
 			children: <OrderTableContent orderBookStatus={OrderStatus.FILLED} />,
 		},
 		{
-			title: 'Cancelled',
+			label: 'Cancelled',
 			value: 'cancelled',
 			children: <OrderTableContent orderBookStatus={OrderStatus.CANCELLED} />,
 		},
 		{
-			title: 'Rejected',
+			label: 'Rejected',
 			value: 'rejected',
 			children: <OrderTableContent orderBookStatus={OrderStatus.REJECTED} />,
 		},
 		{
-			title: 'Order History',
+			label: 'Order History',
 			value: 'order-history',
 			children: <OrderTableContent orderBookStatus={OrderStatus.COMPLETED} />,
 		},
 	];
 
-	const onTabChange = (newValue: string) => {
-		setCurrentTab(newValue);
+	const onTabChange = (newValue: ITab) => {
+		// setCurrentTab(newValue);
 	};
 
 	return (
-		<>
-			<Stack>
-				<Tabs value={currentTab} onTabChange={onTabChange}>
+		<Box px={'10px'}>
+			<MainTab tabs={tabs as any} onChange={onTabChange}>
+				<>
 					{tabs.map((item) => (
-						<TabPane key={item.value} title={item.title} value={item.value}>
+						<TabPanel key={item.value} value={item.value} sx={{ p: 0 }}>
 							{item.children}
-						</TabPane>
+						</TabPanel>
 					))}
-				</Tabs>
-			</Stack>
-
+				</>
+			</MainTab>
 			{/* <OrdersView
 				dataSource={data as any}
 				symbol="PERP_ETH_USDC"
@@ -72,6 +72,6 @@ export const OrderViewContainer = ({ symbol }: IProps) => {
 				isLoading={isLoading}
 				loadMore={loadMore}
 			/> */}
-		</>
+		</Box>
 	);
 };

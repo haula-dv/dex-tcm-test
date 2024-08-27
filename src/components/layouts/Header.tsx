@@ -6,7 +6,6 @@ import { AppBar, Box, BoxProps, Stack, Toolbar, Typography } from '@mui/material
 import { styled } from '@mui/material/styles';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { MainContainer } from '../container/MainContainer';
 import Logo from '../icons/Logo';
 
 export const Header = () => {
@@ -21,7 +20,7 @@ export const Header = () => {
 
 	return (
 		<MainAppBar elevation={0} position="static">
-			<MainContainer>
+			<Box px={{ xs: '16px', xl: '60px' }}>
 				<Toolbar disableGutters>
 					<Stack direction={'row'} justifyContent={'space-between'} width={'100%'} alignItems={'center'}>
 						<Stack direction={'row'} alignItems={'center'} spacing={TSizes.margin_md}>
@@ -39,7 +38,7 @@ export const Header = () => {
 						<WalletContainer />
 					</Stack>
 				</Toolbar>
-			</MainContainer>
+			</Box>
 		</MainAppBar>
 	);
 };

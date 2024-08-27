@@ -1,6 +1,5 @@
 import { getImageNextwork } from '@/common';
 import { MainButton } from '@/components/button/MainButton';
-import { MainCard } from '@/components/card/MainCard';
 import { TokenIcon } from '@/components/token/TokenIcon';
 import { theme } from '@/utils';
 import { usdFormatter } from '@/utils/formatters/number';
@@ -103,8 +102,8 @@ const SymbolHeader = ({ onSymbolChange, symbol }: IProps) => {
 	];
 
 	return (
-		<MainCard width="100%" backgroudColor="primary" disablePadding>
-			<Stack direction={'row'} spacing={1.5} alignItems={'center'} flex={1} px={'16px'} py={'6px'}>
+		<>
+			<Stack direction={'row'} spacing={1.5} alignItems={'center'} flex={1} px={'16px'}>
 				<MainButton
 					startIcon={<TokenIcon url={getImageNextwork(symbol ? spitSymbol(symbol) : '', 'symbol_logo')} />}
 					variant="textLink"
@@ -149,7 +148,7 @@ const SymbolHeader = ({ onSymbolChange, symbol }: IProps) => {
 					onSymbolChange={onSymbolChange}
 				/>
 			)}
-		</MainCard>
+		</>
 	);
 };
 

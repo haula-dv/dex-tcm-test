@@ -1,6 +1,5 @@
 import { MainButton } from '@/components/button/MainButton';
 import { MainCard } from '@/components/card/MainCard';
-import { TSizes } from '@/utils/themes/custom-theme/sizes';
 import { Stack } from '@mui/material';
 import { useState } from 'react';
 import OrderBookContentCustom from './OrderBookContentCustom';
@@ -24,8 +23,8 @@ export const OrderBookContainer = ({ symbol }: IProps) => {
 	];
 
 	return (
-		<MainCard backgroudColor="primary" width="100%" height={TSizes.tradeBodyHeight}>
-			<Stack direction={'row'} pb={'16px'} spacing={'6px'}>
+		<MainCard backgroudColor="primary" width="100%" height={'100%'}>
+			<Stack direction={'row'} pb={'10px'} spacing={'6px'}>
 				{tabs.map((item) => (
 					<MainButton
 						key={item.value}
@@ -40,6 +39,7 @@ export const OrderBookContainer = ({ symbol }: IProps) => {
 			</Stack>
 
 			{value == 'orderbook' && <OrderBookContentCustom symbol={symbol} />}
+			{/* {value == 'orderbook' && <OrderBookContent symbol={symbol} />} */}
 			{value == 'trades' && <OrderLastTradeContent symbol={symbol} />}
 		</MainCard>
 	);

@@ -1,5 +1,5 @@
+import { MainCard } from '@/components/card/MainCard';
 import IconLoading from '@/components/icons/loading';
-import { Stack } from '@mui/material';
 import { useOrderbookStream, useSymbolsInfo } from '@orderly.network/hooks';
 import { DesktopOrderBook } from '@orderly.network/react/esm/block';
 
@@ -12,7 +12,7 @@ export const OrderBookContent = ({ symbol }: IProps) => {
 	const symbolInfo = config ? config[symbol] : ({} as any);
 
 	const [data, { onDepthChange, isLoading, onItemClick, depth, allDepths }] = useOrderbookStream(symbol, undefined, {
-		level: 11,
+		level: 15,
 	});
 
 	if (isLoading) {
@@ -24,23 +24,21 @@ export const OrderBookContent = ({ symbol }: IProps) => {
 	}
 
 	return (
-		<Stack spacing={1} p={1} height={'100%'}>
+		<MainCard backgroudColor="primaryLight" width="100%">
 			<DesktopOrderBook
-				depth={allDepths as any}
-				level={11}
+				depth={[]}
+				level={15}
 				autoSize
 				asks={data.asks as any}
 				bids={data.bids as any}
 				markPrice={data.markPrice as any}
 				lastPrice={data.middlePrice!}
-				activeDepth={depth as any}
 				base={symbolInfo('base')}
 				quote={symbolInfo('quote')}
 				isLoading={isLoading}
 				onItemClick={onItemClick}
-				onDepthChange={onDepthChange}
 				className="tcmp-orderbook"
 			/>
-		</Stack>
+		</MainCard>
 	);
 };

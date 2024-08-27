@@ -20,7 +20,7 @@ const OrderLastTradeContent = ({ symbol }: IProps) => {
 	}
 
 	return (
-		<MainCard backgroudColor="primaryLight" width="100%" height="100%">
+		<MainCard backgroudColor="primaryLight" width="100%" height="98%">
 			<Box maxHeight={'100%'} overflow={'auto'}>
 				<Stack direction={'row'} pb={0.5}>
 					<Typography width={'100%'} fontSize={'12px'} fontWeight={700}>
@@ -41,15 +41,14 @@ const OrderLastTradeContent = ({ symbol }: IProps) => {
 						tradeHistory.map((item: any, index) => (
 							<Grid key={index} container>
 								<Grid item md={4}>
-									<Typography fontSize={'11px'} color={theme.palette.grey[700]} fontWeight={600}>
+									<Typography fontSize={'12px'} color={theme.palette.grey[700]}>
 										{dayjs(item.ts).format('HH:mm:ss')}
 									</Typography>
 								</Grid>
 								<Grid item md={4}>
 									<Typography
-										fontSize={'11px'}
+										fontSize={'12px'}
 										color={item.side === 'BUY' ? theme.palette.success.main : theme.palette.error.main}
-										fontWeight={600}
 										textAlign={'center'}
 									>
 										{item.price}
@@ -57,10 +56,9 @@ const OrderLastTradeContent = ({ symbol }: IProps) => {
 								</Grid>
 								<Grid item md={4}>
 									<Typography
-										fontSize={'11px'}
+										fontSize={'12px'}
 										textAlign={'end'}
 										color={item.side === 'BUY' ? theme.palette.success.main : theme.palette.error.main}
-										fontWeight={600}
 									>
 										{item.size}
 									</Typography>
