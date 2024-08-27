@@ -3,6 +3,8 @@ import { MainCard } from '@/components/card/MainCard';
 import { TSizes } from '@/utils/themes/custom-theme/sizes';
 import { Stack } from '@mui/material';
 import { useState } from 'react';
+import OrderBookContentCustom from './OrderBookContentCustom';
+import OrderLastTradeContent from './OrderLastTradeContent';
 
 interface IProps {
 	symbol: string;
@@ -37,8 +39,8 @@ export const OrderBookContainer = ({ symbol }: IProps) => {
 				))}
 			</Stack>
 
-			{/* {value == 'orderbook' && <OrderBookContentCustom symbol={symbol} />} */}
-			{/* {value == 'trades' && <OrderLastTradeContent symbol={symbol} />} */}
+			{value == 'orderbook' && <OrderBookContentCustom symbol={symbol} />}
+			{value == 'trades' && <OrderLastTradeContent symbol={symbol} />}
 		</MainCard>
 	);
 };

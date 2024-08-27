@@ -141,20 +141,20 @@ interface IItemRow {
 export const ItemRow = ({ title, value }: IItemRow) => {
 	return (
 		<Stack direction={'row'} justifyContent={'space-between'} alignItems={'center'}>
-			{typeof value === 'string' ? (
-				<Box fontSize={'15px'} color={theme.palette.grey[500]}>
+			{typeof title == 'string' ? (
+				<Typography fontSize={'15px'} color={theme.palette.grey[500]}>
 					{title}
-				</Box>
+				</Typography>
 			) : (
 				<Box color={theme.palette.grey[500]} fontSize={'15px'}>
 					{title}
 				</Box>
 			)}
 
-			{typeof value === 'string' ? (
-				<Box fontWeight={600} fontSize={'15px'}>
+			{typeof value == 'string' ? (
+				<Typography fontWeight={600} fontSize={'15px'}>
 					{value}
-				</Box>
+				</Typography>
 			) : (
 				<Box fontSize={'15px'}>{value}</Box>
 			)}
