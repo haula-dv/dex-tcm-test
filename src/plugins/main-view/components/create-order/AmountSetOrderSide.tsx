@@ -43,6 +43,7 @@ const AmountSetOrderSide = ({ formContext }: IProps) => {
 					<Typography fontWeight={600} fontSize={'13px'}>
 						Amount
 					</Typography>
+
 					<Typography color={theme.palette.grey[500]} fontSize={'12px'}>
 						Set order size
 					</Typography>

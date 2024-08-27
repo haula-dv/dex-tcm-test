@@ -1,10 +1,11 @@
 import { TradingMainView } from '@/plugins/trading-view/components/TradingView';
 import BoxConnectWallet from '@/plugins/wallet/components/BoxConnectWallet';
+import { tradeBodyHeight } from '@/utils/themes/custom-theme/sizes';
 import { Grid, Stack } from '@mui/material';
 import MarketsContainer from '../markets/components/MarketsContainer';
 import { OrderBookContainer } from '../order-book/OrderBookContainer';
-import CreateOrderForm from './create-order/CreateOrderForm';
 import SymbolHeader from './SymbolHeader';
+import CreateOrderForm from './create-order/CreateOrderForm';
 
 interface IProps {
 	symbol: string;
@@ -13,8 +14,8 @@ interface IProps {
 
 export const MainViewContainer = ({ onSymbolChange, symbol }: IProps) => {
 	return (
-		<Grid container pt={'48px'} spacing={'16px'} height={'calc(100vh - 68px)'}>
-			<Grid item md={2.5}>
+		<Grid container spacing={'16px'} height={tradeBodyHeight}>
+			<Grid item md={2.5} height={tradeBodyHeight}>
 				<Stack spacing={'10px'} height={'100%'}>
 					<MarketsContainer onSymbolChange={onSymbolChange} symbol={symbol} />
 					<BoxConnectWallet />
@@ -27,7 +28,7 @@ export const MainViewContainer = ({ onSymbolChange, symbol }: IProps) => {
 			</Grid>
 
 			<Grid item md={7}>
-				<Stack spacing={'16px'}>
+				<Stack spacing={'16px'} height={'100%'}>
 					<SymbolHeader onSymbolChange={onSymbolChange} symbol={symbol} />
 					<TradingMainView symbol={symbol} />
 				</Stack>

@@ -9,10 +9,14 @@ export class TSizes {
 	static topbarHeight = '44px';
 
 	static borderRadius = '10px';
+	static card_padding = '10px';
 	static borderRadiusMd = '14px';
 	static buttonHeight = '40px';
 	static buttonHeightSmall = '34px';
 	static fieldSearchHeight = '48px';
 
 	static widthCommonCard = '586px';
+
+	static tradeBodyHeight: 'calc(100vh - 140px)';
 }
+export const tradeBodyHeight = 'calc(100vh - 140px)';

@@ -4,6 +4,7 @@ import { TSizes } from '@/utils/themes/custom-theme/sizes';
 import { FormControl, InputAdornment, OutlinedInput, Typography } from '@mui/material';
 import { styled } from '@mui/material/styles';
 import { Controller, FieldValues, Path, RegisterOptions, UseFormReturn } from 'react-hook-form';
+import { RenderFormError } from './RenderErrors';
 
 interface InputFieldProps<V extends FieldValues> {
 	formContext: UseFormReturn<V>;
@@ -61,9 +62,8 @@ const CurrencyInputField = <V extends FieldValues>({
 								'aria-label': 'weight',
 							}}
 						/>
-						{/* <FormHelperText id="outlined-weight-helper-text">Weight</FormHelperText> */}
 
-						{/* <RenderFormError error={error?.message ?? ''} /> */}
+						<RenderFormError error={error?.message ?? ''} />
 					</>
 				)}
 			/>

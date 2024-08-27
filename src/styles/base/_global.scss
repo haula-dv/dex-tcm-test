@@ -92,3 +92,21 @@ iframe {
 	padding-top: 12px !important;
 	padding-bottom: 12px !important;
 }
+
+#widget-container {
+	border: 0px !important;
+}
+
+.tradingview-widget-container {
+	position: relative;
+
+	&::after {
+		// content: '';
+		// position: absolute;
+		// top: 0;
+		// height: 100%;
+		// width: 100%;
+		// left: 0;
+		// border: 1px solid var(--primaryLight) !important;
+	}
+}

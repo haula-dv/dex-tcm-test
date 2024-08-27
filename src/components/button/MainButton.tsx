@@ -25,9 +25,9 @@ export const MainButton = ({ children, isLoading, fullRounded, align = 'center',
 					borderWidth: borderWidth,
 				},
 			}}
+			startIcon={isLoading ? <IconLoading height="24px" width="24px" /> : props.startIcon}
 			{...props}
 		>
-			{isLoading && <IconLoading height="24px" width="24px" />}
 			{children}
 		</Button>
 	);

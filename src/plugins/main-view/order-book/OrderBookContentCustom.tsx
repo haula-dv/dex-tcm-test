@@ -22,7 +22,7 @@ const OrderBookContentCustom = ({ symbol }: IProps) => {
 	let firstBid: number;
 
 	return (
-		<MainCard backgroudColor="primaryLight" width="100%" height="98%">
+		<MainCard backgroudColor="primaryLight" width="100%" height="100%">
 			<Stack direction={'row'} pb={0.5}>
 				<Typography width={'100%'} fontSize={'12px'} fontWeight={700}>
 					PRICE

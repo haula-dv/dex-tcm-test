@@ -142,9 +142,9 @@ export const ItemRow = ({ title, value }: IItemRow) => {
 	return (
 		<Stack direction={'row'} justifyContent={'space-between'} alignItems={'center'}>
 			{typeof value === 'string' ? (
-				<Typography fontSize={'15px'} color={theme.palette.grey[500]}>
+				<Box fontSize={'15px'} color={theme.palette.grey[500]}>
 					{title}
-				</Typography>
+				</Box>
 			) : (
 				<Box color={theme.palette.grey[500]} fontSize={'15px'}>
 					{title}
@@ -152,9 +152,9 @@ export const ItemRow = ({ title, value }: IItemRow) => {
 			)}
 
 			{typeof value === 'string' ? (
-				<Typography fontWeight={600} fontSize={'15px'}>
+				<Box fontWeight={600} fontSize={'15px'}>
 					{value}
-				</Typography>
+				</Box>
 			) : (
 				<Box fontSize={'15px'}>{value}</Box>
 			)}

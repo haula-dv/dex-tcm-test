@@ -20,8 +20,8 @@ const OrderLastTradeContent = ({ symbol }: IProps) => {
 	}
 
 	return (
-		<MainCard backgroudColor="primaryLight" width="100%" height="98%">
-			<Box maxHeight={'calc(100vh - 240px)'} overflow={'auto'}>
+		<MainCard backgroudColor="primaryLight" width="100%" height="100%">
+			<Box maxHeight={'100%'} overflow={'auto'}>
 				<Stack direction={'row'} pb={0.5}>
 					<Typography width={'100%'} fontSize={'12px'} fontWeight={700}>
 						Time
