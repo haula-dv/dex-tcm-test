@@ -1,3 +1,4 @@
+import { ITab } from '@/common/types/components/tab';
 import { TSizes } from '@/utils/themes/custom-theme/sizes';
 import TabContext from '@mui/lab/TabContext';
 import { Button, Stack } from '@mui/material';
@@ -5,16 +6,13 @@ import { styled } from '@mui/material/styles';
 import { ReactNode, useState } from 'react';
 
 interface IProps {
-	tabs: {
-		label: string;
-		value: string;
-	}[];
+	tabs: ITab[];
 
 	children?: ReactNode;
 }
 
 export const GrayTab = ({ tabs, children }: IProps) => {
-	const [tab, setTab] = useState<string>('1');
+	const [tab, setTab] = useState<string | number>('1');
 
 	return (
 		<TabContext value={tab}>

@@ -4,7 +4,7 @@ import Link from 'next/link';
 import { MainIconButton } from '../button/MainIconButton';
 
 interface IProps {
-	onBackLink: () => void | string;
+	onBackLink: any;
 	title: string;
 }
 
