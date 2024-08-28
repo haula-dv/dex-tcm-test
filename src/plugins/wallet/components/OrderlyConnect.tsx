@@ -1,23 +1,14 @@
 'use client';
-import { MainButton } from '@/components/button/MainButton';
-import { MainCard } from '@/components/card/MainCard';
-import { MainChip } from '@/components/chip/MainChip';
-import { MainDialog } from '@/components/dialog/MainDialog';
-import IconLoading from '@/components/icons/loading';
 import { useIsTestnet } from '@/hooks/useIsTestnet';
-import { theme } from '@/utils';
 import { mainToast } from '@/utils/lib/toast';
-import { Box, Stack, Typography } from '@mui/material';
 import { useAccount } from '@orderly.network/hooks';
 import { AccountStatusEnum } from '@orderly.network/types';
-import { IconProgressCheck } from '@tabler/icons-react';
 import { useConnectWallet, useNotifications, useSetChain } from '@web3-onboard/react';
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 
 let timer: number | undefined;
 
 export const OrderlyConnect = () => {
-	const [open, setOpen] = useState(false);
 	const [{ wallet }] = useConnectWallet();
 	const [isTestnet] = useIsTestnet();
 
@@ -31,29 +22,11 @@ export const OrderlyConnect = () => {
 		account.switchChainId(connectedChain.id);
 	}, [connectedChain, account]);
 
-	useEffect(() => {
-		if (timer != null) {
-			clearTimeout(timer);
-		}
-
-		timer = setTimeout(() => {
-			if (state.status < AccountStatusEnum.EnableTrading && wallet != null) {
-				setOpen(true);
-				timer = undefined;
-			}
-		}, 3_000) as unknown as number;
-		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [state, setOpen, wallet]);
-
 	const isRegistered = state.status >= AccountStatusEnum.SignedIn;
 	const hasOrderlyKey = state.status >= AccountStatusEnum.EnableTrading;
 
-	const [loadingRegister, setLoadingRegister] = useState(false);
-	const [loadingOrderlyKey, setLoadingOrderlyKey] = useState(false);
-
 	// Handle Register Account
 	const handleRegisterAccount = async () => {
-		setLoadingRegister(true);
 		const { update } = customNotification({
 			eventCode: 'register',
 			type: 'pending',
@@ -77,10 +50,8 @@ export const OrderlyConnect = () => {
 				message: 'Registration failed!',
 				autoDismiss: 5_000,
 			});
-			setLoadingRegister(false);
 			throw err;
 		} finally {
-			setLoadingRegister(false);
 		}
 	};
 
@@ -90,7 +61,6 @@ export const OrderlyConnect = () => {
 			type: 'pending',
 			message: 'Registering Orderly key...',
 		});
-		setLoadingOrderlyKey(true);
 		try {
 			await account.createOrderlyKey(365);
 			update({
@@ -101,7 +71,6 @@ export const OrderlyConnect = () => {
 			});
 		} catch (err) {
 			console.error(err);
-			setLoadingOrderlyKey(false);
 			mainToast('Orderly key registration failed', 'error');
 			update({
 				eventCode: 'orderlyKeyError',
@@ -112,12 +81,33 @@ export const OrderlyConnect = () => {
 
 			throw err;
 		} finally {
-			setLoadingOrderlyKey(false);
 		}
 	};
 
+	useEffect(() => {
+		if (timer != null) {
+			clearTimeout(timer);
+		}
+
+		timer = setTimeout(() => {
+			if (state.status < AccountStatusEnum.EnableTrading && wallet != null) {
+				if (!isRegistered) {
+					handleRegisterAccount();
+				}
+
+				if (!hasOrderlyKey) {
+					handleOrderkyKey();
+				}
+
+				timer = undefined;
+			}
+		}, 3_000) as unknown as number;
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [state, wallet]);
+
 	return (
-		<MainDialog
+		<>
+			{/* <MainDialog
 			open={open}
 			handleClose={() => setOpen(false)}
 			maxWidth="xs"
@@ -172,6 +162,7 @@ export const OrderlyConnect = () => {
 					</Box>
 				</MainCard>
 			</Stack>
-		</MainDialog>
+		</MainDialog> */}
+		</>
 	);
 };
