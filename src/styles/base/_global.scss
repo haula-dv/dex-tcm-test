@@ -96,3 +96,26 @@ iframe {
 .tcmp-orderbook > div:first-child {
 	// display: none;
 }
+
+.orderly-input-container {
+	background-color: var(--primaryLight) !important;
+	&.orderly-color-base-900 {
+		background-color: #e9e4de !important;
+	}
+
+	&.orderly-outline-primary {
+		outline-color: var(--primaryMain);
+	}
+}
+
+.orderly-input-container.orderly-color-base-900 {
+	background-color: #e9e4de !important;
+}
+
+.orderly-border-divider {
+	border-color: var(--grey50) !important;
+}
+
+.orderly-text-trade-loss {
+	color: var(--errorDark) !important;
+}
