@@ -28,7 +28,7 @@ export const Header = () => {
 
 							{navItems.map((navItem) => (
 								<Link key={navItem.label} href={navItem.to}>
-									<NavItem isActived={pathName === navItem.to}>
+									<NavItem isActived={navItem.to.includes(pathName)}>
 										<Typography>{navItem.label}</Typography>
 									</NavItem>
 								</Link>

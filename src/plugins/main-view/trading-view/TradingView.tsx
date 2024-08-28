@@ -100,7 +100,15 @@ export const TradingMainView = ({ symbol, onSymbolChange }: IProps) => {
 
 				<TimeLine handleChangeInterval={handleChangeInterval} />
 
-				<Box height="450px">
+				<Box
+					height="450px"
+					bgcolor={theme.palette.primary.light}
+					sx={{
+						borderRadius: 0,
+						borderBottomLeftRadius: TSizes.borderRadiusMd,
+						borderBottomRightRadius: TSizes.borderRadiusMd,
+					}}
+				>
 					<div
 						className="tradingview-widget-container"
 						ref={container}

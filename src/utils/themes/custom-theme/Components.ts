@@ -68,7 +68,7 @@ const components = (theme: Theme) => {
 					height: '100%',
 				},
 				'.MuiBox-root': {
-					borderRadius: theme.shape.borderRadius,
+					// borderRadius: theme.shape.borderRadius,
 				},
 				'.MuiCardHeader-action': {
 					alignSelf: 'center !important',
