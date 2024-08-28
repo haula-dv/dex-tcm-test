@@ -100,15 +100,15 @@ export const TradingMainView = ({ symbol, onSymbolChange }: IProps) => {
 
 				<TimeLine handleChangeInterval={handleChangeInterval} />
 
-				<Box height="40vh">
+				<Box height="450px">
 					<div
 						className="tradingview-widget-container"
 						ref={container}
 						style={{
 							height: '100%',
 							width: '100%',
-							borderBottomLeftRadius: TSizes.borderRadius,
-							borderBottomRightRadius: TSizes.borderRadius,
+							borderBottomLeftRadius: TSizes.borderRadiusMd,
+							borderBottomRightRadius: TSizes.borderRadiusMd,
 							overflow: 'hidden',
 						}}
 					>
@@ -118,8 +118,8 @@ export const TradingMainView = ({ symbol, onSymbolChange }: IProps) => {
 								height: '100%',
 								width: '100%',
 								overflow: 'hidden',
-								borderBottomLeftRadius: TSizes.borderRadius,
-								borderBottomRightRadius: TSizes.borderRadius,
+								borderBottomLeftRadius: TSizes.borderRadiusMd,
+								borderBottomRightRadius: TSizes.borderRadiusMd,
 							}}
 						></div>
 					</div>

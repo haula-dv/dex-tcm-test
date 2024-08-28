@@ -22,6 +22,7 @@ const SymbolHeader = ({ onSymbolChange, symbol }: IProps) => {
 
 	// Get detail symbol
 	const stream = useTickerStream(symbol);
+	const [perp, base, quote] = symbol.split('_');
 
 	const handleClose = () => {
 		setMarketEl(null);
@@ -32,7 +33,6 @@ const SymbolHeader = ({ onSymbolChange, symbol }: IProps) => {
 	};
 
 	const data = useFundingRate(symbol);
-	const quote = 'USDC';
 
 	const openInterestValue = new Decimal(stream?.open_interest ?? 0)
 		.mul(stream?.index_price ?? 0)
@@ -113,30 +113,39 @@ const SymbolHeader = ({ onSymbolChange, symbol }: IProps) => {
 					aria-expanded={openMarketEl ? 'true' : undefined}
 					onClick={handleClick}
 					endIcon={<IconChevronDown size="1rem" />}
+					sx={{ color: theme.palette.grey[900] }}
 				>
-					{symbol.replaceAll('_', '-')}
+					{`${base}-${perp}`}
 				</MainButton>
 
 				<DividerMui orientation="vertical" flexItem />
 
-				<Typography fontWeight={600} pr={1}>
-					0,990
-				</Typography>
+				<Stack direction={'row'} spacing={1.5} alignItems={'center'} sx={{ overflowX: 'auto' }}>
+					<Typography fontWeight={600} pr={1} whiteSpace={'nowrap'}>
+						0,990
+					</Typography>
 
-				<Stack direction={'row'} spacing={2} sx={{ overflowX: 'auto' }}>
-					{datas.map((ite, index) => (
-						<Tooltip key={index} title={ite?.hint} style={{ maxWidth: '200px' }} arrow>
-							<Stack sx={{ cursor: 'pointer' }}>
-								<Typography color={theme.palette.grey[400]} lineHeight="120%" fontWeight={600} fontSize={'10px'}>
-									{ite.label}
-								</Typography>
+					<Stack direction={'row'} spacing={2}>
+						{datas.map((ite, index) => (
+							<Tooltip key={index} title={ite?.hint} style={{ maxWidth: '200px' }} arrow>
+								<Stack sx={{ cursor: 'pointer' }}>
+									<Typography
+										color={theme.palette.grey[400]}
+										lineHeight="120%"
+										fontWeight={600}
+										fontSize={'10px'}
+										whiteSpace={'nowrap'}
+									>
+										{ite.label}
+									</Typography>
 
-								<Typography fontWeight={600} fontSize={'12px'} lineHeight="120%">
-									{ite.value}
-								</Typography>
-							</Stack>
-						</Tooltip>
-					))}
+									<Typography fontWeight={600} fontSize={'12px'} lineHeight="120%" whiteSpace={'nowrap'}>
+										{ite.value}
+									</Typography>
+								</Stack>
+							</Tooltip>
+						))}
+					</Stack>
 				</Stack>
 			</Stack>
 

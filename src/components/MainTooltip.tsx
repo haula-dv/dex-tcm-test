@@ -5,6 +5,7 @@ import { memo } from 'react';
 const MainTooltip = styled(({ className, ...props }: TooltipProps) => (
 	<Tooltip {...props} classes={{ popper: className }} />
 ))(({ theme }) => ({
+	cursor: 'pointer',
 	[`& .${tooltipClasses.tooltip}`]: {
 		backgroundColor: theme.palette.common.white,
 		color: 'rgba(0, 0, 0, 0.87)',

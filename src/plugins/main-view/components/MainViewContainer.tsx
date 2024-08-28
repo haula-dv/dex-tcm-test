@@ -1,10 +1,10 @@
 import { MainCard } from '@/components/card/MainCard';
-import { TradingMainView } from '@/plugins/main-view/trading-view/TradingView';
 import BoxConnectWallet from '@/plugins/wallet/components/BoxConnectWallet';
 import { tradeBodyHeight } from '@/utils/themes/custom-theme/sizes';
 import { Grid, Stack } from '@mui/material';
 import MarketsContainer from '../markets/components/MarketsContainer';
 import { OrderBookContainer } from '../order-book/OrderBookContainer';
+import { TradingMainView } from '../trading-view/TradingView';
 import CreateOrderForm from './create-order/CreateOrderForm';
 import { OrderViewContainer } from './order-view/OrderViewContainer';
 
@@ -15,22 +15,22 @@ interface IProps {
 
 export const MainViewContainer = ({ onSymbolChange, symbol }: IProps) => {
 	return (
-		<Grid container spacing={'16px'} height={tradeBodyHeight}>
-			<Grid item md={2.5} height={tradeBodyHeight}>
-				<Stack spacing={'10px'} height={'100%'}>
+		<Grid container spacing={'16px'} height={'100%'}>
+			<Grid item md={2.5}>
+				<Stack spacing={'10px'} minHeight={tradeBodyHeight} height={'100%'}>
 					<MarketsContainer onSymbolChange={onSymbolChange} symbol={symbol} />
 					<BoxConnectWallet />
 					<CreateOrderForm symbol={symbol} />
 				</Stack>
 			</Grid>
 
-			<Grid item md={2.5} height={tradeBodyHeight}>
+			<Grid item md={2.5}>
 				<OrderBookContainer symbol={symbol} />
 			</Grid>
 
 			<Grid item md={7}>
-				<MainCard backgroudColor="primary" width="100%" disablePadding>
-					<Stack spacing={'10px'} height={'100%'}>
+				<MainCard backgroudColor="primary" width={'100%'} height="100%" minHeight={tradeBodyHeight} disablePadding>
+					<Stack spacing={'10px'} mb={'10px'} height={'100%'} overflow={'hidden'}>
 						<TradingMainView symbol={symbol} onSymbolChange={onSymbolChange} />
 						<OrderViewContainer symbol={symbol} />
 					</Stack>
