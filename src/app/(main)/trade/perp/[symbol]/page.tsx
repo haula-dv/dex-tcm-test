@@ -1,5 +1,5 @@
 'use client';
-import { MainViewContainer } from '@/plugins/main-view/components/MainViewContainer';
+import { MainViewContainer } from '@/plugins/trade/components/MainViewContainer';
 import { TCMP_ORDERLY_SDK_TITLE_KEY } from '@/utils/constants/key_store';
 import { _orderlySymbolKey } from '@/utils/constants/orderly';
 import '@orderly.network/react/dist/styles.css';
