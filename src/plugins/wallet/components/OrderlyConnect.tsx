@@ -95,7 +95,7 @@ export const OrderlyConnect = () => {
 					handleRegisterAccount();
 				}
 
-				if (!hasOrderlyKey) {
+				if (!hasOrderlyKey && state.status >= AccountStatusEnum.SignedIn) {
 					handleOrderkyKey();
 				}
 

@@ -4,7 +4,7 @@ import { TokenIcon } from '@/components/token/TokenIcon';
 import { theme } from '@/utils';
 import { usdFormatter } from '@/utils/formatters/number';
 import { spitSymbol } from '@/utils/formatters/token';
-import { Divider as DividerMui, Stack, Tooltip, Typography } from '@mui/material';
+import { Box, Stack, Tooltip, Typography } from '@mui/material';
 import { useFundingRate, useTickerStream } from '@orderly.network/hooks';
 import { Decimal } from '@orderly.network/utils';
 import { IconChevronDown } from '@tabler/icons-react';
@@ -103,7 +103,7 @@ const SymbolHeader = ({ onSymbolChange, symbol }: IProps) => {
 
 	return (
 		<>
-			<Stack direction={'row'} spacing={1.5} alignItems={'center'} flex={1} my="8px" height={'30px'}>
+			<Stack direction={'row'} spacing={1.5} alignItems={'center'} flex={1} mb="8px" height={'30px'}>
 				<MainButton
 					startIcon={<TokenIcon url={getImageNextwork(symbol ? spitSymbol(symbol) : '', 'symbol_logo')} />}
 					variant="textLink"
@@ -122,7 +122,7 @@ const SymbolHeader = ({ onSymbolChange, symbol }: IProps) => {
 					{`${base}-${perp}`}
 				</MainButton>
 
-				<DividerMui orientation="vertical" flexItem />
+				<Box height={'20px'} width={'2px'} bgcolor={theme.palette.grey[900]} />
 
 				<Stack direction={'row'} spacing={3} alignItems={'center'} sx={{ overflowX: 'auto' }}>
 					<Typography fontWeight={600} pr={1} whiteSpace={'nowrap'}>
