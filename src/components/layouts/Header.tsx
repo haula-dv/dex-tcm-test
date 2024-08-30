@@ -32,9 +32,11 @@ export const Header = () => {
 
 							<Stack direction={'row'} border={2} borderColor={theme.palette.grey[700]} borderRadius={'12px'}>
 								{navItems.slice(0, 2).map((item, index) => (
-									<MainButton key={index} variant="contained" color={index == 0 ? 'darkGrey' : 'white'}>
-										{item.label}
-									</MainButton>
+									<Link key={item.label} href={item.to}>
+										<MainButton key={index} variant="contained" color={index == 0 ? 'darkGrey' : 'white'}>
+											{item.label}
+										</MainButton>
+									</Link>
 								))}
 							</Stack>
 

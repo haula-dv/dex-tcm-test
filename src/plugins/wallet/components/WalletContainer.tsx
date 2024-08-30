@@ -1,7 +1,7 @@
 import { MainButton } from '@/components/button/MainButton';
 import { MainIconButton } from '@/components/button/MainIconButton';
 import IconLoading from '@/components/icons/loading';
-import { Stack, Typography } from '@mui/material';
+import { Stack } from '@mui/material';
 import { useAccount } from '@orderly.network/hooks';
 import { IconDots, IconSettings } from '@tabler/icons-react';
 import { useConnectWallet } from '@web3-onboard/react';
@@ -74,7 +74,7 @@ export default function WalletContainer() {
 						</MainButton>
 					) : (
 						<>
-							<Typography fontSize={'18px'}>4.8729 ETH</Typography>
+							{/* <Typography fontSize={'18px'}>4.8729 ETH</Typography> */}
 
 							<MainButton
 								variant="contained"
