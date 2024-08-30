@@ -1,4 +1,3 @@
-import { MainCard } from '@/components/card/MainCard';
 import { theme } from '@/utils';
 import { Stack, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography } from '@mui/material';
 import { usePositionStream } from '@orderly.network/hooks';
@@ -31,7 +30,7 @@ const PositionContent = ({ symbol }: IProps) => {
 
 	return (
 		<>
-			<Stack direction={'row'} spacing={2} pb={'10px'}>
+			<Stack direction={'row'} spacing={2} px={'10px'} pt="10px">
 				<Stack>
 					<Typography fontSize={'12px'} color={theme.palette.grey[400]}>
 						Unreal. PnL
@@ -48,8 +47,8 @@ const PositionContent = ({ symbol }: IProps) => {
 			</Stack>
 
 			{/* <MainCard backgroudColor="primaryLight" width="100%" height="100%"> */}
-			<TableContainer component={MainCard}>
-				<Table aria-label="position-table">
+			<TableContainer>
+				<Table aria-label="position-table" size="small">
 					<TableHead>
 						<TableRow>
 							{headTable.map((item, index) => (

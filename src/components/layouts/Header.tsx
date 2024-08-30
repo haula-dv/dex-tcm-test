@@ -1,13 +1,11 @@
 'use client';
 import WalletContainer from '@/plugins/wallet/components/WalletContainer';
-import { theme } from '@/utils';
 import { Mixins } from '@/utils/themes/custom-theme/mixins';
 import { TSizes } from '@/utils/themes/custom-theme/sizes';
 import { AppBar, Box, BoxProps, Stack, Toolbar, Typography } from '@mui/material';
 import { styled } from '@mui/material/styles';
 import Link from 'next/link';
 import { useParams, usePathname } from 'next/navigation';
-import { MainButton } from '../button/MainButton';
 import Logo from '../icons/Logo';
 
 export const Header = () => {
@@ -30,17 +28,7 @@ export const Header = () => {
 						<Stack direction={'row'} alignItems={'center'} spacing={TSizes.margin_md}>
 							<Logo width="124px" height="40px" />
 
-							<Stack direction={'row'} border={2} borderColor={theme.palette.grey[700]} borderRadius={'12px'}>
-								{navItems.slice(0, 2).map((item, index) => (
-									<Link key={item.label} href={item.to}>
-										<MainButton key={index} variant="contained" color={index == 0 ? 'darkGrey' : 'white'}>
-											{item.label}
-										</MainButton>
-									</Link>
-								))}
-							</Stack>
-
-							{navItems.slice(2, navItems.length).map((navItem) => (
+							{navItems.map((navItem) => (
 								<Link key={navItem.label} href={navItem.to}>
 									<NavItem isActived={navItem.actived.includes(pathName)}>
 										<Typography>{navItem.label}</Typography>

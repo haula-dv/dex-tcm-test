@@ -1,5 +1,4 @@
 import { Box, FormControl, Stack } from '@mui/material';
-import { useOrderStream } from '@orderly.network/hooks';
 import { Divider, Select, Table } from '@orderly.network/react';
 import { OrderStatus } from '@orderly.network/types';
 import { memo } from 'react';
@@ -9,24 +8,24 @@ interface IProps {
 }
 
 const OrderTableContent = ({ orderBookStatus }: IProps) => {
-	const [
-		data,
-		{
-			updateOrder,
-			cancelAlgoOrder,
-			cancelAlgoOrdersByTypes,
-			cancelAllOrders,
-			cancelAllTPSLOrders,
-			cancelOrder,
-			cancelTPSLChildOrder,
-			errors,
-			isLoading,
-			loadMore,
-			refresh,
-			updateAlgoOrder,
-			updateTPSLOrder,
-		},
-	] = useOrderStream({ status: OrderStatus.NEW });
+	// const [
+	// 	data,
+	// 	{
+	// 		updateOrder,
+	// 		cancelAlgoOrder,
+	// 		cancelAlgoOrdersByTypes,
+	// 		cancelAllOrders,
+	// 		cancelAllTPSLOrders,
+	// 		cancelOrder,
+	// 		cancelTPSLChildOrder,
+	// 		errors,
+	// 		isLoading,
+	// 		loadMore,
+	// 		refresh,
+	// 		updateAlgoOrder,
+	// 		updateTPSLOrder,
+	// 	},
+	// ] = useOrderStream({ status: OrderStatus.NEW });
 
 	return (
 		<Stack p={1}>

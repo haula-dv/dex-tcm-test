@@ -1,4 +1,3 @@
-import { MainCard } from '@/components/card/MainCard';
 import IconLoading from '@/components/icons/loading';
 import MainTooltip from '@/components/MainTooltip';
 import { Grid, Stack, Typography } from '@mui/material';
@@ -24,7 +23,7 @@ const OrderBookContentCustom = ({ symbol }: IProps) => {
 	let firstBid: number;
 
 	return (
-		<MainCard backgroudColor="primaryLight" width="100%" height="100%">
+		<>
 			<Grid container pb={'6px'}>
 				<Grid item md={4}>
 					<Typography width={'100%'} fontSize={'12px'} fontWeight={700}>
@@ -116,7 +115,7 @@ const OrderBookContentCustom = ({ symbol }: IProps) => {
 					})
 					.reverse()}
 			</Stack>
-		</MainCard>
+		</>
 	);
 };
 

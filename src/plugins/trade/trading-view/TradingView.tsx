@@ -9,7 +9,6 @@ interface IProps {
 }
 
 export const TradingMainView = ({ symbol, onSymbolChange }: IProps) => {
-	const [isReady, setIsReady] = useState(false);
 	const [currentInterval, setCurrentInterval] = useState('1');
 
 	const [_, base] = symbol.split('_');
@@ -51,17 +50,14 @@ export const TradingMainView = ({ symbol, onSymbolChange }: IProps) => {
 	}, [symbol, currentInterval, base]);
 
 	return (
-		<Box>
+		<Box flex={'1 1 0%'} height={'100%'} minHeight={'450px'}>
 			<TimeLine handleChangeInterval={handleChangeInterval} />
-
 			<Box
-				height="450px"
-				bgcolor={theme.palette.primary.light}
-				sx={{
-					borderRadius: '18px',
-					overflow: 'hidden',
-				}}
 				position={'relative'}
+				height={'100%'}
+				width={'100%'}
+				bgcolor={theme.palette.primary.light}
+				borderRadius={'18px'}
 			>
 				<Box
 					position={'absolute'}
@@ -73,34 +69,20 @@ export const TradingMainView = ({ symbol, onSymbolChange }: IProps) => {
 					height={'100%'}
 					bgcolor={'transparent'}
 					sx={{
-						pointerEvents: 'none', // Add this line to allow clicks to pass through
+						pointerEvents: 'none',
+						borderRadius: '18px',
 					}}
+					zIndex={9}
 				></Box>
 
-				{/* {!isReady && (
-					<Box
-						position={'absolute'}
-						top={0}
-						left={0}
-						bgcolor={theme.palette.primary.light}
-						width={'100%'}
-						height={'100%'}
-						zIndex={10}
-						display={'flex'}
-						alignItems={'center'}
-						justifyContent={'center'}
-					>
-						<IconLoading />
-					</Box>
-				)} */}
-
-				<div
+				<Box
 					className="tradingview-widget-container"
 					ref={container}
-					style={{
+					sx={{
 						height: '100%',
 						width: '100%',
 						borderRadius: '18px',
+						overflow: 'hidden',
 					}}
 				>
 					<div
@@ -111,8 +93,35 @@ export const TradingMainView = ({ symbol, onSymbolChange }: IProps) => {
 							borderRadius: '18px',
 						}}
 					></div>
-				</div>
+				</Box>
 			</Box>
+
+			{/* <Box
+				bgcolor={theme.palette.primary.light}
+				sx={{
+					borderRadius: '18px',
+					overflow: 'hidden',
+				}}
+				position={'relative'}
+				height={'100%'}
+				width={'100%'}
+			>
+				<Box
+					position={'absolute'}
+					top={0}
+					left={0}
+					border={3}
+					borderColor={theme.palette.primary.light}
+					width={'100%'}
+					height={'100%'}
+					bgcolor={'transparent'}
+					sx={{
+						pointerEvents: 'none',
+					}}
+				></Box>
+
+				
+			</Box> */}
 		</Box>
 	);
 };

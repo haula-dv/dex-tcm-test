@@ -26,7 +26,7 @@ const MainTab = ({ tabs, onChange, fullWidth, children }: IProps) => {
 
 	return (
 		<TabContext value={value}>
-			<Stack direction={'row'} spacing={'10px'}>
+			<Stack direction={'row'} spacing={'10px'} pb={'10px'}>
 				{tabs.map((item, index) => {
 					return (
 						<TabItem

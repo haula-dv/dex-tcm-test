@@ -17,6 +17,6 @@ export class TSizes {
 
 	static widthCommonCard = '586px';
 
-	static tradeBodyHeight: 'calc(100vh - 140px)';
+	static tradeBodyHeight: 'calc(100vh - 240px)';
 }
 export const tradeBodyHeight = 'calc(100vh - 180px)';

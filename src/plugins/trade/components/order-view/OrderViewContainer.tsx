@@ -1,8 +1,8 @@
 import { ITab } from '@/common/types/components/tab';
+import { MainCard } from '@/components/card/MainCard';
 import MainTab from '@/components/tab/MainTab';
-import { theme } from '@/utils';
 import TabPanel from '@mui/lab/TabPanel';
-import { Box, Stack } from '@mui/material';
+import { Box } from '@mui/material';
 import { OrderStatus } from '@orderly.network/types';
 import PositionContent from '../position/PositionContent';
 import OrderTableContent from './OrderTableContent';
@@ -40,22 +40,15 @@ export const OrderViewContainer = ({ symbol }: IProps) => {
 	};
 
 	return (
-		<Box height={'100%'} flex={1} overflow={'hidden'}>
+		<Box height={'20.5617%'} minHeight={'350px'} overflow={'hidden'} pt="52px" borderRadius={'16px'}>
 			<MainTab tabs={tabs as any} onChange={onTabChange}>
-				<Stack
-					mt={'10px'}
-					p="10px"
-					bgcolor={theme.palette.primary.light}
-					height={'340px'}
-					borderRadius={'14px'}
-					overflow={'hidden'}
-				>
+				<MainCard backgroudColor="primaryLight" height="100%" width="100%" disablePadding>
 					{tabs.map((item) => (
-						<TabPanel key={item.value} value={item.value} sx={{ p: 0 }}>
+						<TabPanel key={item.value} value={item.value} sx={{ p: 0, overflow: 'auto' }}>
 							{item.children}
 						</TabPanel>
 					))}
-				</Stack>
+				</MainCard>
 			</MainTab>
 			{/* <OrdersView
 				dataSource={data as any}

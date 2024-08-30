@@ -1,6 +1,7 @@
 import { MainButton } from '@/components/button/MainButton';
 import { MainCard } from '@/components/card/MainCard';
-import { tradeBodyHeight, TSizes } from '@/utils/themes/custom-theme/sizes';
+import { theme } from '@/utils';
+import { TSizes } from '@/utils/themes/custom-theme/sizes';
 import { Box, Stack } from '@mui/material';
 import { useState } from 'react';
 import OrderBookContentCustom from './OrderBookContentCustom';
@@ -24,24 +25,29 @@ export const OrderBookContainer = ({ symbol }: IProps) => {
 	];
 
 	return (
-		<MainCard backgroudColor="primary" width="100%" minHeight={tradeBodyHeight} height="100%">
-			<Box overflow={'hidden'} height={'100%'} borderRadius={TSizes.borderRadius}>
-				<Stack direction={'row'} pb={'10px'} spacing={'6px'}>
-					{tabs.map((item) => (
-						<MainButton
-							key={item.value}
-							fullWidth
-							variant={value == item.value ? 'contained' : 'text'}
-							color={value == item.value ? 'white' : 'inherit'}
-							onClick={() => handleChange(item.value)}
-						>
-							{item.label}
-						</MainButton>
-					))}
-				</Stack>
+		<MainCard backgroudColor="primary" width="100%">
+			<Stack direction={'row'} spacing={'6px'} height={'56px'}>
+				{tabs.map((item) => (
+					<MainButton
+						key={item.value}
+						fullWidth
+						variant={value == item.value ? 'contained' : 'text'}
+						color={value == item.value ? 'white' : 'inherit'}
+						onClick={() => handleChange(item.value)}
+					>
+						{item.label}
+					</MainButton>
+				))}
+			</Stack>
 
+			<Box
+				sx={{ height: 'calc(-220px + 100vh)', minHeight: 'calc(800px - 20px)', overflowY: 'auto' }}
+				bgcolor={theme.palette.primary.light}
+				borderRadius={TSizes.borderRadius}
+				p="10px"
+			>
 				{value == 'orderbook' && <OrderBookContentCustom symbol={symbol} />}
-				{/* {value == 'orderbook' && <OrderBookContent symbol={symbol} />} */}
+
 				{value == 'trades' && <OrderLastTradeContent symbol={symbol} />}
 			</Box>
 		</MainCard>

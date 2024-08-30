@@ -1,6 +1,5 @@
 'use client';
 import { Header } from '@/components/layouts/Header';
-import { tradeBodyHeight } from '@/utils/themes/custom-theme/sizes';
 import { Box } from '@mui/material';
 import React from 'react';
 
@@ -13,7 +12,7 @@ export default function RootLayout({
 		<>
 			<Header />
 
-			<Box px={{ xs: '16px', xl: '60px' }} position={'relative'} minHeight={tradeBodyHeight}>
+			<Box px={{ xs: '16px', xl: '60px' }} position={'relative'}>
 				{children}
 			</Box>
 		</>
