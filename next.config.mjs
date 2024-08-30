@@ -45,14 +45,14 @@ export default withPWA({
 			},
 
 			{
-				source: '/trade/perp',
-				destination: '/trade/perp/PERP_ETH_USDC',
+				source: '/trading/perp',
+				destination: '/trading/perp/PERP_ETH_USDC',
 				permanent: false,
 			},
 
 			{
-				source: '/trade',
-				destination: '/trade/perp/PERP_ETH_USDC',
+				source: '/trading',
+				destination: '/trading/perp/PERP_ETH_USDC',
 				permanent: false,
 			},
 		];

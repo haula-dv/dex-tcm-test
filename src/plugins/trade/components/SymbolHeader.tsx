@@ -103,7 +103,7 @@ const SymbolHeader = ({ onSymbolChange, symbol }: IProps) => {
 
 	return (
 		<>
-			<Stack direction={'row'} spacing={1.5} alignItems={'center'} flex={1} px={'16px'}>
+			<Stack direction={'row'} spacing={1.5} alignItems={'center'} flex={1} my="8px" height={'30px'}>
 				<MainButton
 					startIcon={<TokenIcon url={getImageNextwork(symbol ? spitSymbol(symbol) : '', 'symbol_logo')} />}
 					variant="textLink"
@@ -113,14 +113,18 @@ const SymbolHeader = ({ onSymbolChange, symbol }: IProps) => {
 					aria-expanded={openMarketEl ? 'true' : undefined}
 					onClick={handleClick}
 					endIcon={<IconChevronDown size="1rem" />}
-					sx={{ color: theme.palette.grey[900] }}
+					sx={{
+						color: theme.palette.grey[900],
+						whiteSpace: 'nowrap',
+						'& p': {},
+					}}
 				>
 					{`${base}-${perp}`}
 				</MainButton>
 
 				<DividerMui orientation="vertical" flexItem />
 
-				<Stack direction={'row'} spacing={1.5} alignItems={'center'} sx={{ overflowX: 'auto' }}>
+				<Stack direction={'row'} spacing={3} alignItems={'center'} sx={{ overflowX: 'auto' }}>
 					<Typography fontWeight={600} pr={1} whiteSpace={'nowrap'}>
 						0,990
 					</Typography>

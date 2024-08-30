@@ -1,6 +1,12 @@
+import { MainButton } from '@/components/button/MainButton';
+import { MainIconButton } from '@/components/button/MainIconButton';
+import FixTrading from '@/components/icons/fixtrading';
+import IconLineTrading from '@/components/icons/line-trading';
+import IconSetting from '@/components/icons/setting';
+import IconTypeChart from '@/components/icons/type-chart';
 import { theme } from '@/utils';
-import { TSizes } from '@/utils/themes/custom-theme/sizes';
 import { Stack, Typography } from '@mui/material';
+import { IconChevronDown } from '@tabler/icons-react';
 import { useState } from 'react';
 
 const timelines = [
@@ -32,23 +38,14 @@ const TimeLine = ({ handleChangeInterval }: IProps) => {
 	};
 
 	return (
-		<Stack
-			direction={'row'}
-			spacing={0.5}
-			bgcolor={theme.palette.primary.light}
-			p={'10px'}
-			mt={1}
-			sx={{ borderTopLeftRadius: TSizes.borderRadius, borderTopRightRadius: TSizes.borderRadius }}
-			border={1}
-			borderColor={theme.palette.divider}
-			borderBottom={0}
-		>
+		<Stack direction={'row'} spacing={2} px={'10px'} alignItems={'center'} pb={'10px'}>
 			{timelines.map((item, index) => (
 				<Typography
 					key={index}
-					width={'56px'}
 					sx={{ cursor: 'pointer' }}
 					fontSize={'12px'}
+					width={'30px'}
+					whiteSpace={'nowrap'}
 					onClick={() => onChange(item.value)}
 					fontWeight={currentIn === item.value ? 700 : 500}
 					color={currentIn === item.value ? theme.palette.primary.dark : theme.palette.grey[600]}
@@ -56,6 +53,28 @@ const TimeLine = ({ handleChangeInterval }: IProps) => {
 					{item.label}
 				</Typography>
 			))}
+
+			<Stack direction={'row'} alignItems={'center'}>
+				<MainButton
+					size="small"
+					color="inherit"
+					endIcon={<IconChevronDown size={'1rem'} color={theme.palette.grey[400]} />}
+				>
+					<IconLineTrading />
+				</MainButton>
+
+				<MainIconButton size="small">
+					<FixTrading />
+				</MainIconButton>
+
+				<MainIconButton size="small">
+					<IconTypeChart />
+				</MainIconButton>
+
+				<MainIconButton size="small">
+					<IconSetting />
+				</MainIconButton>
+			</Stack>
 		</Stack>
 	);
 };

@@ -13,7 +13,7 @@ export default function RootLayout({
 		<>
 			<Header />
 
-			<Box pt="48px" px={{ xs: '16px', xl: '60px' }} position={'relative'} minHeight={tradeBodyHeight}>
+			<Box pt="16px" px={{ xs: '16px', xl: '60px' }} position={'relative'} minHeight={tradeBodyHeight}>
 				{children}
 			</Box>
 		</>

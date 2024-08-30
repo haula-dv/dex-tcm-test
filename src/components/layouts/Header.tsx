@@ -1,21 +1,25 @@
 'use client';
 import WalletContainer from '@/plugins/wallet/components/WalletContainer';
+import { theme } from '@/utils';
 import { Mixins } from '@/utils/themes/custom-theme/mixins';
 import { TSizes } from '@/utils/themes/custom-theme/sizes';
 import { AppBar, Box, BoxProps, Stack, Toolbar, Typography } from '@mui/material';
 import { styled } from '@mui/material/styles';
 import Link from 'next/link';
-import { usePathname } from 'next/navigation';
+import { useParams, usePathname } from 'next/navigation';
+import { MainButton } from '../button/MainButton';
 import Logo from '../icons/Logo';
 
 export const Header = () => {
 	const pathName = usePathname();
+	const params = useParams();
 
 	const navItems = [
-		{ label: 'Swap', to: '/swap' },
-		{ label: 'Trade', to: '/trade/perp' },
-		{ label: 'Pool', to: '/pool' },
-		{ label: 'Vote', to: '/vote' },
+		{ label: 'Swap', to: '/swap', actived: ['/swap'] },
+		{ label: 'Pool', to: '/pool', actived: ['/pool'] },
+		{ label: 'Trading', to: '/trading/perp', actived: [`${pathName}`, `/trading/perp/${params.symbol}`] },
+		{ label: 'Portfolio', to: '/portfolio', actived: ['/portfolio'] },
+		{ label: 'Vote', to: '/vote', actived: ['/vote'] },
 	];
 
 	return (
@@ -26,9 +30,17 @@ export const Header = () => {
 						<Stack direction={'row'} alignItems={'center'} spacing={TSizes.margin_md}>
 							<Logo width="140px" height="40px" />
 
-							{navItems.map((navItem) => (
+							<Stack direction={'row'} border={2} borderColor={theme.palette.grey[700]} borderRadius={'12px'}>
+								{navItems.slice(0, 2).map((item, index) => (
+									<MainButton key={index} variant="contained" color={index == 0 ? 'darkGrey' : 'white'}>
+										{item.label}
+									</MainButton>
+								))}
+							</Stack>
+
+							{navItems.slice(2, navItems.length).map((navItem) => (
 								<Link key={navItem.label} href={navItem.to}>
-									<NavItem isActived={navItem.to.includes(pathName)}>
+									<NavItem isActived={navItem.actived.includes(pathName)}>
 										<Typography>{navItem.label}</Typography>
 									</NavItem>
 								</Link>
@@ -42,6 +54,8 @@ export const Header = () => {
 		</MainAppBar>
 	);
 };
+
+// const CutomNavButton = styled(MainButton)
 
 const MainAppBar = styled(AppBar)(({ theme }) => ({
 	backgroundColor: '#fff',

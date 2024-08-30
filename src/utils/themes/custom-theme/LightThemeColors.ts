@@ -44,7 +44,7 @@ const LightThemeColors = [
 			},
 
 			darkGrey: {
-				main: '#727272',
+				main: '#3F3F3F',
 				contrastText: '#F7F4F0',
 			},
 

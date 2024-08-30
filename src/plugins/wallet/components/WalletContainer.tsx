@@ -1,7 +1,7 @@
 import { MainButton } from '@/components/button/MainButton';
 import { MainIconButton } from '@/components/button/MainIconButton';
 import IconLoading from '@/components/icons/loading';
-import { Stack } from '@mui/material';
+import { Stack, Typography } from '@mui/material';
 import { useAccount } from '@orderly.network/hooks';
 import { IconDots, IconSettings } from '@tabler/icons-react';
 import { useConnectWallet } from '@web3-onboard/react';
@@ -73,18 +73,22 @@ export default function WalletContainer() {
 							Connect to Wallet
 						</MainButton>
 					) : (
-						<MainButton
-							variant="contained"
-							color="darkGrey"
-							onClick={handleShowMenuAccount}
-							endIcon={<IconSettings size={'1.1rem'} color="#fff" />}
-							id="account-button"
-							aria-controls={openAccountEl ? 'account-menu' : undefined}
-							aria-haspopup="true"
-							aria-expanded={openAccountEl ? 'true' : undefined}
-						>
-							<AccountAvatar />
-						</MainButton>
+						<>
+							<Typography fontSize={'18px'}>4.8729 ETH</Typography>
+
+							<MainButton
+								variant="contained"
+								color="darkGrey"
+								onClick={handleShowMenuAccount}
+								endIcon={<IconSettings size={'1.1rem'} color="#fff" />}
+								id="account-button"
+								aria-controls={openAccountEl ? 'account-menu' : undefined}
+								aria-haspopup="true"
+								aria-expanded={openAccountEl ? 'true' : undefined}
+							>
+								<AccountAvatar />
+							</MainButton>
+						</>
 					)}
 				</>
 			)}
