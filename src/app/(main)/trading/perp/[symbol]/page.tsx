@@ -34,7 +34,7 @@ export default function PerpPage({ params }: { params: { symbol: string } }) {
 
 	const onSymbolChange = (symbol: string) => {
 		localStorage.setItem(_orderlySymbolKey, symbol);
-		router.push(`/trade/perp/${symbol}`);
+		router.push(`/trading/perp/${symbol}`);
 		updateTitle(symbol);
 	};
 
