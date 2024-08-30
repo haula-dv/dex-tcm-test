@@ -18,6 +18,7 @@ interface IProps extends CardProps {
 	width?: string;
 	height?: string;
 	minHeight?: string;
+	maxHeight?: string;
 }
 
 export const MainCard = ({
@@ -33,11 +34,19 @@ export const MainCard = ({
 	isSelected,
 	height,
 	minHeight,
+	maxHeight,
 	...props
 }: IProps) => {
 	return (
-		<Box width={width} height={height} minHeight={minHeight}>
-			<Stack display={'inline-flex'} flexDirection={'column'} width={width} height={height} minHeight={minHeight}>
+		<Box width={width} height={height} minHeight={minHeight} maxHeight={maxHeight}>
+			<Stack
+				display={'inline-flex'}
+				flexDirection={'column'}
+				width={width}
+				height={height}
+				minHeight={minHeight}
+				maxHeight={maxHeight}
+			>
 				{isNotch && <IconNotchCard />}
 
 				<CustomCard
@@ -52,6 +61,7 @@ export const MainCard = ({
 						transition: '0.6s',
 						height: height,
 						minHeight: minHeight,
+						maxHeight: maxHeight,
 					}}
 					backgroudColor={backgroudColor}
 					{...props}

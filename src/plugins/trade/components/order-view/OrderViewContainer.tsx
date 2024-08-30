@@ -1,5 +1,6 @@
 import { ITab } from '@/common/types/components/tab';
 import MainTab from '@/components/tab/MainTab';
+import { theme } from '@/utils';
 import TabPanel from '@mui/lab/TabPanel';
 import { Box, Stack } from '@mui/material';
 import { OrderStatus } from '@orderly.network/types';
@@ -39,9 +40,16 @@ export const OrderViewContainer = ({ symbol }: IProps) => {
 	};
 
 	return (
-		<Box px={'10px'} height={'100%'}>
+		<Box height={'100%'} flex={1} overflow={'hidden'}>
 			<MainTab tabs={tabs as any} onChange={onTabChange}>
-				<Stack pt={'10px'}>
+				<Stack
+					mt={'10px'}
+					p="10px"
+					bgcolor={theme.palette.primary.light}
+					height={'340px'}
+					borderRadius={'14px'}
+					overflow={'hidden'}
+				>
 					{tabs.map((item) => (
 						<TabPanel key={item.value} value={item.value} sx={{ p: 0 }}>
 							{item.children}

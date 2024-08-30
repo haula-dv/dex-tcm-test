@@ -24,8 +24,14 @@ export const MainViewContainer = ({ onSymbolChange, symbol }: IProps) => {
 				<Grid item md={7}>
 					<SymbolHeader onSymbolChange={onSymbolChange} symbol={symbol} />
 
-					<MainCard backgroudColor="primary" width="100%" minHeight={tradeBodyHeight}>
-						<Stack spacing={'10px'} mb={'10px'} height={'100%'} overflow={'hidden'}>
+					<MainCard
+						backgroudColor="primary"
+						width="100%"
+						minHeight={tradeBodyHeight}
+						maxHeight={tradeBodyHeight}
+						sx={{ overflow: 'hidden' }}
+					>
+						<Stack spacing={'10px'} mb={'10px'} height={'100%'} overflow={'hidden'} flexDirection={'column'}>
 							<TradingMainView symbol={symbol} onSymbolChange={onSymbolChange} />
 							<OrderViewContainer symbol={symbol} />
 						</Stack>

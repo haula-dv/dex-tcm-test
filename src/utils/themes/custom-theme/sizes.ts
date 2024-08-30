@@ -19,4 +19,4 @@ export class TSizes {
 
 	static tradeBodyHeight: 'calc(100vh - 140px)';
 }
-export const tradeBodyHeight = 'calc(100vh - 140px)';
+export const tradeBodyHeight = 'calc(100vh - 180px)';

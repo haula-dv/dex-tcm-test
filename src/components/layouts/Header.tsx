@@ -28,7 +28,7 @@ export const Header = () => {
 				<Toolbar disableGutters>
 					<Stack direction={'row'} justifyContent={'space-between'} width={'100%'} alignItems={'center'}>
 						<Stack direction={'row'} alignItems={'center'} spacing={TSizes.margin_md}>
-							<Logo width="140px" height="40px" />
+							<Logo width="124px" height="40px" />
 
 							<Stack direction={'row'} border={2} borderColor={theme.palette.grey[700]} borderRadius={'12px'}>
 								{navItems.slice(0, 2).map((item, index) => (
