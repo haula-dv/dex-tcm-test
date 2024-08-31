@@ -1,8 +1,8 @@
 import IconLoading from '@/components/icons/loading';
-import MainTooltip from '@/components/MainTooltip';
 import { Grid, Stack, Typography } from '@mui/material';
 import { useOrderbookStream } from '@orderly.network/hooks';
 import { memo } from 'react';
+import MarkPrice from './MarkPrice';
 import OrderBookItem from './OrderBookItem';
 import OrderBookItemNull from './OrderBookItemNull';
 
@@ -18,16 +18,15 @@ const OrderBookContentCustom = ({ symbol }: IProps) => {
 	if (isLoading) {
 		return <IconLoading />;
 	}
+
 	const [_, base, quote] = symbol.split('_');
-	let firstAsk: number;
-	let firstBid: number;
 
 	return (
 		<>
 			<Grid container pb={'6px'}>
 				<Grid item md={4}>
 					<Typography width={'100%'} fontSize={'12px'} fontWeight={700}>
-						PRICE
+						Price
 					</Typography>
 				</Grid>
 
@@ -45,23 +44,21 @@ const OrderBookContentCustom = ({ symbol }: IProps) => {
 			</Grid>
 
 			<Stack spacing={0.2}>
-				{data.asks?.map(([price, quantity, aggregated], index) => {
+				{data.asks?.map(([price, quantity, aggregated, totalQuote], index) => {
 					if (Number.isNaN(price) || Number.isNaN(quantity) || Number.isNaN(aggregated)) {
 						return <OrderBookItemNull key={index} isFirstAsk />;
 					}
 
-					if (firstAsk == null) {
-						firstAsk = aggregated;
-					}
-					const gradient = (100 * aggregated) / firstAsk;
+					const gradient = (100 * aggregated) / data.asks?.[0]?.[2] || 1;
 
 					return (
 						<OrderBookItem
 							key={index}
-							aggregated={aggregated}
 							gradient={gradient}
 							price={price}
 							quantity={quantity}
+							aggregated={aggregated}
+							totalQuote={totalQuote}
 							isFirstAsk
 							base={base}
 							quote={quote}
@@ -69,45 +66,30 @@ const OrderBookContentCustom = ({ symbol }: IProps) => {
 					);
 				})}
 
-				<Stack direction={'row'} py="16px">
-					<Typography fontSize={'18px'} fontWeight={600} width={'100%'}>
-						{data.markPrice}
-					</Typography>
-					<MainTooltip
-						placement="top"
-						arrow
-						title="Obtained from a third-party oracle, the mark price is calculated as the median of three prices: the last price, the fair price based on the funding rate basis, and the fair price based on the order books."
-					>
-						<Typography fontSize={'12px'} width={'100%'} textAlign={'center'}>
-							15.00
-						</Typography>
-					</MainTooltip>
-
-					<MainTooltip placement="top" title="Spread Ratio of the ask1 and bid1." arrow>
-						<Typography fontSize={'12px'} width={'100%'} textAlign={'center'}>
-							0.0004%
-						</Typography>
-					</MainTooltip>
-				</Stack>
+				<MarkPrice
+					markPrice={data.markPrice ?? 0}
+					lastPrice={data && data?.middlePrice ? data.middlePrice : []}
+					asks={data?.bids ?? []}
+					bids={data?.asks ?? []}
+				/>
 
 				{data.bids
 					?.reverse()
-					?.map(([price, quantity, aggregated], index) => {
+					?.map(([price, quantity, aggregated, totalQuote], index) => {
 						if (Number.isNaN(price) || Number.isNaN(quantity) || Number.isNaN(aggregated)) {
 							return <OrderBookItemNull key={index} />;
 						}
-						if (firstBid == null) {
-							firstBid = aggregated;
-						}
-						const gradient = (100 * aggregated) / firstBid;
+
+						const gradient = (100 * aggregated) / data.bids?.[0]?.[2] || 1;
 
 						return (
 							<OrderBookItem
 								key={index}
-								aggregated={aggregated}
 								gradient={gradient}
 								price={price}
 								quantity={quantity}
+								aggregated={aggregated}
+								totalQuote={totalQuote}
 								base={base}
 								quote={quote}
 							/>

@@ -9,13 +9,14 @@ interface IProps {
 	price: number;
 	quantity: number;
 	aggregated: number;
+	totalQuote: number;
 	gradient: number;
 	isFirstAsk?: boolean;
 	base: string;
 	quote: string;
 }
 
-const OrderBookItem = ({ price, quantity, aggregated, gradient, base, quote, isFirstAsk }: IProps) => {
+const OrderBookItem = ({ price, quantity, aggregated, totalQuote, gradient, base, quote, isFirstAsk }: IProps) => {
 	const TooltipValue = (
 		<Stack minWidth={'168px'}>
 			<ItemRow
@@ -26,7 +27,7 @@ const OrderBookItem = ({ price, quantity, aggregated, gradient, base, quote, isF
 				}
 				value={
 					<Typography fontSize={'12px'} fontWeight={600}>
-						{price}
+						{usdFormatter.format(price)}
 					</Typography>
 				}
 			/>
@@ -38,7 +39,7 @@ const OrderBookItem = ({ price, quantity, aggregated, gradient, base, quote, isF
 				}
 				value={
 					<Typography fontSize={'12px'} fontWeight={600}>
-						{quantity}
+						{aggregated.toFixed(2)}
 					</Typography>
 				}
 			/>
@@ -50,7 +51,7 @@ const OrderBookItem = ({ price, quantity, aggregated, gradient, base, quote, isF
 				}
 				value={
 					<Typography fontSize={'12px'} fontWeight={600}>
-						{aggregated}
+						{usdFormatter.format(totalQuote)}
 					</Typography>
 				}
 			/>

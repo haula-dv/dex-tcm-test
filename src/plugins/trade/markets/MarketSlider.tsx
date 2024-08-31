@@ -33,8 +33,6 @@ const MarketSlider = () => {
 		};
 	}, [itemRef]);
 
-	// console.log(data);
-
 	return (
 		<Wrapper showBefore={showBefore} showAfter={showAfter}>
 			<ItemWrap ref={itemRef} direction={'row'} height={'48px'} alignItems={'center'} spacing={'16px'}>
@@ -43,14 +41,25 @@ const MarketSlider = () => {
 					data?.map((market, index) => (
 						<Stack direction={'row'} spacing={'18px'} key={index}>
 							<Stack direction={'row'} spacing={'8px'}>
-								<Typography fontWeight={600} fontSize={'14px'}>
+								<Typography fontWeight={600} fontSize={'14px'} whiteSpace={'nowrap'}>
 									{market.symbol}
 								</Typography>
-								<Typography fontWeight={600} fontSize={'14px'}>
-									{(market as any).change * 100}
+
+								<Typography fontWeight={600} fontSize={'14px'} whiteSpace={'nowrap'}>
+									{(market as any).index_price.toFixed(2)}
 								</Typography>
-								<Typography fontWeight={600} fontSize={'14px'} color={theme.palette.success.main}>
-									2.11%
+
+								<Typography
+									fontWeight={600}
+									fontSize={'14px'}
+									color={
+										(market as any).change && (market as any).change.toString().startsWith('-')
+											? theme.palette.error.main
+											: theme.palette.success.main
+									}
+									whiteSpace={'nowrap'}
+								>
+									{((market as any).change * 100).toFixed(2)} %
 								</Typography>
 							</Stack>
 
@@ -58,7 +67,7 @@ const MarketSlider = () => {
 						</Stack>
 					))
 				) : (
-					<Skeleton variant="text" height={'46px'} sx={{ flexShrink: 0 }} animation="wave" width={'220px'} />
+					<Skeleton variant="text" height={'46px'} sx={{ flexShrink: 0 }} animation="wave" width={'120px'} />
 				)}
 			</ItemWrap>
 		</Wrapper>

@@ -1,10 +1,11 @@
 import { getImageNextwork } from '@/common';
 import { MainButton } from '@/components/button/MainButton';
+import MainTooltip from '@/components/MainTooltip';
 import { TokenIcon } from '@/components/token/TokenIcon';
 import { theme } from '@/utils';
 import { usdFormatter } from '@/utils/formatters/number';
 import { spitSymbol } from '@/utils/formatters/token';
-import { Box, Stack, Tooltip, Typography } from '@mui/material';
+import { Box, Stack, Typography } from '@mui/material';
 import { useFundingRate, useTickerStream } from '@orderly.network/hooks';
 import { Decimal } from '@orderly.network/utils';
 import { IconChevronDown } from '@tabler/icons-react';
@@ -44,17 +45,15 @@ const SymbolHeader = ({ onSymbolChange, symbol }: IProps) => {
 		const num = new Decimal(value);
 
 		if (num.gte(1e9)) {
-			return `${num.div(1e9).toDecimalPlaces(2).valueOf()}B ${quote}`;
+			return `${num.div(1e9).toDecimalPlaces(2).valueOf()}B ${base}`;
 		} else if (num.gte(1e6)) {
-			return `${num.div(1e6).toDecimalPlaces(2).valueOf()}K ${quote}`;
+			return `${num.div(1e6).toDecimalPlaces(2).valueOf()}M ${base}`;
 		} else if (num.gte(1e3)) {
-			return `${num.div(1e3).toDecimalPlaces(2).valueOf()}K ${quote}`;
+			return `${num.div(1e3).toDecimalPlaces(2).valueOf()}K ${base}`;
 		} else {
-			return `${num.toDecimalPlaces(2).valueOf()} ${quote}`;
+			return `${num.toDecimalPlaces(2).valueOf()} ${base}`;
 		}
 	}
-
-	const formattedOpenInterest = formatNumber(openInterestValue);
 
 	let dailyChange: string | undefined;
 	let dailyChangePercentage: string | undefined;
@@ -81,7 +80,7 @@ const SymbolHeader = ({ onSymbolChange, symbol }: IProps) => {
 		{ label: 'Index', value: stream ? usdFormatter.format(stream.index_price) : '_' },
 		{
 			label: '24h volume',
-			value: stream ? stream['24h_amount'].toLocaleString() : '_',
+			value: stream ? formatNumber(stream['24h_amount']) : '_',
 			hint: '24 hour total trading volume on the Orderly Network.',
 		},
 
@@ -96,7 +95,7 @@ const SymbolHeader = ({ onSymbolChange, symbol }: IProps) => {
 		},
 		{
 			label: 'Open interest',
-			value: formattedOpenInterest,
+			value: formatNumber(openInterestValue),
 			hint: 'Total size of positions per side.',
 		},
 	];
@@ -126,12 +125,12 @@ const SymbolHeader = ({ onSymbolChange, symbol }: IProps) => {
 
 				<Stack direction={'row'} spacing={3} alignItems={'center'} sx={{ overflowX: 'auto' }}>
 					<Typography fontWeight={600} pr={1} whiteSpace={'nowrap'}>
-						0,990
+						{stream ? usdFormatter.format(stream?.['24h_close']) : '_'}
 					</Typography>
 
 					<Stack direction={'row'} spacing={2}>
 						{datas.map((ite, index) => (
-							<Tooltip key={index} title={ite?.hint} style={{ maxWidth: '200px' }} arrow>
+							<MainTooltip key={index} title={ite?.hint} style={{ maxWidth: '200px' }} arrow>
 								<Stack sx={{ cursor: 'pointer' }}>
 									<Typography
 										color={theme.palette.grey[400]}
@@ -147,7 +146,7 @@ const SymbolHeader = ({ onSymbolChange, symbol }: IProps) => {
 										{ite.value}
 									</Typography>
 								</Stack>
-							</Tooltip>
+							</MainTooltip>
 						))}
 					</Stack>
 				</Stack>
