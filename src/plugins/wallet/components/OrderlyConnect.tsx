@@ -1,5 +1,4 @@
 'use client';
-import { useIsTestnet } from '@/hooks/useIsTestnet';
 import { mainToast } from '@/utils/lib/toast';
 import { useAccount } from '@orderly.network/hooks';
 import { AccountStatusEnum } from '@orderly.network/types';
@@ -10,7 +9,6 @@ let timer: number | undefined;
 
 export const OrderlyConnect = () => {
 	const [{ wallet }] = useConnectWallet();
-	const [isTestnet] = useIsTestnet();
 
 	const { account, state } = useAccount();
 	const [{ connectedChain }] = useSetChain();
@@ -55,35 +53,6 @@ export const OrderlyConnect = () => {
 		}
 	};
 
-	const handleOrderkyKey = async () => {
-		const { update } = customNotification({
-			eventCode: 'orderlyKey',
-			type: 'pending',
-			message: 'Registering Orderly key...',
-		});
-		try {
-			await account.createOrderlyKey(365);
-			update({
-				eventCode: 'orderlyKeySuccess',
-				type: 'success',
-				message: 'Key registration complete!',
-				autoDismiss: 5_000,
-			});
-		} catch (err) {
-			console.error(err);
-			mainToast('Orderly key registration failed', 'error');
-			update({
-				eventCode: 'orderlyKeyError',
-				type: 'error',
-				message: 'Key registration failed!',
-				autoDismiss: 5_000,
-			});
-
-			throw err;
-		} finally {
-		}
-	};
-
 	useEffect(() => {
 		if (timer != null) {
 			clearTimeout(timer);
@@ -96,7 +65,7 @@ export const OrderlyConnect = () => {
 				}
 
 				if (!hasOrderlyKey && state.status >= AccountStatusEnum.SignedIn) {
-					handleOrderkyKey();
+					// handleOrderkyKey();
 				}
 
 				timer = undefined;

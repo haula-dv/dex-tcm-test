@@ -1,5 +1,5 @@
 import { theme } from '@/utils';
-import { Box, Stack, Typography } from '@mui/material';
+import { Box, Skeleton, Stack, Typography } from '@mui/material';
 import { styled } from '@mui/material/styles';
 import { useMarketsStream } from '@orderly.network/hooks';
 import { memo, useEffect, useRef, useState } from 'react';
@@ -33,29 +33,33 @@ const MarketSlider = () => {
 		};
 	}, [itemRef]);
 
+	// console.log(data);
+
 	return (
 		<Wrapper showBefore={showBefore} showAfter={showAfter}>
 			<ItemWrap ref={itemRef} direction={'row'} height={'48px'} alignItems={'center'} spacing={'16px'}>
-				{data
-					? data?.length > 0 &&
-					  data?.map((market, index) => (
-							<Stack direction={'row'} spacing={'18px'} key={index}>
-								<Stack direction={'row'} spacing={'8px'}>
-									<Typography fontWeight={600} fontSize={'14px'}>
-										{market.symbol}
-									</Typography>
-									<Typography fontWeight={600} fontSize={'14px'}>
-										59,964.4
-									</Typography>
-									<Typography fontWeight={600} fontSize={'14px'} color={theme.palette.success.main}>
-										2.11%
-									</Typography>
-								</Stack>
-
-								{index < data.length - 1 && <Box height={'18px'} width={'2px'} bgcolor={theme.palette.common.black} />}
+				{data ? (
+					data?.length > 0 &&
+					data?.map((market, index) => (
+						<Stack direction={'row'} spacing={'18px'} key={index}>
+							<Stack direction={'row'} spacing={'8px'}>
+								<Typography fontWeight={600} fontSize={'14px'}>
+									{market.symbol}
+								</Typography>
+								<Typography fontWeight={600} fontSize={'14px'}>
+									{(market as any).change * 100}
+								</Typography>
+								<Typography fontWeight={600} fontSize={'14px'} color={theme.palette.success.main}>
+									2.11%
+								</Typography>
 							</Stack>
-					  ))
-					: '__'}
+
+							{index < data.length - 1 && <Box height={'18px'} width={'2px'} bgcolor={theme.palette.common.black} />}
+						</Stack>
+					))
+				) : (
+					<Skeleton variant="text" height={'46px'} sx={{ flexShrink: 0 }} animation="wave" width={'220px'} />
+				)}
 			</ItemWrap>
 		</Wrapper>
 	);

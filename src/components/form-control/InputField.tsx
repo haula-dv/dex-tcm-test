@@ -39,6 +39,10 @@ const InputField = <V extends FieldValues>({
 						<CustomTextField
 							id={`outlined-adornment-${suffix}`}
 							placeholder={placeholder}
+							name={name}
+							value={value}
+							onBlur={onBlur}
+							onChange={onChange}
 							endAdornment={
 								<InputAdornment position="end">
 									<Typography

@@ -1,13 +1,7 @@
-import { MainCard } from '@/components/card/MainCard';
 import BoxConnectWallet from '@/plugins/wallet/components/BoxConnectWallet';
 import { Box, Grid, Stack } from '@mui/material';
 import MarketsContainer from '../markets/components/MarketsContainer';
-import MarketSlider from '../markets/MarketSlider';
-import { OrderBookContainer } from '../order-book/OrderBookContainer';
-import { TradingMainView } from '../trading-view/TradingView';
 import CreateOrderForm from './create-order/CreateOrderForm';
-import { OrderViewContainer } from './order-view/OrderViewContainer';
-import SymbolHeader from './SymbolHeader';
 
 interface IProps {
 	symbol: string;
@@ -17,11 +11,11 @@ interface IProps {
 export const MainViewContainer = ({ onSymbolChange, symbol }: IProps) => {
 	return (
 		<Box>
-			<MarketSlider />
+			{/* <MarketSlider /> */}
 
 			<Grid container spacing={'16px'} height={'100%'} sx={{ display: 'flex' }}>
 				<Grid item md={7} sx={{ display: 'flex', flexDirection: 'column' }}>
-					<Box>
+					{/* <Box>
 						<SymbolHeader onSymbolChange={onSymbolChange} symbol={symbol} />
 
 						<MainCard backgroudColor="primary" width="100%">
@@ -32,11 +26,11 @@ export const MainViewContainer = ({ onSymbolChange, symbol }: IProps) => {
 								</Box>
 							</Box>
 						</MainCard>
-					</Box>
+					</Box> */}
 				</Grid>
 
 				<Grid item md={2.5} sx={{ display: 'flex', flexDirection: 'column', height: 'auto' }}>
-					<OrderBookContainer symbol={symbol} />
+					{/* <OrderBookContainer symbol={symbol} /> */}
 				</Grid>
 
 				<Grid item md={2.5}>
@@ -46,40 +40,6 @@ export const MainViewContainer = ({ onSymbolChange, symbol }: IProps) => {
 						<CreateOrderForm symbol={symbol} />
 					</Stack>
 				</Grid>
-
-				{/* <Stack direction={'row'} width={'100%'}>
-				<Stack width={'100%'}>
-					<Stack direction={'row'} width={'100%'}>
-						<Box width={'100%'}>
-							<SymbolHeader onSymbolChange={onSymbolChange} symbol={symbol} />
-
-							<TradingMainView symbol={symbol} />
-							</Box>
-							
-							<OrderBookContainer symbol={symbol} />
-					</Stack>
-
-					<Divider />
-
-					<OrderViewContainer symbol={symbol} />
-
-					<SystemStatusBar />
-				</Stack>
-
-				<CreateOrderContainer symbol={symbol} />
-			</Stack>
-
-			<Box px={1} bgcolor={theme.palette.background.default}>
-				More
-				<Stack maxWidth={'400px'} spacing={2}>
-					<Box bgcolor={theme.palette.grey[800]}>
-						<Deposit />
-					</Box>
-					<Withdraw />
-					<AssetAndMarginSheet />
-					<DepositAndWithdraw activeTab="deposit" />
-				</Stack>
-			</Box> */}
 			</Grid>
 		</Box>
 	);

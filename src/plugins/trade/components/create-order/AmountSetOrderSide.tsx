@@ -1,11 +1,11 @@
 import { MainButton } from '@/components/button/MainButton';
-import CurrencyInputField from '@/components/form-control/CurrencyInputField';
+import InputField from '@/components/form-control/InputField';
 import SwitchBase from '@/components/form-control/SwitcheBase';
 import { theme } from '@/utils';
 import { TSizes } from '@/utils/themes/custom-theme/sizes';
 import { Box, Stack, Typography } from '@mui/material';
 import { styled } from '@mui/material/styles';
-import { memo } from 'react';
+import { memo, useState } from 'react';
 import { UseFormReturn } from 'react-hook-form';
 import { Inputs } from './CreateOrderForm';
 
@@ -32,8 +32,11 @@ interface IProps {
 }
 
 const AmountSetOrderSide = ({ formContext }: IProps) => {
+	const [currentSelect, setCurrentSelect] = useState('');
+
 	const handleChangeSlippage = (val: string) => {
 		formContext.setValue('price', val);
+		setCurrentSelect(val);
 	};
 
 	return (
@@ -54,17 +57,17 @@ const AmountSetOrderSide = ({ formContext }: IProps) => {
 
 			<Stack direction={'row'} spacing={TSizes.margin_xs} alignItems={'center'}>
 				<Box width={'100%'}>
-					<CurrencyInputField placeholder="0.00 x" name="price" formContext={formContext} suffix="NONE" />
+					<InputField placeholder="0.00 x" name="orderSide" formContext={formContext} suffix="NONE" />
 				</Box>
 
 				<Stack direction={'row'} spacing={'5px'} alignItems={'center'} width={'100%'}>
 					{slippages.map((item) => (
 						<ButtonPercent
 							key={item.value}
-							variant="filledTonal"
+							variant={currentSelect === item.percentValue ? 'outlined' : 'filledTonal'}
 							onClick={() => handleChangeSlippage(item.percentValue)}
 							size="small"
-							color="inherit"
+							color={currentSelect === item.percentValue ? 'success' : 'inherit'}
 							fullWidth
 						>
 							{item.label}
