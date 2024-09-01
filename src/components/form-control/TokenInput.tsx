@@ -14,7 +14,6 @@ export const TokenInput: FC<
 		id?: string;
 		readonly?: boolean;
 		placeholder?: string;
-		// eslint-disable-next-line @typescript-eslint/ban-types
 		afterInputChange?: Function;
 		value?: string | number;
 		onValueChange?: (value: FixedNumber) => void | Promise<void>;
