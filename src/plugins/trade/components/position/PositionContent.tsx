@@ -1,6 +1,8 @@
-import { theme } from '@/utils';
-import { Stack, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography } from '@mui/material';
-import { usePositionStream } from '@orderly.network/hooks';
+import MainTable from '@/components/table/MainTable';
+import { baseFormatter, usdFormatter } from '@/utils/formatters/number';
+import { Box, TableCell, TableRow } from '@mui/material';
+import { useAccount, usePositionStream } from '@orderly.network/hooks';
+import { PositionsView } from '@orderly.network/react';
 import { memo } from 'react';
 
 interface IProps {
@@ -8,7 +10,7 @@ interface IProps {
 }
 
 const headTable = [
-	{ title: 'Instrument', dataIndex: '1' },
+	{ title: 'Symbol', dataIndex: '1' },
 	{ title: 'Quantity', dataIndex: '2' },
 	{ title: 'Avg. open', dataIndex: '3' },
 	{ title: 'Mark price', dataIndex: '4' },
@@ -18,88 +20,43 @@ const headTable = [
 		dataIndex: '6',
 		hint: `Current unrealized profit or loss on your open positions across all widgets calculated using Mark Price.`,
 	},
-	{ title: 'TP/SL', dataIndex: '7' },
-	{ title: 'TP/SL', dataIndex: 'Est. total' },
-	{ title: 'Margin', dataIndex: '8' },
-	{ title: 'Qty.', dataIndex: '9' },
-	{ title: 'Price', dataIndex: '10' },
 ];
 
 const PositionContent = ({ symbol }: IProps) => {
 	const [{ aggregated, rows, totalCollateral, totalUnrealizedROI, totalValue }] = usePositionStream(symbol);
+	const { state } = useAccount();
 
 	return (
-		<>
-			<Stack direction={'row'} spacing={2} px={'10px'} pt="10px">
-				<Stack>
-					<Typography fontSize={'12px'} color={theme.palette.grey[400]}>
-						Unreal. PnL
-					</Typography>
-					<Typography>0.00 (0.00%)</Typography>
-				</Stack>
+		<Box px={'10px'} pt={'10px'} pb={7} height={'100%'}>
+			<Box className="position-head">
+				<PositionsView aggregated={aggregated} dataSource={[]} />
+			</Box>
 
-				<Stack>
-					<Typography fontSize={'12px'} color={theme.palette.grey[400]}>
-						Notional
-					</Typography>
-					<Typography>--</Typography>
-				</Stack>
-			</Stack>
+			<MainTable headTable={headTable} isEmpty={rows && rows.length > 0 ? false : true}>
+				{rows &&
+					rows.length > 0 &&
+					rows.map((item, index) => {
+						const [_, base, quote] = item.symbol.split('_');
 
-			{/* <MainCard backgroudColor="primaryLight" width="100%" height="100%"> */}
-			<TableContainer>
-				<Table aria-label="position-table" size="small">
-					<TableHead>
-						<TableRow>
-							{headTable.map((item, index) => (
-								<TableCell key={index}>{item.title}</TableCell>
-							))}
-						</TableRow>
-					</TableHead>
-
-					<TableBody>
-						{/* {rows.map((row) => (
-            <TableRow
-              key={row.name}
-              sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
-			  >
-              <TableCell component="th" scope="row">
-                {row.name}
-              </TableCell>
-              <TableCell align="right">{row.calories}</TableCell>
-              <TableCell align="right">{row.fat}</TableCell>
-              <TableCell align="right">{row.carbs}</TableCell>
-              <TableCell align="right">{row.protein}</TableCell>
-            </TableRow>
-          ))} */}
-					</TableBody>
-				</Table>
-			</TableContainer>
-			{/* </MainCard> */}
-
-			{/* <Table
-				headerClassName="table-header-custom"
-				bordered
-				columns={[
-					{ title: 'Instrument', dataIndex: '1' },
-					{ title: 'Quantity', dataIndex: '2' },
-					{ title: 'Avg. open', dataIndex: '3' },
-					{ title: 'Mark price', dataIndex: '4' },
-					{ title: 'Liq. price', dataIndex: '5', hint: 'Unreal. PnL' },
-					{
-						title: 'Unreal. PnL',
-						dataIndex: '6',
-						hint: `Current unrealized profit or loss on your open positions across all widgets calculated using Mark Price.`,
-					},
-					{ title: 'TP/SL', dataIndex: '7' },
-					{ title: 'TP/SL', dataIndex: 'Est. total' },
-					{ title: 'Margin', dataIndex: '8' },
-					{ title: 'Qty.', dataIndex: '9' },
-					{ title: 'Price', dataIndex: '10' },
-				]}
-				dataSource={[1]}
-			></Table> */}
-		</>
+						return (
+							<TableRow key={index} sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
+								<TableCell component="th" scope="row">
+									{base} / {quote}
+								</TableCell>
+								<TableCell>{baseFormatter.format(item.position_qty)}</TableCell>
+								<TableCell align="right">{usdFormatter.format(item.average_open_price)}</TableCell>
+								<TableCell align="right">{usdFormatter.format(item.mark_price)}</TableCell>
+								<TableCell align="right">
+									{item.est_liq_price ? usdFormatter.format(item.est_liq_price) : '-'}
+								</TableCell>
+								<TableCell align="right">
+									{usdFormatter.format(item.unrealized_pnl)} ({usdFormatter.format(item.unrealized_pnl_ROI * 100)}%)
+								</TableCell>
+							</TableRow>
+						);
+					})}
+			</MainTable>
+		</Box>
 	);
 };
 

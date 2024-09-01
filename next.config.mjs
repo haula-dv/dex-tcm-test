@@ -34,7 +34,7 @@ export default withPWA({
 		NEXTWORK_URL: process.env.NEXTWORK_URL,
 	},
 
-	reactStrictMode: true,
+	reactStrictMode: false,
 
 	async redirects() {
 		return [

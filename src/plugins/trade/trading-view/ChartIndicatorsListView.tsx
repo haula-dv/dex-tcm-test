@@ -2,6 +2,7 @@ import { MainIconButton } from '@/components/button/MainIconButton';
 import { SearchField } from '@/components/form-control/SearchField';
 import FixTrading from '@/components/icons/fixtrading';
 import IconLoading from '@/components/icons/loading';
+import MainTooltip from '@/components/MainTooltip';
 import { StyledMenu } from '@/components/menu/StyledMenu';
 import { theme } from '@/utils';
 import { Box, ListItemButton, Stack, Typography } from '@mui/material';
@@ -21,6 +22,7 @@ const ChartIndicatorsListView = ({ handleSelectIndicator }: IProps) => {
 	const [slice, setSlice] = useState(10);
 	const [hasMore, setHasMore] = useState(true);
 	const [currentSelect, setCurrentSelect] = useState<string[]>([]);
+	const [allIndicator, setAllIndicator] = useState(indicatorsCore);
 
 	const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
 		setAnchorEl(event.currentTarget);
@@ -45,7 +47,7 @@ const ChartIndicatorsListView = ({ handleSelectIndicator }: IProps) => {
 	};
 
 	const fetchMoreData = () => {
-		if (slice >= indicatorsCore.length) {
+		if (slice >= allIndicator.length) {
 			setHasMore(false);
 			return;
 		}
@@ -53,18 +55,25 @@ const ChartIndicatorsListView = ({ handleSelectIndicator }: IProps) => {
 		setSlice((prev) => prev + 10);
 	};
 
+	const onSearch = (keyword: string) => {
+		const newArray = allIndicator.filter((item) => item.scriptName.includes(keyword));
+		setAllIndicator(newArray);
+	};
+
 	return (
 		<>
-			<MainIconButton
-				size="small"
-				id="chart-indicator-button"
-				aria-controls={open ? 'chart-indicator-menu' : undefined}
-				aria-haspopup="true"
-				aria-expanded={open ? 'true' : undefined}
-				onClick={handleClick}
-			>
-				<FixTrading />
-			</MainIconButton>
+			<MainTooltip title="Indicators" placement="top" arrow>
+				<MainIconButton
+					size="small"
+					id="chart-indicator-button"
+					aria-controls={open ? 'chart-indicator-menu' : undefined}
+					aria-haspopup="true"
+					aria-expanded={open ? 'true' : undefined}
+					onClick={handleClick}
+				>
+					<FixTrading />
+				</MainIconButton>
+			</MainTooltip>
 
 			<StyledMenu
 				id="chart-indicator-menu"
@@ -77,7 +86,7 @@ const ChartIndicatorsListView = ({ handleSelectIndicator }: IProps) => {
 				}}
 			>
 				<Box mx={'16px'} pb="8px" pt="6px" position={'sticky'} top={'12px'} bgcolor={theme.palette.common.white}>
-					<SearchField placeholder="Search..." />
+					<SearchField placeholder="Search..." onSearch={onSearch} />
 				</Box>
 
 				<Typography fontSize={'12px'} color={theme.palette.grey[400]} px="16px" pt="8px">
@@ -95,14 +104,14 @@ const ChartIndicatorsListView = ({ handleSelectIndicator }: IProps) => {
 					}}
 				>
 					<InfiniteScroll
-						dataLength={indicatorsCore.length - slice}
+						dataLength={allIndicator.length - slice}
 						next={fetchMoreData}
 						inverse={false}
 						hasMore={hasMore}
 						loader={<IconLoading />}
 						scrollableTarget="scrollableDiv"
 					>
-						{indicatorsCore.slice(0, slice).map((item, index) => (
+						{allIndicator.slice(0, slice).map((item, index) => (
 							<ListItemButton
 								key={index}
 								selected={currentSelect.includes(item.scriptIdPart)}

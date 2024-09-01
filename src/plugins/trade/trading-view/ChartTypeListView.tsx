@@ -4,6 +4,7 @@ import IconChartBaseLine from '@/components/icons/chart-base-line';
 import IconChartCandles from '@/components/icons/chart-candles';
 import IconChartLine from '@/components/icons/chart-line';
 import IconChartLine2 from '@/components/icons/chart-line2';
+import MainTooltip from '@/components/MainTooltip';
 import { StyledMenu } from '@/components/menu/StyledMenu';
 import { theme } from '@/utils';
 import { ListItemButton } from '@mui/material';
@@ -73,16 +74,18 @@ const ChartTypeListView = ({ handleChangeChartType }: IProps) => {
 
 	return (
 		<>
-			<MainIconButton
-				size="small"
-				id="chart-type-button"
-				aria-controls={open ? 'chart-type-menu' : undefined}
-				aria-haspopup="true"
-				aria-expanded={open ? 'true' : undefined}
-				onClick={handleClick}
-			>
-				{currentSelect.icon}
-			</MainIconButton>
+			<MainTooltip title="Line type" placement="top" arrow>
+				<MainIconButton
+					size="small"
+					id="chart-type-button"
+					aria-controls={open ? 'chart-type-menu' : undefined}
+					aria-haspopup="true"
+					aria-expanded={open ? 'true' : undefined}
+					onClick={handleClick}
+				>
+					{currentSelect.icon}
+				</MainIconButton>
+			</MainTooltip>
 
 			<StyledMenu
 				id="chart-type-menu"

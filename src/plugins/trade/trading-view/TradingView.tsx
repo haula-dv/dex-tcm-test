@@ -47,21 +47,17 @@ export const TradingMainView = ({ symbol, onSymbolChange }: IProps) => {
 				"backgroundColor": "${theme.palette.primary.light}",
 				"gridColor": "${theme.palette.primary.light}",
 				"hide_top_toolbar": true,
-				  "allow_symbol_change": false,
-				  "save_image": false,
-				  "calendar": false,
-				  "hide_volume": true,
+				"allow_symbol_change": false,
+				"save_image": false,
+				"calendar": false,
+				"hide_volume": true,
 				"studies": ${JSON.stringify(currentSelect)},
-				"support_host": "https://www.tradingview.com" 
+				"support_host": "https://www.tradingview.com"
 			}`;
 
-		try {
-			if (container.current) {
-				container.current.innerHTML = '';
-				container.current.appendChild(script);
-			}
-		} catch (error) {
-			console.error('Failed to load TradingView widget:', error);
+		if (container.current) {
+			container.current.innerHTML = '';
+			container.current.appendChild(script);
 		}
 	}, [symbol, currentInterval, base, currentChartType, currentSelect]);
 
@@ -116,33 +112,6 @@ export const TradingMainView = ({ symbol, onSymbolChange }: IProps) => {
 					></div>
 				</Box>
 			</Box>
-
-			{/* <Box
-				bgcolor={theme.palette.primary.light}
-				sx={{
-					borderRadius: '18px',
-					overflow: 'hidden',
-				}}
-				position={'relative'}
-				height={'100%'}
-				width={'100%'}
-			>
-				<Box
-					position={'absolute'}
-					top={0}
-					left={0}
-					border={3}
-					borderColor={theme.palette.primary.light}
-					width={'100%'}
-					height={'100%'}
-					bgcolor={'transparent'}
-					sx={{
-						pointerEvents: 'none',
-					}}
-				></Box>
-
-				
-			</Box> */}
 		</Box>
 	);
 };

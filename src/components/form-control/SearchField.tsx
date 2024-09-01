@@ -6,17 +6,20 @@ import { MainIconButton } from '../button/MainIconButton';
 
 interface IProps {
 	placeholder?: string;
+	onSearch?: (search: string) => void;
 }
 
-export const SearchField = ({ placeholder = '' }: IProps) => {
+export const SearchField = ({ placeholder = '', onSearch }: IProps) => {
 	const [value, setValue] = useState('');
 
 	const onChange = (e: ChangeEvent<HTMLTextAreaElement | HTMLInputElement>) => {
 		setValue(e.target.value);
+		onSearch && onSearch(e.target.value);
 	};
 
 	const handleClear = () => {
 		setValue('');
+		onSearch && onSearch('');
 	};
 
 	return (

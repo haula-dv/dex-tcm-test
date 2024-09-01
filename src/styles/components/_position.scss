@@ -1,0 +1,30 @@
+.position-head {
+	padding-bottom: 6px !important;
+
+	.orderly-relative {
+		display: none !important;
+	}
+
+	#orderly-data-list-positions-header {
+		max-width: 220px !important;
+
+		.orderly-text-base-contrast-36 {
+			color: var(--grey400);
+		}
+
+		.orderly-text-3xs {
+			font-size: 16px !important;
+		}
+	}
+
+	.orderly-bg-base-900 {
+		background-color: var(--primaryLight);
+	}
+	.orderly-data-list-filter {
+		display: none !important;
+	}
+
+	.orderly-px-4 {
+		padding: 0px !important;
+	}
+}

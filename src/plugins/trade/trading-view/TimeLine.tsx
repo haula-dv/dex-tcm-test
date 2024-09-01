@@ -1,13 +1,12 @@
-import { MainButton } from '@/components/button/MainButton';
 import { MainIconButton } from '@/components/button/MainIconButton';
-import IconLineTrading from '@/components/icons/line-trading';
 import IconSetting from '@/components/icons/setting';
+import MainTooltip from '@/components/MainTooltip';
 import { theme } from '@/utils';
 import { Stack, Typography } from '@mui/material';
-import { IconChevronDown } from '@tabler/icons-react';
 import { useState } from 'react';
 import ChartIndicatorsListView from './ChartIndicatorsListView';
 import ChartTypeListView from './ChartTypeListView';
+import LineTradingListView from './LineTradingListView';
 
 const timelines = [
 	{ label: '1m', value: '1' },
@@ -57,21 +56,17 @@ const TimeLine = ({ handleChangeInterval, handleChangeChartType, handleSelectInd
 			))}
 
 			<Stack direction={'row'} alignItems={'center'}>
-				<MainButton
-					size="small"
-					color="inherit"
-					endIcon={<IconChevronDown size={'1rem'} color={theme.palette.grey[400]} />}
-				>
-					<IconLineTrading />
-				</MainButton>
+				<LineTradingListView />
 
 				<ChartIndicatorsListView handleSelectIndicator={handleSelectIndicator} />
 
 				<ChartTypeListView handleChangeChartType={handleChangeChartType} />
 
-				<MainIconButton size="small">
-					<IconSetting />
-				</MainIconButton>
+				<MainTooltip title="Setting" placement="top" arrow>
+					<MainIconButton size="small">
+						<IconSetting />
+					</MainIconButton>
+				</MainTooltip>
 			</Stack>
 		</Stack>
 	);

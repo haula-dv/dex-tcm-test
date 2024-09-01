@@ -21,17 +21,17 @@ export const OrderViewContainer = ({ symbol }: IProps) => {
 		{
 			label: 'Orders',
 			value: 'orders',
-			children: <OrderTableContent orderBookStatus={OrderStatus.INCOMPLETE} />,
+			children: <OrderTableContent orderBookStatus={OrderStatus.INCOMPLETE} symbol={symbol} />,
 		},
 		{
 			label: 'Fills',
 			value: 'fills',
-			children: <OrderTableContent orderBookStatus={OrderStatus.FILLED} />,
+			children: <OrderTableContent orderBookStatus={OrderStatus.FILLED} symbol={symbol} />,
 		},
 		{
 			label: 'Payments',
 			value: 'payments',
-			children: <OrderTableContent orderBookStatus={OrderStatus.CANCELLED} />,
+			children: <OrderTableContent orderBookStatus={OrderStatus.PARTIAL_FILLED} symbol={symbol} />,
 		},
 	];
 
@@ -40,27 +40,22 @@ export const OrderViewContainer = ({ symbol }: IProps) => {
 	};
 
 	return (
-		<Box height={'20.5617%'} minHeight={'350px'} overflow={'hidden'} pt="52px" borderRadius={'16px'}>
+		<Box height={'20.5617%'} minHeight={'350px'} overflow={'hidden'} pt="54px" borderRadius={'16px'}>
 			<MainTab tabs={tabs as any} onChange={onTabChange}>
-				<MainCard backgroudColor="primaryLight" height="100%" width="100%" disablePadding>
+				<MainCard
+					backgroudColor="primaryLight"
+					height="100%"
+					width="100%"
+					disablePadding
+					sx={{ overflowY: 'auto', height: '100%' }}
+				>
 					{tabs.map((item) => (
-						<TabPanel key={item.value} value={item.value} sx={{ p: 0, overflow: 'auto' }}>
+						<TabPanel key={item.value} value={item.value} sx={{ p: 0, overflowY: 'auto', height: '100%' }}>
 							{item.children}
 						</TabPanel>
 					))}
 				</MainCard>
 			</MainTab>
-			{/* <OrdersView
-				dataSource={data as any}
-				symbol="PERP_ETH_USDC"
-				cancelOrder={cancelOrder}
-				cancelAlgoOrder={cancelAlgoOrder}
-				cancelTPSLOrder={cancelTPSLChildOrder}
-				editAlgoOrder={updateAlgoOrder}
-				editOrder={updateOrder}
-				isLoading={isLoading}
-				loadMore={loadMore}
-			/> */}
 		</Box>
 	);
 };
