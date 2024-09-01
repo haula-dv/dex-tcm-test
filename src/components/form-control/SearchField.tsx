@@ -4,7 +4,11 @@ import { IconSearch, IconX } from '@tabler/icons-react';
 import { ChangeEvent, useState } from 'react';
 import { MainIconButton } from '../button/MainIconButton';
 
-export const SearchField = () => {
+interface IProps {
+	placeholder?: string;
+}
+
+export const SearchField = ({ placeholder = '' }: IProps) => {
 	const [value, setValue] = useState('');
 
 	const onChange = (e: ChangeEvent<HTMLTextAreaElement | HTMLInputElement>) => {
@@ -22,7 +26,7 @@ export const SearchField = () => {
 			</Box>
 
 			<Box ml={1} />
-			<InputBase placeholder="Search token or address" sx={{ width: '100%' }} onChange={onChange} value={value} />
+			<InputBase placeholder={placeholder} sx={{ width: '100%' }} onChange={onChange} value={value} />
 
 			{value && (
 				<MainIconButton edge="end" onClick={handleClear}>
@@ -35,9 +39,9 @@ export const SearchField = () => {
 
 const CustomSearchField = styled(Box)(({ theme }) => ({
 	height: TSizes.fieldSearchHeight,
-	backgroundColor: theme.palette.common.white,
+	backgroundColor: theme.palette.grey[50],
 	borderRadius: TSizes.borderRadius,
-	border: `1px solid ${theme.palette.grey[100]}`,
+	// border: `1px solid ${theme.palette.grey[100]}`,
 	display: 'flex',
 	alignItems: 'center',
 	padding: '10px',

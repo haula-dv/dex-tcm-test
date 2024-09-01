@@ -10,7 +10,7 @@ interface IProps {
 
 export const TradingMainView = ({ symbol, onSymbolChange }: IProps) => {
 	const [currentInterval, setCurrentInterval] = useState('1');
-
+	const [currentChartType, setCurrentChartType] = useState('1');
 	const [_, base] = symbol.split('_');
 
 	const container = useRef<any>(null);
@@ -19,6 +19,11 @@ export const TradingMainView = ({ symbol, onSymbolChange }: IProps) => {
 		setCurrentInterval(val);
 	};
 
+	const handleChangeChartType = (style: string) => {
+		setCurrentChartType(style);
+	};
+
+	// Watch and set widget chart
 	useEffect(() => {
 		const script = document.createElement('script');
 		script.src = 'https://s3.tradingview.com/external-embedding/embed-widget-advanced-chart.js';
@@ -31,7 +36,7 @@ export const TradingMainView = ({ symbol, onSymbolChange }: IProps) => {
 				"interval": "${currentInterval}",
 				"timezone": "Etc/UTC",
 				"theme": "light",
-				"style": "1",
+				"style": "${currentChartType}",
 				"locale": "en",
 				"backgroundColor": "${theme.palette.primary.light}",
 				"gridColor": "${theme.palette.primary.light}",
@@ -47,11 +52,12 @@ export const TradingMainView = ({ symbol, onSymbolChange }: IProps) => {
 			container.current.innerHTML = '';
 			container.current.appendChild(script);
 		}
-	}, [symbol, currentInterval, base]);
+	}, [symbol, currentInterval, base, currentChartType]);
 
 	return (
 		<Box flex={'1 1 0%'} height={'100%'} minHeight={'450px'}>
-			<TimeLine handleChangeInterval={handleChangeInterval} />
+			<TimeLine handleChangeInterval={handleChangeInterval} handleChangeChartType={handleChangeChartType} />
+
 			<Box
 				position={'relative'}
 				height={'100%'}

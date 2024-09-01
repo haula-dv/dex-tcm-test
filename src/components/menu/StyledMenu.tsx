@@ -2,7 +2,11 @@ import { TSizes } from '@/utils/themes/custom-theme/sizes';
 import Menu, { MenuProps } from '@mui/material/Menu';
 import { alpha, styled } from '@mui/material/styles';
 
-export const StyledMenu = styled((props: MenuProps) => (
+interface IProps extends MenuProps {
+	maxheight?: string;
+}
+
+export const StyledMenu = styled((props: IProps) => (
 	<Menu
 		elevation={0}
 		anchorOrigin={{
@@ -15,12 +19,13 @@ export const StyledMenu = styled((props: MenuProps) => (
 		}}
 		{...props}
 	/>
-))(({ theme }) => ({
+))(({ theme, maxheight }) => ({
 	'& .MuiPaper-root': {
 		borderRadius: TSizes.borderRadius,
 		marginTop: theme.spacing(1),
 		minWidth: 180,
 		color: theme.palette.mode === 'light' ? 'rgb(55, 65, 81)' : theme.palette.grey[300],
+		maxHeight: maxheight,
 		boxShadow:
 			'rgb(255, 255, 255) 0px 0px 0px 0px, rgba(0, 0, 0, 0.05) 0px 0px 0px 1px, rgba(0, 0, 0, 0.1) 0px 10px 15px -3px, rgba(0, 0, 0, 0.05) 0px 4px 6px -2px',
 		'& .MuiMenu-list': {

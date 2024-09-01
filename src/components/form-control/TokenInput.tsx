@@ -118,6 +118,7 @@ export const TokenInput: FC<
 			inputProps={{
 				'aria-label': 'weight',
 			}}
+			autoComplete="off"
 		/>
 	);
 };

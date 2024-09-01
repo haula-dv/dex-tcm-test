@@ -1,13 +1,13 @@
 import { MainButton } from '@/components/button/MainButton';
 import { MainIconButton } from '@/components/button/MainIconButton';
-import FixTrading from '@/components/icons/fixtrading';
 import IconLineTrading from '@/components/icons/line-trading';
 import IconSetting from '@/components/icons/setting';
-import IconTypeChart from '@/components/icons/type-chart';
 import { theme } from '@/utils';
 import { Stack, Typography } from '@mui/material';
 import { IconChevronDown } from '@tabler/icons-react';
 import { useState } from 'react';
+import ChartIndicatorsListView from './ChartIndicatorsListView';
+import ChartTypeListView from './ChartTypeListView';
 
 const timelines = [
 	{ label: '1m', value: '1' },
@@ -27,9 +27,10 @@ const timelines = [
 
 interface IProps {
 	handleChangeInterval: (val: string) => void;
+	handleChangeChartType: (val: string) => void;
 }
 
-const TimeLine = ({ handleChangeInterval }: IProps) => {
+const TimeLine = ({ handleChangeInterval, handleChangeChartType }: IProps) => {
 	const [currentIn, setCurrentIn] = useState('1');
 
 	const onChange = (value: string) => {
@@ -63,13 +64,9 @@ const TimeLine = ({ handleChangeInterval }: IProps) => {
 					<IconLineTrading />
 				</MainButton>
 
-				<MainIconButton size="small">
-					<FixTrading />
-				</MainIconButton>
+				<ChartIndicatorsListView />
 
-				<MainIconButton size="small">
-					<IconTypeChart />
-				</MainIconButton>
+				<ChartTypeListView handleChangeChartType={handleChangeChartType} />
 
 				<MainIconButton size="small">
 					<IconSetting />

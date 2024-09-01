@@ -13,7 +13,7 @@ export class TSizes {
 	static borderRadiusMd = '14px';
 	static buttonHeight = '40px';
 	static buttonHeightSmall = '34px';
-	static fieldSearchHeight = '48px';
+	static fieldSearchHeight = '40px';
 
 	static widthCommonCard = '586px';
 
