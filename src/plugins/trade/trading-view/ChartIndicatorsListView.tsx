@@ -1,15 +1,26 @@
 import { MainIconButton } from '@/components/button/MainIconButton';
 import { SearchField } from '@/components/form-control/SearchField';
 import FixTrading from '@/components/icons/fixtrading';
+import IconLoading from '@/components/icons/loading';
 import { StyledMenu } from '@/components/menu/StyledMenu';
 import { theme } from '@/utils';
-import { Box, Divider, ListItemButton, Typography } from '@mui/material';
+import { Box, ListItemButton, Stack, Typography } from '@mui/material';
+import { IconCheck } from '@tabler/icons-react';
 import { memo, useState } from 'react';
+import InfiniteScroll from 'react-infinite-scroll-component';
 import { indicatorsCore } from '../store';
 
-const ChartIndicatorsListView = () => {
+interface IProps {
+	handleSelectIndicator: (value: string[]) => void;
+}
+
+const ChartIndicatorsListView = ({ handleSelectIndicator }: IProps) => {
 	const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
 	const open = Boolean(anchorEl);
+
+	const [slice, setSlice] = useState(10);
+	const [hasMore, setHasMore] = useState(true);
+	const [currentSelect, setCurrentSelect] = useState<string[]>([]);
 
 	const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
 		setAnchorEl(event.currentTarget);
@@ -17,6 +28,29 @@ const ChartIndicatorsListView = () => {
 
 	const handleClose = () => {
 		setAnchorEl(null);
+	};
+
+	const handleClickItem = (newVal: string) => {
+		setCurrentSelect((prev) => {
+			if (prev.includes(newVal)) {
+				const items = prev.filter((item) => item != newVal);
+				handleSelectIndicator(items);
+				return items;
+			} else {
+				const items = [newVal, ...prev];
+				handleSelectIndicator(items);
+				return items;
+			}
+		});
+	};
+
+	const fetchMoreData = () => {
+		if (slice >= indicatorsCore.length) {
+			setHasMore(false);
+			return;
+		}
+
+		setSlice((prev) => prev + 10);
 	};
 
 	return (
@@ -37,23 +71,54 @@ const ChartIndicatorsListView = () => {
 				anchorEl={anchorEl}
 				open={open}
 				onClose={handleClose}
-				maxheight="400px"
+				maxheight="auto"
 				MenuListProps={{
 					'aria-labelledby': 'chart-indicator-button',
 				}}
 			>
-				<Box px={'16px'} pt="6px" position={'sticky'} top={2}>
+				<Box mx={'16px'} pb="8px" pt="6px" position={'sticky'} top={'12px'} bgcolor={theme.palette.common.white}>
 					<SearchField placeholder="Search..." />
 				</Box>
 
-				<Typography fontSize={'12px'} color={theme.palette.grey[400]} px="16px" pt="6px">
+				<Typography fontSize={'12px'} color={theme.palette.grey[400]} px="16px" pt="8px">
 					Script name
 				</Typography>
-				<Divider />
 
-				{indicatorsCore.slice(0, 10).map((item, index) => (
-					<ListItemButton key={index}>{item.scriptName}</ListItemButton>
-				))}
+				<Stack
+					id="scrollableDiv"
+					style={{
+						height: 300,
+						width: 300,
+						overflow: 'auto',
+						display: 'flex',
+						flexDirection: 'column',
+					}}
+				>
+					<InfiniteScroll
+						dataLength={indicatorsCore.length - slice}
+						next={fetchMoreData}
+						inverse={false}
+						hasMore={hasMore}
+						loader={<IconLoading />}
+						scrollableTarget="scrollableDiv"
+					>
+						{indicatorsCore.slice(0, slice).map((item, index) => (
+							<ListItemButton
+								key={index}
+								selected={currentSelect.includes(item.scriptIdPart)}
+								onClick={() => handleClickItem(item.scriptIdPart)}
+							>
+								<Stack direction={'row'} justifyContent={'space-between'} width={'100%'}>
+									<Typography>{item.scriptName}</Typography>
+
+									{currentSelect.includes(item.scriptIdPart) && (
+										<IconCheck size={'1rem'} color={theme.palette.success.main} />
+									)}
+								</Stack>
+							</ListItemButton>
+						))}
+					</InfiniteScroll>
+				</Stack>
 			</StyledMenu>
 		</>
 	);

@@ -28,9 +28,10 @@ const timelines = [
 interface IProps {
 	handleChangeInterval: (val: string) => void;
 	handleChangeChartType: (val: string) => void;
+	handleSelectIndicator: (val: string[]) => void;
 }
 
-const TimeLine = ({ handleChangeInterval, handleChangeChartType }: IProps) => {
+const TimeLine = ({ handleChangeInterval, handleChangeChartType, handleSelectIndicator }: IProps) => {
 	const [currentIn, setCurrentIn] = useState('1');
 
 	const onChange = (value: string) => {
@@ -64,7 +65,7 @@ const TimeLine = ({ handleChangeInterval, handleChangeChartType }: IProps) => {
 					<IconLineTrading />
 				</MainButton>
 
-				<ChartIndicatorsListView />
+				<ChartIndicatorsListView handleSelectIndicator={handleSelectIndicator} />
 
 				<ChartTypeListView handleChangeChartType={handleChangeChartType} />
 

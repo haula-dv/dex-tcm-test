@@ -29,8 +29,8 @@ export const SearchField = ({ placeholder = '' }: IProps) => {
 			<InputBase placeholder={placeholder} sx={{ width: '100%' }} onChange={onChange} value={value} />
 
 			{value && (
-				<MainIconButton edge="end" onClick={handleClear}>
-					<IconX />
+				<MainIconButton edge="end" size="small" onClick={handleClear}>
+					<IconX size={'1.2rem'} />
 				</MainIconButton>
 			)}
 		</CustomSearchField>

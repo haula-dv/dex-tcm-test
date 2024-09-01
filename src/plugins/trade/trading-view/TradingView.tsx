@@ -11,6 +11,8 @@ interface IProps {
 export const TradingMainView = ({ symbol, onSymbolChange }: IProps) => {
 	const [currentInterval, setCurrentInterval] = useState('1');
 	const [currentChartType, setCurrentChartType] = useState('1');
+	const [currentSelect, setCurrentSelect] = useState<string[]>([]);
+
 	const [_, base] = symbol.split('_');
 
 	const container = useRef<any>(null);
@@ -21,6 +23,10 @@ export const TradingMainView = ({ symbol, onSymbolChange }: IProps) => {
 
 	const handleChangeChartType = (style: string) => {
 		setCurrentChartType(style);
+	};
+
+	const handleSelectIndicator = (value: string[]) => {
+		setCurrentSelect(value);
 	};
 
 	// Watch and set widget chart
@@ -41,22 +47,31 @@ export const TradingMainView = ({ symbol, onSymbolChange }: IProps) => {
 				"backgroundColor": "${theme.palette.primary.light}",
 				"gridColor": "${theme.palette.primary.light}",
 				"hide_top_toolbar": true,
-          		"allow_symbol_change": false,
-          		"save_image": false,
-          		"calendar": false,
-          		"hide_volume": true,
-				"support_host": "https://www.tradingview.com"
+				  "allow_symbol_change": false,
+				  "save_image": false,
+				  "calendar": false,
+				  "hide_volume": true,
+				"studies": ${JSON.stringify(currentSelect)},
+				"support_host": "https://www.tradingview.com" 
 			}`;
 
-		if (container.current) {
-			container.current.innerHTML = '';
-			container.current.appendChild(script);
+		try {
+			if (container.current) {
+				container.current.innerHTML = '';
+				container.current.appendChild(script);
+			}
+		} catch (error) {
+			console.error('Failed to load TradingView widget:', error);
 		}
-	}, [symbol, currentInterval, base, currentChartType]);
+	}, [symbol, currentInterval, base, currentChartType, currentSelect]);
 
 	return (
 		<Box flex={'1 1 0%'} height={'100%'} minHeight={'450px'}>
-			<TimeLine handleChangeInterval={handleChangeInterval} handleChangeChartType={handleChangeChartType} />
+			<TimeLine
+				handleChangeInterval={handleChangeInterval}
+				handleChangeChartType={handleChangeChartType}
+				handleSelectIndicator={handleSelectIndicator}
+			/>
 
 			<Box
 				position={'relative'}
