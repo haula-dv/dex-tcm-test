@@ -1,3 +1,4 @@
+import { setColorThemeMode } from '@/utils/helpers';
 import { Theme } from '@mui/material';
 
 export const CustomListItem = (theme: Theme) => {
@@ -9,9 +10,10 @@ export const CustomListItem = (theme: Theme) => {
 					transition: '0.4s',
 
 					'&.Mui-selected': {
-						backgroundColor: theme.palette.grey[50],
+						backgroundColor: setColorThemeMode(theme.palette.grey[50], theme.palette.grey[800]),
+
 						'&:hover': {
-							backgroundColor: theme.palette.grey[50],
+							backgroundColor: setColorThemeMode(theme.palette.grey[50], theme.palette.grey[800]),
 						},
 					},
 				},

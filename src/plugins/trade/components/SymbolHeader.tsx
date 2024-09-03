@@ -1,10 +1,10 @@
-/* eslint-disable react-hooks/rules-of-hooks */
 import { getImageNextwork } from '@/common';
 import { MainButton } from '@/components/button/MainButton';
 import MainTooltip from '@/components/MainTooltip';
 import { TokenIcon } from '@/components/token/TokenIcon';
 import { usdFormatter } from '@/utils/formatters/number';
 import { spitSymbol } from '@/utils/formatters/token';
+import { setColorThemeMode } from '@/utils/helpers';
 import { Box, Stack, Typography, useTheme } from '@mui/material';
 import { useFundingRate, useTickerStream } from '@orderly.network/hooks';
 import { Decimal } from '@orderly.network/utils';
@@ -20,6 +20,7 @@ interface IProps {
 const SymbolHeader = ({ onSymbolChange, symbol }: IProps) => {
 	const [marketEl, setMarketEl] = useState<null | HTMLElement>(null);
 	const openMarketEl = Boolean(marketEl);
+	const theme = useTheme();
 
 	// Get detail symbol
 	const stream = useTickerStream(symbol);
@@ -69,7 +70,7 @@ const SymbolHeader = ({ onSymbolChange, symbol }: IProps) => {
 				dailyChange && dailyChangePercentage ? (
 					<span
 						style={{
-							color: !dailyChange.startsWith('-') ? useTheme().palette.success.main : useTheme().palette.error.main,
+							color: !dailyChange.startsWith('-') ? theme.palette.success.main : theme.palette.error.main,
 						}}
 					>
 						{!dailyChange.startsWith('-') ? '+' : ''}
@@ -111,22 +112,18 @@ const SymbolHeader = ({ onSymbolChange, symbol }: IProps) => {
 				<MainButton
 					startIcon={<TokenIcon url={getImageNextwork(symbol ? spitSymbol(symbol) : '', 'symbol_logo')} />}
 					variant="textLink"
+					color={setColorThemeMode('dark', 'white')}
 					id="market-button"
 					aria-controls={openMarketEl ? 'market-menu' : undefined}
 					aria-haspopup="true"
 					aria-expanded={openMarketEl ? 'true' : undefined}
 					onClick={handleClick}
 					endIcon={<IconChevronDown size="1rem" />}
-					sx={{
-						color: useTheme().palette.grey[900],
-						whiteSpace: 'nowrap',
-						'& p': {},
-					}}
 				>
 					{`${base}-${perp}`}
 				</MainButton>
 
-				<Box height={'20px'} width={'2px'} bgcolor={useTheme().palette.grey[900]} />
+				<Box height={'20px'} width={'2px'} bgcolor={setColorThemeMode(theme.palette.grey[900], '#fff')} />
 
 				<Stack direction={'row'} spacing={3} alignItems={'center'} sx={{ overflowX: 'auto' }}>
 					<Typography fontWeight={600} pr={1} whiteSpace={'nowrap'}>
@@ -138,7 +135,7 @@ const SymbolHeader = ({ onSymbolChange, symbol }: IProps) => {
 							<MainTooltip key={index} title={ite?.hint} style={{ maxWidth: '200px' }} arrow>
 								<Stack sx={{ cursor: 'pointer' }}>
 									<Typography
-										color={useTheme().palette.grey[400]}
+										color={setColorThemeMode(theme.palette.grey[400], '#fff')}
 										lineHeight="120%"
 										fontWeight={600}
 										fontSize={'10px'}

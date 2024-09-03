@@ -1,7 +1,8 @@
 'use client';
+import { setColorThemeMode } from '@/utils/helpers';
 import { TSizes } from '@/utils/themes/custom-theme/sizes';
 import { Box, Card, CardProps, Stack } from '@mui/material';
-import { styled } from '@mui/material/styles';
+import { styled, useTheme } from '@mui/material/styles';
 import IconNotchCard from '../icons/notch';
 
 interface IProps extends CardProps {
@@ -36,6 +37,8 @@ export const MainCard = ({
 	maxHeight,
 	...props
 }: IProps) => {
+	const theme = useTheme();
+
 	return (
 		<Box width={width} height={height} minHeight={minHeight} maxHeight={maxHeight}>
 			<Stack
@@ -85,7 +88,7 @@ const CustomCard = styled(Card, {
 		boxShadow: 'none',
 	},
 	...(backgroudColor === 'primary' && {
-		backgroundColor: theme.palette.primary.main,
+		backgroundColor: setColorThemeMode(theme.palette.primary.main, theme.palette.grey[800]),
 	}),
 
 	...(backgroudColor === 'primaryLight' && {

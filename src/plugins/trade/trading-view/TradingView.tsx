@@ -1,4 +1,5 @@
 /* eslint-disable react-hooks/rules-of-hooks */
+import { setColorThemeMode } from '@/utils/helpers';
 import { Box, useTheme } from '@mui/material';
 import { memo, useEffect, useRef, useState } from 'react';
 import TimeLine from './TimeLine';
@@ -30,6 +31,8 @@ export const TradingMainView = ({ symbol, onSymbolChange }: IProps) => {
 		setCurrentSelect(value);
 	};
 
+	const background = setColorThemeMode(theme.palette.primary.light, '#322B27', theme);
+
 	// Watch and set widget chart
 	useEffect(() => {
 		const script = document.createElement('script');
@@ -42,11 +45,11 @@ export const TradingMainView = ({ symbol, onSymbolChange }: IProps) => {
 				"symbol": "${base}",
 				"interval": "${currentInterval}",
 				"timezone": "Etc/UTC",
-				"theme": "light",
+				"theme": "${theme.palette.mode === 'dark' ? 'dark' : 'light'}",
 				"style": "${currentChartType}",
 				"locale": "en",
-				"backgroundColor": "${theme.palette.primary.light}",
-				"gridColor": "${theme.palette.primary.light}",
+				"backgroundColor": "${background}",
+				"gridColor": "${background}",
 				"hide_top_toolbar": true,
 				"allow_symbol_change": false,
 				"save_image": false,
@@ -60,7 +63,7 @@ export const TradingMainView = ({ symbol, onSymbolChange }: IProps) => {
 			container.current.innerHTML = '';
 			container.current.appendChild(script);
 		}
-	}, [symbol, currentInterval, base, currentChartType, currentSelect, theme]);
+	}, [symbol, currentInterval, base, currentChartType, currentSelect, background, theme]);
 
 	return (
 		<Box flex={'1 1 0%'} height={'100%'} minHeight={'450px'}>
@@ -70,19 +73,13 @@ export const TradingMainView = ({ symbol, onSymbolChange }: IProps) => {
 				handleSelectIndicator={handleSelectIndicator}
 			/>
 
-			<Box
-				position={'relative'}
-				height={'100%'}
-				width={'100%'}
-				bgcolor={useTheme().palette.primary.light}
-				borderRadius={'18px'}
-			>
+			<Box position={'relative'} height={'100%'} width={'100%'} bgcolor={background} borderRadius={'18px'}>
 				<Box
 					position={'absolute'}
 					top={0}
 					left={0}
 					border={3}
-					borderColor={useTheme().palette.primary.light}
+					borderColor={background}
 					width={'100%'}
 					height={'100%'}
 					bgcolor={'transparent'}

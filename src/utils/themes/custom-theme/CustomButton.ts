@@ -1,4 +1,3 @@
-import { setColorThemeMode } from '@/utils/helpers';
 import { Theme } from '@mui/material';
 import { TSizes } from './sizes';
 
@@ -13,7 +12,7 @@ export const CustomMuiButton = (theme: Theme) => {
 					padding: '8px 16px',
 					lineHeight: '100%',
 					borderRadius: TSizes.borderRadius,
-
+					whiteSpace: 'nowrap',
 					'&.Mui-disabled': {
 						pointerEvents: 'all',
 						cursor: 'not-allowed !important',
@@ -100,10 +99,10 @@ export const CustomMuiButton = (theme: Theme) => {
 					},
 				},
 
-				containedWhite: {
-					color: setColorThemeMode(theme.palette.common.black, theme.palette.common.black, theme),
+				textLinkWhite: {
+					color: '#fff !important',
 					'& svg': {
-						// color: theme.palette.common.black,
+						color: '#fff !important',
 					},
 				},
 

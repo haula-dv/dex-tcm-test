@@ -48,7 +48,7 @@ export const Header = () => {
 
 // theme.palette.mode === 'dark' ? theme.palette.grey[900] :
 const MainAppBar = styled(AppBar)(({ theme }) => ({
-	backgroundColor: theme.palette.background.default,
+	backgroundColor: setColorThemeMode('#fff', theme.palette.grey[800]),
 	zIndex: 0,
 	height: '56px',
 	borderRadius: '0px',

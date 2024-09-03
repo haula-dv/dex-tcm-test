@@ -5,6 +5,7 @@ import FixTrading from '@/components/icons/fixtrading';
 import IconLoading from '@/components/icons/loading';
 import MainTooltip from '@/components/MainTooltip';
 import { StyledMenu } from '@/components/menu/StyledMenu';
+import { setColorThemeMode } from '@/utils/helpers';
 import { Box, ListItemButton, Stack, Typography, useTheme } from '@mui/material';
 import { IconCheck } from '@tabler/icons-react';
 import { memo, useState } from 'react';
@@ -85,7 +86,14 @@ const ChartIndicatorsListView = ({ handleSelectIndicator }: IProps) => {
 					'aria-labelledby': 'chart-indicator-button',
 				}}
 			>
-				<Box mx={'16px'} pb="8px" pt="6px" position={'sticky'} top={'12px'} bgcolor={useTheme().palette.common.white}>
+				<Box
+					mx={'16px'}
+					pb="8px"
+					pt="6px"
+					position={'sticky'}
+					top={'12px'}
+					bgcolor={setColorThemeMode(useTheme().palette.common.white, useTheme().palette.background.paper)}
+				>
 					<SearchField placeholder="Search..." onSearch={onSearch} />
 				</Box>
 

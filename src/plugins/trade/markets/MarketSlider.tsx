@@ -1,3 +1,4 @@
+import { setColorThemeMode } from '@/utils/helpers';
 import { Box, Skeleton, Stack, Typography } from '@mui/material';
 import { styled, useTheme } from '@mui/material/styles';
 import { useMarketsStream } from '@orderly.network/hooks';
@@ -8,6 +9,8 @@ const MarketSlider = () => {
 	const [showBefore, setShowBefore] = useState(false);
 	const [showAfter, setShowAfter] = useState(true);
 	const itemRef = useRef<HTMLDivElement | null>(null);
+
+	const theme = useTheme();
 
 	const handleScroll = () => {
 		const currentRef = itemRef.current;
@@ -53,10 +56,8 @@ const MarketSlider = () => {
 									fontSize={'14px'}
 									color={
 										(market as any).change && (market as any).change.toString().startsWith('-')
-											? // eslint-disable-next-line react-hooks/rules-of-hooks
-											  useTheme().palette.error.main
-											: // eslint-disable-next-line react-hooks/rules-of-hooks
-											  useTheme().palette.success.main
+											? theme.palette.error.main
+											: theme.palette.success.main
 									}
 									whiteSpace={'nowrap'}
 								>
@@ -65,12 +66,7 @@ const MarketSlider = () => {
 							</Stack>
 
 							{index < data.length - 1 && (
-								<Box
-									height={'18px'}
-									width={'2px'}
-									// eslint-disable-next-line react-hooks/rules-of-hooks
-									bgcolor={useTheme().palette.common.black}
-								/>
+								<Box height={'18px'} width={'2px'} bgcolor={setColorThemeMode(theme.palette.common.black, '#fff')} />
 							)}
 						</Stack>
 					))
@@ -101,7 +97,9 @@ const Wrapper = styled(Box, { shouldForwardProp: (prop) => prop !== 'showBefore'
 			right: 0,
 			height: '100%',
 			width: '100px',
-			background: showAfter ? `linear-gradient(to left, ${theme.palette.primary.light}, transparent)` : 'transparent',
+			background: showAfter
+				? `linear-gradient(to left, ${setColorThemeMode(theme.palette.primary.light, '#322D2B')}, transparent)`
+				: 'transparent',
 			pointerEvents: 'none',
 		},
 
@@ -112,7 +110,9 @@ const Wrapper = styled(Box, { shouldForwardProp: (prop) => prop !== 'showBefore'
 			left: 0,
 			height: '100%',
 			width: '100px',
-			background: showBefore ? `linear-gradient(to right, ${theme.palette.primary.light}, transparent)` : 'transparent',
+			background: showBefore
+				? `linear-gradient(to right, ${setColorThemeMode(theme.palette.primary.light, '#322D2B')}, transparent)`
+				: 'transparent',
 			pointerEvents: 'none',
 			transition: '0.6s',
 			zIndex: 1,

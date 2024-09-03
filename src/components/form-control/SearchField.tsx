@@ -1,3 +1,4 @@
+import { setColorThemeMode } from '@/utils/helpers';
 import { TSizes } from '@/utils/themes/custom-theme/sizes';
 import { Box, InputBase, styled } from '@mui/material';
 import { IconSearch, IconX } from '@tabler/icons-react';
@@ -42,9 +43,8 @@ export const SearchField = ({ placeholder = '', onSearch }: IProps) => {
 
 const CustomSearchField = styled(Box)(({ theme }) => ({
 	height: TSizes.fieldSearchHeight,
-	backgroundColor: theme.palette.grey[50],
+	backgroundColor: setColorThemeMode(theme.palette.grey[50], theme.palette.grey[800]),
 	borderRadius: TSizes.borderRadius,
-	// border: `1px solid ${theme.palette.grey[100]}`,
 	display: 'flex',
 	alignItems: 'center',
 	padding: '10px',

@@ -1,6 +1,7 @@
 import { MainIconButton } from '@/components/button/MainIconButton';
 import IconSetting from '@/components/icons/setting';
 import MainTooltip from '@/components/MainTooltip';
+import { setColorThemeMode } from '@/utils/helpers';
 import { Stack, Typography, useTheme } from '@mui/material';
 import { useState } from 'react';
 import ChartIndicatorsListView from './ChartIndicatorsListView';
@@ -31,6 +32,7 @@ interface IProps {
 
 const TimeLine = ({ handleChangeInterval, handleChangeChartType, handleSelectIndicator }: IProps) => {
 	const [currentIn, setCurrentIn] = useState('1');
+	const theme = useTheme();
 
 	const onChange = (value: string) => {
 		setCurrentIn(value);
@@ -48,8 +50,9 @@ const TimeLine = ({ handleChangeInterval, handleChangeChartType, handleSelectInd
 					whiteSpace={'nowrap'}
 					onClick={() => onChange(item.value)}
 					fontWeight={currentIn === item.value ? 700 : 500}
-					// eslint-disable-next-line react-hooks/rules-of-hooks
-					color={currentIn === item.value ? useTheme().palette.primary.dark : useTheme().palette.grey[600]}
+					color={
+						currentIn === item.value ? theme.palette.primary.dark : setColorThemeMode(theme.palette.grey[600], '#fff')
+					}
 				>
 					{item.label}
 				</Typography>
