@@ -6,9 +6,8 @@ import { CurrencyField } from '@/components/swap/CurrencyField';
 import { ButtonSwapToggle } from '@/plugins/swap/components/SwapIconToggle';
 import { toggleSwapType } from '@/plugins/swap/handlers';
 import { tokenInputState, tokenOutputState } from '@/plugins/swap/store';
-import { theme } from '@/utils';
 import { TSizes } from '@/utils/themes/custom-theme/sizes';
-import { Box, Stack, Typography } from '@mui/material';
+import { Box, Stack, Typography, useTheme } from '@mui/material';
 import { useState } from 'react';
 import { useStore } from 'zustand';
 
@@ -54,19 +53,19 @@ export const AddLiquidityContainer = () => {
 				</Typography>
 				<Stack pb={2} spacing={2} direction={'row'} justifyContent={'space-between'}>
 					<Stack>
-						<Typography color={theme.palette.grey[900]}>WTB</Typography>
+						<Typography color={useTheme().palette.grey[900]}>WTB</Typography>
 						<Typography fontSize={'16px'} fontWeight={600}>
 							0.099998
 						</Typography>
 					</Stack>
 					<Stack>
-						<Typography color={theme.palette.grey[900]}>WTB</Typography>
+						<Typography color={useTheme().palette.grey[900]}>WTB</Typography>
 						<Typography fontSize={'16px'} fontWeight={600}>
 							0.099998
 						</Typography>
 					</Stack>
 					<Stack>
-						<Typography color={theme.palette.grey[900]}>WTB</Typography>
+						<Typography color={useTheme().palette.grey[900]}>WTB</Typography>
 						<Typography fontSize={'16px'} fontWeight={600}>
 							0.099998
 						</Typography>

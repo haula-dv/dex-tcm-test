@@ -1,6 +1,5 @@
 import IconLoading from '@/components/icons/loading';
-import { theme } from '@/utils';
-import { Grid, Stack, Typography } from '@mui/material';
+import { Grid, Stack, Typography, useTheme } from '@mui/material';
 import { useMarketTradeStream, useSymbolsInfo } from '@orderly.network/hooks';
 import dayjs from 'dayjs';
 import { memo } from 'react';
@@ -10,6 +9,7 @@ interface IProps {
 }
 
 const OrderLastTradeContent = ({ symbol }: IProps) => {
+	const theme = useTheme();
 	const config = useSymbolsInfo();
 	const symbolInfo = config ? config[symbol] : ({} as any);
 	const { data: tradeHistory, isLoading: tradeHistoryLoading } = useMarketTradeStream(symbol);

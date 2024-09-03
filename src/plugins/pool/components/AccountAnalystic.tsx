@@ -1,8 +1,7 @@
 'use client';
 import { MainIconButton } from '@/components/button/MainIconButton';
 import { MainCard } from '@/components/card/MainCard';
-import { theme } from '@/utils';
-import { Stack, Typography } from '@mui/material';
+import { Stack, Typography, useTheme } from '@mui/material';
 import { IconChevronDown } from '@tabler/icons-react';
 
 export const AccountAnalystic = () => {
@@ -12,7 +11,7 @@ export const AccountAnalystic = () => {
 				<Typography color={'#fff'}>Account Analytics and accrued fees</Typography>
 
 				<MainIconButton size="small">
-					<IconChevronDown color={theme.palette.common.white} />
+					<IconChevronDown color={useTheme().palette.common.white} />
 				</MainIconButton>
 			</Stack>
 		</MainCard>

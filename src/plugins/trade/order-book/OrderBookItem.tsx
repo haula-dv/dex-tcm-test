@@ -1,8 +1,7 @@
 import MainTooltip from '@/components/MainTooltip';
 import { ItemRow } from '@/plugins/pool/components/TokenSelected';
-import { theme } from '@/utils';
 import { usdFormatter } from '@/utils/formatters/number';
-import { Box, Grid, Stack, Typography } from '@mui/material';
+import { Box, Grid, Stack, Typography, useTheme } from '@mui/material';
 import { memo } from 'react';
 
 interface IProps {
@@ -17,11 +16,13 @@ interface IProps {
 }
 
 const OrderBookItem = ({ price, quantity, aggregated, totalQuote, gradient, base, quote, isFirstAsk }: IProps) => {
+	const theme = useTheme();
+
 	const TooltipValue = (
 		<Stack minWidth={'168px'}>
 			<ItemRow
 				title={
-					<Typography fontSize={'12px'} fontWeight={600} color={theme.palette.grey[500]}>
+					<Typography fontSize={'12px'} fontWeight={600} color={useTheme().palette.grey[500]}>
 						Avg. Price
 					</Typography>
 				}
@@ -33,7 +34,7 @@ const OrderBookItem = ({ price, quantity, aggregated, totalQuote, gradient, base
 			/>
 			<ItemRow
 				title={
-					<Typography fontSize={'12px'} fontWeight={600} color={theme.palette.grey[500]}>
+					<Typography fontSize={'12px'} fontWeight={600} color={useTheme().palette.grey[500]}>
 						{`Sum (${base})`}
 					</Typography>
 				}
@@ -45,7 +46,7 @@ const OrderBookItem = ({ price, quantity, aggregated, totalQuote, gradient, base
 			/>
 			<ItemRow
 				title={
-					<Typography fontSize={'12px'} fontWeight={600} color={theme.palette.grey[500]}>
+					<Typography fontSize={'12px'} fontWeight={600} color={useTheme().palette.grey[500]}>
 						{`Sum (${quote})`}
 					</Typography>
 				}

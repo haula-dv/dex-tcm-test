@@ -3,9 +3,8 @@ import { MainButton } from '@/components/button/MainButton';
 import { ItemList } from '@/components/list/ItemList';
 import { StyledMenu } from '@/components/menu/StyledMenu';
 import { TokenIcon } from '@/components/token/TokenIcon';
-import { theme } from '@/utils';
 import { idFromHexChainId } from '@/utils/formatters/token';
-import { Divider, Stack, Typography } from '@mui/material';
+import { Divider, Stack, Typography, useTheme } from '@mui/material';
 import { useChains } from '@orderly.network/hooks';
 import { IconChevronDown } from '@tabler/icons-react';
 import { useConnectWallet, useSetChain } from '@web3-onboard/react';
@@ -78,7 +77,7 @@ export default function NetworkContent() {
 				onClose={() => setNetworkAnchorEl(null)}
 			>
 				<Stack pb={1}>
-					<Typography px={1.6} color={theme.palette.grey[600]} py={0.5}>
+					<Typography px={1.6} color={useTheme().palette.grey[600]} py={0.5}>
 						Mainnet
 					</Typography>
 
@@ -101,7 +100,7 @@ export default function NetworkContent() {
 
 				<Divider />
 				<Stack pt={0.5}>
-					<Typography px={1.6} color={theme.palette.grey[600]} py={0.5}>
+					<Typography px={1.6} color={useTheme().palette.grey[600]} py={0.5}>
 						Testnet
 					</Typography>
 

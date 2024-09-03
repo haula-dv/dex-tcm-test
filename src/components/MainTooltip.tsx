@@ -8,9 +8,12 @@ const MainTooltip = styled(({ className, ...props }: TooltipProps) => (
 	cursor: 'pointer',
 	[`& .${tooltipClasses.tooltip}`]: {
 		backgroundColor: theme.palette.common.white,
-		color: 'rgba(0, 0, 0, 0.87)',
+		color: theme.palette.grey[800],
 		boxShadow: theme.shadows[1],
 		fontSize: 11,
+		'&:first-letter': {
+			textTransform: 'uppercase',
+		},
 	},
 
 	[`& .${tooltipClasses.arrow}`]: {

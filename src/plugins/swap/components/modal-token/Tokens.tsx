@@ -3,10 +3,9 @@ import { MainButton } from '@/components/button/MainButton';
 import { SearchTokenField } from '@/components/form-control/SearchTokenField';
 import { TokenLoading } from '@/components/loading/TokenLoading';
 import { ITypeSwap } from '@/components/swap/CurrencyField';
-import { theme } from '@/utils';
 import { TSizes } from '@/utils/themes/custom-theme/sizes';
 import { Box, Button, List, Stack, Typography } from '@mui/material';
-import { styled } from '@mui/material/styles';
+import { styled, useTheme } from '@mui/material/styles';
 import { IconEdit } from '@tabler/icons-react';
 import { Dispatch, SetStateAction, useState } from 'react';
 import InfiniteScroll from 'react-infinite-scroll-component';
@@ -48,7 +47,7 @@ export const Tokens = ({ handleSelectToken, setTokenType, type }: IProps) => {
 			<Box position={'relative'} pb={5}>
 				<Typography
 					fontWeight={600}
-					color={theme.palette.grey[600]}
+					color={useTheme().palette.grey[600]}
 					px={TSizes.margin_base}
 					pt={TSizes.margin_base}
 					pb={1}

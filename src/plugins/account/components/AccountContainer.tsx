@@ -3,7 +3,6 @@ import { MainButton } from '@/components/button/MainButton';
 import { MainCard } from '@/components/card/MainCard';
 import IconCheckActived from '@/components/icons/check-actived';
 import IconCheckInActived from '@/components/icons/check-inactived';
-import { theme } from '@/utils';
 import { TSizes } from '@/utils/themes/custom-theme/sizes';
 import { Checkbox, FormControlLabel, Stack, Typography } from '@mui/material';
 import { useRouter } from 'next/navigation';

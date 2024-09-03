@@ -1,6 +1,5 @@
-import { theme } from '@/utils';
 import { Box, Skeleton, Stack, Typography } from '@mui/material';
-import { styled } from '@mui/material/styles';
+import { styled, useTheme } from '@mui/material/styles';
 import { useMarketsStream } from '@orderly.network/hooks';
 import { memo, useEffect, useRef, useState } from 'react';
 
@@ -54,8 +53,10 @@ const MarketSlider = () => {
 									fontSize={'14px'}
 									color={
 										(market as any).change && (market as any).change.toString().startsWith('-')
-											? theme.palette.error.main
-											: theme.palette.success.main
+											? // eslint-disable-next-line react-hooks/rules-of-hooks
+											  useTheme().palette.error.main
+											: // eslint-disable-next-line react-hooks/rules-of-hooks
+											  useTheme().palette.success.main
 									}
 									whiteSpace={'nowrap'}
 								>
@@ -63,7 +64,14 @@ const MarketSlider = () => {
 								</Typography>
 							</Stack>
 
-							{index < data.length - 1 && <Box height={'18px'} width={'2px'} bgcolor={theme.palette.common.black} />}
+							{index < data.length - 1 && (
+								<Box
+									height={'18px'}
+									width={'2px'}
+									// eslint-disable-next-line react-hooks/rules-of-hooks
+									bgcolor={useTheme().palette.common.black}
+								/>
+							)}
 						</Stack>
 					))
 				) : (

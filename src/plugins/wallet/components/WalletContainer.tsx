@@ -1,11 +1,15 @@
+import { themeSelectorState } from '@/common/stores/common';
 import { MainButton } from '@/components/button/MainButton';
 import { MainIconButton } from '@/components/button/MainIconButton';
 import IconLoading from '@/components/icons/loading';
+import { setColorThemeMode } from '@/utils/helpers';
 import { Stack } from '@mui/material';
 import { useAccount } from '@orderly.network/hooks';
-import { IconDots, IconSettings } from '@tabler/icons-react';
+import { IconDots, IconMoonStars, IconSettings, IconSun } from '@tabler/icons-react';
 import { useConnectWallet } from '@web3-onboard/react';
+import { setZustandValue } from 'nes-zustand';
 import { useEffect, useState } from 'react';
+import { useStore } from 'zustand';
 import { AccountAvatar } from './AccountAvatar';
 import AccountDetailPopup from './AccountDetailPopup';
 import AccountMenuContainer from './AccountMenuContainer';
@@ -15,6 +19,16 @@ import { OrderlyConnect } from './OrderlyConnect';
 export default function WalletContainer() {
 	const [accountAnchorEl, setAccountAnchorEl] = useState<null | HTMLElement>(null);
 	const openAccountEl = Boolean(accountAnchorEl);
+	const themeSelector = useStore(themeSelectorState, (state) => state.value);
+
+	const handleChangeTheme = () => {
+		setZustandValue(themeSelectorState, (prev: any) => {
+			return {
+				...prev,
+				activeMode: prev.activeMode == 'light' ? 'dark' : 'light',
+			};
+		});
+	};
 
 	// Account Details
 	const [openAccountDetailsModal, setAccountDetailsModal] = useState(false);
@@ -63,32 +77,36 @@ export default function WalletContainer() {
 			<NetworkContent />
 
 			{connecting ? (
-				<MainButton startIcon={<IconLoading height="20px" width="20px" />} variant="contained" color="darkGrey">
+				<MainButton
+					startIcon={<IconLoading height="20px" width="20px" />}
+					variant="contained"
+					color={setColorThemeMode('darkGrey', 'white')}
+				>
 					Connecting
 				</MainButton>
 			) : (
 				<>
 					{!wallet ? (
-						<MainButton onClick={handleConnectWallet} variant="contained" color="darkGrey">
+						<MainButton
+							onClick={handleConnectWallet}
+							variant="contained"
+							color={setColorThemeMode('darkGrey', 'white')}
+						>
 							Connect to Wallet
 						</MainButton>
 					) : (
-						<>
-							{/* <Typography fontSize={'18px'}>4.8729 ETH</Typography> */}
-
-							<MainButton
-								variant="contained"
-								color="darkGrey"
-								onClick={handleShowMenuAccount}
-								endIcon={<IconSettings size={'1.1rem'} color="#fff" />}
-								id="account-button"
-								aria-controls={openAccountEl ? 'account-menu' : undefined}
-								aria-haspopup="true"
-								aria-expanded={openAccountEl ? 'true' : undefined}
-							>
-								<AccountAvatar />
-							</MainButton>
-						</>
+						<MainButton
+							variant="contained"
+							color={setColorThemeMode('darkGrey', 'white')}
+							onClick={handleShowMenuAccount}
+							endIcon={<IconSettings size={'1.1rem'} />}
+							id="account-button"
+							aria-controls={openAccountEl ? 'account-menu' : undefined}
+							aria-haspopup="true"
+							aria-expanded={openAccountEl ? 'true' : undefined}
+						>
+							<AccountAvatar />
+						</MainButton>
 					)}
 				</>
 			)}
@@ -107,6 +125,10 @@ export default function WalletContainer() {
 
 			<MainIconButton color="inherit">
 				<IconDots />
+			</MainIconButton>
+
+			<MainIconButton onClick={handleChangeTheme}>
+				{themeSelector.activeMode == 'light' ? <IconSun /> : <IconMoonStars />}
 			</MainIconButton>
 		</Stack>
 	);

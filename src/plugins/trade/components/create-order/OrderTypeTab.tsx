@@ -1,5 +1,4 @@
 import { StyledMenu } from '@/components/menu/StyledMenu';
-import { theme } from '@/utils';
 import { TSizes } from '@/utils/themes/custom-theme/sizes';
 import { Button, MenuItem, Stack } from '@mui/material';
 import { styled } from '@mui/material/styles';

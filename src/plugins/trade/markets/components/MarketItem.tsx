@@ -1,10 +1,9 @@
 import { getImageNextwork } from '@/common';
 import { MainIconButton } from '@/components/button/MainIconButton';
 import { TokenIcon } from '@/components/token/TokenIcon';
-import { theme } from '@/utils';
 import { TSizes } from '@/utils/themes/custom-theme/sizes';
 import { Chip, ListItemButton, Stack, Typography } from '@mui/material';
-import { styled } from '@mui/material/styles';
+import { styled, useTheme } from '@mui/material/styles';
 import { API } from '@orderly.network/types';
 import { IconStar } from '@tabler/icons-react';
 
@@ -45,7 +44,7 @@ export const MarketItem = ({ item }: IProps) => {
 						<Typography>{formatSymbol(item.symbol)}</Typography>
 
 						<Stack direction={'row'} spacing={0.5}>
-							<Typography fontSize={'12px'} color={theme.palette.grey[500]}>
+							<Typography fontSize={'12px'} color={useTheme().palette.grey[500]}>
 								{spitSymbol(item.symbol)}
 							</Typography>
 

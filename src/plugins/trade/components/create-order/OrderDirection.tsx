@@ -1,4 +1,3 @@
-import { theme } from '@/utils';
 import { TSizes } from '@/utils/themes/custom-theme/sizes';
 import { Button, Stack } from '@mui/material';
 import { styled } from '@mui/material/styles';
@@ -27,6 +26,7 @@ const OrderDirection = ({ formContext, wallet }: IProps) => {
 					key={index}
 					fullWidth
 					color="inherit"
+					isSell={currentDirection == 'Sell' ? true : false}
 					selected={currentDirection === label}
 					onClick={() => handleChangeDirection(label)}
 				>
@@ -41,10 +41,11 @@ export default memo(OrderDirection);
 
 interface IITabItem {
 	selected: boolean;
+	isSell: boolean;
 }
 
-const TabItem = styled(Button, { shouldForwardProp: (prop) => prop !== 'selected' })<IITabItem>(
-	({ theme, selected }) => ({
+const TabItem = styled(Button, { shouldForwardProp: (prop) => prop !== 'selected' && prop !== 'isSell' })<IITabItem>(
+	({ theme, selected, isSell }) => ({
 		transition: '0.6s',
 		backgroundColor: theme.palette.grey[50],
 		color: theme.palette.grey[500],
@@ -54,8 +55,15 @@ const TabItem = styled(Button, { shouldForwardProp: (prop) => prop !== 'selected
 		height: TSizes.buttonHeightSmall,
 
 		...(selected && {
-			borderColor: theme.palette.success.main,
-			color: theme.palette.success.main,
+			...(!isSell
+				? {
+						borderColor: theme.palette.success.main,
+						color: theme.palette.success.main,
+				  }
+				: {
+						borderColor: theme.palette.error.main,
+						color: theme.palette.error.main,
+				  }),
 		}),
 		'&:hover': {
 			backgroundColor: theme.palette.grey[50],

@@ -2,7 +2,6 @@
 import { ITokenType } from '@/common';
 import { TokenSelect } from '@/plugins/swap/components/token/TokenSelect';
 import { tokenInputState, tokenOutputState } from '@/plugins/swap/store';
-import { theme } from '@/utils';
 import { TSizes } from '@/utils/themes/custom-theme/sizes';
 import { Box, InputBase, Stack, Typography } from '@mui/material';
 import { styled } from '@mui/material/styles';

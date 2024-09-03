@@ -1,4 +1,5 @@
 'use client';
+import { IThemeSelector } from '@/common';
 import * as locales from '@mui/material/locale';
 import { createTheme } from '@mui/material/styles';
 import _ from 'lodash';
@@ -9,14 +10,9 @@ import { LightThemeColors } from './custom-theme/LightThemeColors';
 import { darkshadows, shadows } from './custom-theme/shadow';
 import typography from './custom-theme/Typography';
 
-const themeSelector = {
-	activeMode: 'light',
-	activeDir: 'lt',
-};
-
-export const BuildTheme = (config: any) => {
-	const themeOptions = LightThemeColors.find((theme) => theme.name === config.theme);
-	const darkthemeOptions = DarkThemeColors.find((theme) => theme.name === config.theme);
+export const BuildTheme = (themeSelector: any) => {
+	const themeOptions = LightThemeColors.find((theme) => theme.name === themeSelector.theme);
+	const darkthemeOptions = DarkThemeColors.find((theme) => theme.name === themeSelector.theme);
 	const defaultTheme = themeSelector.activeMode === 'dark' ? baseDarkTheme : baselightTheme;
 	const defaultShadow = themeSelector.activeMode === 'dark' ? darkshadows : shadows;
 	const themeSelect = themeSelector.activeMode === 'dark' ? darkthemeOptions : themeOptions;
@@ -36,7 +32,7 @@ export const BuildTheme = (config: any) => {
 
 	const theme = createTheme(
 		_.merge({}, baseMode, defaultTheme, locales, themeSelect, {
-			direction: config.direction,
+			direction: themeSelector.direction,
 		}),
 	);
 
@@ -45,19 +41,19 @@ export const BuildTheme = (config: any) => {
 	return theme;
 };
 
-const ThemeSettings = () => {
+export const ThemeSettings = (themeSelector: IThemeSelector) => {
 	const activDir = themeSelector.activeDir;
+	const activeMode = themeSelector.activeMode;
 	const activeTheme = 'BLUE_THEME';
 
 	const theme = BuildTheme({
 		direction: activDir,
 		theme: activeTheme,
+		activeMode: activeMode,
 	});
 
 	return theme;
 };
-
-export const theme = ThemeSettings();
 
 declare module '@mui/material/Button' {
 	interface ButtonPropsVariantOverrides {

@@ -1,4 +1,3 @@
-import { theme } from '@/utils';
 import { Box, ListItemButton, ListItemButtonProps, Stack, Typography } from '@mui/material';
 import { styled } from '@mui/material/styles';
 import { IconChevronRight } from '@tabler/icons-react';

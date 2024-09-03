@@ -1,8 +1,7 @@
 import { MainIconButton } from '@/components/button/MainIconButton';
 import IconSetting from '@/components/icons/setting';
 import MainTooltip from '@/components/MainTooltip';
-import { theme } from '@/utils';
-import { Stack, Typography } from '@mui/material';
+import { Stack, Typography, useTheme } from '@mui/material';
 import { useState } from 'react';
 import ChartIndicatorsListView from './ChartIndicatorsListView';
 import ChartTypeListView from './ChartTypeListView';
@@ -49,7 +48,8 @@ const TimeLine = ({ handleChangeInterval, handleChangeChartType, handleSelectInd
 					whiteSpace={'nowrap'}
 					onClick={() => onChange(item.value)}
 					fontWeight={currentIn === item.value ? 700 : 500}
-					color={currentIn === item.value ? theme.palette.primary.dark : theme.palette.grey[600]}
+					// eslint-disable-next-line react-hooks/rules-of-hooks
+					color={currentIn === item.value ? useTheme().palette.primary.dark : useTheme().palette.grey[600]}
 				>
 					{item.label}
 				</Typography>

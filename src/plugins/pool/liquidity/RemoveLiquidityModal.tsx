@@ -5,8 +5,7 @@ import { MainDialog } from '@/components/dialog/MainDialog';
 import { ChildHeader } from '@/components/swap/ChildHeader';
 import { TokenIcon } from '@/components/token/TokenIcon';
 import { ItemRow } from '@/plugins/pool/components/TokenSelected';
-import { theme } from '@/utils';
-import { Divider, Stack, Typography } from '@mui/material';
+import { Divider, Stack, Typography, useTheme } from '@mui/material';
 import { useState } from 'react';
 
 interface IProps {
@@ -99,7 +98,7 @@ export const RemoveLiquidityModal = ({
 						<ItemRow
 							title="Price"
 							value={
-								<Typography fontSize={'15px'} color={theme.palette.grey[300]}>
+								<Typography fontSize={'15px'} color={useTheme().palette.grey[300]}>
 									1 ETH = 981.33 BNB
 								</Typography>
 							}
@@ -107,7 +106,7 @@ export const RemoveLiquidityModal = ({
 						<ItemRow
 							title=""
 							value={
-								<Typography fontSize={'15px'} color={theme.palette.grey[300]}>
+								<Typography fontSize={'15px'} color={useTheme().palette.grey[300]}>
 									1 BNB = 0.00101903 ETH
 								</Typography>
 							}

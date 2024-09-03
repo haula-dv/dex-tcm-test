@@ -1,4 +1,5 @@
 import { StyledMenu } from '@/components/menu/StyledMenu';
+import { setColorThemeMode } from '@/utils/helpers';
 import { TSizes } from '@/utils/themes/custom-theme/sizes';
 import { Box, Stack } from '@mui/material';
 import { styled } from '@mui/material/styles';
@@ -46,9 +47,9 @@ const MenuItem = styled(Box)(({ theme }) => ({
 	borderRadius: TSizes.borderRadius,
 	padding: '8px 16px',
 	cursor: 'pointer',
-	color: theme.palette.grey[800],
+	color: setColorThemeMode(theme.palette.grey[800], theme.palette.common.white),
 	fontSize: '14px',
 	'&:hover': {
-		backgroundColor: theme.palette.primary.light,
+		backgroundColor: setColorThemeMode(theme.palette.primary.light, theme.palette.grey[900]),
 	},
 }));

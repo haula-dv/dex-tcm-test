@@ -3,8 +3,7 @@ import { MainCard } from '@/components/card/MainCard';
 import { MainDialog } from '@/components/dialog/MainDialog';
 import { TokenIcon } from '@/components/token/TokenIcon';
 import { ItemRow } from '@/plugins/pool/components/TokenSelected';
-import { theme } from '@/utils';
-import { Divider, Stack, Typography } from '@mui/material';
+import { Divider, Stack, Typography, useTheme } from '@mui/material';
 
 interface IProps {
 	open: boolean;
@@ -39,7 +38,7 @@ export const ModalConfirmLiquidity = ({ onClose, open }: IProps) => {
 					}
 				/>
 
-				<Typography color={theme.palette.grey[400]}>
+				<Typography color={useTheme().palette.grey[400]}>
 					You are the first liquidity provider You are the first liquidity provider You are the first liquidity provider
 					You are the first liquidity provider You are the first liquidity
 				</Typography>
@@ -71,7 +70,7 @@ export const ModalConfirmLiquidity = ({ onClose, open }: IProps) => {
 							<ItemRow
 								title="Price"
 								value={
-									<Typography color={theme.palette.grey[500]} fontSize={'15px'}>
+									<Typography color={useTheme().palette.grey[500]} fontSize={'15px'}>
 										1 ETH = 981.33 BNB
 									</Typography>
 								}
@@ -80,7 +79,7 @@ export const ModalConfirmLiquidity = ({ onClose, open }: IProps) => {
 							<ItemRow
 								title=""
 								value={
-									<Typography color={theme.palette.grey[500]} fontSize={'15px'}>
+									<Typography color={useTheme().palette.grey[500]} fontSize={'15px'}>
 										1 ETH = 981.33 BNB
 									</Typography>
 								}

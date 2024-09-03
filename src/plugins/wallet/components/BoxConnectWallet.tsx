@@ -1,6 +1,5 @@
 import { MainButton } from '@/components/button/MainButton';
 import { MainCard } from '@/components/card/MainCard';
-import { theme } from '@/utils';
 import { Typography } from '@mui/material';
 import { useAccount } from '@orderly.network/hooks';
 import { useConnectWallet } from '@web3-onboard/react';

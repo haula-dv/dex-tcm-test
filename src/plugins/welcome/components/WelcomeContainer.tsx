@@ -3,7 +3,6 @@ import { MainButton } from '@/components/button/MainButton';
 import { MainCard } from '@/components/card/MainCard';
 import InputPasswordField from '@/components/form-control/InputPasswordField';
 import IconNotchCard from '@/components/icons/notch';
-import { theme } from '@/utils';
 import { TSizes } from '@/utils/themes/custom-theme/sizes';
 import { Button, Stack, Typography } from '@mui/material';
 import { useRouter } from 'next/navigation';

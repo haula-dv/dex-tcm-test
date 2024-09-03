@@ -1,10 +1,10 @@
+/* eslint-disable react-hooks/rules-of-hooks */
 import { MainButton } from '@/components/button/MainButton';
 import { MainCard } from '@/components/card/MainCard';
 import { MainDialog } from '@/components/dialog/MainDialog';
 import { GrayTab } from '@/components/tab/GrayTab';
-import { theme } from '@/utils';
 import TabPanel from '@mui/lab/TabPanel';
-import { Divider, Stack, Typography } from '@mui/material';
+import { Divider, Stack, Typography, useTheme } from '@mui/material';
 import { useState } from 'react';
 import { ItemRow } from '../components/TokenSelected';
 
@@ -38,7 +38,7 @@ export const CustomizeGasModal = ({ onClose, open }: IProps) => {
 						<Typography fontSize={'18px'} fontWeight={600}>
 							Estimated Processing Times
 						</Typography>
-						<Typography color={theme.palette.grey[500]} fontSize={'16px'}>
+						<Typography color={useTheme().palette.grey[500]} fontSize={'16px'}>
 							Select a higher gas fee accelerate the processing of your transaction.*
 						</Typography>
 
@@ -53,8 +53,7 @@ export const CustomizeGasModal = ({ onClose, open }: IProps) => {
 									onClick={() => handleSelect(inde)}
 								>
 									<Stack spacing={0.5}>
-										<Typography fontSize={'13px'} color={theme.palette.grey[500]}>
-											{' '}
+										<Typography fontSize={'13px'} color={useTheme().palette.grey[500]}>
 											{item.label}
 										</Typography>
 										<Typography fontSize={'13px'}>{item.balance}</Typography>
@@ -63,7 +62,7 @@ export const CustomizeGasModal = ({ onClose, open }: IProps) => {
 								</MainCard>
 							))}
 						</Stack>
-						<Typography color={theme.palette.grey[500]} fontSize={'16px'}>
+						<Typography color={useTheme().palette.grey[500]} fontSize={'16px'}>
 							*Accelerating a transaction by using a higher gas price increases its changes of getting processed by the
 							network faster, but it is not always guaranteed.
 						</Typography>
@@ -80,7 +79,7 @@ export const CustomizeGasModal = ({ onClose, open }: IProps) => {
 								<ItemRow
 									title=""
 									value={
-										<Typography color={theme.palette.grey[500]} fontSize={'15px'}>
+										<Typography color={useTheme().palette.grey[500]} fontSize={'15px'}>
 											$6..52
 										</Typography>
 									}

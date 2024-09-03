@@ -3,9 +3,8 @@ import { MainButton } from '@/components/button/MainButton';
 import { MainCard } from '@/components/card/MainCard';
 import { MainDialog } from '@/components/dialog/MainDialog';
 import { GrayTab } from '@/components/tab/GrayTab';
-import { theme } from '@/utils';
 import { TSizes } from '@/utils/themes/custom-theme/sizes';
-import { Box, Divider, Stack, Typography } from '@mui/material';
+import { Box, Divider, Stack, Typography, useTheme } from '@mui/material';
 import { setZustandValue } from 'nes-zustand';
 import Image from 'next/image';
 import { isTransactionSubmittedState } from '../../store';
@@ -33,7 +32,7 @@ export const ModalConfirmSwap = ({ onClose, open }: IProps) => {
 				<Image src={'/images/token.png'} height={24} width={24} alt="" />
 			</Stack>
 
-			<Typography pb={2} color={theme.palette.grey[500]}>
+			<Typography pb={2} color={useTheme().palette.grey[500]}>
 				Balance: $099998
 			</Typography>
 
@@ -52,7 +51,7 @@ export const ModalConfirmSwap = ({ onClose, open }: IProps) => {
 
 					<Stack>
 						<Typography textAlign={'end'}>09988 ETH</Typography>
-						<Typography textAlign={'end'} fontSize={'12px'} color={theme.palette.grey[800]}>
+						<Typography textAlign={'end'} fontSize={'12px'} color={useTheme().palette.grey[800]}>
 							$767
 						</Typography>
 					</Stack>
@@ -65,7 +64,7 @@ export const ModalConfirmSwap = ({ onClose, open }: IProps) => {
 
 					<Stack>
 						<Typography>09988 ETH</Typography>
-						<Typography textAlign={'end'} fontSize={'12px'} color={theme.palette.grey[800]}>
+						<Typography textAlign={'end'} fontSize={'12px'} color={useTheme().palette.grey[800]}>
 							$767
 						</Typography>
 					</Stack>

@@ -1,5 +1,4 @@
 'use client';
-import { theme } from '@/utils';
 import { filterAllowedCharacters, getFormattedNumber, getNumberAsUInt128 } from '@/utils/formatters/number';
 import { TSizes } from '@/utils/themes/custom-theme/sizes';
 import { InputAdornment, OutlinedInput, Typography } from '@mui/material';
@@ -118,6 +117,7 @@ export const TokenInput: FC<
 				'aria-label': 'weight',
 			}}
 			autoComplete="off"
+			error={hasError}
 		/>
 	);
 };

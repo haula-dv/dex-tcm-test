@@ -1,7 +1,7 @@
+/* eslint-disable react-hooks/rules-of-hooks */
 import { MainCard } from '@/components/card/MainCard';
 import IconLoading from '@/components/icons/loading';
-import { theme } from '@/utils';
-import { Divider, Stack, Typography } from '@mui/material';
+import { Divider, Stack, Typography, useTheme } from '@mui/material';
 import { useAccount, useOrderEntry, useSymbolsInfo, useWithdraw } from '@orderly.network/hooks';
 import { AccountStatusEnum, OrderEntity, OrderSide, OrderType } from '@orderly.network/types';
 import { useConnectWallet, useNotifications } from '@web3-onboard/react';
@@ -42,6 +42,7 @@ const CreateOrderForm = ({ symbol }: IProps) => {
 	const [loading, setLoading] = useState(false);
 	const formContext = useForm<Inputs>({
 		defaultValues,
+		mode: 'all',
 	});
 
 	// Orderly Hooks
@@ -86,6 +87,7 @@ const CreateOrderForm = ({ symbol }: IProps) => {
 			type: 'pending',
 			message: 'Creating order...',
 		});
+
 		try {
 			await onSubmit(getInput(data, symbol));
 			update({
@@ -170,7 +172,7 @@ const CreateOrderForm = ({ symbol }: IProps) => {
 						<Typography fontWeight={600} fontSize={'13px'}>
 							Amount
 						</Typography>
-						<Typography color={theme.palette.grey[500]} fontSize={'12px'}>
+						<Typography color={useTheme().palette.grey[500]} fontSize={'12px'}>
 							Set order size
 						</Typography>
 					</Stack>
@@ -187,7 +189,14 @@ const CreateOrderForm = ({ symbol }: IProps) => {
 					<Divider>or</Divider>
 
 					<AmountSetOrderSide formContext={formContext} />
-					<Details estLiqPrice={estLiqPrice} quote={quote} />
+
+					<Details
+						estLiqPrice={estLiqPrice}
+						freeCollateral={freeCollateral}
+						markPrice={markPrice}
+						quote={quote}
+						direction={formContext.watch('direction')}
+					/>
 				</Stack>
 			</form>
 		</MainCard>
@@ -202,7 +211,7 @@ interface IIttemProps {
 export const Item = ({ value, label }: IIttemProps) => {
 	return (
 		<Stack direction={'row'} justifyContent={'space-between'}>
-			<Typography fontSize={'12px'} color={theme.palette.grey[600]}>
+			<Typography fontSize={'12px'} color={useTheme().palette.grey[600]}>
 				{label}
 			</Typography>
 

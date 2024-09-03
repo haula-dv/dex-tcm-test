@@ -1,11 +1,11 @@
 html {
-	background-color: #f7f4f0 !important;
+	// background-color: #f7f4f0 !important;
 	font-family: var(--orderly-font-family) !important;
 	color: var(--grey900);
 }
 body {
 	font-family: var(--orderly-font-family) !important;
-	background-color: #f7f4f0 !important;
+	// background-color: #f7f4f0 !important;
 	color: var(--grey900);
 }
 
@@ -19,6 +19,18 @@ h5 {
 	color: var(--grey900);
 	// font-size: 16px;
 }
+
+// .dark {
+// 	div p,
+// 	span,
+// 	h1,
+// 	h2,
+// 	h3,
+// 	h4,
+// 	h5 {
+// 		color: var(--white);
+// 	}
+// }
 
 a {
 	color: inherit !important;

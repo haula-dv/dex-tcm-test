@@ -2,8 +2,7 @@ import { MainButton } from '@/components/button/MainButton';
 import { MainCard } from '@/components/card/MainCard';
 import { MainDialog } from '@/components/dialog/MainDialog';
 import IconTransactionPrice from '@/components/icons/transaction-price';
-import { theme } from '@/utils';
-import { Box, Divider, Stack, Typography } from '@mui/material';
+import { Box, Divider, Stack, Typography, useTheme } from '@mui/material';
 import { useState } from 'react';
 import { ItemRow } from '../components/TokenSelected';
 import { CustomizeGasModal } from './CustomizeGasModal';
@@ -27,7 +26,7 @@ export const SignatureRequestConfirmModal = ({ onClose, open }: IProps) => {
 					<Box
 						height={'40px'}
 						width={'40px'}
-						bgcolor={theme.palette.info.light}
+						bgcolor={useTheme().palette.info.light}
 						borderRadius={'50%'}
 						display={'flex'}
 						alignItems={'center'}
@@ -43,7 +42,7 @@ export const SignatureRequestConfirmModal = ({ onClose, open }: IProps) => {
 					Allow https://app.bazaar.org to spend your Swaplux V2?
 				</Typography>
 
-				<Typography color={theme.palette.grey[500]}>
+				<Typography color={useTheme().palette.grey[500]}>
 					Do you trust this site? By granting this permission, you’re allwoing Https://app.bazaar.org to withdraw your
 					Swaplux V2 and automate transactions for you.
 				</Typography>
@@ -70,7 +69,7 @@ export const SignatureRequestConfirmModal = ({ onClose, open }: IProps) => {
 						<ItemRow
 							title=""
 							value={
-								<Typography fontSize={'15px'} color={theme.palette.grey[400]}>
+								<Typography fontSize={'15px'} color={useTheme().palette.grey[400]}>
 									0.004871ETH{' '}
 								</Typography>
 							}

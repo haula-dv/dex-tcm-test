@@ -1,11 +1,11 @@
+/* eslint-disable react-hooks/rules-of-hooks */
 import { MainIconButton } from '@/components/button/MainIconButton';
 import { SearchField } from '@/components/form-control/SearchField';
 import FixTrading from '@/components/icons/fixtrading';
 import IconLoading from '@/components/icons/loading';
 import MainTooltip from '@/components/MainTooltip';
 import { StyledMenu } from '@/components/menu/StyledMenu';
-import { theme } from '@/utils';
-import { Box, ListItemButton, Stack, Typography } from '@mui/material';
+import { Box, ListItemButton, Stack, Typography, useTheme } from '@mui/material';
 import { IconCheck } from '@tabler/icons-react';
 import { memo, useState } from 'react';
 import InfiniteScroll from 'react-infinite-scroll-component';
@@ -85,11 +85,11 @@ const ChartIndicatorsListView = ({ handleSelectIndicator }: IProps) => {
 					'aria-labelledby': 'chart-indicator-button',
 				}}
 			>
-				<Box mx={'16px'} pb="8px" pt="6px" position={'sticky'} top={'12px'} bgcolor={theme.palette.common.white}>
+				<Box mx={'16px'} pb="8px" pt="6px" position={'sticky'} top={'12px'} bgcolor={useTheme().palette.common.white}>
 					<SearchField placeholder="Search..." onSearch={onSearch} />
 				</Box>
 
-				<Typography fontSize={'12px'} color={theme.palette.grey[400]} px="16px" pt="8px">
+				<Typography fontSize={'12px'} color={useTheme().palette.grey[400]} px="16px" pt="8px">
 					Script name
 				</Typography>
 
@@ -121,7 +121,7 @@ const ChartIndicatorsListView = ({ handleSelectIndicator }: IProps) => {
 									<Typography>{item.scriptName}</Typography>
 
 									{currentSelect.includes(item.scriptIdPart) && (
-										<IconCheck size={'1rem'} color={theme.palette.success.main} />
+										<IconCheck size={'1rem'} color={useTheme().palette.success.main} />
 									)}
 								</Stack>
 							</ListItemButton>

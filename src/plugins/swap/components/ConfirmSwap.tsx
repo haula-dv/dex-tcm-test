@@ -2,8 +2,7 @@ import { ITokenType } from '@/common';
 import { MainButton } from '@/components/button/MainButton';
 import { MainCard } from '@/components/card/MainCard';
 import { MainChip } from '@/components/chip/MainChip';
-import { theme } from '@/utils';
-import { Stack, Typography } from '@mui/material';
+import { Stack, Typography, useTheme } from '@mui/material';
 import Image from 'next/image';
 import { useState } from 'react';
 import { ModalConfirmSwap } from './modal-token/ModalConfirmSwap';
@@ -67,7 +66,10 @@ export const ConfirmSwapContent = ({ toggleSwapType, tokenSellSelected, tokenBuy
 			<Stack spacing={1} py={2}>
 				<Item title="Minimum recevied" value="9747.969 AMPL" />
 
-				<Item title="Price Impact" value={<span style={{ color: theme.palette.success.main }}> {'<0.01%'}</span>} />
+				<Item
+					title="Price Impact"
+					value={<span style={{ color: useTheme().palette.success.main }}> {'<0.01%'}</span>}
+				/>
 
 				<Item title="Liquidity Provider Fee" value={'0.0015ETH'} />
 			</Stack>

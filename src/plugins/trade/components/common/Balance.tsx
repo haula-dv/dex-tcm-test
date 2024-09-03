@@ -1,5 +1,4 @@
-import { theme } from '@/utils';
-import { Collapse, Stack, Typography } from '@mui/material';
+import { Collapse, Stack, Typography, useTheme } from '@mui/material';
 import { Divider } from '@orderly.network/react';
 import { IconChevronDown } from '@tabler/icons-react';
 import { memo, useState } from 'react';
@@ -25,7 +24,7 @@ export const Balance = memo(() => {
 				onClick={handleChange}
 			>
 				<Stack>
-					<Typography fontSize={'12px'} color={theme.palette.grey[600]}>
+					<Typography fontSize={'12px'} color={useTheme().palette.grey[600]}>
 						Total balance
 					</Typography>
 

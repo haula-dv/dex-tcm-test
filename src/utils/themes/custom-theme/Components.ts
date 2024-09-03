@@ -1,9 +1,11 @@
 // project imports
+import { setColorThemeMode } from '@/utils/helpers';
 import { Theme } from '@mui/material';
 import { CustomMuiButton } from './CustomButton';
 import { CustomMuiChip } from './CustomChip';
 import { CustomFormControl } from './CustomFormControl';
 import { CustomListItem } from './CustomListItem';
+import { CustomMuiTypography } from './CustomMuiTypography';
 import { CustomTextField } from './CustomTextField';
 import { TSizes } from './sizes';
 
@@ -14,6 +16,7 @@ const components = (theme: Theme) => {
 		...CustomListItem(theme),
 		...CustomMuiChip(theme),
 		...CustomTextField(theme),
+		...CustomMuiTypography(theme),
 
 		MuiCssBaseline: {
 			styleOverrides: {
@@ -23,6 +26,7 @@ const components = (theme: Theme) => {
 				html: {
 					height: '100%',
 					width: '100%',
+					backgroundColor: setColorThemeMode(theme.palette.primary.light, '#322D2B', theme),
 				},
 				a: {
 					textDecoration: 'none',
@@ -31,6 +35,7 @@ const components = (theme: Theme) => {
 					height: '100%',
 					margin: 0,
 					padding: 0,
+					backgroundColor: setColorThemeMode(theme.palette.primary.light, '#322D2B', theme),
 				},
 				'#root': {
 					height: '100%',

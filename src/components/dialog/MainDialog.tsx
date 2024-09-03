@@ -1,3 +1,4 @@
+import { setColorThemeMode } from '@/utils/helpers';
 import { TSizes } from '@/utils/themes/custom-theme/sizes';
 import { Box, Dialog, Stack, Typography } from '@mui/material';
 import { styled } from '@mui/material/styles';
@@ -73,7 +74,7 @@ const CustomDialog = styled(Dialog, {
 	'& .MuiDialog-paper': {
 		position: 'relative',
 		boxShadow: 'none',
-		backgroundColor: theme.palette.primary.light,
+		backgroundColor: setColorThemeMode(theme.palette.primary.light, (theme.palette.grey as any).A900),
 		margin: '16px',
 		borderRadius: TSizes.borderRadiusMd,
 	},

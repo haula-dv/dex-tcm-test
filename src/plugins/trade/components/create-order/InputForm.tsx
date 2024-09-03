@@ -1,6 +1,6 @@
 import CurrencyInputField from '@/components/form-control/CurrencyInputField';
 import { getDecimalsFromTick } from '@/utils/formatters/api';
-import { Stack, Typography } from '@mui/material';
+import { Stack } from '@mui/material';
 import { useOrderEntry } from '@orderly.network/hooks';
 import { OrderEntity } from '@orderly.network/types';
 import { memo } from 'react';
@@ -37,7 +37,6 @@ function InputForm({ formContext, symbolsInfo, symbol, getInput, helper, maxQty 
 				<CurrencyInputField
 					name="price"
 					formContext={formContext}
-					inputMode="decimal"
 					suffix={quote}
 					decimals={quoteDecimals}
 					placeholder="0.0000"
@@ -54,7 +53,6 @@ function InputForm({ formContext, symbolsInfo, symbol, getInput, helper, maxQty 
 				<CurrencyInputField
 					name="quantity"
 					formContext={formContext}
-					inputMode="decimal"
 					suffix={base}
 					decimals={0}
 					placeholder="0.0000"
@@ -67,13 +65,6 @@ function InputForm({ formContext, symbolsInfo, symbol, getInput, helper, maxQty 
 						},
 					}}
 				/>
-			</Stack>
-
-			<Stack direction={'row'} justifyContent={'space-between'} alignContent={'center'}>
-				<Typography fontSize={'13px'}>Max:</Typography>
-				<Typography fontSize={'13px'}>
-					{formatter.format(maxQty)} {base}
-				</Typography>
 			</Stack>
 		</>
 	);

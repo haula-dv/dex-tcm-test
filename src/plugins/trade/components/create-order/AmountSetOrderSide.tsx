@@ -1,10 +1,9 @@
 import { MainButton } from '@/components/button/MainButton';
 import InputField from '@/components/form-control/InputField';
 import SwitchBase from '@/components/form-control/SwitcheBase';
-import { theme } from '@/utils';
 import { TSizes } from '@/utils/themes/custom-theme/sizes';
 import { Box, Stack, Typography } from '@mui/material';
-import { styled } from '@mui/material/styles';
+import { styled, useTheme } from '@mui/material/styles';
 import { memo, useState } from 'react';
 import { UseFormReturn } from 'react-hook-form';
 import { Inputs } from './CreateOrderForm';
@@ -35,7 +34,7 @@ const AmountSetOrderSide = ({ formContext }: IProps) => {
 	const [currentSelect, setCurrentSelect] = useState('');
 
 	const handleChangeSlippage = (val: string) => {
-		formContext.setValue('price', val);
+		// formContext.setValue('price', val);
 		setCurrentSelect(val);
 	};
 
@@ -47,7 +46,7 @@ const AmountSetOrderSide = ({ formContext }: IProps) => {
 						Amount
 					</Typography>
 
-					<Typography color={theme.palette.grey[500]} fontSize={'12px'}>
+					<Typography color={useTheme().palette.grey[500]} fontSize={'12px'}>
 						Set order size
 					</Typography>
 				</Stack>
@@ -67,7 +66,7 @@ const AmountSetOrderSide = ({ formContext }: IProps) => {
 							variant={currentSelect === item.percentValue ? 'outlined' : 'filledTonal'}
 							onClick={() => handleChangeSlippage(item.percentValue)}
 							size="small"
-							color={currentSelect === item.percentValue ? 'success' : 'inherit'}
+							color={currentSelect === item.percentValue ? 'darkGrey' : 'inherit'}
 							fullWidth
 						>
 							{item.label}

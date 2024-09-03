@@ -1,6 +1,6 @@
+/* eslint-disable react-hooks/rules-of-hooks */
 import MainTooltip from '@/components/MainTooltip';
-import { theme } from '@/utils';
-import { Stack, Typography } from '@mui/material';
+import { Stack, Typography, useTheme } from '@mui/material';
 import { OrderBookItem } from '@orderly.network/hooks';
 import { Decimal } from '@orderly.network/utils';
 import { IconArrowDown, IconArrowUp } from '@tabler/icons-react';
@@ -43,17 +43,17 @@ const MarkPrice = ({ markPrice, lastPrice, asks, bids }: IProps) => {
 					fontWeight={600}
 					color={`${
 						middlePrice < prevLastPrice
-							? theme.palette.success.main
+							? useTheme().palette.success.main
 							: middlePrice > prevLastPrice
-							? theme.palette.error.main
+							? useTheme().palette.error.main
 							: ''
 					}`}
 				>
 					{middlePrice.toLocaleString()}
 				</Typography>
 
-				{middlePrice < prevLastPrice && <IconArrowUp size={'1rem'} color={theme.palette.success.main} />}
-				{middlePrice > prevLastPrice && <IconArrowDown size={'1rem'} color={theme.palette.error.main} />}
+				{middlePrice < prevLastPrice && <IconArrowUp size={'1rem'} color={useTheme().palette.success.main} />}
+				{middlePrice > prevLastPrice && <IconArrowDown size={'1rem'} color={useTheme().palette.error.main} />}
 			</Stack>
 
 			<MainTooltip

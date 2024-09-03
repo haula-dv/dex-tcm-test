@@ -1,10 +1,10 @@
+/* eslint-disable react-hooks/rules-of-hooks */
 'use client';
 import { MainButton } from '@/components/button/MainButton';
 import { MainCard } from '@/components/card/MainCard';
 import { TokenIcon } from '@/components/token/TokenIcon';
 import { RemoveLiquidityModal } from '@/plugins/pool/liquidity/RemoveLiquidityModal';
-import { theme } from '@/utils';
-import { Box, Collapse, Stack, Typography } from '@mui/material';
+import { Box, Collapse, Stack, Typography, useTheme } from '@mui/material';
 import { IconChevronDown } from '@tabler/icons-react';
 import Image from 'next/image';
 import { ReactNode, useState } from 'react';
@@ -56,7 +56,7 @@ export const TokenSelected = () => {
 
 					<MainButton
 						onClick={handleToggleExplanation}
-						endIcon={<IconChevronDown color={theme.palette.common.white} />}
+						endIcon={<IconChevronDown color={useTheme().palette.common.white} />}
 						color="whitePrimary"
 					>
 						Manage
@@ -142,11 +142,11 @@ export const ItemRow = ({ title, value }: IItemRow) => {
 	return (
 		<Stack direction={'row'} justifyContent={'space-between'} alignItems={'center'}>
 			{typeof title == 'string' ? (
-				<Typography fontSize={'15px'} color={theme.palette.grey[500]}>
+				<Typography fontSize={'15px'} color={useTheme().palette.grey[500]}>
 					{title}
 				</Typography>
 			) : (
-				<Box color={theme.palette.grey[500]} fontSize={'15px'}>
+				<Box color={useTheme().palette.grey[500]} fontSize={'15px'}>
 					{title}
 				</Box>
 			)}

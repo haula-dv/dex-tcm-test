@@ -1,5 +1,4 @@
 'use client';
-import { theme } from '@/utils';
 import { TSizes } from '@/utils/themes/custom-theme/sizes';
 import { Box, Card, CardProps, Stack } from '@mui/material';
 import { styled } from '@mui/material/styles';

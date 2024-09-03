@@ -1,5 +1,6 @@
 'use client';
 import WalletContainer from '@/plugins/wallet/components/WalletContainer';
+import { setColorThemeMode } from '@/utils/helpers';
 import { Mixins } from '@/utils/themes/custom-theme/mixins';
 import { TSizes } from '@/utils/themes/custom-theme/sizes';
 import { AppBar, Box, BoxProps, Stack, Toolbar, Typography } from '@mui/material';
@@ -45,10 +46,9 @@ export const Header = () => {
 	);
 };
 
-// const CutomNavButton = styled(MainButton)
-
+// theme.palette.mode === 'dark' ? theme.palette.grey[900] :
 const MainAppBar = styled(AppBar)(({ theme }) => ({
-	backgroundColor: '#fff',
+	backgroundColor: theme.palette.background.default,
 	zIndex: 0,
 	height: '56px',
 	borderRadius: '0px',
@@ -67,8 +67,8 @@ const NavItem = styled(Box, {
 })<INavItemProps>(({ theme, isActived }) => ({
 	cursor: 'pointer',
 	position: 'relative',
-	display: 'flex', // Flex display to center content
-	alignItems: 'center', // Center the Typography vertically
+	display: 'flex',
+	alignItems: 'center',
 	height: '56px',
 
 	'&:after': {
@@ -78,22 +78,19 @@ const NavItem = styled(Box, {
 			left: 0,
 			height: '2px',
 			width: '100%',
-			backgroundColor: isActived ? theme.palette.common.black : 'transparent',
+			backgroundColor: isActived
+				? setColorThemeMode(theme.palette.common.black, theme.palette.common.white, theme)
+				: 'transparent',
 			borderRadius: '4px',
 		}),
 	},
 
 	'& .MuiTypography-root': {
-		color: theme.palette.common.black,
+		color: setColorThemeMode(theme.palette.common.black, theme.palette.common.white, theme),
 		fontSize: '14px',
 		fontWeight: 700,
 		padding: '6px 12px',
 		borderRadius: TSizes.borderRadius,
 		transition: theme.transitions.create(['background-color']),
-		// backgroundColor: isActived ? theme.palette.grey[50] : "transparent",
-
-		'&:hover': {
-			// backgroundColor: theme.palette.grey[50],
-		},
 	},
 }));

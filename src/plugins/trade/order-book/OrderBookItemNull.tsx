@@ -1,5 +1,4 @@
-import { theme } from '@/utils';
-import { Grid, Typography } from '@mui/material';
+import { Grid, Typography, useTheme } from '@mui/material';
 import { memo } from 'react';
 
 interface IProps {
@@ -7,6 +6,8 @@ interface IProps {
 }
 
 const OrderBookItemNull = ({ isFirstAsk }: IProps) => {
+	const theme = useTheme();
+
 	return (
 		<Grid container py={'2px'}>
 			<Grid item md={4}>

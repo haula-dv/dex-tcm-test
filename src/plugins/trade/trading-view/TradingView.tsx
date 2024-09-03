@@ -1,5 +1,5 @@
-import { theme } from '@/utils';
-import { Box } from '@mui/material';
+/* eslint-disable react-hooks/rules-of-hooks */
+import { Box, useTheme } from '@mui/material';
 import { memo, useEffect, useRef, useState } from 'react';
 import TimeLine from './TimeLine';
 
@@ -12,6 +12,7 @@ export const TradingMainView = ({ symbol, onSymbolChange }: IProps) => {
 	const [currentInterval, setCurrentInterval] = useState('1');
 	const [currentChartType, setCurrentChartType] = useState('1');
 	const [currentSelect, setCurrentSelect] = useState<string[]>([]);
+	const theme = useTheme();
 
 	const [_, base] = symbol.split('_');
 
@@ -59,7 +60,7 @@ export const TradingMainView = ({ symbol, onSymbolChange }: IProps) => {
 			container.current.innerHTML = '';
 			container.current.appendChild(script);
 		}
-	}, [symbol, currentInterval, base, currentChartType, currentSelect]);
+	}, [symbol, currentInterval, base, currentChartType, currentSelect, theme]);
 
 	return (
 		<Box flex={'1 1 0%'} height={'100%'} minHeight={'450px'}>
@@ -73,7 +74,7 @@ export const TradingMainView = ({ symbol, onSymbolChange }: IProps) => {
 				position={'relative'}
 				height={'100%'}
 				width={'100%'}
-				bgcolor={theme.palette.primary.light}
+				bgcolor={useTheme().palette.primary.light}
 				borderRadius={'18px'}
 			>
 				<Box
@@ -81,7 +82,7 @@ export const TradingMainView = ({ symbol, onSymbolChange }: IProps) => {
 					top={0}
 					left={0}
 					border={3}
-					borderColor={theme.palette.primary.light}
+					borderColor={useTheme().palette.primary.light}
 					width={'100%'}
 					height={'100%'}
 					bgcolor={'transparent'}

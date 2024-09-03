@@ -1,8 +1,7 @@
 import { MainButton } from '@/components/button/MainButton';
 import { MainCard } from '@/components/card/MainCard';
 import { MainDialog } from '@/components/dialog/MainDialog';
-import { theme } from '@/utils';
-import { Box, Stack, Typography } from '@mui/material';
+import { Box, Stack, Typography, useTheme } from '@mui/material';
 import { ItemRow } from '../components/TokenSelected';
 
 interface IProps {
@@ -18,7 +17,7 @@ export const SignatureRequestModal = ({ onClose, handleToggleSignatureRequestCon
 				<Box
 					height={'40px'}
 					width={'40px'}
-					bgcolor={theme.palette.info.light}
+					bgcolor={useTheme().palette.info.light}
 					borderRadius={'50%'}
 					display={'flex'}
 					alignItems={'center'}
@@ -38,7 +37,7 @@ export const SignatureRequestModal = ({ onClose, handleToggleSignatureRequestCon
 				<Box
 					height={'40px'}
 					width={'40px'}
-					bgcolor={theme.palette.info.light}
+					bgcolor={useTheme().palette.info.light}
 					borderRadius={'50%'}
 					display={'flex'}
 					alignItems={'center'}
@@ -52,7 +51,7 @@ export const SignatureRequestModal = ({ onClose, handleToggleSignatureRequestCon
 						Swaplux V2
 					</Typography>
 
-					<Typography fontSize={'13px'} color={theme.palette.grey[600]}>
+					<Typography fontSize={'13px'} color={useTheme().palette.grey[600]}>
 						https://app.bazaar.org/0xod1738...9932ecdb
 					</Typography>
 				</Stack>

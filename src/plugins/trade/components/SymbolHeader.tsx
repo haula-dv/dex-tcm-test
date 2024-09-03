@@ -1,11 +1,11 @@
+/* eslint-disable react-hooks/rules-of-hooks */
 import { getImageNextwork } from '@/common';
 import { MainButton } from '@/components/button/MainButton';
 import MainTooltip from '@/components/MainTooltip';
 import { TokenIcon } from '@/components/token/TokenIcon';
-import { theme } from '@/utils';
 import { usdFormatter } from '@/utils/formatters/number';
 import { spitSymbol } from '@/utils/formatters/token';
-import { Box, Stack, Typography } from '@mui/material';
+import { Box, Stack, Typography, useTheme } from '@mui/material';
 import { useFundingRate, useTickerStream } from '@orderly.network/hooks';
 import { Decimal } from '@orderly.network/utils';
 import { IconChevronDown } from '@tabler/icons-react';
@@ -67,7 +67,11 @@ const SymbolHeader = ({ onSymbolChange, symbol }: IProps) => {
 			label: '24h change',
 			value:
 				dailyChange && dailyChangePercentage ? (
-					<span style={{ color: !dailyChange.startsWith('-') ? theme.palette.success.main : theme.palette.error.main }}>
+					<span
+						style={{
+							color: !dailyChange.startsWith('-') ? useTheme().palette.success.main : useTheme().palette.error.main,
+						}}
+					>
 						{!dailyChange.startsWith('-') ? '+' : ''}
 						{usdFormatter.format(Number(dailyChange))} / {!dailyChange.startsWith('-') ? '+' : ''}
 						{dailyChangePercentage}%
@@ -89,7 +93,8 @@ const SymbolHeader = ({ onSymbolChange, symbol }: IProps) => {
 			hint: 'Funding rates are payments between traders who are long and short. When positive, long positions pay short positions funding. When negative, short positions pay long positions.',
 			value: (
 				<>
-					<span style={{ color: theme.palette.primary.dark }}>{data.est_funding_rate} %</span> {`in ${data.countDown}`}
+					<span style={{ color: useTheme().palette.primary.dark }}>{data.est_funding_rate} %</span>{' '}
+					{`in ${data.countDown}`}
 				</>
 			),
 		},
@@ -113,7 +118,7 @@ const SymbolHeader = ({ onSymbolChange, symbol }: IProps) => {
 					onClick={handleClick}
 					endIcon={<IconChevronDown size="1rem" />}
 					sx={{
-						color: theme.palette.grey[900],
+						color: useTheme().palette.grey[900],
 						whiteSpace: 'nowrap',
 						'& p': {},
 					}}
@@ -121,7 +126,7 @@ const SymbolHeader = ({ onSymbolChange, symbol }: IProps) => {
 					{`${base}-${perp}`}
 				</MainButton>
 
-				<Box height={'20px'} width={'2px'} bgcolor={theme.palette.grey[900]} />
+				<Box height={'20px'} width={'2px'} bgcolor={useTheme().palette.grey[900]} />
 
 				<Stack direction={'row'} spacing={3} alignItems={'center'} sx={{ overflowX: 'auto' }}>
 					<Typography fontWeight={600} pr={1} whiteSpace={'nowrap'}>
@@ -133,7 +138,7 @@ const SymbolHeader = ({ onSymbolChange, symbol }: IProps) => {
 							<MainTooltip key={index} title={ite?.hint} style={{ maxWidth: '200px' }} arrow>
 								<Stack sx={{ cursor: 'pointer' }}>
 									<Typography
-										color={theme.palette.grey[400]}
+										color={useTheme().palette.grey[400]}
 										lineHeight="120%"
 										fontWeight={600}
 										fontSize={'10px'}

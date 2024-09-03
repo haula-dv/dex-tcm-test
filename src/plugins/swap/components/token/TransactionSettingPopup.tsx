@@ -4,7 +4,6 @@ import { MainIconButton } from '@/components/button/MainIconButton';
 import { MainCard } from '@/components/card/MainCard';
 import CustomSwitch from '@/components/form-control/CustomSwitch';
 import { MainPopup } from '@/components/popup/MainPopup';
-import { theme } from '@/utils';
 import { TSizes } from '@/utils/themes/custom-theme/sizes';
 import { Box, InputAdornment, Stack, TextField, Tooltip, Typography } from '@mui/material';
 import { IconHelpCircle, IconSettings } from '@tabler/icons-react';

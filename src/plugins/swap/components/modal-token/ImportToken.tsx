@@ -2,9 +2,8 @@ import { MainButton } from '@/components/button/MainButton';
 import { MainIconButton } from '@/components/button/MainIconButton';
 import { MainCard } from '@/components/card/MainCard';
 import { CheckBoxBase } from '@/components/form-control/CheckBoxBase';
-import { theme } from '@/utils';
 import { TSizes } from '@/utils/themes/custom-theme/sizes';
-import { Box, Stack, Typography } from '@mui/material';
+import { Box, Stack, Typography, useTheme } from '@mui/material';
 import { IconArrowLeft, IconX } from '@tabler/icons-react';
 import Image from 'next/image';
 
@@ -38,16 +37,16 @@ export const ImportToken = ({ handleCloseModal, onBack }: IProps) => {
 						<Stack>
 							<Typography fontSize={'16px'}>Token name</Typography>
 
-							<Typography fontSize={'12px'} color={theme.palette.info.main}>
+							<Typography fontSize={'12px'} color={useTheme().palette.info.main}>
 								09xx762hdbjahsgd7asiyiasdasbdjhsutsd7as57d6asdv
 							</Typography>
 
-							<Typography color={theme.palette.grey[600]}>Symbol</Typography>
+							<Typography color={useTheme().palette.grey[600]}>Symbol</Typography>
 						</Stack>
 					</Stack>
 				</MainCard>
 				<MainCard>
-					<Typography textAlign={'center'} fontSize={'18px'} pb={1} color={theme.palette.warning.main}>
+					<Typography textAlign={'center'} fontSize={'18px'} pb={1} color={useTheme().palette.warning.main}>
 						Trade at your own risk
 					</Typography>
 

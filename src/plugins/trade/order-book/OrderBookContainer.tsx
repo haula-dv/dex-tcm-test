@@ -1,8 +1,7 @@
 import { MainButton } from '@/components/button/MainButton';
 import { MainCard } from '@/components/card/MainCard';
-import { theme } from '@/utils';
 import { TSizes } from '@/utils/themes/custom-theme/sizes';
-import { Box, Stack } from '@mui/material';
+import { Box, Stack, useTheme } from '@mui/material';
 import { useState } from 'react';
 import OrderBookContentCustom from './OrderBookContentCustom';
 import OrderLastTradeContent from './OrderLastTradeContent';
@@ -42,7 +41,7 @@ export const OrderBookContainer = ({ symbol }: IProps) => {
 
 			<Box
 				sx={{ height: 'calc(-220px + 100vh)', minHeight: 'calc(800px - 20px)', overflowY: 'auto' }}
-				bgcolor={theme.palette.primary.light}
+				bgcolor={useTheme().palette.primary.light}
 				borderRadius={TSizes.borderRadius}
 				p="10px"
 			>

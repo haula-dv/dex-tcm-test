@@ -1,3 +1,4 @@
+import { setColorThemeMode } from '@/utils/helpers';
 import { Theme } from '@mui/material';
 import { TSizes } from './sizes';
 
@@ -96,6 +97,13 @@ export const CustomMuiButton = (theme: Theme) => {
 					'&:hover': {
 						backgroundColor: theme.palette.grey[400],
 						color: theme.palette.common.white,
+					},
+				},
+
+				containedWhite: {
+					color: setColorThemeMode(theme.palette.common.black, theme.palette.common.black, theme),
+					'& svg': {
+						// color: theme.palette.common.black,
 					},
 				},
 

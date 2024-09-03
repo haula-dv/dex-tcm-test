@@ -13,6 +13,11 @@ export const CustomFormControl = (theme: Theme) => {
 					'&:hover .MuiOutlinedInput-notchedOutline': {
 						borderColor: theme.palette.grey[100],
 					},
+
+					'&.Mui-error': {
+						border: `1px solid ${theme.palette.error.main}`,
+						backgroundColor: '#f5c6c61c',
+					},
 				},
 
 				input: {

@@ -13,9 +13,8 @@ interface InputFieldProps<V extends FieldValues> {
 	min?: FixedNumber;
 	max?: FixedNumber;
 	placeholder?: string;
-	inputMode?: 'numeric' | 'decimal' | 'amount';
-	readOnly?: boolean | null;
 	rules?: Omit<RegisterOptions<V, Path<V>>, 'disabled' | 'valueAsNumber' | 'valueAsDate' | 'setValueAs'> | undefined;
+	hint?: string;
 }
 
 const CurrencyInputField = <V extends FieldValues>({
@@ -23,12 +22,9 @@ const CurrencyInputField = <V extends FieldValues>({
 	formContext,
 	decimals,
 	placeholder,
-	inputMode,
-	readOnly,
 	suffix,
 	rules,
-	min,
-	max,
+	hint,
 }: InputFieldProps<V>) => {
 	return (
 		<FormControl fullWidth>

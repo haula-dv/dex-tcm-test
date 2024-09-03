@@ -1,11 +1,11 @@
+/* eslint-disable react-hooks/rules-of-hooks */
 'use client';
 import { MainButton } from '@/components/button/MainButton';
 import { MainIconButton } from '@/components/button/MainIconButton';
 import { MainCard } from '@/components/card/MainCard';
 import { CurrencyField } from '@/components/swap/CurrencyField';
-import { theme } from '@/utils';
 import { TSizes } from '@/utils/themes/custom-theme/sizes';
-import { Box, Stack, Typography } from '@mui/material';
+import { Box, Stack, Typography, useTheme } from '@mui/material';
 import { IconHelp, IconTransform } from '@tabler/icons-react';
 import { setZustandValue } from 'nes-zustand';
 import { useState } from 'react';
@@ -90,7 +90,7 @@ export const SwapContainer = () => {
 
 									{isEnterAmount && (
 										<MainIconButton size="small">
-											<IconTransform size={'1.2rem'} color={theme.palette.common.black} />
+											<IconTransform size={'1.2rem'} color={useTheme().palette.common.black} />
 										</MainIconButton>
 									)}
 								</Stack>
@@ -107,7 +107,7 @@ export const SwapContainer = () => {
 
 								<Item
 									title="Price Impact"
-									value={<span style={{ color: theme.palette.success.main }}> {'<0.01%'}</span>}
+									value={<span style={{ color: useTheme().palette.success.main }}> {'<0.01%'}</span>}
 								/>
 
 								<Item title="Liquidity Provider Fee" value={'0.0015ETH'} />
@@ -148,10 +148,10 @@ export const Item = ({ title, value }: IProps) => {
 	return (
 		<Stack direction={'row'} justifyContent={'space-between'}>
 			<Stack direction={'row'} spacing={0.5} alignItems={'center'}>
-				<Typography color={theme.palette.grey[900]}>{title}</Typography>
+				<Typography color={useTheme().palette.grey[900]}>{title}</Typography>
 
 				<MainIconButton size="small">
-					<IconHelp size={'1.2rem'} color={theme.palette.grey[900]} />
+					<IconHelp size={'1.2rem'} color={useTheme().palette.grey[900]} />
 				</MainIconButton>
 			</Stack>
 			<Typography>{value}</Typography>

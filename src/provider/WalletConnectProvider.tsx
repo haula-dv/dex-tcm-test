@@ -9,8 +9,9 @@ export default function Web3OnboardProviderRoot({
 	children: React.ReactNode;
 }>) {
 	const { web3Onboard } = OrderlyConfig();
+
 	return (
-		<ConnectorProvider options={web3Onboard}>
+		<ConnectorProvider options={web3Onboard as any}>
 			<OrderlyConfigProviderRoot>{children}</OrderlyConfigProviderRoot>
 		</ConnectorProvider>
 	);

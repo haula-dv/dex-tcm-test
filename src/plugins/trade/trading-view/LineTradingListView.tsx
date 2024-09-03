@@ -3,8 +3,7 @@ import SwitchBase from '@/components/form-control/SwitcheBase';
 import IconLineTrading from '@/components/icons/line-trading';
 import MainTooltip from '@/components/MainTooltip';
 import { StyledMenu } from '@/components/menu/StyledMenu';
-import { theme } from '@/utils';
-import { ListItemButton, Typography } from '@mui/material';
+import { ListItemButton, Typography, useTheme } from '@mui/material';
 import { IconChevronDown } from '@tabler/icons-react';
 import { memo, useState } from 'react';
 
@@ -61,7 +60,7 @@ function LineTradingListView() {
 				<MainButton
 					size="small"
 					color="inherit"
-					endIcon={<IconChevronDown size={'1rem'} color={theme.palette.grey[400]} />}
+					endIcon={<IconChevronDown size={'1rem'} color={useTheme().palette.grey[400]} />}
 					id="chart-type-line-button"
 					aria-controls={open ? 'chart-type-line-menu' : undefined}
 					aria-haspopup="true"

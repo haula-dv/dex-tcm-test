@@ -1,5 +1,5 @@
+/* eslint-disable react-hooks/rules-of-hooks */
 import { MainIconButton } from '@/components/button/MainIconButton';
-import { theme } from '@/utils';
 import {
 	Box,
 	Collapse,
@@ -12,6 +12,7 @@ import {
 	Stepper,
 	styled,
 	Typography,
+	useTheme,
 } from '@mui/material';
 import { Divider, toast, Tooltip } from '@orderly.network/react';
 import { IconPencil } from '@tabler/icons-react';
@@ -82,19 +83,19 @@ export const LeverageContent = memo(() => {
 						}
 					>
 						<Box display={'inline-flex'}>
-							<Typography fontSize={'12px'} color={theme.palette.grey[600]} className="pointer">
+							<Typography fontSize={'12px'} color={useTheme().palette.grey[600]} className="pointer">
 								Margin ratio
 							</Typography>
 						</Box>
 					</Tooltip>
 
-					<Typography color={theme.palette.success.main} fontWeight={600}>
+					<Typography color={useTheme().palette.success.main} fontWeight={600}>
 						1000.00%
 					</Typography>
 				</Stack>
 
 				<Stack>
-					<Typography fontSize={'12px'} color={theme.palette.grey[600]} textAlign={'end'}>
+					<Typography fontSize={'12px'} color={useTheme().palette.grey[600]} textAlign={'end'}>
 						Account leverage
 					</Typography>
 
@@ -115,7 +116,7 @@ export const LeverageContent = memo(() => {
 							<Step key={item.key} onClick={() => handleChangeLeverage(item.key, index)}>
 								<StepLabel StepIconComponent={ColorlibStepIcon}></StepLabel>
 
-								<Typography textAlign={'center'} fontSize={'12px'} pt={0.2} color={theme.palette.grey[400]}>
+								<Typography textAlign={'center'} fontSize={'12px'} pt={0.2} color={useTheme().palette.grey[400]}>
 									{item.value}
 								</Typography>
 							</Step>

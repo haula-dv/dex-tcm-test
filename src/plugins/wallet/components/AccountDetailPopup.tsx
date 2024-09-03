@@ -3,9 +3,8 @@ import { MainCard } from '@/components/card/MainCard';
 import { MainDialog } from '@/components/dialog/MainDialog';
 import { IconWrapp } from '@/components/icons/IconWrapp';
 import { ItemList } from '@/components/list/ItemList';
-import { theme } from '@/utils';
 import { usdFormatter } from '@/utils/formatters/number';
-import { Box, Stack, Typography } from '@mui/material';
+import { Box, Stack, Typography, useTheme } from '@mui/material';
 import { useChains, useDeposit } from '@orderly.network/hooks';
 import { WalletState } from '@orderly.network/hooks/esm/walletConnectorContext';
 import { IconActivity, IconCopy, IconLogout } from '@tabler/icons-react';
@@ -58,7 +57,7 @@ export default function AccountDetailPopup({ onClose, open, wallet }: IProps) {
 		{
 			label: 'Disconnect',
 			icon: (
-				<IconWrapp size="30px" bgcolor={theme.palette.grey[50]}>
+				<IconWrapp size="30px" bgcolor={useTheme().palette.grey[50]}>
 					<IconLogout size={'1.2rem'} />
 				</IconWrapp>
 			),
@@ -82,7 +81,7 @@ export default function AccountDetailPopup({ onClose, open, wallet }: IProps) {
 				</Box>
 			</Box>
 
-			<Typography fontSize={'18px'} fontWeight={600} textAlign={'center'} color={theme.palette.grey[500]} pt={1}>
+			<Typography fontSize={'18px'} fontWeight={600} textAlign={'center'} color={useTheme().palette.grey[500]} pt={1}>
 				{usdFormatter.format(Number(balance))} {chain?.network_infos.currency_symbol}
 			</Typography>
 

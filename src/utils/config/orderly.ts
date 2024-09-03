@@ -24,6 +24,7 @@ export function OrderlyConfig(ctx?: { url: string; domain: string }) {
 	return {
 		// Wallet configuration
 		web3Onboard: {
+			// theme: 'light',
 			wallets: [injectedModule(), walletConnect, ledger],
 			appMetadata: {
 				name: 'Tcmp',
