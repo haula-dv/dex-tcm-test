@@ -127,7 +127,7 @@ export default function WalletContainer() {
 				<IconDots />
 			</MainIconButton>
 
-			<MainIconButton onClick={handleChangeTheme}>
+			<MainIconButton onClick={handleChangeTheme} color="inherit">
 				{themeSelector.activeMode == 'light' ? <IconSun /> : <IconMoonStars />}
 			</MainIconButton>
 		</Stack>

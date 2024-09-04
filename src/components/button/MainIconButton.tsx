@@ -1,4 +1,5 @@
 'use client';
+import { setColorThemeMode } from '@/utils/helpers';
 import { TSizes } from '@/utils/themes/custom-theme/sizes';
 import { IconButton, IconButtonProps } from '@mui/material';
 import { styled } from '@mui/material/styles';
@@ -46,8 +47,8 @@ const CustomIconButton = styled(IconButton, {
 		}),
 
 		...(color === 'inherit' && {
-			backgroundColor: theme.palette.grey[50],
-			color: theme.palette.common.black,
+			backgroundColor: setColorThemeMode(theme.palette.grey[50], theme.palette.grey[700]),
+			color: setColorThemeMode(theme.palette.common.black, theme.palette.common.white),
 		}),
 	}),
 

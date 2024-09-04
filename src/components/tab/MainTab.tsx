@@ -56,7 +56,7 @@ interface IItabCustom {
 	height?: string;
 }
 
-const TabItem = styled(Button, { shouldForwardProp: (prop) => prop !== 'actived' })<IItabCustom>(
+export const TabItem = styled(Button, { shouldForwardProp: (prop) => prop !== 'actived' })<IItabCustom>(
 	({ theme, actived, height }) => ({
 		borderRadius: TSizes.borderRadius,
 		height: height ? height : TSizes.buttonHeightSmall,
@@ -66,11 +66,15 @@ const TabItem = styled(Button, { shouldForwardProp: (prop) => prop !== 'actived'
 		color: theme.palette.grey[500],
 		...(actived && {
 			backgroundColor: setColorThemeMode(theme.palette.common.white, '#322B27'),
-			color: setColorThemeMode(theme.palette.grey[700], theme.palette.grey[50]),
+			color: setColorThemeMode(theme.palette.grey[700], theme.palette.grey[300]),
 		}),
 
 		'&:hover': {
 			backgroundColor: setColorThemeMode(theme.palette.common.white, '#322B27'),
+		},
+
+		'& svg': {
+			color: setColorThemeMode(theme.palette.grey[700], theme.palette.grey[300]),
 		},
 	}),
 );

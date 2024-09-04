@@ -1,8 +1,9 @@
 'use client';
 import { filterAllowedCharacters, getFormattedNumber, getNumberAsUInt128 } from '@/utils/formatters/number';
+import { setColorThemeMode } from '@/utils/helpers';
 import { TSizes } from '@/utils/themes/custom-theme/sizes';
 import { InputAdornment, OutlinedInput, Typography } from '@mui/material';
-import { styled } from '@mui/material/styles';
+import { styled, useTheme } from '@mui/material/styles';
 import { FixedNumber } from 'ethers';
 import { FC, useEffect, useState } from 'react';
 import { ControllerRenderProps } from 'react-hook-form';
@@ -38,6 +39,7 @@ export const TokenInput: FC<
 	...props
 }) => {
 	const [value, setValue] = useState(outerValue ? String(outerValue) : '');
+	const theme = useTheme();
 
 	useEffect(() => {
 		if (outerValue == null || typeof outerValue === 'string') return;
@@ -102,8 +104,8 @@ export const TokenInput: FC<
 			endAdornment={
 				<InputAdornment position="end">
 					<Typography
-						px={'4px'}
-						bgcolor={theme.palette.primary.main}
+						px={'6px'}
+						bgcolor={setColorThemeMode(theme.palette.primary.main, theme.palette.grey[800])}
 						fontWeight={600}
 						borderRadius={'40px'}
 						fontSize={'12px'}
@@ -122,7 +124,7 @@ export const TokenInput: FC<
 	);
 };
 
-const CustomTextField = styled(OutlinedInput)(({ theme }) => ({
+export const CustomTextField = styled(OutlinedInput)(({ theme }) => ({
 	fontWeight: 600,
 	borderRadius: TSizes.borderRadius,
 	fontSize: '13px',
@@ -139,7 +141,7 @@ const CustomTextField = styled(OutlinedInput)(({ theme }) => ({
 	},
 
 	'& .MuiOutlinedInput-input::-webkit-input-placeholder': {
-		color: theme.palette.grey[900],
+		color: setColorThemeMode(theme.palette.grey[900], theme.palette.common.white),
 		opacity: '1',
 	},
 	'& .MuiOutlinedInput-input.Mui-disabled::-webkit-input-placeholder': {

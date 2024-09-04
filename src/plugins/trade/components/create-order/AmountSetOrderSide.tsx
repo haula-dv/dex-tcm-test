@@ -1,6 +1,8 @@
 import { MainButton } from '@/components/button/MainButton';
 import InputField from '@/components/form-control/InputField';
 import SwitchBase from '@/components/form-control/SwitcheBase';
+import { TColors } from '@/utils';
+import { setColorThemeMode } from '@/utils/helpers';
 import { TSizes } from '@/utils/themes/custom-theme/sizes';
 import { Box, Stack, Typography } from '@mui/material';
 import { styled, useTheme } from '@mui/material/styles';
@@ -40,7 +42,7 @@ const AmountSetOrderSide = ({ formContext }: IProps) => {
 
 	return (
 		<>
-			<Stack direction={'row'} alignItems={'center'} justifyContent={'space-between'}>
+			<Stack direction={'row'} alignItems={'center'} justifyContent={'space-between'} mt="-6px !important">
 				<Stack direction={'row'} alignItems={'center'} spacing={1}>
 					<Typography fontWeight={600} fontSize={'13px'}>
 						Amount
@@ -51,7 +53,9 @@ const AmountSetOrderSide = ({ formContext }: IProps) => {
 					</Typography>
 				</Stack>
 
-				<SwitchBase label="Slider" />
+				<Box mr={'-10px'}>
+					<SwitchBase label="Slider" />
+				</Box>
 			</Stack>
 
 			<Stack direction={'row'} spacing={TSizes.margin_xs} alignItems={'center'}>
@@ -81,7 +85,7 @@ const AmountSetOrderSide = ({ formContext }: IProps) => {
 export default memo(AmountSetOrderSide);
 
 const ButtonPercent = styled(MainButton)(({ theme }) => ({
-	backgroundColor: theme.palette.primary.light,
+	backgroundColor: setColorThemeMode(theme.palette.primary.light, TColors.brownnDark),
 	borderRadius: '10px !important',
 	fontSize: '13px',
 }));

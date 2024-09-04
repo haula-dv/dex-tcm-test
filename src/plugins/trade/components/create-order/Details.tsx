@@ -18,6 +18,12 @@ interface IProps {
 const Details = ({ estLiqPrice, freeCollateral, markPrice, quote, direction }: IProps) => {
 	const [{ wallet, connecting }, connect, disconnect] = useConnectWallet();
 
+	// Handle connect wallet button
+	const handleConnectWallet = async () => {
+		await connect();
+		localStorage.setItem('networkId', 'mainnet');
+	};
+
 	return (
 		<MainCard width="100%" backgroudColor="primaryLight">
 			<Stack spacing={'10px'}>
@@ -38,7 +44,14 @@ const Details = ({ estLiqPrice, freeCollateral, markPrice, quote, direction }: I
 
 				<ItemRow title="Total" value="_" />
 
-				<MainButton variant="contained" color="primary" type="submit">
+				<MainButton
+					variant="contained"
+					color="primary"
+					type={wallet ? 'submit' : 'button'}
+					onClick={() => {
+						return wallet ? null : handleConnectWallet();
+					}}
+				>
 					{wallet ? direction : 'Connect wallet'}
 				</MainButton>
 			</Stack>

@@ -1,7 +1,8 @@
 import { StyledMenu } from '@/components/menu/StyledMenu';
-import { TSizes } from '@/utils/themes/custom-theme/sizes';
-import { Button, MenuItem, Stack } from '@mui/material';
-import { styled } from '@mui/material/styles';
+import { TabItem } from '@/components/tab/MainTab';
+import { setColorThemeMode } from '@/utils/helpers';
+import { MenuItem, Stack } from '@mui/material';
+import { useTheme } from '@mui/material/styles';
 import { SelectOption } from '@orderly.network/react/esm/select/select';
 import { IconChevronDown } from '@tabler/icons-react';
 import { memo, useState } from 'react';
@@ -22,6 +23,7 @@ interface IProps {
 
 const OrderTypeTab = ({ formContext }: IProps) => {
 	const [value, setValue] = useState<any>('Market');
+	const theme = useTheme();
 
 	const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
 	const open = Boolean(anchorEl);
@@ -83,7 +85,7 @@ const OrderTypeTab = ({ formContext }: IProps) => {
 						selected={item.value === value}
 						sx={{
 							'&.Mui-selected': {
-								backgroundColor: theme.palette.primary.light,
+								backgroundColor: setColorThemeMode(theme.palette.primary.light, theme.palette.grey[800]),
 							},
 						}}
 					>
@@ -96,20 +98,3 @@ const OrderTypeTab = ({ formContext }: IProps) => {
 };
 
 export default memo(OrderTypeTab);
-
-interface IItab {
-	actived: boolean;
-}
-
-const TabItem = styled(Button, { shouldForwardProp: (prop) => prop !== 'actived' })<IItab>(({ theme, actived }) => ({
-	borderRadius: TSizes.borderRadius,
-	height: TSizes.buttonHeightSmall,
-	minHeight: TSizes.buttonHeightSmall,
-	fontSize: '13px',
-	fontWeight: 600,
-	color: theme.palette.grey[500],
-	...(actived && {
-		backgroundColor: theme.palette.common.white,
-		color: theme.palette.grey[700],
-	}),
-}));

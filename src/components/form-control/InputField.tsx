@@ -1,8 +1,9 @@
 'use client';
-import { TSizes } from '@/utils/themes/custom-theme/sizes';
-import { FormControl, InputAdornment, OutlinedInput, Typography } from '@mui/material';
-import { styled } from '@mui/material/styles';
+import { setColorThemeMode } from '@/utils/helpers';
+import { FormControl, InputAdornment, Typography } from '@mui/material';
+import { useTheme } from '@mui/material/styles';
 import { Controller, FieldValues, Path, RegisterOptions, UseFormReturn } from 'react-hook-form';
+import { CustomTextField } from './TokenInput';
 
 interface InputFieldProps<V extends FieldValues> {
 	formContext: UseFormReturn<V>;
@@ -27,6 +28,8 @@ const InputField = <V extends FieldValues>({
 	suffix,
 	rules,
 }: InputFieldProps<V>) => {
+	const theme = useTheme();
+
 	return (
 		<FormControl fullWidth>
 			<Controller
@@ -45,8 +48,8 @@ const InputField = <V extends FieldValues>({
 							endAdornment={
 								<InputAdornment position="end">
 									<Typography
-										px={'4px'}
-										bgcolor={theme.palette.primary.main}
+										px={'6px'}
+										bgcolor={setColorThemeMode(theme.palette.primary.main, theme.palette.grey[800])}
 										fontWeight={600}
 										borderRadius={'40px'}
 										fontSize={'12px'}
@@ -71,36 +74,3 @@ const InputField = <V extends FieldValues>({
 };
 
 export default InputField;
-
-const CustomTextField = styled(OutlinedInput)(({ theme }) => ({
-	fontWeight: 600,
-	borderRadius: TSizes.borderRadius,
-	fontSize: '13px',
-	backgroundColor: theme.palette.primary.light,
-	height: TSizes.buttonHeightSmall,
-
-	'& input': {
-		padding: '12px 0px 12px 14px',
-	},
-
-	'& .MuiInputAdornment-root': {
-		marginLeft: '0px',
-		marginRight: '-8px',
-	},
-
-	'& .MuiOutlinedInput-input::-webkit-input-placeholder': {
-		color: theme.palette.grey[900],
-		opacity: '1',
-	},
-	'& .MuiOutlinedInput-input.Mui-disabled::-webkit-input-placeholder': {
-		color: theme.palette.text.secondary,
-		opacity: '1',
-	},
-	'& .MuiOutlinedInput-notchedOutline': {
-		border: 0,
-	},
-
-	'& .Mui-disabled .MuiOutlinedInput-notchedOutline': {
-		borderColor: theme.palette.grey[200],
-	},
-}));

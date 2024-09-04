@@ -177,16 +177,18 @@ const CreateOrderForm = ({ symbol }: IProps) => {
 						</Typography>
 					</Stack>
 
-					<InputForm
-						formContext={formContext}
-						getInput={getInput}
-						helper={helper}
-						maxQty={maxQty}
-						symbol={symbol}
-						symbolsInfo={symbolsInfo}
-					/>
+					<Stack>
+						<InputForm
+							formContext={formContext}
+							getInput={getInput}
+							helper={helper}
+							maxQty={maxQty}
+							symbol={symbol}
+							symbolsInfo={symbolsInfo}
+						/>
 
-					<Divider>or</Divider>
+						<Divider>or</Divider>
+					</Stack>
 
 					<AmountSetOrderSide formContext={formContext} />
 

@@ -1,6 +1,7 @@
 import { MainButton } from '@/components/button/MainButton';
 import { MainCard } from '@/components/card/MainCard';
-import { Typography } from '@mui/material';
+import { setColorThemeMode } from '@/utils/helpers';
+import { Typography, useTheme } from '@mui/material';
 import { useAccount } from '@orderly.network/hooks';
 import { useConnectWallet } from '@web3-onboard/react';
 import { memo } from 'react';
@@ -8,6 +9,7 @@ import { memo } from 'react';
 const BoxConnectWallet = () => {
 	const [{ wallet, connecting }, connect, disconnect] = useConnectWallet();
 	const { account } = useAccount();
+	const theme = useTheme();
 
 	// Handle connect wallet button
 	const handleConnectWallet = async () => {
@@ -21,7 +23,11 @@ const BoxConnectWallet = () => {
 
 	return (
 		<MainCard backgroudColor="primary">
-			<Typography textAlign={'center'} py={'40px'} color={theme.palette.common.black}>
+			<Typography
+				textAlign={'center'}
+				py={'40px'}
+				color={setColorThemeMode(theme.palette.common.black, theme.palette.grey[200])}
+			>
 				Connect your Ethereum wallet to deposit funds & start trading.
 			</Typography>
 
