@@ -1,6 +1,7 @@
 import MainTooltip from '@/components/MainTooltip';
 import { ItemRow } from '@/plugins/pool/components/TokenSelected';
 import { usdFormatter } from '@/utils/formatters/number';
+import { setColorThemeMode } from '@/utils/helpers';
 import { Box, Grid, Stack, Typography, useTheme } from '@mui/material';
 import { memo } from 'react';
 
@@ -66,7 +67,7 @@ const OrderBookItem = ({ price, quantity, aggregated, totalQuote, gradient, base
 				sx={{
 					cursor: 'pointer',
 					'&:hover': {
-						backgroundColor: theme.palette.primary.main,
+						backgroundColor: setColorThemeMode(theme.palette.primary.main, theme.palette.grey[900]),
 					},
 				}}
 			>
@@ -87,7 +88,7 @@ const OrderBookItem = ({ price, quantity, aggregated, totalQuote, gradient, base
 							fontSize={'11px'}
 							fontWeight={600}
 							textAlign={'center'}
-							color={theme.palette.grey[900]}
+							color={setColorThemeMode(theme.palette.grey[900], theme.palette.common.white)}
 							py={'2px'}
 						>
 							{quantity.toFixed(2)}
@@ -101,14 +102,18 @@ const OrderBookItem = ({ price, quantity, aggregated, totalQuote, gradient, base
 							sx={{
 								background: `linear-gradient(to right, ${
 									isFirstAsk
-										? theme.palette.error.light
-										: `color-mix(in srgb, ${theme.palette.success.light}, transparent 70%)`
+										? `color-mix(in srgb, ${theme.palette.error.main}, transparent 70%)`
+										: `color-mix(in srgb, ${theme.palette.success.main}, transparent 70%)`
 								} ${gradient}%, transparent ${gradient}%)`,
 							}}
 							display={'flex'}
 							justifyContent={'center'}
 						>
-							<Typography fontSize={'11px'} fontWeight={600} color={theme.palette.grey[900]}>
+							<Typography
+								fontSize={'11px'}
+								fontWeight={600}
+								color={setColorThemeMode(theme.palette.grey[900], theme.palette.common.white)}
+							>
 								{aggregated.toFixed(2)}
 							</Typography>
 						</Box>

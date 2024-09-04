@@ -92,7 +92,7 @@ const CustomCard = styled(Card, {
 	}),
 
 	...(backgroudColor === 'primaryLight' && {
-		backgroundColor: theme.palette.primary.light,
+		backgroundColor: setColorThemeMode(theme.palette.primary.light, '#322B27'),
 	}),
 
 	...(backgroudColor === 'white' && {

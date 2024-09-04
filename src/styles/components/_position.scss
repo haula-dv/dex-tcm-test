@@ -28,3 +28,15 @@
 		padding: 0px !important;
 	}
 }
+
+.dark {
+	.position-head {
+		.orderly-bg-base-900 {
+			background-color: transparent !important;
+		}
+	}
+
+	.orderly-border-divider {
+		display: none !important;
+	}
+}

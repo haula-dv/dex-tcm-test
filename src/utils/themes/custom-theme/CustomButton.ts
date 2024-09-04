@@ -1,3 +1,4 @@
+import { setColorThemeMode } from '@/utils/helpers';
 import { Theme } from '@mui/material';
 import { TSizes } from './sizes';
 
@@ -203,10 +204,11 @@ export const CustomMuiButton = (theme: Theme) => {
 				outlinedPrimary: {
 					color: theme.palette.mode === 'dark' ? '#fff' : theme.palette.primary.dark,
 					backgroundColor: 'transparent',
-					borderColor: theme.palette.primary.light,
+					borderColor: setColorThemeMode(theme.palette.primary.light, theme.palette.grey[900], theme),
 
 					'&:hover': {
-						backgroundColor: theme.palette.primary.main,
+						backgroundColor: setColorThemeMode(theme.palette.primary.main, theme.palette.grey[900], theme),
+						borderColor: setColorThemeMode(theme.palette.primary.light, theme.palette.grey[900], theme),
 						color: theme.palette.primary.dark,
 					},
 				},

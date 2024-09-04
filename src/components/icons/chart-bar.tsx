@@ -1,3 +1,6 @@
+import { setColorThemeMode } from '@/utils/helpers';
+import { useTheme } from '@mui/material';
+
 const IconChartBar = (props: any) => {
 	return (
 		<svg
@@ -5,7 +8,7 @@ const IconChartBar = (props: any) => {
 			width="20px"
 			height="20px"
 			viewBox="0 0 20 20"
-			fill="currentColor"
+			fill={setColorThemeMode(useTheme().palette.grey[300], useTheme().palette.common.white)}
 			{...props}
 		>
 			<path

@@ -1,5 +1,15 @@
+import { setColorThemeMode } from '@/utils/helpers';
+import { useTheme } from '@mui/material';
+
 const IconChartLine = (props: any) => (
-	<svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewBox="0 0 20 20" fill="currentColor" {...props}>
+	<svg
+		xmlns="http://www.w3.org/2000/svg"
+		width="20px"
+		height="20px"
+		viewBox="0 0 20 20"
+		fill={setColorThemeMode(useTheme().palette.grey[300], useTheme().palette.common.white)}
+		{...props}
+	>
 		<path
 			fillRule="evenodd"
 			clipRule="evenodd"

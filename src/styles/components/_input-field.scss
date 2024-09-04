@@ -41,3 +41,14 @@ input:-webkit-autofill {
 		}
 	}
 }
+
+.dark {
+	.MuiOutlinedInput-root {
+		background-color: var(--darkBrown) !important;
+		color: #fff !important;
+	}
+
+	.MuiOutlinedInput-notchedOutline {
+		border-color: var(--grey900) !important;
+	}
+}

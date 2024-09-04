@@ -1,6 +1,7 @@
 import { MainCard } from '@/components/card/MainCard';
 import { Box, Grid, Stack } from '@mui/material';
 import MarketSlider from '../markets/MarketSlider';
+import { OrderBookContainer } from '../order-book/OrderBookContainer';
 import { TradingMainView } from '../trading-view/TradingView';
 import { OrderViewContainer } from './order-view/OrderViewContainer';
 import SymbolHeader from './SymbolHeader';
@@ -32,7 +33,7 @@ export const MainViewContainer = ({ onSymbolChange, symbol }: IProps) => {
 				</Grid>
 
 				<Grid item md={2.5} sx={{ display: 'flex', flexDirection: 'column', height: 'auto' }}>
-					{/* <OrderBookContainer symbol={symbol} /> */}
+					<OrderBookContainer symbol={symbol} />
 				</Grid>
 
 				<Grid item md={2.5}>

@@ -19,7 +19,7 @@ interface IProps extends ListItemButtonProps {
 
 export const ItemList = ({
 	startIcon,
-	endIcon = <IconChevronRight size={'1rem'} color={theme.palette.grey[400]} />,
+	endIcon = <IconChevronRight size={'1rem'} />,
 	primaryText,
 	borderRadius = '16px',
 	disabledBg,

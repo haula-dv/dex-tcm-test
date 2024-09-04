@@ -1,4 +1,5 @@
 import IconLoading from '@/components/icons/loading';
+import { setColorThemeMode } from '@/utils/helpers';
 import { Grid, Stack, Typography, useTheme } from '@mui/material';
 import { useMarketTradeStream, useSymbolsInfo } from '@orderly.network/hooks';
 import dayjs from 'dayjs';
@@ -39,7 +40,10 @@ const OrderLastTradeContent = ({ symbol }: IProps) => {
 					tradeHistory.map((item: any, index) => (
 						<Grid key={index} container>
 							<Grid item md={4}>
-								<Typography fontSize={'12px'} color={theme.palette.grey[700]}>
+								<Typography
+									fontSize={'12px'}
+									color={setColorThemeMode(theme.palette.grey[700], theme.palette.common.white)}
+								>
 									{dayjs(item.ts).format('HH:mm:ss')}
 								</Typography>
 							</Grid>

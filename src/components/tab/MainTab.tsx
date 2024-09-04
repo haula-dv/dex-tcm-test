@@ -1,3 +1,4 @@
+import { setColorThemeMode } from '@/utils/helpers';
 import { TSizes } from '@/utils/themes/custom-theme/sizes';
 import TabContext from '@mui/lab/TabContext';
 import { Button, Stack } from '@mui/material';
@@ -14,9 +15,10 @@ interface IProps {
 	onChange?: (tab: ITab) => void;
 	fullWidth?: boolean;
 	children?: ReactElement;
+	height?: string;
 }
 
-const MainTab = ({ tabs, onChange, fullWidth, children }: IProps) => {
+const MainTab = ({ tabs, onChange, fullWidth, height, children }: IProps) => {
 	const [value, setValue] = useState<any>(tabs[0].value);
 
 	const handleChange = (val: ITab) => {
@@ -26,13 +28,14 @@ const MainTab = ({ tabs, onChange, fullWidth, children }: IProps) => {
 
 	return (
 		<TabContext value={value}>
-			<Stack direction={'row'} spacing={'10px'} pb={'10px'}>
+			<Stack direction={'row'} spacing={'10px'} pb={'10px'} width={'100%'}>
 				{tabs.map((item, index) => {
 					return (
 						<TabItem
 							actived={value === item.value}
 							key={index}
 							fullWidth={fullWidth}
+							height={height}
 							onClick={(e) => handleChange(item)}
 						>
 							{item.label}
@@ -50,19 +53,24 @@ export default memo(MainTab);
 
 interface IItabCustom {
 	actived: boolean;
+	height?: string;
 }
 
 const TabItem = styled(Button, { shouldForwardProp: (prop) => prop !== 'actived' })<IItabCustom>(
-	({ theme, actived }) => ({
+	({ theme, actived, height }) => ({
 		borderRadius: TSizes.borderRadius,
-		height: TSizes.buttonHeightSmall,
-		minHeight: TSizes.buttonHeightSmall,
+		height: height ? height : TSizes.buttonHeightSmall,
+		minHeight: height ? height : TSizes.buttonHeightSmall,
 		fontSize: '13px',
 		fontWeight: 600,
 		color: theme.palette.grey[500],
 		...(actived && {
-			backgroundColor: theme.palette.common.white,
-			color: theme.palette.grey[700],
+			backgroundColor: setColorThemeMode(theme.palette.common.white, '#322B27'),
+			color: setColorThemeMode(theme.palette.grey[700], theme.palette.grey[50]),
 		}),
+
+		'&:hover': {
+			backgroundColor: setColorThemeMode(theme.palette.common.white, '#322B27'),
+		},
 	}),
 );
