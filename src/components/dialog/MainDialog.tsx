@@ -74,7 +74,7 @@ const CustomDialog = styled(Dialog, {
 	'& .MuiDialog-paper': {
 		position: 'relative',
 		boxShadow: 'none',
-		backgroundColor: setColorThemeMode(theme.palette.primary.light, (theme.palette.grey as any).A900),
+		backgroundColor: `${setColorThemeMode(theme.palette.primary.light, theme.palette.grey[800])} !important`,
 		margin: '16px',
 		borderRadius: TSizes.borderRadiusMd,
 	},

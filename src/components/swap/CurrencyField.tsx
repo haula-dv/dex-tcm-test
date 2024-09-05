@@ -2,6 +2,7 @@
 import { ITokenType } from '@/common';
 import { TokenSelect } from '@/plugins/swap/components/token/TokenSelect';
 import { tokenInputState, tokenOutputState } from '@/plugins/swap/store';
+import { setColorThemeMode } from '@/utils/helpers';
 import { TSizes } from '@/utils/themes/custom-theme/sizes';
 import { Box, InputBase, Stack, Typography } from '@mui/material';
 import { styled, useTheme } from '@mui/material/styles';
@@ -83,12 +84,19 @@ export const CurrencyField = ({ currentToken, handleGetSwapPrice, field }: IProp
 		<>
 			<Content>
 				<Stack width={'100%'}>
-					<Typography color={theme.palette.grey[600]} fontWeight={700} fontSize={'12px'}>
+					<Typography
+						color={setColorThemeMode(theme.palette.grey[600], theme.palette.grey[200])}
+						fontWeight={700}
+						fontSize={'12px'}
+					>
 						{field === 'input' ? 'From' : 'To'}
 					</Typography>
 
 					<InputBase placeholder="0.0" type="number" onBlur={getPrice} />
-					<Typography color={theme.palette.grey[600]}>Balance: 0.00 </Typography>
+
+					<Typography color={setColorThemeMode(theme.palette.grey[600], theme.palette.grey[200])}>
+						Balance: 0.00{' '}
+					</Typography>
 				</Stack>
 
 				<TokenSelect handleToggleModalTokenList={handleToggleModalTokenList} tokenSelected={currentToken} />
@@ -106,22 +114,21 @@ export const CurrencyField = ({ currentToken, handleGetSwapPrice, field }: IProp
 
 export const Content = styled(Box)(({ theme }) => ({
 	borderRadius: TSizes.borderRadius,
-	// border: `1px solid #fff`,
-	backgroundColor: '#fff',
+	backgroundColor: theme.palette.background.paper,
 	padding: theme.spacing(2),
 	display: 'flex',
 	alignItems: 'center',
 	justifyContent: 'space-between',
-	transition: '0.6s',
-
-	'&:hover': {
-		// backgroundColor: theme.palette.grey[50],
-		// borderColor: theme.palette.divider,
-	},
 
 	'& .MuiInputBase-input': {
 		fontSize: '24px',
 		fontWeight: 600,
 		width: '100%',
+		color: setColorThemeMode(theme.palette.grey[500], theme.palette.common.white),
+
+		'&::-webkit-input-placeholder': {
+			color: setColorThemeMode(theme.palette.grey[500], theme.palette.common.white),
+			opacity: '1',
+		},
 	},
 }));

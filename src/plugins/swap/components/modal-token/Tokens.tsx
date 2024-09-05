@@ -3,6 +3,7 @@ import { MainButton } from '@/components/button/MainButton';
 import { SearchTokenField } from '@/components/form-control/SearchTokenField';
 import { TokenLoading } from '@/components/loading/TokenLoading';
 import { ITypeSwap } from '@/components/swap/CurrencyField';
+import { setColorThemeMode } from '@/utils/helpers';
 import { TSizes } from '@/utils/themes/custom-theme/sizes';
 import { Box, Button, List, Stack, Typography } from '@mui/material';
 import { styled, useTheme } from '@mui/material/styles';
@@ -129,7 +130,8 @@ const ManageButton = styled(Box)(({ theme }) => ({
 	bottom: 0,
 	left: 0,
 	width: '100%',
-	backgroundColor: '#fff',
+	backgroundColor: theme.palette.background.paper,
+	borderTop: `1px solid ${setColorThemeMode(theme.palette.common.white, theme.palette.grey[700])}`,
 	display: 'flex',
 	justifyContent: 'center',
 }));

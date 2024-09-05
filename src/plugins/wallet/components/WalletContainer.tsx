@@ -2,6 +2,7 @@ import { themeSelectorState } from '@/common/stores/common';
 import { MainButton } from '@/components/button/MainButton';
 import { MainIconButton } from '@/components/button/MainIconButton';
 import IconLoading from '@/components/icons/loading';
+import { TLocalStorage } from '@/utils/constants/key_store';
 import { setColorThemeMode } from '@/utils/helpers';
 import { Stack } from '@mui/material';
 import { useAccount } from '@orderly.network/hooks';
@@ -22,6 +23,7 @@ export default function WalletContainer() {
 	const themeSelector = useStore(themeSelectorState, (state) => state.value);
 
 	const handleChangeTheme = () => {
+		localStorage.setItem(TLocalStorage.DEX_THEME_MODE, themeSelector.activeMode == 'light' ? 'dark' : 'light');
 		setZustandValue(themeSelectorState, (prev: any) => {
 			return {
 				...prev,

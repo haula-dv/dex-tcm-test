@@ -1,4 +1,5 @@
 'use client';
+import { TColors } from '@/utils';
 import { filterAllowedCharacters, getFormattedNumber, getNumberAsUInt128 } from '@/utils/formatters/number';
 import { setColorThemeMode } from '@/utils/helpers';
 import { TSizes } from '@/utils/themes/custom-theme/sizes';
@@ -128,7 +129,7 @@ export const CustomTextField = styled(OutlinedInput)(({ theme }) => ({
 	fontWeight: 600,
 	borderRadius: TSizes.borderRadius,
 	fontSize: '13px',
-	backgroundColor: theme.palette.primary.light,
+	backgroundColor: setColorThemeMode(theme.palette.primary.light, TColors.brownnDark),
 	height: TSizes.buttonHeightSmall,
 
 	'& input': {

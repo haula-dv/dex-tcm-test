@@ -1,3 +1,4 @@
+import { setColorThemeMode } from '@/utils/helpers';
 import { Box, ListItemButton, ListItemButtonProps, Stack, Typography } from '@mui/material';
 import { styled } from '@mui/material/styles';
 import { IconChevronRight } from '@tabler/icons-react';
@@ -94,7 +95,7 @@ const CustomListItem = styled(ListItemButton, {
 
 		...(isSelected
 			? {
-					backgroundColor: theme.palette.primary.light,
+					backgroundColor: setColorThemeMode(theme.palette.primary.light, theme.palette.grey[800]),
 			  }
 			: {
 					backgroundColor: disabledBg ? 'transparent' : backgroundColor,
@@ -103,7 +104,7 @@ const CustomListItem = styled(ListItemButton, {
 		alignItems: 'center',
 
 		'&:hover': {
-			backgroundColor: theme.palette.primary.light,
+			backgroundColor: setColorThemeMode(theme.palette.primary.light, theme.palette.grey[800]),
 		},
 	}),
 );

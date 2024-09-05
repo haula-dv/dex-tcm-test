@@ -11,4 +11,6 @@ export class TLocalStorage {
 	static DEX_ORDERLY_TESTNET_ADDRESS = 'dex_orderly_testnet_address';
 
 	static DEX_ORDERLY_NETWORK = 'Dex_orderly_network';
+
+	static DEX_THEME_MODE = 'dex_theme_mode';
 }

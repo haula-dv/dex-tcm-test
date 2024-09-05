@@ -6,6 +6,7 @@ import { IconChevronDown } from '@tabler/icons-react';
 
 import { getImageNextwork, ITokenType } from '@/common';
 import { TokenIcon } from '@/components/token/TokenIcon';
+import { setColorThemeMode } from '@/utils/helpers';
 
 interface IProps {
 	tokenSelected: ITokenType | null;
@@ -29,7 +30,7 @@ export const TokenSelect = ({ tokenSelected, handleToggleModalTokenList }: IProp
 							url={getImageNextwork(tokenSelected.token, 'symbol_logo')}
 							size={24}
 							symbol={tokenSelected?.token}
-							fontSize="8px"
+							fontSize="7px"
 						/>
 
 						<Typography pl={0.5} fontSize={'13px'} fontWeight={500}>
@@ -57,8 +58,14 @@ export const CustomTokenSelect = styled(MainButton, {
 				minWidth: 'auto',
 				padding: '8px',
 				minHeight: 'auto',
-				backgroundColor: theme.palette.primary.light,
-				border: `1px solid ${theme.palette.primary.main}`,
+				backgroundColor: setColorThemeMode(theme.palette.primary.light, theme.palette.grey[800]),
+				border: `1px solid ${setColorThemeMode(theme.palette.primary.main, theme.palette.grey[700])}`,
+				'& svg': {
+					color: setColorThemeMode(theme.palette.common.black, '#fff'),
+				},
+				'&:hover': {
+					backgroundColor: setColorThemeMode(theme.palette.primary.light, theme.palette.grey[800]),
+				},
 		  }
 		: {
 				backgroundColor: theme.palette.primary.dark,

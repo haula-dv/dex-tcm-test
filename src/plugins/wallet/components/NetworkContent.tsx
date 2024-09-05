@@ -4,6 +4,7 @@ import { ItemList } from '@/components/list/ItemList';
 import { StyledMenu } from '@/components/menu/StyledMenu';
 import { TokenIcon } from '@/components/token/TokenIcon';
 import { idFromHexChainId } from '@/utils/formatters/token';
+import { setColorThemeMode } from '@/utils/helpers';
 import { Divider, Stack, Typography, useTheme } from '@mui/material';
 import { useChains } from '@orderly.network/hooks';
 import { IconChevronDown } from '@tabler/icons-react';
@@ -77,7 +78,11 @@ export default function NetworkContent() {
 				onClose={() => setNetworkAnchorEl(null)}
 			>
 				<Stack pb={1}>
-					<Typography px={1.6} color={useTheme().palette.grey[600]} py={0.5}>
+					<Typography
+						px={1.6}
+						color={setColorThemeMode(useTheme().palette.grey[600], useTheme().palette.grey[200])}
+						py={0.5}
+					>
 						Mainnet
 					</Typography>
 
@@ -100,7 +105,11 @@ export default function NetworkContent() {
 
 				<Divider />
 				<Stack pt={0.5}>
-					<Typography px={1.6} color={useTheme().palette.grey[600]} py={0.5}>
+					<Typography
+						px={1.6}
+						color={setColorThemeMode(useTheme().palette.grey[600], useTheme().palette.grey[200])}
+						py={0.5}
+					>
 						Testnet
 					</Typography>
 

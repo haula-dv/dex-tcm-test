@@ -1,4 +1,5 @@
 import { isTokenSearchState, ITokenType, tokenLoadingState, tokensSearchState, tokensState } from '@/common';
+import { setColorThemeMode } from '@/utils/helpers';
 import { TSizes } from '@/utils/themes/custom-theme/sizes';
 import { Box, InputBase, styled } from '@mui/material';
 import { IconX } from '@tabler/icons-react';
@@ -57,7 +58,7 @@ export const SearchTokenField = ({ tokens }: IProps) => {
 			/>
 
 			{value && (
-				<MainIconButton edge="end" onClick={handleClear}>
+				<MainIconButton edge="end" size="small" onClick={handleClear}>
 					<IconX />
 				</MainIconButton>
 			)}
@@ -67,19 +68,24 @@ export const SearchTokenField = ({ tokens }: IProps) => {
 
 const CustomSearchField = styled(Box)(({ theme }) => ({
 	height: TSizes.fieldSearchHeight,
-	backgroundColor: '#fff',
+	backgroundColor: theme.palette.background.paper,
 	borderRadius: TSizes.borderRadius,
 	display: 'flex',
 	alignItems: 'center',
 	padding: '10px',
-	border: `1px solid ${theme.palette.primary.light}`,
+	border: `1px solid ${setColorThemeMode(theme.palette.primary.light, theme.palette.grey[800])}`,
 	transition: '0.4s',
 
 	'& .MuiInputBase-input': {
 		fontSize: '14px',
+
+		'&::-webkit-input-placeholder': {
+			color: setColorThemeMode(theme.palette.grey[400], theme.palette.common.white),
+			opacity: '1',
+		},
 	},
 
 	'&:focus-within': {
-		borderColor: theme.palette.primary.main,
+		borderColor: setColorThemeMode(theme.palette.primary.main, theme.palette.grey[600]),
 	},
 }));
