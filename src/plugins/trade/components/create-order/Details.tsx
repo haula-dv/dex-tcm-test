@@ -3,6 +3,7 @@ import { MainCard } from '@/components/card/MainCard';
 import { MainChip } from '@/components/chip/MainChip';
 import { ItemRow } from '@/plugins/pool/components/TokenSelected';
 import { usdFormatter } from '@/utils/formatters/number';
+import { setColorThemeMode } from '@/utils/helpers';
 import { Stack, Typography, useTheme } from '@mui/material';
 import { useConnectWallet } from '@web3-onboard/react';
 import { memo } from 'react';
@@ -33,9 +34,13 @@ const Details = ({ estLiqPrice, freeCollateral, markPrice, quote, direction }: I
 				<ItemRow
 					title={
 						<Stack direction={'row'} spacing={'6px'} alignItems={'center'}>
-							<Typography fontSize={'15px'} color={useTheme().palette.grey[500]}>
+							<Typography
+								fontSize={'15px'}
+								color={setColorThemeMode(useTheme().palette.grey[500], useTheme().palette.common.white)}
+							>
 								Fee
 							</Typography>
+
 							<MainChip disabledPadding fullRounded label={'Taker'} />
 						</Stack>
 					}

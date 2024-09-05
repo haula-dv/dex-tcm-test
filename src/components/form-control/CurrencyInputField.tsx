@@ -1,5 +1,5 @@
 'use client';
-import { FormControl } from '@mui/material';
+import { FormControl, Stack } from '@mui/material';
 import { FixedNumber } from 'ethers';
 import { Controller, FieldValues, Path, RegisterOptions, UseFormReturn } from 'react-hook-form';
 import { RenderFormError } from './RenderErrors';
@@ -27,28 +27,30 @@ const CurrencyInputField = <V extends FieldValues>({
 	hint,
 }: InputFieldProps<V>) => {
 	return (
-		<FormControl fullWidth>
-			<Controller
-				name={name}
-				control={formContext.control}
-				rules={rules}
-				render={({ field: { name, onBlur, onChange }, fieldState: { error } }) => (
-					<>
-						<TokenInput
-							decimals={decimals}
-							placeholder={placeholder}
-							name={name}
-							onBlur={onBlur}
-							onChange={onChange}
-							hasError={error != null}
-							suffix={suffix}
-						/>
+		<Stack width={'100%'}>
+			<FormControl fullWidth>
+				<Controller
+					name={name}
+					control={formContext.control}
+					rules={rules}
+					render={({ field: { name, onBlur, onChange }, fieldState: { error } }) => (
+						<>
+							<TokenInput
+								decimals={decimals}
+								placeholder={placeholder}
+								name={name}
+								onBlur={onBlur}
+								onChange={onChange}
+								hasError={error != null}
+								suffix={suffix}
+							/>
 
-						<RenderFormError error={error?.message ?? ''} />
-					</>
-				)}
-			/>
-		</FormControl>
+							<RenderFormError error={error?.message ?? ''} />
+						</>
+					)}
+				/>
+			</FormControl>
+		</Stack>
 	);
 };
 

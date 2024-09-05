@@ -4,7 +4,7 @@ import { TokenSelect } from '@/plugins/swap/components/token/TokenSelect';
 import { tokenInputState, tokenOutputState } from '@/plugins/swap/store';
 import { TSizes } from '@/utils/themes/custom-theme/sizes';
 import { Box, InputBase, Stack, Typography } from '@mui/material';
-import { styled } from '@mui/material/styles';
+import { styled, useTheme } from '@mui/material/styles';
 import { setZustandValue } from 'nes-zustand';
 import { FocusEvent, useState } from 'react';
 import { useStore } from 'zustand';
@@ -20,6 +20,7 @@ interface IProps {
 
 export const CurrencyField = ({ currentToken, handleGetSwapPrice, field }: IProps) => {
 	const [openTokenList, setOpenTokenList] = useState(false);
+	const theme = useTheme();
 
 	// TOKEN
 	const tokenInput = useStore(tokenInputState, (state) => state.value);

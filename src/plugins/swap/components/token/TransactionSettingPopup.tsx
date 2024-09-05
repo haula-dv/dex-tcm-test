@@ -5,7 +5,7 @@ import { MainCard } from '@/components/card/MainCard';
 import CustomSwitch from '@/components/form-control/CustomSwitch';
 import { MainPopup } from '@/components/popup/MainPopup';
 import { TSizes } from '@/utils/themes/custom-theme/sizes';
-import { Box, InputAdornment, Stack, TextField, Tooltip, Typography } from '@mui/material';
+import { Box, InputAdornment, Stack, TextField, Tooltip, Typography, useTheme } from '@mui/material';
 import { IconHelpCircle, IconSettings } from '@tabler/icons-react';
 import { useState } from 'react';
 
@@ -36,7 +36,7 @@ export const TransactionPopup = ({ slippageAmount }: IProps) => {
 			percentValue: '1.0',
 		},
 	];
-
+	const theme = useTheme();
 	const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
 	const open = Boolean(anchorEl);
 

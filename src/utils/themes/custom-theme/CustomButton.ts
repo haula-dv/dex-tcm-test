@@ -247,6 +247,11 @@ export const CustomMuiButton = (theme: Theme) => {
 						color: 'white',
 					},
 				},
+
+				outlinedDarkGrey: {
+					borderColor: setColorThemeMode(theme.palette.grey[600], theme.palette.grey[200], theme),
+					color: setColorThemeMode(theme.palette.grey[600], theme.palette.grey[200], theme),
+				},
 			},
 		},
 	};

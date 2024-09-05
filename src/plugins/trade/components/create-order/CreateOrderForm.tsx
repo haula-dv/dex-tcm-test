@@ -1,6 +1,7 @@
 /* eslint-disable react-hooks/rules-of-hooks */
 import { MainCard } from '@/components/card/MainCard';
 import IconLoading from '@/components/icons/loading';
+import { setColorThemeMode } from '@/utils/helpers';
 import { Divider, Stack, Typography, useTheme } from '@mui/material';
 import { useAccount, useOrderEntry, useSymbolsInfo, useWithdraw } from '@orderly.network/hooks';
 import { AccountStatusEnum, OrderEntity, OrderSide, OrderType } from '@orderly.network/types';
@@ -177,7 +178,7 @@ const CreateOrderForm = ({ symbol }: IProps) => {
 						</Typography>
 					</Stack>
 
-					<Stack>
+					<Stack spacing={'8px'}>
 						<InputForm
 							formContext={formContext}
 							getInput={getInput}
@@ -187,7 +188,22 @@ const CreateOrderForm = ({ symbol }: IProps) => {
 							symbolsInfo={symbolsInfo}
 						/>
 
-						<Divider>or</Divider>
+						<Divider
+							sx={{
+								'&::before': {
+									borderColor: setColorThemeMode(useTheme().palette.divider, useTheme().palette.common.white),
+								},
+								'&::after': {
+									borderColor: setColorThemeMode(useTheme().palette.divider, useTheme().palette.common.white),
+								},
+
+								'& span': {
+									color: setColorThemeMode(useTheme().palette.divider, useTheme().palette.common.white),
+								},
+							}}
+						>
+							or
+						</Divider>
 					</Stack>
 
 					<AmountSetOrderSide formContext={formContext} />
