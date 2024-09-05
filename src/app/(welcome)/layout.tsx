@@ -1,3 +1,4 @@
+'use client';
 import { MainContainer } from '@/components/container/MainContainer';
 import Logo from '@/components/icons/Logo';
 import { Box } from '@mui/material';

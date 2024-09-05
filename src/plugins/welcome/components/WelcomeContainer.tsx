@@ -4,7 +4,7 @@ import { MainCard } from '@/components/card/MainCard';
 import InputPasswordField from '@/components/form-control/InputPasswordField';
 import IconNotchCard from '@/components/icons/notch';
 import { TSizes } from '@/utils/themes/custom-theme/sizes';
-import { Button, Stack, Typography } from '@mui/material';
+import { Button, Stack, Typography, useTheme } from '@mui/material';
 import { useRouter } from 'next/navigation';
 import { FormContainer, useForm } from 'react-hook-form-mui';
 
@@ -14,6 +14,7 @@ interface IFormValues {
 
 export const WelcomeContainer = () => {
 	const router = useRouter();
+	const theme = useTheme();
 
 	const formContext = useForm<IFormValues>({
 		defaultValues: {

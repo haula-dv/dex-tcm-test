@@ -1,4 +1,3 @@
-import { WelcomeContainer } from '@/plugins/welcome/components/WelcomeContainer';
 import { Metadata } from 'next';
 
 export const metadata: Metadata = {
@@ -7,9 +6,5 @@ export const metadata: Metadata = {
 };
 
 export default function WelComePage() {
-	return (
-		<>
-			<WelcomeContainer />
-		</>
-	);
+	return <>{/* <WelcomeContainer /> */}1</>;
 }

@@ -11,12 +11,6 @@ export default function PerpPage({ params }: { params: { symbol: string } }) {
 	const [symbol, setSymbol] = useState(params.symbol);
 
 	useEffect(() => {
-		if (params.symbol) {
-			// setSymbol(params.symbol);
-		}
-	}, [params.symbol]);
-
-	useEffect(() => {
 		if (symbol === undefined) {
 			setSymbol(localStorage?.getItem(_orderlySymbolKey)!);
 		}

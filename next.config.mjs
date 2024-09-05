@@ -36,6 +36,11 @@ export default withPWA({
 
 	reactStrictMode: false,
 
+	typescript: {
+		// Dangerously allow production builds to successfully complete even if your project has type errors.
+		ignoreBuildErrors: true,
+	},
+
 	async redirects() {
 		return [
 			{

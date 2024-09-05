@@ -4,7 +4,7 @@ import { MainCard } from '@/components/card/MainCard';
 import IconCheckActived from '@/components/icons/check-actived';
 import IconCheckInActived from '@/components/icons/check-inactived';
 import { TSizes } from '@/utils/themes/custom-theme/sizes';
-import { Checkbox, FormControlLabel, Stack, Typography } from '@mui/material';
+import { Checkbox, FormControlLabel, Stack, Typography, useTheme } from '@mui/material';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import { AccountItem } from './AccountItem';
@@ -12,6 +12,7 @@ import { AccountItem } from './AccountItem';
 export const AccountContainer = () => {
 	const router = useRouter();
 	const [currentSelect, setCurrentSelect] = useState<number[]>([0]);
+	const theme = useTheme();
 
 	const handleSelectAccount = (index: number) => {
 		if (currentSelect.includes(index)) {

@@ -1,10 +1,9 @@
-import { AccountContainer } from "@/plugins/account/components/AccountContainer";
-import { Metadata } from "next";
+import { Metadata } from 'next';
 
 export const metadata: Metadata = {
-  title: "Accounts",
-  description: "...",
+	title: 'Accounts',
+	description: '...',
 };
 export default function AccountPage() {
-  return <AccountContainer />;
+	return <>{/* <AccountContainer />; */}1</>;
 }

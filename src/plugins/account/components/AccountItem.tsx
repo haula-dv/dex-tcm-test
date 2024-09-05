@@ -1,7 +1,7 @@
 import IconAvatar from '@/components/icons/avatar';
 import { TSizes } from '@/utils/themes/custom-theme/sizes';
 import { Box, Stack, Typography } from '@mui/material';
-import { styled } from '@mui/material/styles';
+import { styled, useTheme } from '@mui/material/styles';
 import { IconCheck } from '@tabler/icons-react';
 
 interface IProps {
@@ -11,6 +11,8 @@ interface IProps {
 }
 
 export const AccountItem = ({ isSelected, handleSelectAccount, index }: IProps) => {
+	const theme = useTheme();
+
 	return (
 		<CustomItem onClick={() => handleSelectAccount(index)}>
 			<Stack direction={'row'} alignItems={'center'}>
