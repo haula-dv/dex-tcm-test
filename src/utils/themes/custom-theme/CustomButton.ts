@@ -1,3 +1,4 @@
+import { TColors } from '@/utils/constants/colors';
 import { setColorThemeMode } from '@/utils/helpers';
 import { Theme } from '@mui/material';
 import { TSizes } from './sizes';
@@ -76,9 +77,11 @@ export const CustomMuiButton = (theme: Theme) => {
 				},
 
 				filledTonalDarkGrey: {
-					backgroundColor: theme.palette.grey[100],
+					backgroundColor: setColorThemeMode(theme.palette.grey[100], TColors.brownnDark),
+					color: setColorThemeMode(theme.palette.common.black, theme.palette.common.white),
 					'&:hover': {
-						backgroundColor: theme.palette.grey[200],
+						backgroundColor: setColorThemeMode(theme.palette.grey[200], TColors.brownnDark),
+						color: setColorThemeMode(theme.palette.common.black, theme.palette.common.white),
 					},
 				},
 
@@ -119,7 +122,7 @@ export const CustomMuiButton = (theme: Theme) => {
 				},
 
 				sizeSmall: {
-					padding: '2px 4px',
+					padding: '4px 12px',
 					fontSize: '12px',
 					height: TSizes.buttonHeightSmall,
 					borderRadius: '6px !important',

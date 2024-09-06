@@ -1,3 +1,4 @@
+import { TColors } from '@/utils';
 import { setColorThemeMode } from '@/utils/helpers';
 import { styled } from '@mui/material/styles';
 import Tooltip, { TooltipProps, tooltipClasses } from '@mui/material/Tooltip';
@@ -8,7 +9,7 @@ const MainTooltip = styled(({ className, ...props }: TooltipProps) => (
 ))(({ theme }) => ({
 	cursor: 'pointer',
 	[`& .${tooltipClasses.tooltip}`]: {
-		backgroundColor: setColorThemeMode(theme.palette.common.white, theme.palette.grey[900]),
+		backgroundColor: setColorThemeMode(theme.palette.common.white, TColors.brownnDark),
 		color: setColorThemeMode(theme.palette.grey[900], theme.palette.common.white),
 		boxShadow: theme.shadows[1],
 		fontSize: 11,
@@ -18,7 +19,7 @@ const MainTooltip = styled(({ className, ...props }: TooltipProps) => (
 	},
 
 	[`& .${tooltipClasses.arrow}`]: {
-		color: setColorThemeMode(theme.palette.common.white, theme.palette.grey[900]),
+		color: setColorThemeMode(theme.palette.common.white, TColors.brownnDark),
 	},
 }));
 

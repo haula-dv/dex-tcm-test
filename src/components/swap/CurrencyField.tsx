@@ -83,7 +83,7 @@ export const CurrencyField = ({ currentToken, handleGetSwapPrice, field }: IProp
 	return (
 		<>
 			<Content>
-				<Stack width={'100%'}>
+				<Stack direction={'row'} justifyContent={'space-between'} pb="2px">
 					<Typography
 						color={setColorThemeMode(theme.palette.grey[600], theme.palette.grey[200])}
 						fontWeight={700}
@@ -92,14 +92,22 @@ export const CurrencyField = ({ currentToken, handleGetSwapPrice, field }: IProp
 						{field === 'input' ? 'From' : 'To'}
 					</Typography>
 
-					<InputBase placeholder="0.0" type="number" onBlur={getPrice} />
-
-					<Typography color={setColorThemeMode(theme.palette.grey[600], theme.palette.grey[200])}>
-						Balance: 0.00{' '}
-					</Typography>
+					{field == 'input' && (
+						<Typography fontWeight={700} fontSize={'12px'}>
+							Use Max
+						</Typography>
+					)}
 				</Stack>
 
-				<TokenSelect handleToggleModalTokenList={handleToggleModalTokenList} tokenSelected={currentToken} />
+				<Stack direction={'row'} alignItems={'center'}>
+					<InputBase placeholder="0.0" type="number" onBlur={getPrice} />
+
+					<TokenSelect handleToggleModalTokenList={handleToggleModalTokenList} tokenSelected={currentToken} />
+				</Stack>
+
+				<Typography color={setColorThemeMode(theme.palette.grey[600], theme.palette.grey[200])}>
+					Balance: 0.00
+				</Typography>
 			</Content>
 
 			<TokenListModal
@@ -116,9 +124,10 @@ export const Content = styled(Box)(({ theme }) => ({
 	borderRadius: TSizes.borderRadius,
 	backgroundColor: theme.palette.background.paper,
 	padding: theme.spacing(2),
-	display: 'flex',
-	alignItems: 'center',
-	justifyContent: 'space-between',
+
+	'& .MuiInputBase-root': {
+		width: '100%',
+	},
 
 	'& .MuiInputBase-input': {
 		fontSize: '24px',

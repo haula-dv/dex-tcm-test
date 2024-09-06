@@ -73,7 +73,7 @@ const TabItem = styled(Button, { shouldForwardProp: (prop) => prop !== 'selected
 						  }),
 			  }
 			: {
-					color: theme.palette.grey[500],
+					color: theme.palette.grey[300],
 					backgroundColor: setColorThemeMode(theme.palette.grey[50], TColors.brownnDark),
 					borderColor: setColorThemeMode(theme.palette.grey[50], TColors.brownnDark),
 			  }),

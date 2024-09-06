@@ -1,6 +1,6 @@
-import { Stack, Switch, Typography } from '@mui/material';
+import { Box, Stack, Switch } from '@mui/material';
 import { styled } from '@mui/material/styles';
-import { memo, useState } from 'react';
+import { memo, ReactNode, useState } from 'react';
 
 const Android12Switch = styled(Switch)(({ theme }) => ({
 	padding: 8,
@@ -41,7 +41,7 @@ const Android12Switch = styled(Switch)(({ theme }) => ({
 }));
 
 interface IProps {
-	label?: string;
+	label?: ReactNode;
 }
 
 const CustomSwitch = ({ label }: IProps) => {
@@ -53,7 +53,7 @@ const CustomSwitch = ({ label }: IProps) => {
 
 	return (
 		<Stack direction={'row'} alignItems={'center'} justifyContent={'space-between'}>
-			<Typography>{label}</Typography>
+			<Box>{label}</Box>
 
 			<Android12Switch defaultChecked />
 		</Stack>

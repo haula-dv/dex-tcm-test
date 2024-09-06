@@ -1,11 +1,12 @@
 'use client';
 import { MainButton } from '@/components/button/MainButton';
 import { MainIconButton } from '@/components/button/MainIconButton';
-import { MainCard } from '@/components/card/MainCard';
+import { MainDialog } from '@/components/dialog/MainDialog';
 import CustomSwitch from '@/components/form-control/CustomSwitch';
-import { MainPopup } from '@/components/popup/MainPopup';
+import MainTooltip from '@/components/MainTooltip';
+import { setColorThemeMode } from '@/utils/helpers';
 import { TSizes } from '@/utils/themes/custom-theme/sizes';
-import { Box, InputAdornment, Stack, TextField, Tooltip, Typography, useTheme } from '@mui/material';
+import { Box, InputAdornment, Stack, TextField, Typography, useTheme } from '@mui/material';
 import { IconHelpCircle, IconSettings } from '@tabler/icons-react';
 import { useState } from 'react';
 
@@ -73,115 +74,128 @@ export const TransactionPopup = ({ slippageAmount }: IProps) => {
 					Swap
 				</Typography>
 
-				<MainIconButton
-					variant="text"
-					isFullRounded
-					id="transaction-button"
-					aria-controls={open ? 'transaction-menu' : undefined}
-					aria-haspopup="true"
-					aria-expanded={open ? 'true' : undefined}
-					onClick={handleClick}
-					edge="end"
-				>
+				<MainIconButton variant="text" isFullRounded onClick={handleClick} edge="end">
 					<IconSettings size={'1.5rem'} />
 				</MainIconButton>
 			</Stack>
 
-			<MainPopup
-				id="transaction-menu"
-				MenuListProps={{
-					'aria-labelledby': 'transaction-button',
-				}}
-				anchorEl={anchorEl}
-				open={open}
-				onClose={handleClose}
-			>
-				<Box px={TSizes.margin_xs} pt={TSizes.margin_xs}>
-					<Typography fontSize={'16px'} fontWeight={600}>
+			<MainDialog open={open} handleClose={handleClose} hiddenHeader maxWidth="xs">
+				<Box>
+					<Typography fontSize={'16px'} fontWeight={600} pb={'10px'} lineHeight={'100%'}>
 						Transactions setting
 					</Typography>
 
-					<Stack spacing={1}>
-						<MainCard variant="outlined">
-							<Stack direction={'row'} alignItems={'center'} spacing={1} pb={1}>
-								<Typography lineHeight={'100%'} color={theme.palette.grey[700]}>
-									Max. slippage
-								</Typography>
+					<Stack spacing={1} width={'100%'} pt="6px">
+						<Stack direction={'row'} alignItems={'center'} spacing={1}>
+							<Typography
+								lineHeight={'100%'}
+								color={setColorThemeMode(theme.palette.grey[700], theme.palette.grey[200])}
+							>
+								Max. slippage
+							</Typography>
 
-								<Tooltip
-									arrow
-									title={`Your transaction will revert if the price changes unfavorably by more than this percentage.`}
-									sx={{ maxWidth: '300px' }}
+							<MainTooltip
+								arrow
+								title={`Your transaction will revert if the price changes unfavorably by more than this percentage.`}
+							>
+								<IconHelpCircle size={'1.2rem'} />
+							</MainTooltip>
+						</Stack>
+
+						<Stack direction={'row'} spacing={TSizes.margin_xs} alignItems={'center'}>
+							{slippages.map((item) => (
+								<MainButton
+									key={item.value}
+									variant="filledTonal"
+									color={currentSlippageAmount === item.percentValue ? 'darkPrimary' : 'darkGrey'}
+									onClick={() => handleChangeSlippage(item.percentValue)}
+									size="small"
+									sx={{ flexShrink: 0 }}
 								>
-									<IconHelpCircle />
-								</Tooltip>
-							</Stack>
+									{item.label}
+								</MainButton>
+							))}
 
-							<Stack direction={'row'} spacing={TSizes.margin_xs} alignItems={'center'}>
-								{slippages.map((item) => (
-									<MainButton
-										key={item.value}
-										variant="filledTonal"
-										color={currentSlippageAmount === item.percentValue ? 'darkGrey' : 'inherit'}
-										onClick={() => handleChangeSlippage(item.percentValue)}
-										size="xsmall"
-									>
-										{item.label}
-									</MainButton>
-								))}
-
-								<Box width={'100px'}>
-									<TextField
-										value={currentSlippageAmount}
-										placeholder="1.0"
-										size="xsmall"
-										type="number"
-										onChange={(e) => handleChangeSlippage(e.target.value)}
-										InputProps={{
-											endAdornment: <InputAdornment position="end">%</InputAdornment>,
-										}}
-									/>
-								</Box>
-							</Stack>
-						</MainCard>
-
-						<MainCard variant="outlined" width="100%">
-							<Stack direction={'row'} alignItems={'center'} spacing={1} pb={1}>
-								<Typography color={theme.palette.grey[700]}>Transaction deadline</Typography>
-								<Tooltip
-									arrow
-									title={`Your transaction will revert if it is pending for more than this long`}
-									sx={{ maxWidth: '300px' }}
-								>
-									<IconHelpCircle />
-								</Tooltip>
-							</Stack>
-
-							<Stack direction={'row'} spacing={1.5} alignItems={'center'}>
+							<Box width={'100%'}>
 								<TextField
-									placeholder="30"
-									size="xsmall"
-									sx={{ width: '100px' }}
-									value={deadlineMinutes}
+									value={currentSlippageAmount}
+									placeholder="1.0"
+									size="small"
 									type="number"
-									onChange={(e) => handleChangeDeadline(+e.target.value)}
+									onChange={(e) => handleChangeSlippage(e.target.value)}
+									InputProps={{
+										endAdornment: <InputAdornment position="end">%</InputAdornment>,
+									}}
 								/>
-								<Typography>minutes</Typography>
-							</Stack>
-						</MainCard>
+							</Box>
+						</Stack>
+
+						<Stack direction={'row'} alignItems={'center'} spacing={1} pt="10px">
+							<Typography color={setColorThemeMode(theme.palette.grey[700], theme.palette.grey[200])}>
+								Transaction deadline
+							</Typography>
+							<MainTooltip arrow title={`Your transaction will revert if it is pending for more than this long`}>
+								<IconHelpCircle size={'1.2rem'} />
+							</MainTooltip>
+						</Stack>
+
+						<Stack direction={'row'} spacing={1.5} alignItems={'center'}>
+							<TextField
+								placeholder="30"
+								size="small"
+								sx={{ width: '100px' }}
+								value={deadlineMinutes}
+								type="number"
+								onChange={(e) => handleChangeDeadline(+e.target.value)}
+							/>
+							<Typography>minutes</Typography>
+						</Stack>
 
 						<Stack>
-							<Typography fontSize={'16px'} fontWeight={600} pb={1}>
+							<Typography fontSize={'16px'} fontWeight={600} pt={'6px'}>
 								Interface settings
 							</Typography>
 
-							<CustomSwitch label="Toggle expert mode" />
+							<CustomSwitch
+								label={
+									<Stack direction={'row'} alignItems={'center'} spacing={'10px'}>
+										<Typography
+											fontSize={'14px'}
+											color={setColorThemeMode(theme.palette.grey[700], theme.palette.grey[200])}
+										>
+											Toggle expert mode
+										</Typography>
 
-							<CustomSwitch label="Disabled multihop" />
+										<MainTooltip
+											arrow
+											title="Bypasses confirmation modals and allows high slippage trades. Use at your own risk"
+										>
+											<IconHelpCircle size={'1.2rem'} />
+										</MainTooltip>
+									</Stack>
+								}
+							/>
+
+							<CustomSwitch
+								label={
+									<Stack direction={'row'} alignItems={'center'} spacing={'10px'}>
+										<Typography
+											fontSize={'14px'}
+											color={setColorThemeMode(theme.palette.grey[700], theme.palette.grey[200])}
+										>
+											Disabled multihop
+										</Typography>
+
+										<MainTooltip arrow title="Restricts swaps to direct pairt only">
+											<IconHelpCircle size={'1.2rem'} />
+										</MainTooltip>
+									</Stack>
+								}
+							/>
 						</Stack>
 					</Stack>
 				</Box>
-			</MainPopup>
+			</MainDialog>
 		</>
 	);
 };

@@ -1,6 +1,6 @@
 'use client';
 import { Header } from '@/components/layouts/Header';
-import { Box } from '@mui/material';
+import { Box, useTheme } from '@mui/material';
 import React from 'react';
 
 export default function RootLayout({
@@ -8,13 +8,15 @@ export default function RootLayout({
 }: Readonly<{
 	children: React.ReactNode;
 }>) {
+	const theme = useTheme();
+
 	return (
-		<>
+		<div className={theme.palette.mode}>
 			<Header />
 
 			<Box px={{ xs: '16px', xl: '60px' }} position={'relative'}>
 				{children}
 			</Box>
-		</>
+		</div>
 	);
 }

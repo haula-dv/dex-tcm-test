@@ -12,11 +12,14 @@ const ClientThemeProvider: React.FC<{ children: React.ReactNode }> = ({ children
 	const themeSelector = useStore(themeSelectorState, (state) => state.value);
 	const theme = ThemeSettings(themeSelector);
 
+	// const themeLocal: any = typeof window === 'object' ? localStorage.getItem(TLocalStorage.DEX_THEME_MODE) : 'light';
+	// console.log(themeLocal);
+
 	return (
 		<AppRouterCacheProvider options={{ key: 'css' }}>
 			<ThemeProvider theme={theme}>
 				<CssBaseline />
-				<main className={theme.palette.mode}>{children}</main>
+				<main>{children}</main>
 			</ThemeProvider>
 		</AppRouterCacheProvider>
 	);

@@ -45,19 +45,19 @@ export const TradingMainView = ({ symbol, onSymbolChange }: IProps) => {
 				"symbol": "${base}",
 				"interval": "${currentInterval}",
 				"timezone": "Etc/UTC",
-				"theme": "${theme.palette.mode === 'dark' ? 'dark' : 'light'}",
+				"theme": "${theme.palette.mode}",
 				"style": "${currentChartType}",
 				"locale": "en",
 				"backgroundColor": "${background}",
 				"gridColor": "${background}",
-				"hide_top_toolbar": true,
 				"allow_symbol_change": false,
 				"save_image": false,
 				"calendar": false,
+				"hide_top_toolbar": true,
 				"hide_volume": true,
 				"studies": ${JSON.stringify(currentSelect)},
 				"support_host": "https://www.tradingview.com"
-			}`;
+				}`;
 
 		if (container.current) {
 			container.current.innerHTML = '';
@@ -110,6 +110,28 @@ export const TradingMainView = ({ symbol, onSymbolChange }: IProps) => {
 					></div>
 				</Box>
 			</Box>
+			{/* <AdvancedRealTimeChart
+				disabled_features={[
+					'hide_left_toolbar_by_default',
+					'adaptive_logo',
+					'header_chart_type',
+					'header_compare',
+					'left_toolbar',
+				]}
+				enabled_features={['header_settings']}
+				locale="en"
+				calendar
+				theme="dark"
+				symbol={base}
+				autosize
+				allow_symbol_change={false}
+				interval="180"
+				range="12M"
+				timezone="Etc/UTC"
+				style="9"
+				toolbar_bg={theme.palette.primary.light}
+				
+			/> */}
 		</Box>
 	);
 };
@@ -117,27 +139,4 @@ export const TradingMainView = ({ symbol, onSymbolChange }: IProps) => {
 export default memo(TradingMainView);
 
 {
-	/* {isReady && (
-					<AdvancedRealTimeChart
-					disabled_features={[
-							'hide_left_toolbar_by_default',
-							'adaptive_logo',
-							'header_chart_type',
-							'header_compare',
-							'left_toolbar',
-						]}
-						locale="en"
-						calendar
-						hide_top_toolbar
-						hide_side_toolbar
-						theme="light"
-						symbol={base}
-						autosize
-						allow_symbol_change={false}
-						interval="180"
-						range="12M"
-						timezone="Etc/UTC"
-						style="9"
-						/>
-						)} */
 }

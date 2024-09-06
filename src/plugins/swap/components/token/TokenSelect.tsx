@@ -59,7 +59,7 @@ export const CustomTokenSelect = styled(MainButton, {
 				padding: '8px',
 				minHeight: 'auto',
 				backgroundColor: setColorThemeMode(theme.palette.primary.light, theme.palette.grey[800]),
-				border: `1px solid ${setColorThemeMode(theme.palette.primary.main, theme.palette.grey[700])}`,
+				border: `1px solid ${setColorThemeMode(theme.palette.primary.main, theme.palette.grey[800])}`,
 				'& svg': {
 					color: setColorThemeMode(theme.palette.common.black, '#fff'),
 				},

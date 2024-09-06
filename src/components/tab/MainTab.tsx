@@ -66,7 +66,7 @@ export const TabItem = styled(Button, { shouldForwardProp: (prop) => prop !== 'a
 		color: theme.palette.grey[500],
 		...(actived && {
 			backgroundColor: setColorThemeMode(theme.palette.common.white, '#322B27'),
-			color: setColorThemeMode(theme.palette.grey[700], theme.palette.grey[300]),
+			color: setColorThemeMode(theme.palette.grey[700], theme.palette.grey[200]),
 		}),
 
 		'&:hover': {
@@ -74,7 +74,7 @@ export const TabItem = styled(Button, { shouldForwardProp: (prop) => prop !== 'a
 		},
 
 		'& svg': {
-			color: setColorThemeMode(theme.palette.grey[700], theme.palette.grey[300]),
+			color: setColorThemeMode(theme.palette.grey[700], theme.palette.grey[200]),
 		},
 	}),
 );
