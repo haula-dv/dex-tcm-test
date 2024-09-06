@@ -4,9 +4,11 @@ import { MainIconButton } from '@/components/button/MainIconButton';
 import { MainDialog } from '@/components/dialog/MainDialog';
 import CustomSwitch from '@/components/form-control/CustomSwitch';
 import MainTooltip from '@/components/MainTooltip';
+import { TColors } from '@/utils';
 import { setColorThemeMode } from '@/utils/helpers';
 import { TSizes } from '@/utils/themes/custom-theme/sizes';
 import { Box, InputAdornment, Stack, TextField, Typography, useTheme } from '@mui/material';
+import { styled } from '@mui/material/styles';
 import { IconHelpCircle, IconSettings } from '@tabler/icons-react';
 import { useState } from 'react';
 
@@ -117,7 +119,7 @@ export const TransactionPopup = ({ slippageAmount }: IProps) => {
 							))}
 
 							<Box width={'100%'}>
-								<TextField
+								<CustomTextField
 									value={currentSlippageAmount}
 									placeholder="1.0"
 									size="small"
@@ -140,7 +142,7 @@ export const TransactionPopup = ({ slippageAmount }: IProps) => {
 						</Stack>
 
 						<Stack direction={'row'} spacing={1.5} alignItems={'center'}>
-							<TextField
+							<CustomTextField
 								placeholder="30"
 								size="small"
 								sx={{ width: '100px' }}
@@ -199,3 +201,20 @@ export const TransactionPopup = ({ slippageAmount }: IProps) => {
 		</>
 	);
 };
+
+const CustomTextField = styled(TextField)(({ theme }) => ({
+	'& .MuiOutlinedInput-root': {
+		backgroundColor: setColorThemeMode(theme.palette.primary.light, TColors.brownnDark),
+
+		'& .MuiOutlinedInput-notchedOutline': {
+			borderColor: setColorThemeMode(theme.palette.grey[100], theme.palette.grey[700]),
+		},
+		'&:hover': {
+			borderColor: setColorThemeMode(theme.palette.grey[100], theme.palette.grey[700]),
+		},
+	},
+	'& .MuiOutlinedInput-input::-webkit-input-placeholder': {
+		color: setColorThemeMode(theme.palette.grey[900], theme.palette.common.white),
+		opacity: '1',
+	},
+}));

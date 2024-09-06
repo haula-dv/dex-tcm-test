@@ -3,6 +3,7 @@ import { MainButton } from '@/components/button/MainButton';
 import { MainCard } from '@/components/card/MainCard';
 import { MainDialog } from '@/components/dialog/MainDialog';
 import { GrayTab } from '@/components/tab/GrayTab';
+import { setColorThemeMode } from '@/utils/helpers';
 import { TSizes } from '@/utils/themes/custom-theme/sizes';
 import { Box, Divider, Stack, Typography, useTheme } from '@mui/material';
 import { setZustandValue } from 'nes-zustand';
@@ -32,7 +33,7 @@ export const ModalConfirmSwap = ({ onClose, open }: IProps) => {
 				<Image src={'/images/token.png'} height={24} width={24} alt="" />
 			</Stack>
 
-			<Typography pb={2} color={useTheme().palette.grey[500]}>
+			<Typography pb={2} color={setColorThemeMode(useTheme().palette.grey[500], useTheme().palette.grey[100])}>
 				Balance: $099998
 			</Typography>
 

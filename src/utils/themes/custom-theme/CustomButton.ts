@@ -77,11 +77,11 @@ export const CustomMuiButton = (theme: Theme) => {
 				},
 
 				filledTonalDarkGrey: {
-					backgroundColor: setColorThemeMode(theme.palette.grey[100], TColors.brownnDark),
-					color: setColorThemeMode(theme.palette.common.black, theme.palette.common.white),
+					backgroundColor: setColorThemeMode(theme.palette.grey[100], TColors.brownnDark, theme),
+					color: setColorThemeMode(theme.palette.common.black, theme.palette.common.white, theme),
 					'&:hover': {
-						backgroundColor: setColorThemeMode(theme.palette.grey[200], TColors.brownnDark),
-						color: setColorThemeMode(theme.palette.common.black, theme.palette.common.white),
+						backgroundColor: setColorThemeMode(theme.palette.grey[200], TColors.brownnDark, theme),
+						color: setColorThemeMode(theme.palette.common.black, theme.palette.common.white, theme),
 					},
 				},
 

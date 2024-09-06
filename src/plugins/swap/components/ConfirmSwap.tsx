@@ -2,6 +2,7 @@ import { ITokenType } from '@/common';
 import { MainButton } from '@/components/button/MainButton';
 import { MainCard } from '@/components/card/MainCard';
 import { MainChip } from '@/components/chip/MainChip';
+import { setColorThemeMode } from '@/utils/helpers';
 import { Stack, Typography, useTheme } from '@mui/material';
 import Image from 'next/image';
 import { useState } from 'react';
@@ -26,7 +27,7 @@ export const ConfirmSwapContent = ({ toggleSwapType, tokenSellSelected, tokenBuy
 	return (
 		<>
 			<Stack spacing={1.5}>
-				<MainCard backgroudColor="white" width="100%">
+				<MainCard backgroudColor={setColorThemeMode('white', 'primaryLight')} width="100%">
 					<Stack direction={'row'} justifyContent={'space-between'} alignItems={'center'}>
 						<Typography fontSize={'18px'} fontWeight={600} lineHeight={'100%'}>
 							0990.009
@@ -35,7 +36,7 @@ export const ConfirmSwapContent = ({ toggleSwapType, tokenSellSelected, tokenBuy
 						<MainChip
 							label={tokenSellSelected && tokenSellSelected.token}
 							variant="outlined"
-							color="white"
+							color={setColorThemeMode('white', 'primary')}
 							fullRounded
 							icon={<Image src={'/images/token.png'} height={24} width={24} alt="" />}
 						/>
@@ -44,7 +45,7 @@ export const ConfirmSwapContent = ({ toggleSwapType, tokenSellSelected, tokenBuy
 
 				<ButtonSwapToggle toggleSwapType={toggleSwapType} />
 
-				<MainCard backgroudColor="white" width="100%">
+				<MainCard backgroudColor={setColorThemeMode('white', 'primaryLight')} width="100%">
 					<Stack direction={'row'} justifyContent={'space-between'} alignItems={'center'}>
 						<Typography fontSize={'18px'} fontWeight={600} lineHeight={'100%'}>
 							0990.009
@@ -53,7 +54,7 @@ export const ConfirmSwapContent = ({ toggleSwapType, tokenSellSelected, tokenBuy
 						<MainChip
 							label={tokenBuySelected && tokenBuySelected.token}
 							variant="outlined"
-							color="white"
+							color={setColorThemeMode('white', 'primary')}
 							fullRounded
 							icon={<Image src={'/images/token.png'} height={24} width={24} alt="" />}
 						/>
@@ -61,10 +62,14 @@ export const ConfirmSwapContent = ({ toggleSwapType, tokenSellSelected, tokenBuy
 				</MainCard>
 			</Stack>
 
-			<Typography pt={1}>An object representing the token and amount for the sell operation</Typography>
+			<Typography pt={1}>
+				Output is estimated. You will receive at least 938.5 BNB or the transaction will revert
+			</Typography>
 
 			<Stack spacing={1} py={2}>
-				<Item title="Minimum recevied" value="9747.969 AMPL" />
+				<Item title="Price" value="0.000527443 ETH per BNB" />
+
+				<Item title="Minimum recevied" value="9747.969 BNB" />
 
 				<Item
 					title="Price Impact"

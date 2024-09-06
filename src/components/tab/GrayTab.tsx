@@ -1,4 +1,5 @@
 import { ITab } from '@/common/types/components/tab';
+import { setColorThemeMode } from '@/utils/helpers';
 import { TSizes } from '@/utils/themes/custom-theme/sizes';
 import TabContext from '@mui/lab/TabContext';
 import { Button, Stack } from '@mui/material';
@@ -22,7 +23,7 @@ export const GrayTab = ({ tabs, children }: IProps) => {
 						fullWidth
 						key={value}
 						variant={value == tab ? 'contained' : 'text'}
-						color="darkGrey"
+						color={setColorThemeMode('darkGrey', 'primary')}
 						onClick={() => setTab(value)}
 					>
 						{label}
@@ -36,7 +37,7 @@ export const GrayTab = ({ tabs, children }: IProps) => {
 };
 
 const CustomTab = styled(Stack)(({ theme }) => ({
-	backgroundColor: theme.palette.common.white,
+	backgroundColor: setColorThemeMode(theme.palette.common.white, theme.palette.grey[900]),
 	borderRadius: TSizes.borderRadius,
 	height: '48px',
 
