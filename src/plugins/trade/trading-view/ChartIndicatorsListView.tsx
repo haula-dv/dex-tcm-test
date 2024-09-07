@@ -2,7 +2,6 @@
 import { MainIconButton } from '@/components/button/MainIconButton';
 import { SearchField } from '@/components/form-control/SearchField';
 import FixTrading from '@/components/icons/fixtrading';
-import IconLoading from '@/components/icons/loading';
 import MainTooltip from '@/components/MainTooltip';
 import { StyledMenu } from '@/components/menu/StyledMenu';
 import { setColorThemeMode } from '@/utils/helpers';
@@ -19,11 +18,13 @@ interface IProps {
 const ChartIndicatorsListView = ({ handleSelectIndicator }: IProps) => {
 	const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
 	const open = Boolean(anchorEl);
+	const [isSearch, setIsSearch] = useState(false);
+	const [temSearch, setTemSearch] = useState(indicatorsCore);
+	const [allIndicator, setAllIndicator] = useState(indicatorsCore);
 
 	const [slice, setSlice] = useState(10);
 	const [hasMore, setHasMore] = useState(true);
 	const [currentSelect, setCurrentSelect] = useState<string[]>([]);
-	const [allIndicator, setAllIndicator] = useState(indicatorsCore);
 
 	const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
 		setAnchorEl(event.currentTarget);
@@ -57,8 +58,9 @@ const ChartIndicatorsListView = ({ handleSelectIndicator }: IProps) => {
 	};
 
 	const onSearch = (keyword: string) => {
-		const newArray = allIndicator.filter((item) => item.scriptName.includes(keyword));
-		setAllIndicator(newArray);
+		setIsSearch(true);
+		const newArray = allIndicator.filter((item) => item.scriptName.toLowerCase().includes(keyword.toLowerCase()));
+		setTemSearch(newArray);
 	};
 
 	return (
@@ -120,24 +122,26 @@ const ChartIndicatorsListView = ({ handleSelectIndicator }: IProps) => {
 						next={fetchMoreData}
 						inverse={false}
 						hasMore={hasMore}
-						loader={<IconLoading />}
+						loader={''}
 						scrollableTarget="scrollableDiv"
 					>
-						{allIndicator.slice(0, slice).map((item, index) => (
-							<ListItemButton
-								key={index}
-								selected={currentSelect.includes(item.scriptIdPart)}
-								onClick={() => handleClickItem(item.scriptIdPart)}
-							>
-								<Stack direction={'row'} justifyContent={'space-between'} width={'100%'}>
-									<Typography>{item.scriptName}</Typography>
+						{(isSearch ? temSearch : allIndicator).length > 0
+							? (isSearch ? temSearch : allIndicator).map((item, index) => (
+									<ListItemButton
+										key={index}
+										selected={currentSelect.includes(item.scriptIdPart)}
+										onClick={() => handleClickItem(item.scriptIdPart)}
+									>
+										<Stack direction={'row'} justifyContent={'space-between'} width={'100%'}>
+											<Typography>{item.scriptName}</Typography>
 
-									{currentSelect.includes(item.scriptIdPart) && (
-										<IconCheck size={'1rem'} color={useTheme().palette.success.main} />
-									)}
-								</Stack>
-							</ListItemButton>
-						))}
+											{currentSelect.includes(item.scriptIdPart) && (
+												<IconCheck size={'1rem'} color={useTheme().palette.success.main} />
+											)}
+										</Stack>
+									</ListItemButton>
+							  ))
+							: ''}
 					</InfiniteScroll>
 				</Stack>
 			</StyledMenu>
