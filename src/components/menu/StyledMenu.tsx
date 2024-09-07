@@ -21,6 +21,7 @@ export const StyledMenu = styled((props: IProps) => (
 	/>
 ))(({ theme, maxheight }) => ({
 	'& .MuiPaper-root': {
+		backgroundColor: theme.palette.background.paper,
 		borderRadius: TSizes.borderRadius,
 		marginTop: theme.spacing(1),
 		minWidth: 180,

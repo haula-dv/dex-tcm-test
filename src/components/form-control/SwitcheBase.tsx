@@ -1,4 +1,3 @@
-import { setColorThemeMode } from '@/utils/helpers';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import { styled } from '@mui/material/styles';
 import Switch, { SwitchProps } from '@mui/material/Switch';
@@ -11,7 +10,9 @@ const Android12Switch = styled(Switch)(({ theme, ...props }) => ({
 
 	'& .MuiSwitch-track': {
 		borderRadius: 22 / 2,
-		backgroundColor: `${setColorThemeMode(theme.palette.grey[500], theme.palette.grey[800], theme)} !important`,
+		backgroundColor: props.checked
+			? `${theme.palette.primary.dark} !important`
+			: `${theme.palette.grey[500]} !important`,
 		opacity: `${1} !important`,
 		'&::before, &::after': {
 			content: '""',
@@ -52,7 +53,7 @@ export default function SwitchBase({ label, ...props }: IProps) {
 			labelPlacement="start"
 			control={<Android12Switch defaultChecked {...props} />}
 			label={label}
-			sx={{ mr: '-10px', pr: 0 }}
+			sx={{ pr: 0, mr: '-10px' }}
 		/>
 	);
 }

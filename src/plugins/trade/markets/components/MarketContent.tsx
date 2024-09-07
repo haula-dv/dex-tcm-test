@@ -1,5 +1,5 @@
 import { StyledMenu } from '@/components/menu/StyledMenu';
-import { Box } from '@mui/material';
+import { Box, useTheme } from '@mui/material';
 import { MarketsType, useMarkets } from '@orderly.network/hooks';
 import { Markets } from '@orderly.network/react';
 import { API } from '@orderly.network/types';
@@ -30,7 +30,13 @@ export const MarketsContent = ({ handleClose, marketEl, openMarketEl, onSymbolCh
 				open={openMarketEl}
 				onClose={handleClose}
 			>
-				<Box width={'400px'} height={'400px'} overflow={'auto'} px={2}>
+				<Box
+					className={`${useTheme().palette.mode} market-popup `}
+					width={'400px'}
+					height={'400px'}
+					overflow={'auto'}
+					px={2}
+				>
 					<Markets
 						dataSource={markets as any[]}
 						onItemClick={(e) => {

@@ -94,7 +94,11 @@ const ChartIndicatorsListView = ({ handleSelectIndicator }: IProps) => {
 					top={'12px'}
 					bgcolor={setColorThemeMode(useTheme().palette.common.white, useTheme().palette.background.paper)}
 				>
-					<SearchField placeholder="Search..." onSearch={onSearch} />
+					<SearchField
+						placeholder="Search..."
+						onSearch={onSearch}
+						backgroundColor={setColorThemeMode(useTheme().palette.grey[50], useTheme().palette.grey[800])}
+					/>
 				</Box>
 
 				<Typography fontSize={'12px'} color={useTheme().palette.grey[400]} px="16px" pt="8px">

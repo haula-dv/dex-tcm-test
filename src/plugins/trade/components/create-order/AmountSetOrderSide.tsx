@@ -34,6 +34,7 @@ interface IProps {
 
 const AmountSetOrderSide = ({ formContext }: IProps) => {
 	const [currentSelect, setCurrentSelect] = useState('');
+	const theme = useTheme();
 
 	const handleChangeSlippage = (val: string) => {
 		// formContext.setValue('price', val);
@@ -53,8 +54,11 @@ const AmountSetOrderSide = ({ formContext }: IProps) => {
 					</Typography>
 				</Stack>
 
-				<Box mr={'-10px'}>
-					<SwitchBase label="Slider" />
+				<Box>
+					<SwitchBase
+						label="Slider"
+						// custombg={setColorThemeMode(theme.palette.grey[500], theme.palette.grey[700])}
+					/>
 				</Box>
 			</Stack>
 

@@ -9,9 +9,15 @@ interface IProps {
 	placeholder?: string;
 	onSearch?: (search: string) => void;
 	height?: string;
+	backgroundColor?: string;
 }
 
-export const SearchField = ({ placeholder = '', height = TSizes.fieldSearchHeight, onSearch }: IProps) => {
+export const SearchField = ({
+	placeholder = '',
+	height = TSizes.fieldSearchHeight,
+	backgroundColor,
+	onSearch,
+}: IProps) => {
 	const [value, setValue] = useState('');
 
 	const onChange = (e: ChangeEvent<HTMLTextAreaElement | HTMLInputElement>) => {
@@ -25,7 +31,7 @@ export const SearchField = ({ placeholder = '', height = TSizes.fieldSearchHeigh
 	};
 
 	return (
-		<CustomSearchField height={height}>
+		<CustomSearchField height={height} backgroundColor={backgroundColor}>
 			<Box flexShrink={0} display={'flex'} alignItems={'center'}>
 				<IconSearch />
 			</Box>
@@ -42,9 +48,11 @@ export const SearchField = ({ placeholder = '', height = TSizes.fieldSearchHeigh
 	);
 };
 
-const CustomSearchField = styled(Box)<any>(({ theme, height }) => ({
+const CustomSearchField = styled(Box)<any>(({ theme, backgroundColor, height }) => ({
 	height: height,
-	backgroundColor: setColorThemeMode(theme.palette.grey[50], theme.palette.grey[900]),
+	backgroundColor: backgroundColor
+		? backgroundColor
+		: setColorThemeMode(theme.palette.grey[50], theme.palette.grey[900]),
 	borderRadius: TSizes.borderRadius,
 	display: 'flex',
 	alignItems: 'center',
