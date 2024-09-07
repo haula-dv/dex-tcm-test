@@ -16,9 +16,9 @@ const DarkThemeColors = [
 				400: '#8C8C8C',
 				500: '#727272',
 				600: '#595959',
-				700: '#3F3F3F',
-				800: '#262626',
-				900: '#413A36',
+				700: '#3F3F3F', // Gray 80
+				800: '#262626', // Gray 90
+				900: '#413A36', // Black
 			},
 			info: {
 				main: '#8C8C8C',
@@ -38,16 +38,24 @@ const DarkThemeColors = [
 				contrastText: '#fff',
 			},
 
-			darkPrimary: {
+			dark: {
 				main: '#000000',
 				contrastText: '#fff',
 			},
 
-			darkGrey: {
-				main: '#3F3F3F',
-				contrastText: '#F7F4F0',
+			darkPrimary: {
+				main: '#413A36',
+				contrastText: '#fff',
 			},
 
+			darkGrey: {
+				main: '#595959',
+				contrastText: '#F2F2F2',
+			},
+			greyLight: {
+				main: '#D8D8D8',
+				contrastText: '#727272',
+			},
 			white: {
 				main: '#fff',
 				contrastText: '#413A36',
@@ -57,6 +65,8 @@ const DarkThemeColors = [
 				main: '#F2F2F2',
 				contrastText: '#B37350',
 			},
+
+			divider: '#3F3F3F',
 		},
 	},
 ];

@@ -2,6 +2,7 @@ import { MainButton } from '@/components/button/MainButton';
 import { MainCard } from '@/components/card/MainCard';
 import { MainDialog } from '@/components/dialog/MainDialog';
 import IconTransactionPrice from '@/components/icons/transaction-price';
+import { setColorThemeMode } from '@/utils/helpers';
 import { Box, Divider, Stack, Typography, useTheme } from '@mui/material';
 import { useState } from 'react';
 import { ItemRow } from '../components/TokenSelected';
@@ -42,7 +43,7 @@ export const SignatureRequestConfirmModal = ({ onClose, open }: IProps) => {
 					Allow https://app.bazaar.org to spend your Swaplux V2?
 				</Typography>
 
-				<Typography color={useTheme().palette.grey[500]}>
+				<Typography color={setColorThemeMode(useTheme().palette.grey[500], useTheme().palette.grey[100])}>
 					Do you trust this site? By granting this permission, you’re allwoing Https://app.bazaar.org to withdraw your
 					Swaplux V2 and automate transactions for you.
 				</Typography>
@@ -51,7 +52,7 @@ export const SignatureRequestConfirmModal = ({ onClose, open }: IProps) => {
 					Edit Permission
 				</Typography>
 
-				<MainCard backgroudColor="primary" width="100%">
+				<MainCard backgroudColor="primary" variant={setColorThemeMode('elevation', 'outlined')} width="100%">
 					<Stack spacing={1}>
 						<Stack direction={'row'} alignItems={'center'} justifyContent={'space-between'}>
 							<Stack direction={'row'} alignItems={'center'} spacing={0.5}>
@@ -59,7 +60,7 @@ export const SignatureRequestConfirmModal = ({ onClose, open }: IProps) => {
 								<Typography>Transaction Fee</Typography>
 							</Stack>
 
-							<MainButton size="small" color="darkPrimary" variant="contained" onClick={handleToggleCustomGas}>
+							<MainButton size="xsmall" color="darkPrimary" variant="contained" onClick={handleToggleCustomGas}>
 								Edit
 							</MainButton>
 						</Stack>

@@ -43,9 +43,12 @@ const CustomTab = styled(Stack)(({ theme }) => ({
 
 	'& .MuiButton-root': {
 		height: '48px',
+		fontSize: '18px',
 	},
 
 	'& .MuiButton-text': {
+		color: setColorThemeMode(theme.palette.grey[500], theme.palette.grey[200]),
+
 		'&:hover': {
 			backgroundColor: 'inherit',
 			boxShadow: 'none',

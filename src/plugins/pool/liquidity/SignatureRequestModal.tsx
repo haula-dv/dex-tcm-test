@@ -1,6 +1,7 @@
 import { MainButton } from '@/components/button/MainButton';
 import { MainCard } from '@/components/card/MainCard';
 import { MainDialog } from '@/components/dialog/MainDialog';
+import { setColorThemeMode } from '@/utils/helpers';
 import { Box, Stack, Typography, useTheme } from '@mui/material';
 import { ItemRow } from '../components/TokenSelected';
 
@@ -51,7 +52,10 @@ export const SignatureRequestModal = ({ onClose, handleToggleSignatureRequestCon
 						Swaplux V2
 					</Typography>
 
-					<Typography fontSize={'13px'} color={useTheme().palette.grey[600]}>
+					<Typography
+						fontSize={'13px'}
+						color={setColorThemeMode(useTheme().palette.grey[600], useTheme().palette.grey[100])}
+					>
 						https://app.bazaar.org/0xod1738...9932ecdb
 					</Typography>
 				</Stack>
@@ -73,7 +77,7 @@ export const SignatureRequestModal = ({ onClose, handleToggleSignatureRequestCon
 				</MainCard>
 			</Stack>
 
-			<Stack direction={'row'} spacing={1} pt={2}>
+			<Stack direction={'row'} spacing={'10px'} pt={2}>
 				<MainButton fullWidth variant="outlined" color="darkGrey" borderWidth="2px" onClick={onClose} size="large">
 					Cancel
 				</MainButton>

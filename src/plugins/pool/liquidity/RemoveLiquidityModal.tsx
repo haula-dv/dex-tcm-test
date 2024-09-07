@@ -5,6 +5,7 @@ import { MainDialog } from '@/components/dialog/MainDialog';
 import { ChildHeader } from '@/components/swap/ChildHeader';
 import { TokenIcon } from '@/components/token/TokenIcon';
 import { ItemRow } from '@/plugins/pool/components/TokenSelected';
+import { setColorThemeMode } from '@/utils/helpers';
 import { Divider, Stack, Typography, useTheme } from '@mui/material';
 import { useState } from 'react';
 
@@ -31,7 +32,7 @@ export const RemoveLiquidityModal = ({
 		<MainDialog open={open} handleClose={onClose} hiddenHeader>
 			<ChildHeader onBackLink={onClose} title="Remove liquidity" />
 			<Stack spacing={2}>
-				<MainCard variant="outlined">
+				<MainCard backgroudColor={'common'}>
 					<Typography>
 						<strong>Tips:</strong> You are the first liquidity provider You are the first liquidity provider You are the
 						first liquidity provider You are the first liquidity provider You are the first liquidity provider You are
@@ -39,13 +40,17 @@ export const RemoveLiquidityModal = ({
 					</Typography>
 				</MainCard>
 
-				<MainCard width="100%">
+				<MainCard
+					width="100%"
+					backgroudColor={setColorThemeMode('white', 'primary')}
+					variant={setColorThemeMode('elevation', 'outlined')}
+				>
 					<Stack direction={'row'} justifyContent={'space-between'} alignItems={'center'}>
 						<Typography fontSize={'16px'} fontWeight={600}>
 							Amount
 						</Typography>
 
-						<MainButton size="small" variant="contained" color="darkGrey">
+						<MainButton size="small" variant="contained" color={setColorThemeMode('darkGrey', 'darkPrimary')}>
 							Detailed
 						</MainButton>
 					</Stack>
@@ -58,9 +63,9 @@ export const RemoveLiquidityModal = ({
 						{['25%', '50%', '75%', 'Max'].map((value, index) => (
 							<MainButton
 								size="small"
-								variant={currentSelectedPercentage === index ? 'contained' : 'filledTonal'}
+								variant="contained"
 								onClick={() => handleSelectPercentage(index)}
-								color={'darkGrey'}
+								color={currentSelectedPercentage === index ? 'darkGrey' : 'greyLight'}
 								key={index}
 							>
 								{value}
@@ -69,7 +74,11 @@ export const RemoveLiquidityModal = ({
 					</Stack>
 				</MainCard>
 
-				<MainCard width="100%">
+				<MainCard
+					width="100%"
+					backgroudColor={setColorThemeMode('white', 'primary')}
+					variant={setColorThemeMode('elevation', 'outlined')}
+				>
 					<Stack spacing={2}>
 						<ItemRow
 							title="09.00009998888"
@@ -98,7 +107,10 @@ export const RemoveLiquidityModal = ({
 						<ItemRow
 							title="Price"
 							value={
-								<Typography fontSize={'15px'} color={useTheme().palette.grey[300]}>
+								<Typography
+									fontSize={'15px'}
+									color={setColorThemeMode(useTheme().palette.grey[300], useTheme().palette.grey[100])}
+								>
 									1 ETH = 981.33 BNB
 								</Typography>
 							}
@@ -106,7 +118,10 @@ export const RemoveLiquidityModal = ({
 						<ItemRow
 							title=""
 							value={
-								<Typography fontSize={'15px'} color={useTheme().palette.grey[300]}>
+								<Typography
+									fontSize={'15px'}
+									color={setColorThemeMode(useTheme().palette.grey[300], useTheme().palette.grey[100])}
+								>
 									1 BNB = 0.00101903 ETH
 								</Typography>
 							}

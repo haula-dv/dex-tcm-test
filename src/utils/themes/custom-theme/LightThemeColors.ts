@@ -9,9 +9,9 @@ const LightThemeColors = [
 				contrastText: '#fff',
 			},
 			grey: {
-				50: '#F2F2F2',
-				100: '#D8D8D8',
-				200: '#BFBFBF',
+				50: '#F2F2F2', // GRAY 10
+				100: '#D8D8D8', // GRAY 20
+				200: '#BFBFBF', //
 				300: '#A5A5A5',
 				400: '#8C8C8C',
 				500: '#727272',
@@ -24,28 +24,41 @@ const LightThemeColors = [
 				main: '#8C8C8C',
 				contrastText: '#fff',
 			},
+
 			blue: {
 				main: '#8C8C8C',
 				light: '#C7F9F4',
 				contrastText: '#fff',
 			},
+
 			success: {
 				main: '#0BA111',
 				contrastText: '#fff',
 			},
+
 			error: {
 				main: '#DE4242',
 				contrastText: '#fff',
 			},
 
 			darkPrimary: {
+				main: '#262626',
+				contrastText: '#fff',
+			},
+
+			dark: {
 				main: '#000000',
 				contrastText: '#fff',
 			},
 
+			greyLight: {
+				main: '#D8D8D8',
+				contrastText: '#727272',
+			},
+
 			darkGrey: {
-				main: '#3F3F3F',
-				contrastText: '#F7F4F0',
+				main: '#595959',
+				contrastText: '#F2F2F2',
 			},
 
 			white: {

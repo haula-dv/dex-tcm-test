@@ -70,6 +70,7 @@ declare module '@mui/material/Button' {
 		darkPrimary: true;
 		darkGrey: true;
 		dark: true;
+		greyLight: true;
 		white: true;
 	}
 }

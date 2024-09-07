@@ -1,6 +1,7 @@
 import { MainButton } from '@/components/button/MainButton';
 import { MainDialog } from '@/components/dialog/MainDialog';
 import IconTransaction from '@/components/icons/transaction';
+import { setColorThemeMode } from '@/utils/helpers';
 import { Box, Stack, Typography } from '@mui/material';
 
 interface IProps {
@@ -13,7 +14,7 @@ export const TransationSubmittedCard = ({ open, onClose }: IProps) => {
 		<MainDialog open={open} handleClose={onClose} maxWidth="xs" hiddenHeader>
 			<Box width={'100%'}>
 				<Box display={'flex'} justifyContent={'center'} mx={'auto'}>
-					<IconTransaction />
+					<IconTransaction color={setColorThemeMode('#3F3F3F', '#fff')} />
 				</Box>
 
 				<Typography fontSize={'18px'} fontWeight={600} textAlign={'center'} pt={2}>
@@ -29,7 +30,7 @@ export const TransationSubmittedCard = ({ open, onClose }: IProps) => {
 						View on Therscan
 					</MainButton>
 
-					<MainButton size="large" variant="contained" color="darkGrey" onClick={onClose}>
+					<MainButton size="large" variant="contained" color={setColorThemeMode('darkGrey', 'white')} onClick={onClose}>
 						Close
 					</MainButton>
 				</Stack>

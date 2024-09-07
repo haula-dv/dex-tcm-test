@@ -47,8 +47,10 @@ export const CustomMuiButton = (theme: Theme) => {
 
 				// DARK PRIMARY
 				containedDarkPrimary: {
+					// backgroundColor: ,
+
 					'&:hover': {
-						backgroundColor: 'rgba(0, 0, 0, 0.8)',
+						// backgroundColor: ,
 					},
 				},
 
@@ -56,9 +58,6 @@ export const CustomMuiButton = (theme: Theme) => {
 				containedDarkGrey: {
 					'& p': {
 						color: theme.palette.primary.light,
-					},
-					'& svg': {
-						// color: '#fff',
 					},
 				},
 
@@ -252,8 +251,8 @@ export const CustomMuiButton = (theme: Theme) => {
 				},
 
 				outlinedDarkGrey: {
-					borderColor: setColorThemeMode(theme.palette.grey[600], theme.palette.grey[200], theme),
-					color: setColorThemeMode(theme.palette.grey[600], theme.palette.grey[200], theme),
+					borderColor: setColorThemeMode(theme.palette.grey[400], theme.palette.grey[400], theme),
+					color: setColorThemeMode(theme.palette.grey[400], theme.palette.grey[400], theme),
 				},
 			},
 		},

@@ -42,7 +42,7 @@ const baselightTheme = {
 			contrastText: '#fff',
 		},
 		darkPrimary: {
-			main: '#000000',
+			main: '#413A36',
 			contrastText: '#fff',
 		},
 		darkGrey: {
@@ -101,13 +101,23 @@ const baseDarkTheme = {
 			light: '#F5C6C6',
 			contrastText: '#fff',
 		},
+
+		dark: {
+			main: '#000000',
+			contrastText: '#fff',
+		},
+
 		darkPrimary: {
 			main: '#000000',
 			contrastText: '#fff',
 		},
 		darkGrey: {
-			main: '#3F3F3F',
-			contrastText: '#F7F4F0',
+			main: '#595959',
+			contrastText: '#F2F2F2',
+		},
+		greyLight: {
+			main: '#D8D8D8',
+			contrastText: '#727272',
 		},
 		white: {
 			main: '#fff',

@@ -45,6 +45,7 @@ export const ImportToken = ({ handleCloseModal, onBack }: IProps) => {
 						</Stack>
 					</Stack>
 				</MainCard>
+
 				<MainCard>
 					<Typography textAlign={'center'} fontSize={'18px'} pb={1} color={useTheme().palette.warning.main}>
 						Trade at your own risk

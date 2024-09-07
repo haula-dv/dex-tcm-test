@@ -25,6 +25,7 @@ export const ModalConfirmSwap = ({ onClose, open }: IProps) => {
 		setZustandValue(isTransactionSubmittedState, true);
 		onClose();
 	};
+	const theme = useTheme();
 
 	return (
 		<MainDialog open={open} handleClose={onClose} maxWidth="xs" title="Swap Exact ETH for Token" isBGWhite>
@@ -41,18 +42,23 @@ export const ModalConfirmSwap = ({ onClose, open }: IProps) => {
 
 			<Box pt={2} />
 
-			<MainCard disablePadding width="100%">
+			<MainCard disablePadding width="100%" backgroudColor={'common'}>
 				<Stack direction={'row'} justifyContent={'space-between'} p={TSizes.margin_base}>
 					<Stack>
-						<Typography>Gas fee</Typography>
-						<MainButton color="darkGrey" size="xsmall" variant="contained">
+						<Typography color={'text.primary'}>Gas fee</Typography>
+
+						<MainButton color={setColorThemeMode('darkGrey', 'darkPrimary')} size="xsmall" variant="contained">
 							Edit
 						</MainButton>
 					</Stack>
 
 					<Stack>
 						<Typography textAlign={'end'}>09988 ETH</Typography>
-						<Typography textAlign={'end'} fontSize={'12px'} color={useTheme().palette.grey[800]}>
+						<Typography
+							textAlign={'end'}
+							fontSize={'12px'}
+							color={setColorThemeMode(useTheme().palette.grey[800], useTheme().palette.grey[100])}
+						>
 							$767
 						</Typography>
 					</Stack>
@@ -65,7 +71,11 @@ export const ModalConfirmSwap = ({ onClose, open }: IProps) => {
 
 					<Stack>
 						<Typography>09988 ETH</Typography>
-						<Typography textAlign={'end'} fontSize={'12px'} color={useTheme().palette.grey[800]}>
+						<Typography
+							textAlign={'end'}
+							fontSize={'12px'}
+							color={setColorThemeMode(useTheme().palette.grey[800], useTheme().palette.grey[100])}
+						>
 							$767
 						</Typography>
 					</Stack>
@@ -73,7 +83,7 @@ export const ModalConfirmSwap = ({ onClose, open }: IProps) => {
 			</MainCard>
 
 			<Stack direction={'row'} spacing={2} pt={2}>
-				<MainButton onClick={onClose} variant="outlined" color="darkGrey" size="large" fullWidth>
+				<MainButton onClick={onClose} variant="outlined" color="darkGrey" size="large" borderWidth="2px" fullWidth>
 					Reject
 				</MainButton>
 

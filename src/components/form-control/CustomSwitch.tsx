@@ -1,3 +1,4 @@
+import { setColorThemeMode } from '@/utils/helpers';
 import { Box, Stack, Switch } from '@mui/material';
 import { styled } from '@mui/material/styles';
 import { memo, ReactNode, useState } from 'react';
@@ -9,7 +10,7 @@ const Android12Switch = styled(Switch)(({ theme }) => ({
 	},
 	'& .MuiSwitch-track': {
 		borderRadius: 22 / 2,
-		backgroundColor: `${theme.palette.grey[500]} !important`,
+		backgroundColor: `${setColorThemeMode(theme.palette.grey[500], theme.palette.grey[900], theme)} !important`,
 		opacity: `${1} !important`,
 		'&::before, &::after': {
 			content: '""',

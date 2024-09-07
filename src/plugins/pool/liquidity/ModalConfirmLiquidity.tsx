@@ -3,6 +3,7 @@ import { MainCard } from '@/components/card/MainCard';
 import { MainDialog } from '@/components/dialog/MainDialog';
 import { TokenIcon } from '@/components/token/TokenIcon';
 import { ItemRow } from '@/plugins/pool/components/TokenSelected';
+import { setColorThemeMode } from '@/utils/helpers';
 import { Divider, Stack, Typography, useTheme } from '@mui/material';
 
 interface IProps {
@@ -48,7 +49,7 @@ export const ModalConfirmLiquidity = ({ onClose, open }: IProps) => {
 						Deva ETH/BNB
 					</Typography>
 
-					<MainCard backgroudColor="white" width="100%" disablePadding>
+					<MainCard backgroudColor={setColorThemeMode('white', 'darkgrey')} width="100%" disablePadding>
 						<Stack spacing={1} p={2}>
 							<ItemRow
 								title="UNI ETH/BNB"
@@ -70,7 +71,10 @@ export const ModalConfirmLiquidity = ({ onClose, open }: IProps) => {
 							<ItemRow
 								title="Price"
 								value={
-									<Typography color={useTheme().palette.grey[500]} fontSize={'15px'}>
+									<Typography
+										color={setColorThemeMode(useTheme().palette.grey[500], useTheme().palette.grey[100])}
+										fontSize={'15px'}
+									>
 										1 ETH = 981.33 BNB
 									</Typography>
 								}
@@ -79,7 +83,10 @@ export const ModalConfirmLiquidity = ({ onClose, open }: IProps) => {
 							<ItemRow
 								title=""
 								value={
-									<Typography color={useTheme().palette.grey[500]} fontSize={'15px'}>
+									<Typography
+										color={setColorThemeMode(useTheme().palette.grey[500], useTheme().palette.grey[100])}
+										fontSize={'15px'}
+									>
 										1 ETH = 981.33 BNB
 									</Typography>
 								}
@@ -88,7 +95,7 @@ export const ModalConfirmLiquidity = ({ onClose, open }: IProps) => {
 					</MainCard>
 				</Stack>
 
-				<MainButton variant="contained" color="darkGrey" onClick={onClose} size="large">
+				<MainButton variant="contained" color={setColorThemeMode('darkGrey', 'primary')} onClick={onClose} size="large">
 					Confirm
 				</MainButton>
 			</Stack>
