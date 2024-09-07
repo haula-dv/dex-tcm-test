@@ -12,6 +12,7 @@ export class TSizes {
 	static card_padding = '10px';
 	static borderRadiusMd = '14px';
 	static buttonHeight = '40px';
+	static buttonHeightLarge = '56px';
 	static buttonHeightSmall = '34px';
 	static fieldSearchHeight = '40px';
 

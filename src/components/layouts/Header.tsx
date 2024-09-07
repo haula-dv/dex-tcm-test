@@ -15,7 +15,7 @@ export const Header = () => {
 
 	const navItems = [
 		{ label: 'Swap', to: '/swap', actived: ['/swap'] },
-		{ label: 'Pool', to: '/pool', actived: ['/pool'] },
+		{ label: 'Pool', to: '/pool', actived: ['/pool', '/pool/add', '/pool/create-a-pair'] },
 		{ label: 'Trading', to: '/trading/perp', actived: [`/trading/perp/${params.symbol}`] },
 		{ label: 'Portfolio', to: '/portfolio', actived: ['/portfolio'] },
 		{ label: 'Vote', to: '/vote', actived: ['/vote'] },

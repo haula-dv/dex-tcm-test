@@ -47,7 +47,7 @@ export const ModalConfirmSwap = ({ onClose, open }: IProps) => {
 					<Stack>
 						<Typography color={'text.primary'}>Gas fee</Typography>
 
-						<MainButton color={setColorThemeMode('darkGrey', 'darkPrimary')} size="xsmall" variant="contained">
+						<MainButton color={setColorThemeMode('darkGrey', 'dark')} size="xsmall" variant="contained">
 							Edit
 						</MainButton>
 					</Stack>
@@ -64,7 +64,7 @@ export const ModalConfirmSwap = ({ onClose, open }: IProps) => {
 					</Stack>
 				</Stack>
 
-				<Divider />
+				<Divider sx={{ borderColor: theme.palette.grey[600] }} />
 
 				<Stack direction={'row'} justifyContent={'space-between'} p={TSizes.margin_base}>
 					<Typography>Total amount</Typography>

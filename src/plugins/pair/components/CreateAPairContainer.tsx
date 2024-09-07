@@ -26,32 +26,34 @@ export const CreateAPairContainer = () => {
 	}, []);
 
 	return (
-		<Box maxWidth={TSizes.widthCommonCard} mx={'auto'} pt="48px">
-			<MainCard backgroudColor="primary">
-				<ChildHeader onBackLink="/pool" title="Create A Pair" />
+		<Box display={'flex'} justifyContent={'center'} alignItems={'center'} minHeight={'calc(100vh - 56px)'}>
+			<Box maxWidth={TSizes.widthCommonCard} mx={'auto'} py="48px">
+				<MainCard backgroudColor="primary">
+					<ChildHeader onBackLink="/pool" title="Create A Pair" />
 
-				<MainCard variant="outlined">
-					<Typography fontSize={'16px'} fontWeight={600} pb={1}>
-						You are the first liquidity provider
-					</Typography>
-					<Typography>
-						You are the first liquidity provider You are the first liquidity provider You are the first liquidity
-						provider
-					</Typography>
+					<MainCard backgroudColor="common">
+						<Typography fontSize={'16px'} fontWeight={600} pb={1}>
+							You are the first liquidity provider
+						</Typography>
+						<Typography>
+							You are the first liquidity provider You are the first liquidity provider You are the first liquidity
+							provider
+						</Typography>
+					</MainCard>
+
+					<Stack spacing={1.5} pt={'10px'} pb={'10px'}>
+						<CurrencyField handleGetSwapPrice={getSwapPrice} field="input" currentToken={tokenInput} />
+
+						<ButtonSwapToggle toggleSwapType={toggleSwapType} />
+
+						<CurrencyField currentToken={tokenOutput} field="output" />
+					</Stack>
+
+					<MainButton fullWidth size="large" variant="contained" color="whitePrimary">
+						Invalid Pair
+					</MainButton>
 				</MainCard>
-
-				<Stack spacing={1.5} pt={2} pb={2}>
-					<CurrencyField handleGetSwapPrice={getSwapPrice} field="input" currentToken={tokenInput} />
-
-					<ButtonSwapToggle toggleSwapType={toggleSwapType} />
-
-					<CurrencyField currentToken={tokenOutput} field="output" />
-				</Stack>
-
-				<MainButton fullWidth size="large" variant="contained" color="whitePrimary">
-					Invalid Pair
-				</MainButton>
-			</MainCard>
+			</Box>
 		</Box>
 	);
 };

@@ -3,6 +3,7 @@ import { MainButton } from '@/components/button/MainButton';
 import { MainCard } from '@/components/card/MainCard';
 import { MainDialog } from '@/components/dialog/MainDialog';
 import { GrayTab } from '@/components/tab/GrayTab';
+import { setColorThemeMode } from '@/utils/helpers';
 import TabPanel from '@mui/lab/TabPanel';
 import { Divider, Stack, Typography, useTheme } from '@mui/material';
 import { useState } from 'react';
@@ -34,11 +35,15 @@ export const CustomizeGasModal = ({ onClose, open }: IProps) => {
 				]}
 			>
 				<TabPanel value={'1'} sx={{ p: 0 }}>
-					<Stack spacing={2} pt={2}>
+					<Stack spacing={1.5} pt={2}>
 						<Typography fontSize={'18px'} fontWeight={600}>
 							Estimated Processing Times
 						</Typography>
-						<Typography color={useTheme().palette.grey[500]} fontSize={'16px'}>
+
+						<Typography
+							color={setColorThemeMode(useTheme().palette.grey[500], useTheme().palette.grey[200])}
+							fontSize={'16px'}
+						>
 							Select a higher gas fee accelerate the processing of your transaction.*
 						</Typography>
 
@@ -49,11 +54,12 @@ export const CustomizeGasModal = ({ onClose, open }: IProps) => {
 									width="100%"
 									isHover
 									isSelected={inde === currentSelect}
-									variant="outlined"
+									variant={'outlined'}
+									backgroudColor="common"
 									onClick={() => handleSelect(inde)}
 								>
 									<Stack spacing={0.5}>
-										<Typography fontSize={'13px'} color={useTheme().palette.grey[500]}>
+										<Typography fontSize={'13px'} color={setColorThemeMode(useTheme().palette.grey[500], '#fff')}>
 											{item.label}
 										</Typography>
 										<Typography fontSize={'13px'}>{item.balance}</Typography>
@@ -62,16 +68,20 @@ export const CustomizeGasModal = ({ onClose, open }: IProps) => {
 								</MainCard>
 							))}
 						</Stack>
-						<Typography color={useTheme().palette.grey[500]} fontSize={'16px'}>
+
+						<Typography
+							color={setColorThemeMode(useTheme().palette.grey[500], useTheme().palette.grey[200])}
+							fontSize={'16px'}
+						>
 							*Accelerating a transaction by using a higher gas price increases its changes of getting processed by the
 							network faster, but it is not always guaranteed.
 						</Typography>
 
-						<MainCard width="100%">
+						<MainCard width="100%" backgroudColor="common">
 							<Stack spacing={1}>
 								<ItemRow title="Send Amount" value={<Typography fontSize={'15px'}>0.00000014309ETH</Typography>} />
 								<ItemRow title="Transaction Fee" value={<Typography fontSize={'15px'}>0.0047252ETH</Typography>} />
-								<Divider />
+								<Divider sx={{ borderColor: useTheme().palette.grey[200] }} />
 								<ItemRow
 									title={<Typography fontSize={'15px'}>New Total</Typography>}
 									value={<Typography fontSize={'15px'}>0.00472534309 ETH</Typography>}
@@ -79,7 +89,10 @@ export const CustomizeGasModal = ({ onClose, open }: IProps) => {
 								<ItemRow
 									title=""
 									value={
-										<Typography color={useTheme().palette.grey[500]} fontSize={'15px'}>
+										<Typography
+											color={setColorThemeMode(useTheme().palette.grey[500], useTheme().palette.grey[200])}
+											fontSize={'15px'}
+										>
 											$6..52
 										</Typography>
 									}

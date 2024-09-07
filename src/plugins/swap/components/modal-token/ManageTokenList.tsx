@@ -37,11 +37,13 @@ export const ManageTokenList = ({ onBack, handleCloseModal }: IProps) => {
 			</Stack>
 
 			<GrayTab tabs={tabs} />
+
 			<Box pt={2} />
-			<SearchField />
+
+			<SearchField placeholder="http:// or ipfs:// or ENS name" height={'48px'} />
 
 			<Stack pt={2} spacing={TSizes.margin_xs}>
-				<MainCard isHover width="100%">
+				<MainCard isHover width="100%" backgroudColor="common">
 					<Stack direction={'row'} justifyContent={'space-between'} alignItems={'center'}>
 						<Stack direction={'row'} spacing={1} alignItems={'center'}>
 							<Image src={'/images/token.png'} height={32} width={32} alt="" />
@@ -61,7 +63,7 @@ export const ManageTokenList = ({ onBack, handleCloseModal }: IProps) => {
 					</Stack>
 				</MainCard>
 
-				<MainCard isHover width="100%">
+				<MainCard isHover width="100%" backgroudColor="common">
 					<Stack direction={'row'} justifyContent={'space-between'} alignItems={'center'}>
 						<Stack direction={'row'} spacing={1} alignItems={'center'}>
 							<Image src={'/images/token.png'} height={32} width={32} alt="" />

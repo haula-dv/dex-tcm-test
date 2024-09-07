@@ -79,11 +79,11 @@ export const SignatureRequestConfirmModal = ({ onClose, open }: IProps) => {
 				</MainCard>
 
 				<Stack pt={2}>
-					<MainButton fullWidth color="inherit">
+					<MainButton fullWidth color="inherit" size="large">
 						View Full Transaction Details
 					</MainButton>
 
-					<Stack direction={'row'} spacing={1} pt={2}>
+					<Stack direction={'row'} spacing={'10px'} pt={'10px'}>
 						<MainButton fullWidth variant="outlined" color="darkGrey" borderWidth="2px" size="large">
 							Reject
 						</MainButton>

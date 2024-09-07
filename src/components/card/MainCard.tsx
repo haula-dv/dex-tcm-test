@@ -54,12 +54,12 @@ export const MainCard = ({
 				<CustomCard
 					elevation={0}
 					disablePadding={disablePadding}
+					isSelected={isSelected}
 					sx={{
 						maxWidth: maxWidth,
 						cursor: isHover ? 'pointer' : '',
 						padding: padding,
 						borderRadius: borderRadius,
-						border: isSelected ? `1px solid ${theme.palette.primary.dark}` : '',
 						transition: '0.6s',
 						height: height,
 						minHeight: minHeight,
@@ -78,15 +78,20 @@ export const MainCard = ({
 interface ICard {
 	backgroudColor?: 'primary' | 'primaryLight' | 'white' | 'grey' | 'darkgrey' | 'transparent' | 'common';
 	disablePadding?: boolean;
+	isSelected?: boolean;
 }
 
 const CustomCard = styled(Card, {
-	shouldForwardProp: (prop) => prop !== 'backgroudColor' && prop !== 'disablePadding',
-})<ICard>(({ theme, backgroudColor = 'grey', disablePadding }) => ({
+	shouldForwardProp: (prop) => prop !== 'backgroudColor' && prop !== 'disablePadding' && prop !== 'isSelected',
+})<ICard>(({ theme, backgroudColor = 'grey', disablePadding, isSelected }) => ({
 	borderRadius: TSizes.borderRadiusMd,
 	'&.MuiPaper-root': {
 		boxShadow: 'none',
 		borderColor: theme.palette.divider,
+
+		...(isSelected && {
+			border: `1px solid ${setColorThemeMode(theme.palette.primary.dark, theme.palette.primary.dark)}`,
+		}),
 	},
 
 	...(backgroudColor === 'transparent' && {
