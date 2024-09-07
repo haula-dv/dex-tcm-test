@@ -7,9 +7,10 @@ import Image from 'next/image';
 
 interface IProps {
 	fontSize?: string;
+	textColor?: string;
 }
 
-export const AccountAvatar = ({ fontSize = '14px' }: IProps) => {
+export const AccountAvatar = ({ fontSize = '14px', textColor }: IProps) => {
 	const [{ wallet, connecting }, connect, disconnect] = useConnectWallet();
 
 	return (
@@ -19,7 +20,9 @@ export const AccountAvatar = ({ fontSize = '14px' }: IProps) => {
 			{wallet && (
 				<Typography
 					fontSize={fontSize}
-					color={setColorThemeMode(useTheme().palette.common.white, useTheme().palette.common.black)}
+					color={
+						textColor ? textColor : setColorThemeMode(useTheme().palette.common.white, useTheme().palette.common.black)
+					}
 				>
 					{formartAddress(wallet.accounts[0].address)}
 				</Typography>

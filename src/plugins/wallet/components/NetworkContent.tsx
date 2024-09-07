@@ -12,6 +12,7 @@ import { useConnectWallet, useSetChain } from '@web3-onboard/react';
 import { useCallback, useState } from 'react';
 
 export default function NetworkContent() {
+	const theme = useTheme();
 	const [networkAnchorEl, setNetworkAnchorEl] = useState<null | HTMLElement>(null);
 	const openNetworkEl = Boolean(networkAnchorEl);
 
@@ -56,12 +57,22 @@ export default function NetworkContent() {
 	return (
 		<>
 			<MainButton
-				variant="outlined"
-				endIcon={<IconChevronDown size={'1rem'} />}
+				variant={'contained'}
+				endIcon={
+					<IconChevronDown
+						size={'1rem'}
+						color={setColorThemeMode(theme.palette.common.black, theme.palette.common.white)}
+					/>
+				}
 				onClick={handleShowMenu}
 				id="network-button"
 				aria-controls={openNetworkEl ? 'network-menu' : undefined}
 				aria-haspopup="true"
+				color="inherit"
+				sx={{
+					backgroundColor: setColorThemeMode(theme.palette.grey[50], theme.palette.grey[700]),
+					color: setColorThemeMode(theme.palette.common.black, theme.palette.common.white),
+				}}
 				aria-expanded={openNetworkEl ? 'true' : undefined}
 				startIcon={<TokenIcon url={getImageNextwork(currentChain()?.network_infos?.chain_id, 'network_logo')} />}
 			>

@@ -40,7 +40,14 @@ export const OrderViewContainer = ({ symbol }: IProps) => {
 	};
 
 	return (
-		<Box height={'20.5617%'} minHeight={'350px'} overflow={'hidden'} pt="54px" borderRadius={'16px'}>
+		<Box
+			height={'20.5617%'}
+			minHeight={'320px'}
+			overflow={'hidden'}
+			// pt="54px"
+			pt="10px"
+			borderRadius={'16px'}
+		>
 			<MainTab tabs={tabs as any} onChange={onTabChange}>
 				<MainCard
 					backgroudColor="primaryLight"

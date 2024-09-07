@@ -4,7 +4,7 @@ import { MainIconButton } from '@/components/button/MainIconButton';
 import IconLoading from '@/components/icons/loading';
 import { TLocalStorage } from '@/utils/constants/key_store';
 import { setColorThemeMode } from '@/utils/helpers';
-import { Stack } from '@mui/material';
+import { Stack, useTheme } from '@mui/material';
 import { useAccount } from '@orderly.network/hooks';
 import { IconDots, IconMoonStars, IconSettings, IconSun } from '@tabler/icons-react';
 import { useConnectWallet } from '@web3-onboard/react';
@@ -21,6 +21,7 @@ export default function WalletContainer() {
 	const [accountAnchorEl, setAccountAnchorEl] = useState<null | HTMLElement>(null);
 	const openAccountEl = Boolean(accountAnchorEl);
 	const themeSelector = useStore(themeSelectorState, (state) => state.value);
+	const theme = useTheme();
 
 	const handleChangeTheme = () => {
 		localStorage.setItem(TLocalStorage.DEX_THEME_MODE, themeSelector.activeMode == 'light' ? 'dark' : 'light');
@@ -101,7 +102,7 @@ export default function WalletContainer() {
 							variant="contained"
 							color={setColorThemeMode('darkGrey', 'white')}
 							onClick={handleShowMenuAccount}
-							endIcon={<IconSettings size={'1.1rem'} />}
+							endIcon={<IconSettings size={'1.1rem'} color={setColorThemeMode('#fff', theme.palette.common.black)} />}
 							id="account-button"
 							aria-controls={openAccountEl ? 'account-menu' : undefined}
 							aria-haspopup="true"
@@ -115,7 +116,7 @@ export default function WalletContainer() {
 
 			<AccountMenuContainer anchorEl={accountAnchorEl} open={openAccountEl} handleClose={handleCloseAccountMenu} />
 
-			{wallet && (
+			{wallet && openAccountDetailsModal && (
 				<AccountDetailPopup
 					open={openAccountDetailsModal}
 					onClose={() => setAccountDetailsModal(false)}
