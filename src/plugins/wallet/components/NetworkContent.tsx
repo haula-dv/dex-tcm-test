@@ -134,7 +134,7 @@ export default function NetworkContent() {
 								disabledBg
 								isHiddenEndIcon
 								size="small"
-								onClick={() => onChainChanged(chain.network_infos.chain_id, false)}
+								onClick={() => onChainChanged(chain.network_infos.chain_id, true)}
 								startIcon={<TokenIcon url={getImageNextwork(chain.network_infos.chain_id, 'network_logo')} />}
 								isSelected={currentChain()?.network_infos?.chain_id === chain.network_infos.chain_id}
 							/>

@@ -1,17 +1,17 @@
 /* eslint-disable react-hooks/rules-of-hooks */
 import { MainCard } from '@/components/card/MainCard';
 import IconLoading from '@/components/icons/loading';
-import { usdFormatter } from '@/utils/formatters/number';
-import { setColorThemeMode } from '@/utils/helpers';
-import { Divider, Stack, Typography, useTheme } from '@mui/material';
-import { useAccount, useOrderEntry, useSymbolsInfo, useWithdraw } from '@orderly.network/hooks';
+import { Stack, Typography, useTheme } from '@mui/material';
+import { useOrderEntry, useSymbolsInfo, useWithdraw } from '@orderly.network/hooks';
 import { OrderEntity, OrderSide, OrderType } from '@orderly.network/types';
 import { useConnectWallet, useNotifications } from '@web3-onboard/react';
 import { memo, ReactNode, useState } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { match } from 'ts-pattern';
+import { Balance } from '../common/Balance';
 import AmountSetOrderSide from './AmountSetOrderSide';
 import Details from './Details';
+import DividerOrder from './DividerOrder';
 import InputForm from './InputForm';
 import OrderDirection from './OrderDirection';
 import OrderTypeTab from './OrderTypeTab';
@@ -51,7 +51,6 @@ const CreateOrderForm = ({ symbol }: IProps) => {
 	const symbolsInfo = useSymbolsInfo();
 	const [{ wallet }] = useConnectWallet();
 	const { availableWithdraw } = useWithdraw();
-	const { account, state } = useAccount();
 
 	const { onSubmit, helper, maxQty, estLeverage, estLiqPrice, markPrice, freeCollateral } = useOrderEntry(
 		{
@@ -131,7 +130,8 @@ const CreateOrderForm = ({ symbol }: IProps) => {
 
 	return (
 		<MainCard backgroudColor="primary" width="100%" height="100%">
-			{usdFormatter.format(availableWithdraw)} {quote}
+			{wallet && <Balance availableWithdraw={availableWithdraw} quote={quote} wallet={wallet} />}
+
 			<form onSubmit={formContext.handleSubmit(submitForm)}>
 				<Stack spacing={'10px'}>
 					<OrderTypeTab formContext={formContext} />
@@ -156,22 +156,7 @@ const CreateOrderForm = ({ symbol }: IProps) => {
 							symbolsInfo={symbolsInfo}
 						/>
 
-						<Divider
-							sx={{
-								'&::before': {
-									borderColor: setColorThemeMode(useTheme().palette.divider, useTheme().palette.common.white),
-								},
-								'&::after': {
-									borderColor: setColorThemeMode(useTheme().palette.divider, useTheme().palette.common.white),
-								},
-
-								'& span': {
-									color: setColorThemeMode(useTheme().palette.divider, useTheme().palette.common.white),
-								},
-							}}
-						>
-							or
-						</Divider>
+						<DividerOrder />
 					</Stack>
 
 					<AmountSetOrderSide formContext={formContext} />

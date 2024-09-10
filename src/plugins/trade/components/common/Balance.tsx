@@ -1,11 +1,19 @@
-import { Collapse, Stack, Typography, useTheme } from '@mui/material';
-import { Divider } from '@orderly.network/react';
-import { IconChevronDown } from '@tabler/icons-react';
+import { MainButton } from '@/components/button/MainButton';
+import { MainCard } from '@/components/card/MainCard';
+import { usdFormatter } from '@/utils/formatters/number';
+import { TSizes } from '@/utils/themes/custom-theme/sizes';
+import { Box, Stack, Typography, useTheme } from '@mui/material';
+import { WalletState } from '@orderly.network/hooks/esm/walletConnectorContext';
 import { memo, useState } from 'react';
-import { Item } from '../create-order/CreateOrderForm';
+
+interface IProps {
+	availableWithdraw: number;
+	quote: string;
+	wallet: WalletState;
+}
 
 // eslint-disable-next-line react/display-name
-export const Balance = memo(() => {
+export const Balance = memo(({ availableWithdraw, quote }: IProps) => {
 	const [checked, setChecked] = useState(false);
 	const handleChange = () => {
 		setChecked((prev) => !prev);
@@ -14,35 +22,23 @@ export const Balance = memo(() => {
 	return (
 		<>
 			{/* <SettlePnlContent /> */}
-
-			<Stack
-				direction={'row'}
-				justifyContent={'space-between'}
-				className="pointer"
-				p={1}
-				alignItems={'center'}
-				onClick={handleChange}
-			>
-				<Stack>
+			<MainCard backgroudColor="primaryLight" width="100%">
+				<Stack direction={'row'} justifyContent={'space-between'}>
 					<Typography fontSize={'12px'} color={useTheme().palette.grey[600]}>
 						Total balance
 					</Typography>
 
-					<Typography fontWeight={600}>0.00 USDC</Typography>
+					<Typography fontWeight={600}>
+						{usdFormatter.format(availableWithdraw)} {quote}
+					</Typography>
 				</Stack>
+			</MainCard>
 
-				<IconChevronDown />
-			</Stack>
+			<Box mb={TSizes.margin_xs} />
 
-			<Collapse in={checked}>
-				<Stack spacing={1} p={1}>
-					<Item label="Free collateral" value={'0.00 USDC'} />
+			<MainButton></MainButton>
 
-					<Item label="Unsettled" value={'PnL 0.00 USDC'} />
-				</Stack>
-			</Collapse>
-
-			<Divider />
+			<Box mb={TSizes.margin_xs} />
 		</>
 	);
 });
