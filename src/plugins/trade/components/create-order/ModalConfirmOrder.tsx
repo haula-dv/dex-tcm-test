@@ -10,13 +10,14 @@ import { Inputs } from './CreateOrderForm';
 
 interface IProps {
 	open: boolean;
+	loading: boolean;
 	handleClose: () => void;
 	submitForm: () => void;
 	symbol: string;
 	currentValue: Inputs;
 }
 
-const ModalConfirmOrder = ({ open, handleClose, submitForm, symbol, currentValue }: IProps) => {
+const ModalConfirmOrder = ({ open, loading, handleClose, submitForm, symbol, currentValue }: IProps) => {
 	const [_, base, quote] = symbol.split('_');
 	const theme = useTheme();
 
@@ -89,7 +90,7 @@ const ModalConfirmOrder = ({ open, handleClose, submitForm, symbol, currentValue
 					Cancel
 				</MainButton>
 
-				<MainButton fullWidth variant="contained" color="primary" onClick={submitForm}>
+				<MainButton fullWidth variant="contained" color="primary" onClick={submitForm} isLoading={loading}>
 					Confirm
 				</MainButton>
 			</Stack>

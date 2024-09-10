@@ -186,6 +186,7 @@ const CreateOrderForm = ({ symbol }: IProps) => {
 							submitForm={submitForm}
 							symbol={symbol}
 							currentValue={formContext.getValues()}
+							loading={loading}
 						/>
 					</form>
 				</MainCard>

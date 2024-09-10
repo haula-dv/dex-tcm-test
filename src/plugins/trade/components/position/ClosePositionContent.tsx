@@ -1,5 +1,6 @@
 import IconLoading from '@/components/icons/loading';
 import { getDecimalsFromTick } from '@/utils/formatters/api';
+import { Typography } from '@mui/material';
 import { useOrderEntry, useSymbolsInfo } from '@orderly.network/hooks';
 import { API, OrderEntity, OrderSide, OrderType } from '@orderly.network/types';
 import { useNotifications } from '@web3-onboard/react';
@@ -80,9 +81,11 @@ const ClosePositionContent = ({ symbol, position, refresh }: IProps) => {
 	const [baseDecimals] = getDecimalsFromTick(symbolInfo);
 
 	return (
-		<div>
-			<form onSubmit={handleSubmit(submitForm)}></form>
-		</div>
+		<>
+			<form onSubmit={handleSubmit(submitForm)}>
+				<Typography>Partially or fully close your open position at mark price.</Typography>
+			</form>
+		</>
 	);
 };
 
