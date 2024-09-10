@@ -42,7 +42,7 @@ export default function WalletContainer() {
 	// Handle connect wallet button
 	const handleConnectWallet = async () => {
 		await connect();
-		localStorage.setItem('networkId', 'mainnet');
+		// localStorage.setItem('networkId', 'mainnet');
 	};
 
 	// Handle show menu account button

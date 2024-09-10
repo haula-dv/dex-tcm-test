@@ -1,12 +1,10 @@
-import '@/styles/global.scss';
-import 'react-toastify/dist/ReactToastify.css';
-
-import type { Metadata } from 'next';
-
 import ClientThemeProvider from '@/components/ClientThemeProvider';
 import { Loading } from '@/components/loading/loading';
 import Web3OnboardProviderRoot from '@/provider/WalletConnectProvider';
+import '@/styles/global.scss';
+import type { Metadata } from 'next';
 import React from 'react';
+import 'react-toastify/dist/ReactToastify.css';
 import { Toaster } from 'sonner';
 
 export const metadata: Metadata = {

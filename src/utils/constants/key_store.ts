@@ -10,7 +10,7 @@ export class TLocalStorage {
 	static DEX_ORDERLY_MAINNET_WALLET_KEY = 'dex_orderly_mainnet_wallet';
 	static DEX_ORDERLY_TESTNET_ADDRESS = 'dex_orderly_testnet_address';
 
-	static DEX_ORDERLY_NETWORK = 'Dex_orderly_network';
+	static DEX_ORDERLY_NETWORK = 'tcmp_orderly_network';
 
-	static DEX_THEME_MODE = 'dex_theme_mode';
+	static DEX_THEME_MODE = 'tcmp_theme_mode';
 }

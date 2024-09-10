@@ -3,6 +3,7 @@ import { MainButton } from '@/components/button/MainButton';
 import { ItemList } from '@/components/list/ItemList';
 import { StyledMenu } from '@/components/menu/StyledMenu';
 import { TokenIcon } from '@/components/token/TokenIcon';
+import { TLocalStorage } from '@/utils/constants/key_store';
 import { idFromHexChainId } from '@/utils/formatters/token';
 import { setColorThemeMode } from '@/utils/helpers';
 import { Divider, Stack, Typography, useTheme } from '@mui/material';
@@ -44,7 +45,7 @@ export default function NetworkContent() {
 				chainNamespace: 'evm',
 			});
 
-			localStorage.setItem('networkId', isTestnet ? 'testnet' : 'mainnet');
+			localStorage.setItem(TLocalStorage.DEX_ORDERLY_NETWORK, isTestnet ? 'testnet' : 'mainnet');
 
 			// realod page
 			setTimeout(() => {

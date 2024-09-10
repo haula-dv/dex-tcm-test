@@ -1,9 +1,9 @@
-import { LayoutProps } from '@/common/types';
-import { useIsTestnet } from '@/hooks/useIsTestnet';
+import { LayoutProps } from '@/common';
 import { CustomConfigStore, ENV_NAME } from '@/utils/config/CustomConfigStore';
+import { CustomContractManager } from '@/utils/config/CustomContract';
 import { OrderlyConfig } from '@/utils/config/orderly';
+import { TLocalStorage } from '@/utils/constants/key_store';
 import { OrderlyAppProvider } from '@orderly.network/react';
-import { PropsWithChildren } from 'react';
 
 export type NetworkId = 'testnet' | 'mainnet';
 
@@ -14,23 +14,15 @@ const HostEnvMap: Record<string, ENV_NAME> = {
 	localhost: 'staging',
 };
 
-type OrderlyContainerProps = PropsWithChildren<{
-	symbol?: string;
-}>;
-
-export const OrderlyConfigProviderRoot = ({ children }: LayoutProps) => {
-	const [isTestnet, networkChanged] = useIsTestnet();
-
-	if (networkChanged && typeof window !== 'undefined') {
-		window.localStorage.setItem('networkId', isTestnet ? 'testnet' : 'mainnet');
-		window.location.reload();
-	}
+const OrderlyConfigProviderRoot = ({ children }: LayoutProps) => {
+	const networkId = (localStorage.getItem(TLocalStorage.DEX_ORDERLY_NETWORK) ?? 'mainnet') as NetworkId;
 
 	const { app } = OrderlyConfig();
 
-	const networkId = (localStorage.getItem('networkId') ?? 'mainnet') as NetworkId;
 	const env = networkId === 'mainnet' ? 'prod' : HostEnvMap[window.location.hostname] || 'staging';
+
 	const configStore = new CustomConfigStore({ networkId, env });
+	const contracts = new CustomContractManager(configStore);
 
 	return (
 		<OrderlyAppProvider
@@ -41,8 +33,11 @@ export const OrderlyConfigProviderRoot = ({ children }: LayoutProps) => {
 			appIcons={app.appIcons}
 			shareOptions={{ pnl: { backgroundImages: [] } }}
 			theme={undefined}
+			contracts={contracts}
 		>
 			{children}
 		</OrderlyAppProvider>
 	);
 };
+
+export default OrderlyConfigProviderRoot;

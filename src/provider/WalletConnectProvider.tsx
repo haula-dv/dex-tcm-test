@@ -1,7 +1,7 @@
 'use client';
 import { OrderlyConfig } from '@/utils/config/orderly';
 import { ConnectorProvider } from '@orderly.network/web3-onboard';
-import { OrderlyConfigProviderRoot } from './OrderlyConfigProviderRoot';
+import OrderlyConfigProviderRoot from './OrderlyConfigProviderRoot';
 
 export default function Web3OnboardProviderRoot({
 	children,
