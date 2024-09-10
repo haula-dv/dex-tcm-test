@@ -2,7 +2,6 @@ import { LayoutProps } from '@/common';
 import { CustomConfigStore, ENV_NAME } from '@/utils/config/CustomConfigStore';
 import { CustomContractManager } from '@/utils/config/CustomContract';
 import { OrderlyConfig } from '@/utils/config/orderly';
-import { TLocalStorage } from '@/utils/constants/key_store';
 import { OrderlyAppProvider } from '@orderly.network/react';
 
 export type NetworkId = 'testnet' | 'mainnet';
@@ -15,7 +14,7 @@ const HostEnvMap: Record<string, ENV_NAME> = {
 };
 
 const OrderlyConfigProviderRoot = ({ children }: LayoutProps) => {
-	const networkId = (localStorage.getItem(TLocalStorage.DEX_ORDERLY_NETWORK) ?? 'mainnet') as NetworkId;
+	const networkId = (localStorage.getItem('networkId') ?? 'mainnet') as NetworkId;
 
 	const { app } = OrderlyConfig();
 
@@ -33,7 +32,7 @@ const OrderlyConfigProviderRoot = ({ children }: LayoutProps) => {
 			appIcons={app.appIcons}
 			shareOptions={{ pnl: { backgroundImages: [] } }}
 			theme={undefined}
-			contracts={contracts}
+			// contracts={contracts}
 		>
 			{children}
 		</OrderlyAppProvider>

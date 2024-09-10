@@ -1,10 +1,11 @@
 /* eslint-disable react-hooks/rules-of-hooks */
 import { MainCard } from '@/components/card/MainCard';
 import IconLoading from '@/components/icons/loading';
+import { usdFormatter } from '@/utils/formatters/number';
 import { setColorThemeMode } from '@/utils/helpers';
 import { Divider, Stack, Typography, useTheme } from '@mui/material';
 import { useAccount, useOrderEntry, useSymbolsInfo, useWithdraw } from '@orderly.network/hooks';
-import { AccountStatusEnum, OrderEntity, OrderSide, OrderType } from '@orderly.network/types';
+import { OrderEntity, OrderSide, OrderType } from '@orderly.network/types';
 import { useConnectWallet, useNotifications } from '@web3-onboard/react';
 import { memo, ReactNode, useState } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
@@ -51,7 +52,6 @@ const CreateOrderForm = ({ symbol }: IProps) => {
 	const [{ wallet }] = useConnectWallet();
 	const { availableWithdraw } = useWithdraw();
 	const { account, state } = useAccount();
-	const hasOrderlyKey = state.status >= AccountStatusEnum.EnableTrading;
 
 	const { onSubmit, helper, maxQty, estLeverage, estLiqPrice, markPrice, freeCollateral } = useOrderEntry(
 		{
@@ -76,12 +76,6 @@ const CreateOrderForm = ({ symbol }: IProps) => {
 
 	// Submit form
 	const submitForm: SubmitHandler<Inputs> = async (data) => {
-		if (!hasOrderlyKey && state.status >= AccountStatusEnum.SignedIn) {
-			handleOrderkyKey();
-
-			return;
-		}
-
 		setLoading(true);
 		const { update } = customNotification({
 			eventCode: 'createOrder',
@@ -135,35 +129,9 @@ const CreateOrderForm = ({ symbol }: IProps) => {
 		};
 	};
 
-	const handleOrderkyKey = async () => {
-		const { update } = customNotification({
-			eventCode: 'orderlyKey',
-			type: 'pending',
-			message: 'Registering Orderly key...',
-		});
-		try {
-			await account.createOrderlyKey(365);
-			update({
-				eventCode: 'orderlyKeySuccess',
-				type: 'success',
-				message: 'Key registration complete!',
-				autoDismiss: 5_000,
-			});
-		} catch (err) {
-			update({
-				eventCode: 'orderlyKeyError',
-				type: 'error',
-				message: 'Key registration failed!',
-				autoDismiss: 5_000,
-			});
-
-			throw err;
-		} finally {
-		}
-	};
-
 	return (
 		<MainCard backgroudColor="primary" width="100%" height="100%">
+			{usdFormatter.format(availableWithdraw)} {quote}
 			<form onSubmit={formContext.handleSubmit(submitForm)}>
 				<Stack spacing={'10px'}>
 					<OrderTypeTab formContext={formContext} />
