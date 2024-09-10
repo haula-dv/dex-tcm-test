@@ -31,8 +31,7 @@ const OrderlyConfigProviderRoot = ({ children }: LayoutProps) => {
 			brokerName={app.brokerName}
 			appIcons={app.appIcons}
 			shareOptions={{ pnl: { backgroundImages: [] } }}
-			theme={undefined}
-			// contracts={contracts}
+			theme={'light'}
 		>
 			{children}
 		</OrderlyAppProvider>

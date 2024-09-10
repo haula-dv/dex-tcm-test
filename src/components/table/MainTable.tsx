@@ -1,14 +1,11 @@
+import { IHeadCell } from '@/common';
 import { TSizes } from '@/utils/themes/custom-theme/sizes';
 import { Stack, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from '@mui/material';
 import { memo, ReactNode } from 'react';
 import IconNoContent from '../icons/no-content';
 
-export interface ITableHead {
-	title: string;
-}
-
 interface IProps {
-	headTable: ITableHead[];
+	headTable: IHeadCell[];
 	children?: ReactNode;
 	isEmpty?: boolean;
 }
@@ -22,6 +19,7 @@ function MainTable({ headTable, children, isEmpty }: IProps) {
 						{headTable.map((item, index) => (
 							<TableCell
 								key={index}
+								align={item.align}
 								sx={{
 									borderTopLeftRadius: index == 0 ? TSizes.borderRadius : '',
 									borderBottomLeftRadius: index == 0 ? TSizes.borderRadius : '',

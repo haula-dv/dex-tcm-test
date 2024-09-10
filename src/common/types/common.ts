@@ -27,3 +27,9 @@ export type IThemeSelector = {
 	activeMode: 'light' | 'dark';
 	activeDir: 'lt';
 };
+
+export type IHeadCell = {
+	title: any;
+	hint?: string;
+	align?: 'left' | 'right' | 'center';
+};

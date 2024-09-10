@@ -32,7 +32,7 @@ const LightThemeColors = [
 			},
 
 			success: {
-				main: '#0BA111',
+				main: '#00B59F',
 				contrastText: '#fff',
 			},
 

@@ -33,7 +33,7 @@ const baselightTheme = {
 			contrastText: '#fff',
 		},
 		success: {
-			main: '#0BA111',
+			main: '#00B59F',
 			contrastText: '#fff',
 		},
 		error: {

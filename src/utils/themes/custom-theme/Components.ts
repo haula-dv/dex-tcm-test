@@ -113,6 +113,18 @@ const components = (theme: Theme) => {
 			},
 		},
 
+		MuiSkeleton: {
+			styleOverrides: {
+				root: {
+					backgroundColor: setColorThemeMode(
+						theme.palette.grey[600],
+						`color-mix(in srgb, ${theme.palette.grey[600]}, transparent 90%)`,
+						theme,
+					),
+				},
+			},
+		},
+
 		MuiButtonGroup: {
 			styleOverrides: {
 				root: {

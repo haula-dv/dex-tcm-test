@@ -69,7 +69,7 @@ export default function AccountDetailPopup({ onClose, open, wallet }: IProps) {
 		navigator.clipboard
 			.writeText(wallet.accounts[0].address)
 			.then(() => {
-				toast('Address copied!');
+				toast.success('Address copied!');
 			})
 			.catch((err) => {
 				console.error('Failed to copy text: ', err);

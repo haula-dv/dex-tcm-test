@@ -40,21 +40,14 @@ export const OrderViewContainer = ({ symbol }: IProps) => {
 	};
 
 	return (
-		<Box
-			height={'20.5617%'}
-			minHeight={'320px'}
-			overflow={'hidden'}
-			// pt="54px"
-			pt="10px"
-			borderRadius={'16px'}
-		>
+		<Box height={'20.5617%'} minHeight={'320px'} overflow={'hidden'} pt="10px" borderRadius={'16px'}>
 			<MainTab tabs={tabs as any} onChange={onTabChange}>
 				<MainCard
 					backgroudColor="primaryLight"
 					height="100%"
 					width="100%"
 					disablePadding
-					sx={{ overflowY: 'auto', height: '100%' }}
+					sx={{ overflowY: 'auto', height: '100%', pb: '40px' }}
 				>
 					{tabs.map((item) => (
 						<TabPanel key={item.value} value={item.value} sx={{ p: 0, overflowY: 'auto', height: '100%' }}>

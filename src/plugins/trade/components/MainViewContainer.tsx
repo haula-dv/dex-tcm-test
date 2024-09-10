@@ -1,9 +1,6 @@
 import { MainCard } from '@/components/card/MainCard';
-import BoxConnectWallet from '@/plugins/wallet/components/BoxConnectWallet';
-import { Box, Grid, Stack } from '@mui/material';
-import MarketsContainer from '../markets/components/MarketsContainer';
-import { OrderBookContainer } from '../order-book/OrderBookContainer';
-import CreateOrderForm from './create-order/CreateOrderForm';
+import { Box, Grid } from '@mui/material';
+import { TradingMainView } from '../trading-view/TradingView';
 import { OrderViewContainer } from './order-view/OrderViewContainer';
 
 interface IProps {
@@ -17,14 +14,14 @@ export const MainViewContainer = ({ onSymbolChange, symbol }: IProps) => {
 			{/* <MarketSlider /> */}
 
 			<Grid container spacing={'16px'} height={'100%'} sx={{ display: 'flex' }}>
-				<Grid item md={7} sx={{ display: 'flex', flexDirection: 'column' }}>
+				<Grid item md={10} sx={{ display: 'flex', flexDirection: 'column' }}>
 					<Box>
 						{/* <SymbolHeader onSymbolChange={onSymbolChange} symbol={symbol} /> */}
 
 						<MainCard backgroudColor="primary" width="100%">
 							<Box sx={{ height: 'calc(-200px + 100vh)', minHeight: '800px' }}>
 								<Box height={'100%'} display={'flex'} flexDirection={'column'}>
-									{/* <TradingMainView symbol={symbol} onSymbolChange={onSymbolChange} /> */}
+									<TradingMainView symbol={symbol} onSymbolChange={onSymbolChange} />
 									<OrderViewContainer symbol={symbol} />
 								</Box>
 							</Box>
@@ -32,7 +29,7 @@ export const MainViewContainer = ({ onSymbolChange, symbol }: IProps) => {
 					</Box>
 				</Grid>
 
-				<Grid item md={2.5} sx={{ display: 'flex', flexDirection: 'column', height: 'auto' }}>
+				{/* <Grid item md={2.5} sx={{ display: 'flex', flexDirection: 'column', height: 'auto' }}>
 					<OrderBookContainer symbol={symbol} />
 				</Grid>
 
@@ -42,7 +39,7 @@ export const MainViewContainer = ({ onSymbolChange, symbol }: IProps) => {
 						<BoxConnectWallet />
 						<CreateOrderForm symbol={symbol} />
 					</Stack>
-				</Grid>
+				</Grid> */}
 			</Grid>
 		</Box>
 	);

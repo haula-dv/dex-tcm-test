@@ -16,9 +16,10 @@ interface IProps {
 	fullWidth?: boolean;
 	children?: ReactElement;
 	height?: string;
+	defaultValue?: string | number;
 }
 
-const MainTab = ({ tabs, onChange, fullWidth, height, children }: IProps) => {
+const MainTab = ({ tabs, onChange, fullWidth, height, children, defaultValue }: IProps) => {
 	const [value, setValue] = useState<any>(tabs[0].value);
 
 	const handleChange = (val: ITab) => {
@@ -27,7 +28,7 @@ const MainTab = ({ tabs, onChange, fullWidth, height, children }: IProps) => {
 	};
 
 	return (
-		<TabContext value={value}>
+		<TabContext value={value ?? defaultValue}>
 			<Stack direction={'row'} spacing={'10px'} pb={'10px'} width={'100%'}>
 				{tabs.map((item, index) => {
 					return (

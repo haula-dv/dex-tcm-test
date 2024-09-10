@@ -44,7 +44,7 @@ export const MainDialog = ({
 					direction={'row'}
 					justifyContent={'space-between'}
 					alignItems={'center'}
-					py={TSizes.margin_xs}
+					pt={TSizes.margin_xs}
 					pr={TSizes.margin_xs}
 					pl={TSizes.margin_base}
 				>
@@ -58,7 +58,7 @@ export const MainDialog = ({
 				</Stack>
 			)}
 
-			<Box p={disablePadding ? 0 : TSizes.margin_base}>{children}</Box>
+			<Box p={disablePadding ? 0 : TSizes.margin_common}>{children}</Box>
 		</CustomDialog>
 	);
 };
