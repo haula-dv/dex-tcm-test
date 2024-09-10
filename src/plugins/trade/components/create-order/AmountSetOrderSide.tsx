@@ -37,7 +37,6 @@ const AmountSetOrderSide = ({ formContext }: IProps) => {
 	const theme = useTheme();
 
 	const handleChangeSlippage = (val: string) => {
-		// formContext.setValue('price', val);
 		setCurrentSelect(val);
 	};
 
@@ -54,12 +53,7 @@ const AmountSetOrderSide = ({ formContext }: IProps) => {
 					</Typography>
 				</Stack>
 
-				<Box>
-					<SwitchBase
-						label="Slider"
-						// custombg={setColorThemeMode(theme.palette.grey[500], theme.palette.grey[700])}
-					/>
-				</Box>
+				<SwitchBase label="Slider" />
 			</Stack>
 
 			<Stack direction={'row'} spacing={TSizes.margin_xs} alignItems={'center'}>

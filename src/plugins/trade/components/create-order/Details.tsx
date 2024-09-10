@@ -22,7 +22,6 @@ const Details = ({ estLiqPrice, freeCollateral, markPrice, quote, direction }: I
 	// Handle connect wallet button
 	const handleConnectWallet = async () => {
 		await connect();
-		localStorage.setItem('networkId', 'mainnet');
 	};
 
 	return (

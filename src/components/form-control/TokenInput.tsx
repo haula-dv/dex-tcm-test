@@ -39,8 +39,8 @@ export const TokenInput: FC<
 	suffix,
 	...props
 }) => {
-	const [value, setValue] = useState(outerValue ? String(outerValue) : '');
 	const theme = useTheme();
+	const [value, setValue] = useState(outerValue ? String(outerValue) : '');
 
 	useEffect(() => {
 		if (outerValue == null || typeof outerValue === 'string') return;
@@ -75,6 +75,7 @@ export const TokenInput: FC<
 			name={props.name}
 			readOnly={readonly ?? false}
 			placeholder={placeholder ?? '0.0'}
+			type="number"
 			onChange={(event) => {
 				let newValue = filterAllowedCharacters(event.target.value);
 				if (value !== newValue) {

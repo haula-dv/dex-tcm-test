@@ -23,10 +23,9 @@ interface IProps {
 
 const OrderTypeTab = ({ formContext }: IProps) => {
 	const [value, setValue] = useState<any>('Market');
-	const theme = useTheme();
-
 	const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
 	const open = Boolean(anchorEl);
+	const theme = useTheme();
 
 	const handleChange = (val: string | number, event?: React.MouseEvent<HTMLButtonElement>) => {
 		if (val === 'Stop' && event) {

@@ -44,15 +44,15 @@ export const MainDialog = ({
 					direction={'row'}
 					justifyContent={'space-between'}
 					alignItems={'center'}
-					pt={TSizes.margin_xs}
-					pr={TSizes.margin_xs}
-					pl={TSizes.margin_base}
+					pt={'2px'}
+					pr={'4px'}
+					pl={TSizes.margin_common}
 				>
 					<Typography fontWeight={700} fontSize={'16px'}>
 						{title}
 					</Typography>
 
-					<MainIconButton isFullRounded onClick={handleClose} color={'grey'} size="small">
+					<MainIconButton isFullRounded onClick={handleClose} color={'grey'} edge="end" size="small">
 						<IconX size={'1.4rem'} />
 					</MainIconButton>
 				</Stack>
