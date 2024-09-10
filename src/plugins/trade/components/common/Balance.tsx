@@ -4,7 +4,7 @@ import { usdFormatter } from '@/utils/formatters/number';
 import { TSizes } from '@/utils/themes/custom-theme/sizes';
 import { Box, Stack, Typography, useTheme } from '@mui/material';
 import { WalletState } from '@orderly.network/hooks/esm/walletConnectorContext';
-import { memo, useState } from 'react';
+import { memo } from 'react';
 
 interface IProps {
 	availableWithdraw: number;
@@ -14,11 +14,6 @@ interface IProps {
 
 // eslint-disable-next-line react/display-name
 export const Balance = memo(({ availableWithdraw, quote }: IProps) => {
-	const [checked, setChecked] = useState(false);
-	const handleChange = () => {
-		setChecked((prev) => !prev);
-	};
-
 	return (
 		<>
 			{/* <SettlePnlContent /> */}
