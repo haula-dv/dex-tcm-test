@@ -8,14 +8,15 @@ import Image from 'next/image';
 interface IProps {
 	fontSize?: string;
 	textColor?: string;
+	avatarSize?: number;
 }
 
-export const AccountAvatar = ({ fontSize = '14px', textColor }: IProps) => {
+export const AccountAvatar = ({ fontSize = '14px', avatarSize = 20, textColor }: IProps) => {
 	const [{ wallet, connecting }, connect, disconnect] = useConnectWallet();
 
 	return (
 		<Stack direction={'row'} alignItems={'center'} spacing={1}>
-			<Image src={'/images/avatar.png'} alt="" height={20} width={20} style={{ borderRadius: '50%' }} />
+			<Image src={'/images/avatar.png'} alt="" height={avatarSize} width={avatarSize} style={{ borderRadius: '50%' }} />
 
 			{wallet && (
 				<Typography

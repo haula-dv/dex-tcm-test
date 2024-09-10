@@ -3,17 +3,17 @@ import { MainButton } from '@/components/button/MainButton';
 import { MainIconButton } from '@/components/button/MainIconButton';
 import IconLoading from '@/components/icons/loading';
 import { TLocalStorage } from '@/utils/constants/key_store';
+import { usdFormatter } from '@/utils/formatters/number';
+import { formartAddress } from '@/utils/formatters/token';
 import { setColorThemeMode } from '@/utils/helpers';
-import { Stack, useTheme } from '@mui/material';
-import { useAccount } from '@orderly.network/hooks';
-import { IconDots, IconMoonStars, IconSettings, IconSun } from '@tabler/icons-react';
+import { Box, Stack, Typography, useTheme } from '@mui/material';
+import { useAccount, useChains, useDeposit } from '@orderly.network/hooks';
+import { IconDots, IconMoonStars, IconSun } from '@tabler/icons-react';
 import { useConnectWallet } from '@web3-onboard/react';
 import { setZustandValue } from 'nes-zustand';
 import { useEffect, useState } from 'react';
 import { useStore } from 'zustand';
-import { AccountAvatar } from './AccountAvatar';
 import AccountDetailPopup from './AccountDetailPopup';
-import AccountMenuContainer from './AccountMenuContainer';
 import NetworkContent from './NetworkContent';
 import { OrderlyConnect } from './OrderlyConnect';
 
@@ -22,7 +22,11 @@ export default function WalletContainer() {
 	const openAccountEl = Boolean(accountAnchorEl);
 	const themeSelector = useStore(themeSelectorState, (state) => state.value);
 	const theme = useTheme();
+	const { balance, dst } = useDeposit();
+	const [_, { findByChainId }] = useChains();
+	const chain = findByChainId(dst.chainId);
 
+	// Handle change theme mode
 	const handleChangeTheme = () => {
 		localStorage.setItem(TLocalStorage.DEX_THEME_MODE, themeSelector.activeMode == 'light' ? 'dark' : 'light');
 		setZustandValue(themeSelectorState, (prev: any) => {
@@ -42,7 +46,6 @@ export default function WalletContainer() {
 	// Handle connect wallet button
 	const handleConnectWallet = async () => {
 		await connect();
-		// localStorage.setItem('networkId', 'mainnet');
 	};
 
 	// Handle show menu account button
@@ -51,11 +54,8 @@ export default function WalletContainer() {
 	};
 
 	// Handle close menu account
-	const handleCloseAccountMenu = (type: string) => {
-		setAccountAnchorEl(null);
-		if (type === 'wallet') {
-			setAccountDetailsModal(true);
-		}
+	const handleToggleAccountMenu = () => {
+		setAccountDetailsModal(true);
 	};
 
 	// Watch wallet change
@@ -98,23 +98,36 @@ export default function WalletContainer() {
 							Connect to Wallet
 						</MainButton>
 					) : (
-						<MainButton
-							variant="contained"
-							color={setColorThemeMode('darkGrey', 'white')}
-							onClick={handleShowMenuAccount}
-							endIcon={<IconSettings size={'1.1rem'} color={setColorThemeMode('#fff', theme.palette.common.black)} />}
-							id="account-button"
-							aria-controls={openAccountEl ? 'account-menu' : undefined}
-							aria-haspopup="true"
-							aria-expanded={openAccountEl ? 'true' : undefined}
-						>
-							<AccountAvatar />
-						</MainButton>
+						<>
+							<Typography fontSize={'24px'} px="10px">
+								{usdFormatter.format(Number(balance))} {chain?.network_infos.currency_symbol}
+							</Typography>
+
+							<MainButton
+								variant="contained"
+								color={setColorThemeMode('darkGrey', 'white')}
+								onClick={handleToggleAccountMenu}
+							>
+								{formartAddress(wallet.accounts[0].address)}
+							</MainButton>
+
+							<Box
+								height={'40px'}
+								width={'40px'}
+								bgcolor={useTheme().palette.info.light}
+								borderRadius={'50%'}
+								display={'flex'}
+								alignItems={'center'}
+								justifyContent={'center'}
+							>
+								🐼
+							</Box>
+						</>
 					)}
 				</>
 			)}
 
-			<AccountMenuContainer anchorEl={accountAnchorEl} open={openAccountEl} handleClose={handleCloseAccountMenu} />
+			{/* <AccountMenuContainer anchorEl={accountAnchorEl} open={openAccountEl} handleClose={handleToggleAccountMenu} /> */}
 
 			{wallet && openAccountDetailsModal && (
 				<AccountDetailPopup

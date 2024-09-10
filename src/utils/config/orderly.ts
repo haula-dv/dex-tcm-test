@@ -1,3 +1,4 @@
+import { useTheme } from '@mui/material';
 import { Arbitrum, Base, Ethereum, Optimism } from '@orderly.network/types';
 import injectedModule from '@web3-onboard/injected-wallets';
 import ledgerModule from '@web3-onboard/ledger';
@@ -21,10 +22,12 @@ export function OrderlyConfig(ctx?: { url: string; domain: string }) {
 	// @ts-ignore
 	const ledger = ledgerModule(ledgerInitOptions);
 
+	const themeSelector = useTheme();
+
 	return {
 		// Wallet configuration
 		web3Onboard: {
-			theme: 'light',
+			theme: themeSelector.palette.mode,
 			wallets: [injectedModule(), walletConnect, ledger],
 			appMetadata: {
 				name: 'Tcmp',

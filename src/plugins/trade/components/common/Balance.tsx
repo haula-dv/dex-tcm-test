@@ -4,13 +4,12 @@ import { MainDialog } from '@/components/dialog/MainDialog';
 import { NetworkId } from '@/provider/OrderlyConfigProviderRoot';
 import { AppInfo } from '@/utils/constants/key_store';
 import { usdFormatter } from '@/utils/formatters/number';
-import { idFromHexChainId } from '@/utils/formatters/token';
 import { setColorThemeMode } from '@/utils/helpers';
 import { TSizes } from '@/utils/themes/custom-theme/sizes';
 import { Box, Stack, Typography, useTheme } from '@mui/material';
+import { useAccount } from '@orderly.network/hooks';
 import { WalletState } from '@orderly.network/hooks/esm/walletConnectorContext';
-import { toast } from '@orderly.network/react';
-import { useSetChain } from '@web3-onboard/react';
+import { useNotifications, useSetChain } from '@web3-onboard/react';
 import { memo, useState } from 'react';
 
 interface IProps {
@@ -21,32 +20,70 @@ interface IProps {
 
 // eslint-disable-next-line react/display-name
 export const Balance = memo(({ availableWithdraw, quote, wallet }: IProps) => {
+	// Orderly hooks
 	const [{ connectedChain }] = useSetChain();
+	const { account } = useAccount();
+
 	const [open, setOpen] = useState(false);
 	const networkId = (localStorage.getItem('networkId') ?? 'mainnet') as NetworkId;
+	const [_, customNotification] = useNotifications();
 
 	// Handle get test USDC
-	const handleGetTestUSDC = () => {
-		const options = {
-			method: 'POST',
-			headers: { 'Content-Type': 'application/json' },
-			body: JSON.stringify({
-				chain_id: idFromHexChainId(connectedChain?.id ?? '').toString(),
-				user_address: wallet.accounts[0].address,
-				broker_id: AppInfo.BROKER_ID,
-			}),
-		};
+	const handleGetTestUSDC = async () => {
+		const { update } = customNotification({
+			eventCode: 'mint',
+			type: 'pending',
+			message: 'Minting 1k USDC on testnet...',
+		});
 
-		fetch('https://testnet-operator-evm.orderly.org/v1/faucet/usdc', options)
-			.then((response) => response.json())
-			.then((response) => {
-				if (response.success) {
-					setOpen(true);
+		try {
+			const res = await fetch('https://testnet-operator-evm.orderly.org/v1/faucet/usdc', {
+				method: 'POST',
+				headers: {
+					'Content-Type': 'application/json',
+				},
+				body: JSON.stringify({
+					broker_id: AppInfo.BROKER_ID,
+					chain_id: String(Number(connectedChain?.id)),
+					user_address: account.address,
+				}),
+			});
+
+			if (!res.ok) {
+				throw new Error(res.status === 429 ? 'Too many requests' : res.statusText);
+			}
+
+			// eslint-disable-next-line @typescript-eslint/no-explicit-any
+			const { success, message } = (await res.json()) as any;
+
+			if (!success) {
+				throw new Error(message);
+			}
+
+			update({
+				eventCode: 'mintSuccess',
+				type: 'success',
+				message: 'Mint success! It might take a while to be received in your Orderly account',
+				autoDismiss: 8_000,
+			});
+		} catch (err) {
+			console.error(err);
+			if (update) {
+				let message: string;
+				if (err instanceof Error) {
+					message = err.message;
 				} else {
-					toast.error(response.message);
+					message = 'Mint failed!';
 				}
-			})
-			.catch((err) => console.error(err));
+				update({
+					eventCode: 'mintError',
+					type: 'error',
+					message,
+					autoDismiss: 5_000,
+				});
+			}
+			throw err;
+		}
 	};
 
 	return (
@@ -90,7 +127,7 @@ export const Balance = memo(({ availableWithdraw, quote, wallet }: IProps) => {
 				</MainCard>
 				<Box mt="10px" />
 
-				<MainButton fullWidth variant="contained">
+				<MainButton fullWidth variant="contained" onClick={() => setOpen(false)}>
 					Close
 				</MainButton>
 			</MainDialog>
