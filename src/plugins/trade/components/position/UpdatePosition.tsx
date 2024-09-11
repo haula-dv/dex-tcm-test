@@ -11,6 +11,8 @@ import { Box, Grid, Stack, Typography, useTheme } from '@mui/material';
 import { API } from '@orderly.network/types';
 import { memo, useState } from 'react';
 import ClosePositionContent from './ClosePositionContent';
+import StopOrderContent from './StopOrderContent';
+import TpSlOrder from './TpSlOrder';
 
 interface IProps {
 	symbol: string;
@@ -58,10 +60,29 @@ const UpdatePosition = ({ position, refresh, symbol }: IProps) => {
 		{
 			label: 'Close Position',
 			value: '1',
-			children: <ClosePositionContent symbol={symbol} position={position} refresh={refresh} />,
+			children: (
+				<ClosePositionContent
+					symbol={symbol}
+					position={position}
+					refresh={refresh}
+					handleCloseModal={handleToggleModal}
+				/>
+			),
 		},
-		{ label: 'Stop Market', value: '2', children: '1' },
-		{ label: 'TP/SL', value: '3', children: '1' },
+		{
+			label: 'Stop Market',
+			value: '2',
+			children: (
+				<StopOrderContent symbol={symbol} position={position} refresh={refresh} handleCloseModal={handleToggleModal} />
+			),
+		},
+		{
+			label: 'TP/SL',
+			value: '3',
+			children: (
+				<TpSlOrder symbol={symbol} position={position} refresh={refresh} handleCloseModal={handleToggleModal} />
+			),
+		},
 	];
 
 	return (
@@ -77,7 +98,7 @@ const UpdatePosition = ({ position, refresh, symbol }: IProps) => {
 			</MainButton>
 
 			<MainDialog open={open} handleClose={handleToggleModal} title="Update Position" maxWidth="xs">
-				<MainCard backgroudColor="transparent" variant="outlined" width="100%">
+				<MainCard backgroudColor="common" width="100%">
 					<Grid container spacing={TSizes.margin_common}>
 						{items.map((item, index) => (
 							<Grid key={index} item md={6}>
@@ -101,7 +122,7 @@ const UpdatePosition = ({ position, refresh, symbol }: IProps) => {
 				<MainTab tabs={tabs} defaultValue={'1'}>
 					<>
 						{tabs.map((item, index) => (
-							<TabPanel key={index} value={item.value}>
+							<TabPanel key={index} value={item.value} sx={{ p: 0 }}>
 								{item.children}
 							</TabPanel>
 						))}

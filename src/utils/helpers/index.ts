@@ -1,4 +1,5 @@
 import { Theme, useTheme } from '@mui/material';
+import { useOrderEntry } from '@orderly.network/hooks';
 
 export const setColorThemeMode = (colorLight: string, colorDark: string, themeEx?: Theme): any => {
 	// eslint-disable-next-line react-hooks/rules-of-hooks
@@ -10,3 +11,12 @@ export const setColorThemeMode = (colorLight: string, colorDark: string, themeEx
 		return colorLight;
 	}
 };
+
+export async function getValidationErrors(
+	data: any,
+	symbol: string,
+	validator: ReturnType<typeof useOrderEntry>['helper']['validator'],
+	getInput: any,
+): Promise<ReturnType<ReturnType<typeof useOrderEntry>['helper']['validator']>> {
+	return validator(getInput(data, symbol));
+}

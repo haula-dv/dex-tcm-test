@@ -1,11 +1,16 @@
+import { MainButton } from '@/components/button/MainButton';
+import { RenderFormError } from '@/components/form-control/RenderErrors';
+import { TokenInput } from '@/components/form-control/TokenInput';
 import IconLoading from '@/components/icons/loading';
+import { CustomSlider } from '@/components/sider/MainSlider';
 import { getDecimalsFromTick } from '@/utils/formatters/api';
 import { Typography } from '@mui/material';
 import { useOrderEntry, useSymbolsInfo } from '@orderly.network/hooks';
 import { API, OrderEntity, OrderSide, OrderType } from '@orderly.network/types';
 import { useNotifications } from '@web3-onboard/react';
+import { FixedNumber } from 'ethers';
 import { memo, useState } from 'react';
-import { SubmitHandler, useForm } from 'react-hook-form';
+import { Controller, SubmitHandler, useForm } from 'react-hook-form';
 
 type Inputs = {
 	direction: OrderSide;
@@ -17,13 +22,14 @@ interface IProps {
 	symbol: string;
 	position: API.PositionExt;
 	refresh: import('swr/_internal').KeyedMutator<API.PositionInfo>;
+	handleCloseModal: () => void;
 }
-const ClosePositionContent = ({ symbol, position, refresh }: IProps) => {
+const ClosePositionContent = ({ symbol, position, refresh, handleCloseModal }: IProps) => {
 	const [loading, setLoading] = useState(false);
 
 	const symbolsInfo = useSymbolsInfo();
-
-	const { register, handleSubmit, control } = useForm<Inputs>({
+	position.position_qty = Math.abs(position.position_qty);
+	const formContext = useForm<Inputs>({
 		defaultValues: {
 			direction: position.position_qty > 0 ? OrderSide.SELL : OrderSide.BUY,
 			type: OrderType.MARKET,
@@ -42,9 +48,9 @@ const ClosePositionContent = ({ symbol, position, refresh }: IProps) => {
 
 	const [_0, customNotification] = useNotifications();
 
-	if (symbolsInfo.isNil) {
-		return <IconLoading />;
-	}
+	const symbolInfo = symbolsInfo[symbol]();
+	const [_, base] = symbol.split('_');
+	const [baseDecimals] = getDecimalsFromTick(symbolInfo);
 
 	const submitForm: SubmitHandler<Inputs> = async (data) => {
 		setLoading(true);
@@ -72,19 +78,80 @@ const ClosePositionContent = ({ symbol, position, refresh }: IProps) => {
 		} finally {
 			setLoading(false);
 			refresh();
-			// setOpen(false);
+			handleCloseModal();
 		}
 	};
 
-	const symbolInfo = symbolsInfo[symbol]();
-	const [_, base] = symbol.split('_');
-	const [baseDecimals] = getDecimalsFromTick(symbolInfo);
-
 	return (
 		<>
-			<form onSubmit={handleSubmit(submitForm)}>
-				<Typography>Partially or fully close your open position at mark price.</Typography>
-			</form>
+			{symbolsInfo.isNil ? (
+				<IconLoading />
+			) : (
+				<form onSubmit={formContext.handleSubmit(submitForm)}>
+					<Typography pb={2}>Partially or fully close your open position at mark price.</Typography>
+
+					<Controller
+						name="quantity"
+						control={formContext.control}
+						rules={{
+							validate: {
+								custom: async (_, data) => {
+									const errors = await getValidationErrors(data, symbol, helper.validator);
+									return errors?.order_quantity != null ? errors.order_quantity.message : true;
+								},
+							},
+						}}
+						render={({ field: { name, onBlur, onChange, value }, fieldState: { error } }) => (
+							<>
+								<TokenInput
+									decimals={baseDecimals}
+									placeholder={'0.0000'}
+									name={name}
+									value={value}
+									onBlur={onBlur}
+									onChange={onChange}
+									suffix={base}
+									hasError={error != null}
+									onValueChange={(newVal) => {
+										value = newVal.toString();
+									}}
+									min={FixedNumber.fromString('0')}
+									max={FixedNumber.fromString(String(position.position_qty))}
+								/>
+
+								<CustomSlider
+									name={name}
+									value={[Number(value)]}
+									defaultValue={[100]}
+									onChange={(event, newValue: any) => {
+										onChange(newValue[0] as any);
+									}}
+									min={0}
+									max={position.position_qty}
+									step={symbolInfo.base_tick}
+									size="small"
+									aria-label="Small"
+									valueLabelDisplay="auto"
+								/>
+
+								<RenderFormError error={error?.message ?? ''} />
+							</>
+						)}
+					/>
+
+					<MainButton
+						variant="contained"
+						color="primary"
+						fullWidth
+						size="small"
+						type="submit"
+						disabled={loading}
+						isLoading={loading}
+					>
+						Close position
+					</MainButton>
+				</form>
+			)}
 		</>
 	);
 };

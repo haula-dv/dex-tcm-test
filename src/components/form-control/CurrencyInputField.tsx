@@ -1,6 +1,7 @@
 'use client';
-import { FormControl, Stack } from '@mui/material';
+import { Box, FormControl, Stack, Typography } from '@mui/material';
 import { FixedNumber } from 'ethers';
+import { ReactNode } from 'react';
 import { Controller, FieldValues, Path, RegisterOptions, UseFormReturn } from 'react-hook-form';
 import { RenderFormError } from './RenderErrors';
 import { TokenInput } from './TokenInput';
@@ -15,6 +16,11 @@ interface InputFieldProps<V extends FieldValues> {
 	placeholder?: string;
 	rules?: Omit<RegisterOptions<V, Path<V>>, 'disabled' | 'valueAsNumber' | 'valueAsDate' | 'setValueAs'> | undefined;
 	hint?: string;
+	onValueChange?: (value: FixedNumber) => void | Promise<void>;
+	label?: string;
+	helperText?: ReactNode;
+	hasError?: any;
+	extErrors?: any;
 }
 
 const CurrencyInputField = <V extends FieldValues>({
@@ -25,27 +31,41 @@ const CurrencyInputField = <V extends FieldValues>({
 	suffix,
 	rules,
 	hint,
+	min,
+	max,
+	onValueChange,
+	label,
+	hasError,
+	helperText,
+	extErrors,
 }: InputFieldProps<V>) => {
 	return (
 		<Stack width={'100%'}>
+			{label && <Typography fontSize={'12px'}>{label}</Typography>}
+
 			<FormControl fullWidth>
 				<Controller
 					name={name}
 					control={formContext.control}
 					rules={rules}
-					render={({ field: { name, onBlur, onChange }, fieldState: { error } }) => (
+					render={({ field: { name, value, onBlur, onChange }, fieldState: { error } }) => (
 						<>
 							<TokenInput
 								decimals={decimals}
 								placeholder={placeholder}
 								name={name}
+								value={value}
 								onBlur={onBlur}
 								onChange={onChange}
-								hasError={error != null}
+								hasError={hasError ? hasError : error != null}
 								suffix={suffix}
+								onValueChange={onValueChange}
+								max={max}
+								min={min}
 							/>
+							{helperText && <Box>{helperText}</Box>}
 
-							<RenderFormError error={error?.message ?? ''} />
+							<RenderFormError error={extErrors ? extErrors?.message : error?.message ?? ''} />
 						</>
 					)}
 				/>

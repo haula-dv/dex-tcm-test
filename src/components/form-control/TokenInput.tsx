@@ -132,6 +132,7 @@ export const CustomTextField = styled(OutlinedInput)(({ theme }) => ({
 	fontSize: '13px',
 	backgroundColor: setColorThemeMode(theme.palette.primary.light, TColors.brownnDark),
 	height: TSizes.buttonHeightSmall,
+	width: '100%',
 
 	'& input': {
 		padding: '12px 0px 12px 14px',

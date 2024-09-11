@@ -113,6 +113,11 @@ const components = (theme: Theme) => {
 			},
 		},
 
+		MuiTabPanel: {
+			styleOverrides: {
+				root: { padding: TSizes.margin_common },
+			},
+		},
 		MuiSkeleton: {
 			styleOverrides: {
 				root: {

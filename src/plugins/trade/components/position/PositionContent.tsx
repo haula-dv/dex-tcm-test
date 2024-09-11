@@ -93,7 +93,15 @@ const PositionContent = ({ symbol }: IProps) => {
 								</TableCell>
 
 								<TableCell align="left">
-									<Typography color={theme.palette.success.main}>{item.position_qty}</Typography>
+									<Typography
+										color={
+											item.position_qty.toString().startsWith('-')
+												? theme.palette.error.main
+												: theme.palette.success.main
+										}
+									>
+										{item.position_qty}
+									</Typography>
 								</TableCell>
 
 								<TableCell align="right">{usdFormatter.format(item.average_open_price)}</TableCell>
@@ -103,7 +111,7 @@ const PositionContent = ({ symbol }: IProps) => {
 									{item.cost_position ? usdFormatter.format(item.cost_position) : '-'}
 								</TableCell>
 
-								<TableCell align="right">
+								<TableCell align="right" sx={{ color: theme.palette.warning.main }}>
 									{item.est_liq_price ? usdFormatter.format(item.est_liq_price) : '-'}
 								</TableCell>
 								<TableCell align="right" sx={{ whiteSpace: 'nowrap' }}>

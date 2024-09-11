@@ -134,13 +134,7 @@ export default function AccountDetailPopup({ onClose, open, wallet }: IProps) {
 				<Divider />
 
 				<Stack direction={'row'} spacing={TSizes.margin_common} mt={TSizes.margin_common}>
-					<MainButton
-						fullWidth
-						variant="contained"
-						color="darkPrimary"
-						onClick={handleSettle}
-						isLoading={loadingSettle}
-					>
+					<MainButton fullWidth onClick={handleSettle} disabled={loadingSettle} isLoading={loadingSettle}>
 						Settle PnL
 					</MainButton>
 

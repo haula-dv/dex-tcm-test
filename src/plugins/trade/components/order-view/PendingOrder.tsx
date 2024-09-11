@@ -1,17 +1,17 @@
+import { MainButton } from '@/components/button/MainButton';
 import { baseFormatter, usdFormatter } from '@/utils/formatters/number';
 import { TableCell, TableRow } from '@mui/material';
-import { useOrderStream } from '@orderly.network/hooks';
 import { API } from '@orderly.network/types';
 import { memo } from 'react';
 
 interface IProps {
 	order: { isAlgoOrder: false; order: API.Order } | { isAlgoOrder: true; order: API.AlgoOrder };
 	symbol: string;
-	cancelOrder: ReturnType<typeof useOrderStream>[1]['cancelOrder'];
-	cancelAlgoOrder: ReturnType<typeof useOrderStream>[1]['cancelAlgoOrder'];
+	handleClickOrderItem: (order: any) => void;
+	isHideCancel?: boolean;
 }
 
-const PendingOrder = ({ order, symbol, cancelOrder, cancelAlgoOrder }: IProps) => {
+const PendingOrder = ({ order, symbol, handleClickOrderItem, isHideCancel }: IProps) => {
 	const [_, base, quote] = order.order.symbol.split('_');
 
 	return (
@@ -26,7 +26,13 @@ const PendingOrder = ({ order, symbol, cancelOrder, cancelAlgoOrder }: IProps) =
 			<TableCell>{baseFormatter.format(order.order.quantity)}</TableCell>
 			<TableCell>{order.order.price ? usdFormatter.format(order.order.price) : '-'}</TableCell>
 			<TableCell> {order.order.trigger_price ? usdFormatter.format(order.order.trigger_price) : '-'}</TableCell>
-			<TableCell> {order.order.trigger_price ? usdFormatter.format(order.order.trigger_price) : '-'}</TableCell>
+			{!isHideCancel && (
+				<TableCell align="right" sx={{ display: 'flex', justifyContent: 'flex-end' }}>
+					<MainButton size="xsmall" variant="contained" color="inherit" onClick={() => handleClickOrderItem(order)}>
+						Cancel
+					</MainButton>
+				</TableCell>
+			)}
 		</TableRow>
 	);
 };

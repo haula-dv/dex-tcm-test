@@ -117,7 +117,7 @@ export const CustomMuiButton = (theme: Theme) => {
 
 				sizeMedium: {
 					fontSize: '14px',
-					height: '40px',
+					height: TSizes.buttonHeight,
 				},
 
 				sizeSmall: {
