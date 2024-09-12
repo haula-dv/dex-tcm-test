@@ -114,7 +114,7 @@ export default function WalletContainer() {
 							<Box
 								height={'40px'}
 								width={'40px'}
-								bgcolor={useTheme().palette.info.light}
+								bgcolor={theme.palette.info.light}
 								borderRadius={'50%'}
 								display={'flex'}
 								alignItems={'center'}

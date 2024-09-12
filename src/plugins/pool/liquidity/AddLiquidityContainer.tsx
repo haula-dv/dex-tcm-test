@@ -2,7 +2,7 @@
 import { MainButton } from '@/components/button/MainButton';
 import { MainCard } from '@/components/card/MainCard';
 import { ChildHeader } from '@/components/swap/ChildHeader';
-import { CurrencyField } from '@/components/swap/CurrencyField';
+import CurrencyField from '@/components/swap/CurrencyField';
 import { ButtonSwapToggle } from '@/plugins/swap/components/SwapIconToggle';
 import { toggleSwapType } from '@/plugins/swap/handlers';
 import { tokenInputState, tokenOutputState } from '@/plugins/swap/store';
@@ -43,11 +43,11 @@ export const AddLiquidityContainer = () => {
 					</MainCard>
 
 					<Stack spacing={1.5} pt={'10px'} pb={2}>
-						<CurrencyField handleGetSwapPrice={getSwapPrice} field="input" currentToken={tokenInput} />
+						<CurrencyField valueAmount="" onChange={getSwapPrice} field="input" currentToken={tokenInput} />
 
 						<ButtonSwapToggle toggleSwapType={toggleSwapType} isPlus />
 
-						<CurrencyField currentToken={tokenOutput} field="output" />
+						<CurrencyField valueAmount="" currentToken={tokenOutput} field="output" />
 					</Stack>
 
 					<Typography fontSize={'18px'} fontWeight={600} pb={2}>

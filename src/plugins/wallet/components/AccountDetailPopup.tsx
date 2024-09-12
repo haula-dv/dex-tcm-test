@@ -91,7 +91,6 @@ export default function AccountDetailPopup({ onClose, open, wallet }: IProps) {
 			update({
 				eventCode: 'settleError',
 				type: 'error',
-				// eslint-disable-next-line @typescript-eslint/no-explicit-any
 				message: (err as any).message ?? 'Something went wrong',
 				autoDismiss: 15_000,
 			});

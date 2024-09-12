@@ -71,7 +71,7 @@ export const TransactionPopup = ({ slippageAmount }: IProps) => {
 
 	return (
 		<>
-			<Stack direction={'row'} width={'100%'} justifyContent={'space-between'} alignItems={'center'} pb="16px">
+			<Stack direction={'row'} width={'100%'} justifyContent={'space-between'} alignItems={'center'} pb="10px">
 				<Typography variant="h1" fontWeight={600}>
 					Swap
 				</Typography>

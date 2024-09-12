@@ -53,7 +53,6 @@ export const Balance = memo(({ availableWithdraw, quote, wallet }: IProps) => {
 				throw new Error(res.status === 429 ? 'Too many requests' : res.statusText);
 			}
 
-			// eslint-disable-next-line @typescript-eslint/no-explicit-any
 			const { success, message } = (await res.json()) as any;
 
 			if (!success) {

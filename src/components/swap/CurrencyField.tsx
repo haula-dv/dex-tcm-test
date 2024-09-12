@@ -2,12 +2,14 @@
 import { ITokenType } from '@/common';
 import { TokenSelect } from '@/plugins/swap/components/token/TokenSelect';
 import { tokenInputState, tokenOutputState } from '@/plugins/swap/store';
+import { filterAllowedCharacters, usdFormatter } from '@/utils/formatters/number';
 import { setColorThemeMode } from '@/utils/helpers';
 import { TSizes } from '@/utils/themes/custom-theme/sizes';
 import { Box, InputBase, Stack, Typography } from '@mui/material';
 import { styled, useTheme } from '@mui/material/styles';
+import { useMarkPrice } from '@orderly.network/hooks';
 import { setZustandValue } from 'nes-zustand';
-import { FocusEvent, useState } from 'react';
+import { FocusEvent, memo, useCallback, useMemo, useState } from 'react';
 import { useStore } from 'zustand';
 import { TokenListModal } from '../../plugins/swap/components/modal-token/TokenListModal';
 
@@ -16,10 +18,11 @@ export type ITypeSwap = 'input' | 'output';
 interface IProps {
 	currentToken: ITokenType | null;
 	field: ITypeSwap;
-	handleGetSwapPrice?: (value: number) => void;
+	onChange?: (value: number) => void;
+	valueAmount: string;
 }
 
-export const CurrencyField = ({ currentToken, handleGetSwapPrice, field }: IProps) => {
+const CurrencyField = ({ currentToken, onChange, field, valueAmount }: IProps) => {
 	const [openTokenList, setOpenTokenList] = useState(false);
 	const theme = useTheme();
 
@@ -27,9 +30,34 @@ export const CurrencyField = ({ currentToken, handleGetSwapPrice, field }: IProp
 	const tokenInput = useStore(tokenInputState, (state) => state.value);
 	const tokenOutput = useStore(tokenOutputState, (state) => state.value);
 
-	const getPrice = (e: FocusEvent<HTMLInputElement | HTMLTextAreaElement, Element>) => {
-		handleGetSwapPrice && handleGetSwapPrice(+e.target.value);
-	};
+	// This price of token
+	const { data: markPrice } = useMarkPrice(`PERP_${currentToken?.token ?? 'ETH'}_USDC`);
+
+	// Handle get price
+	const getPrice = useCallback(
+		(e: FocusEvent<HTMLInputElement | HTMLTextAreaElement, Element>) => {
+			const value = e.target.value;
+			let newValue = filterAllowedCharacters(String(value));
+			newValue = newValue.replace(',', '.');
+			onChange && onChange(+newValue);
+		},
+		[onChange],
+	);
+
+	// Cacualtor balance of token
+	const currentPrice = useMemo(() => {
+		if (!currentToken) {
+			return 0;
+		}
+
+		const value = +valueAmount * markPrice;
+
+		if (isNaN(value)) {
+			return 0;
+		}
+
+		return +valueAmount * markPrice;
+	}, [valueAmount, markPrice, currentToken]);
 
 	// Function to select a token
 	const handleSelectToken = (token: ITokenType) => {
@@ -100,14 +128,20 @@ export const CurrencyField = ({ currentToken, handleGetSwapPrice, field }: IProp
 				</Stack>
 
 				<Stack direction={'row'} alignItems={'center'}>
-					<InputBase placeholder="0.0" type="number" onBlur={getPrice} />
+					<InputBase placeholder="0.0" value={valueAmount} onChange={getPrice} />
 
 					<TokenSelect handleToggleModalTokenList={handleToggleModalTokenList} tokenSelected={currentToken} />
 				</Stack>
 
-				<Typography color={setColorThemeMode(theme.palette.grey[600], theme.palette.grey[200])}>
-					Balance: 0.00
-				</Typography>
+				<Stack direction={'row'} justifyContent={'space-between'} alignItems={'center'} height={'18px'} pt="6px">
+					<Typography fontSize={'12px'} color={setColorThemeMode(theme.palette.grey[600], theme.palette.grey[200])}>
+						{currentPrice > 0 ? `$${usdFormatter.format(currentPrice)}` : ''}
+					</Typography>
+
+					<Typography fontSize={'12px'} color={setColorThemeMode(theme.palette.grey[600], theme.palette.grey[200])}>
+						{currentToken && `Balance: ${0}`}
+					</Typography>
+				</Stack>
 			</Content>
 
 			<TokenListModal
@@ -120,10 +154,22 @@ export const CurrencyField = ({ currentToken, handleGetSwapPrice, field }: IProp
 	);
 };
 
+export default memo(CurrencyField);
+
 export const Content = styled(Box)(({ theme }) => ({
 	borderRadius: TSizes.borderRadius,
 	backgroundColor: theme.palette.background.paper,
-	padding: theme.spacing(2),
+	padding: TSizes.margin_common,
+	border: `1px solid ${theme.palette.background.paper}`,
+	transition: '0.6s',
+
+	'&:hover': {
+		borderColor: setColorThemeMode(theme.palette.grey[100], theme.palette.grey[600]),
+	},
+
+	'&:focus-within': {
+		borderColor: setColorThemeMode(theme.palette.grey[100], theme.palette.grey[600]),
+	},
 
 	'& .MuiInputBase-root': {
 		width: '100%',

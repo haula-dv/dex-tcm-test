@@ -2,7 +2,7 @@
 import { MainButton } from '@/components/button/MainButton';
 import { MainCard } from '@/components/card/MainCard';
 import { ChildHeader } from '@/components/swap/ChildHeader';
-import { CurrencyField } from '@/components/swap/CurrencyField';
+import CurrencyField from '@/components/swap/CurrencyField';
 import { ButtonSwapToggle } from '@/plugins/swap/components/SwapIconToggle';
 import { toggleSwapType } from '@/plugins/swap/handlers';
 import { tokenInputState, tokenOutputState } from '@/plugins/swap/store';
@@ -42,11 +42,11 @@ export const CreateAPairContainer = () => {
 					</MainCard>
 
 					<Stack spacing={1.5} pt={'10px'} pb={'10px'}>
-						<CurrencyField handleGetSwapPrice={getSwapPrice} field="input" currentToken={tokenInput} />
+						<CurrencyField valueAmount="" onChange={getSwapPrice} field="input" currentToken={tokenInput} />
 
 						<ButtonSwapToggle toggleSwapType={toggleSwapType} />
 
-						<CurrencyField currentToken={tokenOutput} field="output" />
+						<CurrencyField valueAmount="" currentToken={tokenOutput} field="output" />
 					</Stack>
 
 					<MainButton fullWidth size="large" variant="contained" color="whitePrimary">

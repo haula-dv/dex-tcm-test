@@ -33,7 +33,7 @@ export const TokenSelect = ({ tokenSelected, handleToggleModalTokenList }: IProp
 							fontSize="7px"
 						/>
 
-						<Typography pl={0.5} fontSize={'13px'} fontWeight={500}>
+						<Typography pl={1} fontSize={'13px'} fontWeight={500}>
 							{tokenSelected?.token}
 						</Typography>
 					</>

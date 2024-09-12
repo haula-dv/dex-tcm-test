@@ -3,13 +3,15 @@
 import { MainButton } from '@/components/button/MainButton';
 import { MainIconButton } from '@/components/button/MainIconButton';
 import { MainCard } from '@/components/card/MainCard';
-import { CurrencyField } from '@/components/swap/CurrencyField';
+import CurrencyField from '@/components/swap/CurrencyField';
 import { setColorThemeMode } from '@/utils/helpers';
 import { TSizes } from '@/utils/themes/custom-theme/sizes';
 import { Box, Stack, Typography, useTheme } from '@mui/material';
+import { useMarkPrice } from '@orderly.network/hooks';
 import { IconHelp, IconTransform } from '@tabler/icons-react';
+import axios from 'axios';
 import { setZustandValue } from 'nes-zustand';
-import { useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { useStore } from 'zustand';
 import { toggleSwapType } from '../handlers';
 import { isTransactionSubmittedState, tokenInputState, tokenOutputState } from '../store';
@@ -26,6 +28,9 @@ export const SwapContainer = () => {
 	const tokenInput = useStore(tokenInputState, (state) => state.value);
 	const tokenOutput = useStore(tokenOutputState, (state) => state.value);
 
+	// This price of token
+	const { data: markPriceOutput } = useMarkPrice(`PERP_${tokenOutput?.token ?? 'ETH'}_USDC`);
+
 	const [isEnterAmount, setIsEnterAmount] = useState(false);
 	const [isSwaped, setIsSwaped] = useState(false);
 
@@ -33,9 +38,8 @@ export const SwapContainer = () => {
 	const [slippageAmount, setSlippageAmount] = useState(2);
 	const [deadlineMinutes, setDeadlineMinutes] = useState(10);
 
-	const [wethAmount, setWethAmount] = useState(undefined);
-	const [inputAmount, setInputAmount] = useState(-1);
-	const [outputAmount, setOutputAmount] = useState(undefined);
+	const [inputAmount, setInputAmount] = useState<any>('');
+	const [outputAmount, setOutputAmount] = useState<any>('');
 	const [loading, setLoading] = useState(false);
 	// ================= //
 
@@ -47,10 +51,31 @@ export const SwapContainer = () => {
 		}
 	};
 
+	useEffect(() => {
+		const fetchPrices = async () => {
+			try {
+				const ethResponse = await axios.get(
+					'https://api.coingecko.com/api/v3/simple/price?ids=ethereum&vs_currencies=usd',
+				);
+				const btcResponse = await axios.get(
+					'https://api.coingecko.com/api/v3/simple/price?ids=bitcoin&vs_currencies=usd',
+				);
+
+				console.log(ethResponse, btcResponse);
+			} catch (error) {
+				console.error('Error fetching prices:', error);
+			}
+		};
+
+		fetchPrices();
+	}, []);
+
 	// Handle get swap price
-	const getSwapPrice = async (inputAmount: number) => {
-		setLoading(true);
+	const handleInputChange = async (inputAmount: number) => {
+		// setLoading(true);
 		setInputAmount(inputAmount);
+
+		setOutputAmount(inputAmount);
 
 		// await exchangePriceAPI({
 		//   chain: "ethereum",
@@ -62,6 +87,15 @@ export const SwapContainer = () => {
 		//   inTokenAmount: inputAmount.toString(),
 		// });
 	};
+
+	console.log(markPriceOutput);
+
+	const outputPrice = useMemo(() => {
+		const exchangeRate = markPriceOutput / 2362.25;
+		const result = inputAmount * exchangeRate;
+
+		return result.toFixed(8);
+	}, [markPriceOutput, inputAmount]);
 
 	return (
 		<Box display={'flex'} alignItems={'center'} justifyContent={'center'} height={'calc(100vh - 56px)'}>
@@ -77,11 +111,16 @@ export const SwapContainer = () => {
 				{!isSwaped ? (
 					<>
 						<Stack spacing={1.5}>
-							<CurrencyField handleGetSwapPrice={getSwapPrice} field="input" currentToken={tokenInput} />
+							<CurrencyField
+								valueAmount={inputAmount}
+								field="input"
+								onChange={handleInputChange}
+								currentToken={tokenInput}
+							/>
 
 							<ButtonSwapToggle toggleSwapType={toggleSwapType} />
 
-							<CurrencyField currentToken={tokenOutput} field="output" />
+							<CurrencyField valueAmount={outputPrice} currentToken={tokenOutput} field="output" />
 
 							<Stack direction={'row'} justifyContent={'space-between'} alignItems={'center'}>
 								<Typography color={setColorThemeMode(useTheme().palette.text.primary, useTheme().palette.grey[50])}>
