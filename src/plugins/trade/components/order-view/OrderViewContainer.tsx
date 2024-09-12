@@ -31,7 +31,7 @@ export const OrderViewContainer = ({ symbol }: IProps) => {
 		{
 			label: 'Payments',
 			value: 'payments',
-			children: <OrderTableContent orderBookStatus={OrderStatus.PARTIAL_FILLED} symbol={symbol} />,
+			children: <OrderTableContent orderBookStatus={OrderStatus.COMPLETED} symbol={symbol} />,
 		},
 	];
 
