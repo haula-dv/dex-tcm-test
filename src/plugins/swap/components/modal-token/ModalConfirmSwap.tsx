@@ -64,7 +64,7 @@ export const ModalConfirmSwap = ({ onClose, open }: IProps) => {
 					</Stack>
 				</Stack>
 
-				<Divider sx={{ borderColor: theme.palette.grey[600] }} />
+				<Divider sx={{ borderColor: setColorThemeMode(theme.palette.divider, theme.palette.grey[600]) }} />
 
 				<Stack direction={'row'} justifyContent={'space-between'} p={TSizes.margin_base}>
 					<Typography>Total amount</Typography>
