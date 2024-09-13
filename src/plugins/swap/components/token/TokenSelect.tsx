@@ -53,13 +53,16 @@ export const CustomTokenSelect = styled(MainButton, {
 	shouldForwardProp: (prop) => prop !== 'isSelectedToken',
 })<ITokenSelect>(({ theme, isSelectedToken }) => ({
 	borderRadius: '44px !important',
+	height: '34px',
+
 	...(isSelectedToken
 		? {
 				minWidth: 'auto',
-				padding: '8px',
 				minHeight: 'auto',
+				padding: '4px 10px 4px 4px',
 				backgroundColor: setColorThemeMode(theme.palette.primary.light, theme.palette.grey[800]),
-				border: `1px solid ${setColorThemeMode(theme.palette.primary.main, theme.palette.grey[800])}`,
+				border: `1px solid ${setColorThemeMode(theme.palette.primary.main, theme.palette.grey[600])}`,
+
 				'& svg': {
 					color: setColorThemeMode(theme.palette.common.black, '#fff'),
 				},

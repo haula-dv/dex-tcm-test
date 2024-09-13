@@ -5,7 +5,7 @@ import { TokenLoading } from '@/components/loading/TokenLoading';
 import { ITypeSwap } from '@/components/swap/CurrencyField';
 import { setColorThemeMode } from '@/utils/helpers';
 import { TSizes } from '@/utils/themes/custom-theme/sizes';
-import { Box, Button, List, Stack, Typography } from '@mui/material';
+import { Box, List, Stack, Typography } from '@mui/material';
 import { styled, useTheme } from '@mui/material/styles';
 import { IconEdit } from '@tabler/icons-react';
 import { Dispatch, SetStateAction, useState } from 'react';
@@ -43,15 +43,14 @@ export const Tokens = ({ handleSelectToken, setTokenType, type }: IProps) => {
 
 	return (
 		<>
-			<Stack px={TSizes.margin_base}>{tokens.length > 0 && <SearchTokenField tokens={tokens} />}</Stack>
+			<Stack px={TSizes.margin_common}>{tokens.length > 0 && <SearchTokenField tokens={tokens} />}</Stack>
 
 			<Box position={'relative'} pb={5}>
 				<Typography
 					fontWeight={600}
 					color={useTheme().palette.grey[600]}
-					px={TSizes.margin_base}
-					pt={TSizes.margin_base}
-					pb={1}
+					px={TSizes.margin_common}
+					pt={TSizes.margin_common}
 				>
 					Popular tokens
 				</Typography>
@@ -110,20 +109,6 @@ export const Tokens = ({ handleSelectToken, setTokenType, type }: IProps) => {
 interface IToken {
 	isSelected?: boolean;
 }
-
-const Token = styled(Button, {
-	shouldForwardProp: (prop) => prop !== 'isSelected',
-})<IToken>(({ theme, isSelected }) => ({
-	padding: '4px',
-	minHeight: 'auto',
-	height: 'auto',
-	minWidth: 'auto',
-	borderRadius: '40px',
-	borderColor: theme.palette.grey[200],
-	...(isSelected && {
-		backgroundColor: theme.palette.grey[100],
-	}),
-}));
 
 const ManageButton = styled(Box)(({ theme }) => ({
 	position: 'absolute',

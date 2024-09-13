@@ -23,6 +23,10 @@
 }
 
 .dark.market-popup {
+	.orderly-border-divider {
+		margin: 0px !important;
+		border-color: var(--grey600) !important;
+	}
 	.orderly-input-container {
 		background-color: var(--grey800) !important;
 	}
@@ -32,7 +36,27 @@
 	}
 }
 
+.market-popup {
+	#orderly-markets-sheet-title {
+		padding-top: 4px;
+		padding-bottom: 10px;
+	}
+
+	.orderly-py-\[16px\] {
+		padding: 0px !important;
+	}
+
+	.orderly-space-y-\[16px\] > :not([hidden]) ~ :not([hidden]) {
+		margin-top: 6px;
+		margin-bottom: 6px;
+	}
+}
+
 .light.market-popup {
+	.orderly-border-divider {
+		margin: 0px !important;
+	}
+
 	.orderly-text-base-contrast {
 		color: var(--grey900);
 	}

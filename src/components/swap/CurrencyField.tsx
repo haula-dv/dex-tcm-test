@@ -9,7 +9,7 @@ import { Box, InputBase, Stack, Typography } from '@mui/material';
 import { styled, useTheme } from '@mui/material/styles';
 import { useMarkPrice } from '@orderly.network/hooks';
 import { setZustandValue } from 'nes-zustand';
-import { FocusEvent, memo, useCallback, useMemo, useState } from 'react';
+import { FocusEvent, memo, useCallback, useEffect, useMemo, useState } from 'react';
 import { useStore } from 'zustand';
 import { TokenListModal } from '../../plugins/swap/components/modal-token/TokenListModal';
 
@@ -20,9 +20,10 @@ interface IProps {
 	field: ITypeSwap;
 	onChange?: (value: number) => void;
 	valueAmount: string;
+	getMarkPrice: (markPrice: number) => void;
 }
 
-const CurrencyField = ({ currentToken, onChange, field, valueAmount }: IProps) => {
+const CurrencyField = ({ currentToken, onChange, field, valueAmount, getMarkPrice }: IProps) => {
 	const [openTokenList, setOpenTokenList] = useState(false);
 	const theme = useTheme();
 
@@ -37,8 +38,7 @@ const CurrencyField = ({ currentToken, onChange, field, valueAmount }: IProps) =
 	const getPrice = useCallback(
 		(e: FocusEvent<HTMLInputElement | HTMLTextAreaElement, Element>) => {
 			const value = e.target.value;
-			let newValue = filterAllowedCharacters(String(value));
-			newValue = newValue.replace(',', '.');
+			const newValue = filterAllowedCharacters(String(value));
 			onChange && onChange(+newValue);
 		},
 		[onChange],
@@ -60,53 +60,39 @@ const CurrencyField = ({ currentToken, onChange, field, valueAmount }: IProps) =
 	}, [valueAmount, markPrice, currentToken]);
 
 	// Function to select a token
-	const handleSelectToken = (token: ITokenType) => {
-		if (token.token === 'USDC') {
-			handleAddToken(token);
-			return;
-		}
+	const handleSelectToken = useCallback(
+		(token: ITokenType) => {
+			if (field == 'input') {
+				if (token.token === tokenOutput?.token) {
+					setZustandValue(tokenOutputState, tokenInput);
+				}
 
-		if (field == 'input') {
-			if (token.token === tokenOutput?.token) {
-				setZustandValue(tokenOutputState, null);
+				setZustandValue(tokenInputState, token);
+			} else {
+				if (token.token === tokenInput?.token) {
+					setZustandValue(tokenInputState, tokenOutput);
+				}
+
+				setZustandValue(tokenOutputState, token);
 			}
 
-			setZustandValue(tokenInputState, token);
-		} else {
-			if (token.token === tokenInput?.token) {
-				setZustandValue(tokenInputState, null);
-			}
-
-			setZustandValue(tokenOutputState, token);
-		}
-
-		handleToggleModalTokenList();
-	};
+			handleToggleModalTokenList();
+		},
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+		[field, markPrice, tokenInput?.token, tokenOutput?.token],
+	);
 
 	// Modal show modal token
 	const handleToggleModalTokenList = () => {
 		setOpenTokenList(!openTokenList);
 	};
 
-	// Handle add token
-	const handleAddToken = async (token: ITokenType) => {
-		// try {
-		//   const response = await (window as any).ethereum.request({
-		//     method: "wallet_watchAsset",
-		//     params: {
-		//       type: "ERC20", // Loại tài sản (ở đây là token ERC20)
-		//       options: {
-		//         address: "0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48", // Địa chỉ token
-		//         symbol: token.token, // Ký hiệu token
-		//         decimals: token.decimals, // Số thập phân của token
-		//         image: getImageNextwork(token.token, "symbol_logo"), // Hình ảnh đại diện (có thể bỏ qua)
-		//       },
-		//     },
-		//   });
-		// } catch (error) {
-		//   // console.log(error.error);
-		// }
-	};
+	// Watch markPrice
+	useEffect(() => {
+		if (currentToken) {
+			getMarkPrice(markPrice);
+		}
+	}, [currentToken, getMarkPrice, markPrice]);
 
 	return (
 		<>

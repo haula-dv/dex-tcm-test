@@ -47,6 +47,7 @@ export const MainDialog = ({
 					pt={'2px'}
 					pr={'4px'}
 					pl={TSizes.margin_common}
+					pb="2px"
 				>
 					<Typography fontWeight={700} fontSize={'16px'}>
 						{title}
@@ -58,7 +59,13 @@ export const MainDialog = ({
 				</Stack>
 			)}
 
-			<Box p={disablePadding ? 0 : TSizes.margin_common}>{children}</Box>
+			<Box
+				pt={hiddenHeader ? TSizes.margin_common : 0}
+				px={disablePadding ? 0 : TSizes.margin_common}
+				pb={disablePadding ? 0 : TSizes.margin_common}
+			>
+				{children}
+			</Box>
 		</CustomDialog>
 	);
 };

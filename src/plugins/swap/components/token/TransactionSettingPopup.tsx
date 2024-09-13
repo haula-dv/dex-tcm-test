@@ -5,6 +5,7 @@ import { MainDialog } from '@/components/dialog/MainDialog';
 import CustomSwitch from '@/components/form-control/CustomSwitch';
 import MainTooltip from '@/components/MainTooltip';
 import { TColors } from '@/utils';
+import { filterAllowedCharacters } from '@/utils/formatters/number';
 import { setColorThemeMode } from '@/utils/helpers';
 import { TSizes } from '@/utils/themes/custom-theme/sizes';
 import { Box, InputAdornment, Stack, TextField, Typography, useTheme } from '@mui/material';
@@ -13,7 +14,7 @@ import { IconHelpCircle, IconSettings } from '@tabler/icons-react';
 import { useState } from 'react';
 
 interface IProps {
-	slippageAmount: number;
+	slippageAmount: string;
 }
 
 export const TransactionPopup = ({ slippageAmount }: IProps) => {
@@ -39,6 +40,7 @@ export const TransactionPopup = ({ slippageAmount }: IProps) => {
 			percentValue: '1.0',
 		},
 	];
+
 	const theme = useTheme();
 	const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
 	const open = Boolean(anchorEl);
@@ -56,12 +58,14 @@ export const TransactionPopup = ({ slippageAmount }: IProps) => {
 
 	// Handle change slippage
 	const handleChangeSlippage = (value: string) => {
-		if (+value >= 101) {
-			setCurrentSlippageAmount('100');
+		let newValue = filterAllowedCharacters(String(value));
+
+		if (+newValue >= 1) {
+			setCurrentSlippageAmount('1.0');
 			return;
 		}
 
-		setCurrentSlippageAmount(value);
+		setCurrentSlippageAmount(newValue);
 	};
 
 	// Handle change deadline minutes
@@ -123,7 +127,6 @@ export const TransactionPopup = ({ slippageAmount }: IProps) => {
 									value={currentSlippageAmount}
 									placeholder="1.0"
 									size="small"
-									type="number"
 									onChange={(e) => handleChangeSlippage(e.target.value)}
 									InputProps={{
 										endAdornment: <InputAdornment position="end">%</InputAdornment>,
@@ -147,7 +150,6 @@ export const TransactionPopup = ({ slippageAmount }: IProps) => {
 								size="small"
 								sx={{ width: '100px' }}
 								value={deadlineMinutes}
-								type="number"
 								onChange={(e) => handleChangeDeadline(+e.target.value)}
 							/>
 							<Typography>minutes</Typography>
@@ -215,6 +217,6 @@ const CustomTextField = styled(TextField)(({ theme }) => ({
 	},
 	'& .MuiOutlinedInput-input::-webkit-input-placeholder': {
 		color: setColorThemeMode(theme.palette.grey[900], theme.palette.common.white),
-		opacity: '1',
+		opacity: '0.6',
 	},
 }));

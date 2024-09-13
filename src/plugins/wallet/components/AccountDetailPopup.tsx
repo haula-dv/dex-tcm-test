@@ -55,6 +55,7 @@ export default function AccountDetailPopup({ onClose, open, wallet }: IProps) {
 	const handleDisconnect = async () => {
 		if (wallet) {
 			disconnect(wallet);
+			onClose();
 		}
 	};
 

@@ -38,7 +38,7 @@ export const TokenItem = ({ isImportToken, handleSelectToken, item, isSelected, 
 
 const CustomListItem = styled(ListItemButton)(({ theme }) => ({
 	backgroundColor: theme.palette.background.paper,
-	margin: '0px 16px 10px 16px',
+	margin: '0px 10px 10px 10px',
 	borderRadius: TSizes.borderRadius,
 
 	'&.Mui-selected': {

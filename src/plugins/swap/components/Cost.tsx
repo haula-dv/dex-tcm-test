@@ -1,0 +1,21 @@
+import { MainButton } from '@/components/button/MainButton';
+import { TSizes } from '@/utils/themes/custom-theme/sizes';
+import { Stack, useTheme } from '@mui/material';
+import { memo } from 'react';
+import { Item } from './SwapContainer';
+
+const Cost = () => {
+	return (
+		<Stack spacing={TSizes.margin_common} pt={TSizes.margin_common}>
+			<Item title="Price Impact" value={<span style={{ color: useTheme().palette.success.main }}> {'<0.01%'}</span>} />
+			<Item title="Max. slippage" value="1%" />
+			<Item title="Minimum recevied" value="9747.969 AMPL" />
+			<Item title="Liquidity Provider Fee" value={'0.0015ETH'} />
+			<MainButton fullWidth color="inherit" size="large">
+				View Pair Analytis
+			</MainButton>
+		</Stack>
+	);
+};
+
+export default memo(Cost);

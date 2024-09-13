@@ -1,4 +1,5 @@
 import { StyledMenu } from '@/components/menu/StyledMenu';
+import { TSizes } from '@/utils/themes/custom-theme/sizes';
 import { Box, useTheme } from '@mui/material';
 import { MarketsType, useMarkets } from '@orderly.network/hooks';
 import { Markets } from '@orderly.network/react';
@@ -32,10 +33,11 @@ export const MarketsContent = ({ handleClose, marketEl, openMarketEl, onSymbolCh
 			>
 				<Box
 					className={`${useTheme().palette.mode} market-popup `}
-					width={'400px'}
+					maxWidth={'300px'}
 					height={'400px'}
 					overflow={'auto'}
-					px={2}
+					px={TSizes.margin_common}
+					width={'300px'}
 				>
 					<Markets
 						dataSource={markets as any[]}

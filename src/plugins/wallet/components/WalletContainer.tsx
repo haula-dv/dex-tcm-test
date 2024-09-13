@@ -18,8 +18,6 @@ import NetworkContent from './NetworkContent';
 import { OrderlyConnect } from './OrderlyConnect';
 
 export default function WalletContainer() {
-	const [accountAnchorEl, setAccountAnchorEl] = useState<null | HTMLElement>(null);
-	const openAccountEl = Boolean(accountAnchorEl);
 	const themeSelector = useStore(themeSelectorState, (state) => state.value);
 	const theme = useTheme();
 	const { balance, dst } = useDeposit();
@@ -48,14 +46,9 @@ export default function WalletContainer() {
 		await connect();
 	};
 
-	// Handle show menu account button
-	const handleShowMenuAccount = (event: React.MouseEvent<HTMLElement>) => {
-		setAccountAnchorEl(event.currentTarget);
-	};
-
 	// Handle close menu account
 	const handleToggleAccountMenu = () => {
-		setAccountDetailsModal(true);
+		setAccountDetailsModal(!openAccountDetailsModal);
 	};
 
 	// Watch wallet change
@@ -129,7 +122,7 @@ export default function WalletContainer() {
 
 			{/* <AccountMenuContainer anchorEl={accountAnchorEl} open={openAccountEl} handleClose={handleToggleAccountMenu} /> */}
 
-			{wallet && openAccountDetailsModal && (
+			{openAccountDetailsModal && wallet && (
 				<AccountDetailPopup
 					open={openAccountDetailsModal}
 					onClose={() => setAccountDetailsModal(false)}

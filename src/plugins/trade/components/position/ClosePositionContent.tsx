@@ -1,4 +1,5 @@
 import { MainButton } from '@/components/button/MainButton';
+import { MainCard } from '@/components/card/MainCard';
 import { RenderFormError } from '@/components/form-control/RenderErrors';
 import { TokenInput } from '@/components/form-control/TokenInput';
 import IconLoading from '@/components/icons/loading';
@@ -83,7 +84,7 @@ const ClosePositionContent = ({ symbol, position, refresh, handleCloseModal }: I
 	};
 
 	return (
-		<>
+		<MainCard backgroudColor="common" width="100%">
 			{symbolsInfo.isNil ? (
 				<IconLoading />
 			) : (
@@ -152,7 +153,7 @@ const ClosePositionContent = ({ symbol, position, refresh, handleCloseModal }: I
 					</MainButton>
 				</form>
 			)}
-		</>
+		</MainCard>
 	);
 };
 
