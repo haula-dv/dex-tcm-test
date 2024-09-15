@@ -14,10 +14,11 @@ import { IconHelpCircle, IconSettings } from '@tabler/icons-react';
 import { useState } from 'react';
 
 interface IProps {
-	slippageAmount: string;
+	getSlippageAmount: (value: string) => void;
+	getDeadlineMinutes: (value: string) => void;
 }
 
-export const TransactionPopup = ({ slippageAmount }: IProps) => {
+export const TransactionPopup = ({ getSlippageAmount, getDeadlineMinutes }: IProps) => {
 	const slippages = [
 		{
 			value: 10,
@@ -54,7 +55,7 @@ export const TransactionPopup = ({ slippageAmount }: IProps) => {
 	};
 
 	const [currentSlippageAmount, setCurrentSlippageAmount] = useState('0.1');
-	const [deadlineMinutes, setDeadlineMinutes] = useState(30);
+	const [deadlineMinutes, setDeadlineMinutes] = useState('30');
 
 	// Handle change slippage
 	const handleChangeSlippage = (value: string) => {
@@ -66,11 +67,15 @@ export const TransactionPopup = ({ slippageAmount }: IProps) => {
 		}
 
 		setCurrentSlippageAmount(newValue);
+
+		getSlippageAmount(newValue);
 	};
 
 	// Handle change deadline minutes
-	const handleChangeDeadline = (value: number) => {
+	const handleChangeDeadline = (value: string) => {
 		setDeadlineMinutes(value);
+
+		getDeadlineMinutes(value);
 	};
 
 	return (
@@ -150,7 +155,7 @@ export const TransactionPopup = ({ slippageAmount }: IProps) => {
 								size="small"
 								sx={{ width: '100px' }}
 								value={deadlineMinutes}
-								onChange={(e) => handleChangeDeadline(+e.target.value)}
+								onChange={(e) => handleChangeDeadline(e.target.value)}
 							/>
 							<Typography>minutes</Typography>
 						</Stack>

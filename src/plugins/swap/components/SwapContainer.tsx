@@ -3,7 +3,8 @@
 import { MainButton } from '@/components/button/MainButton';
 import { MainIconButton } from '@/components/button/MainIconButton';
 import { MainCard } from '@/components/card/MainCard';
-import CurrencyField from '@/components/swap/CurrencyField';
+import TokenCurrencyInputField from '@/components/swap/TokenCurrencyInputField';
+import TokenCurrencyOutputField from '@/components/swap/TokenCurrencyOutputField';
 import { setColorThemeMode } from '@/utils/helpers';
 import { TSizes } from '@/utils/themes/custom-theme/sizes';
 import { Box, Stack, Typography, useTheme } from '@mui/material';
@@ -28,22 +29,22 @@ export const SwapContainer = () => {
 	const isTransactionSubmitted = useStore(isTransactionSubmittedState, (state) => state.value);
 
 	// TOKEN
-	const tokenInput = useStore(tokenInputState, (state) => state.value);
-	const tokenOutput = useStore(tokenOutputState, (state) => state.value);
-	// This price of token
-	const { data: markPriceOutput } = useMarkPrice(`PERP_${tokenOutput?.token ?? 'ETH'}_USDC`);
+	const tokenInputActive = useStore(tokenInputState, (state) => state.value);
+	const tokenOutputActive = useStore(tokenOutputState, (state) => state.value);
 
-	// Mark price
-	const [inputMarkPrice, setInputMarkPrice] = useState(0);
-	const [outMarkPrice, setOutputMarkPrice] = useState(0);
 	const [inputAmount, setInputAmount] = useState<any>('');
 	const [outputAmount, setOutputAmount] = useState<any>('');
+
+	const [isInput, setInput] = useState(true);
 
 	const [isEnterAmount, setIsEnterAmount] = useState(false);
 	const [isSwaped, setIsSwaped] = useState(false);
 
 	const [slippageAmount, setSlippageAmount] = useState('0.1');
-	const [deadlineMinutes, setDeadlineMinutes] = useState(10);
+	const [deadlineMinutes, setDeadlineMinutes] = useState('10');
+
+	// Mark price
+	const { data: inputMarkPrice } = useMarkPrice(`PERP_${tokenInputActive?.token ?? 'ETH'}_USDC`);
 
 	// Handle Enter amount
 	const handleEnterAmount = async () => {
@@ -60,35 +61,20 @@ export const SwapContainer = () => {
 	};
 
 	// Handle get swap price
-	const handleInputChange = useCallback(
-		(inputAmount: number) => {
-			setInputAmount(inputAmount);
+	const handleInputChange = useCallback((inputAmount: string) => {
+		setInputAmount(inputAmount);
+	}, []);
 
-			if (!tokenOutput) {
-				return '';
-			}
-
-			const token1ToUSD = inputMarkPrice; // Price Input
-			const token2ToUSD = markPriceOutput; // Price Output
-
-			const exchangeRate = token1ToUSD / token2ToUSD;
-			const result = inputAmount * exchangeRate;
-
-			if (result <= 0) {
-				return '';
-			}
-
-			setOutputAmount(result.toFixed(6));
-		},
-		[markPriceOutput, tokenOutput, inputMarkPrice],
-	);
+	const handleOutputChange = (value: string) => {
+		setOutputAmount(value);
+	};
 
 	// This handle toggle side
 	const handleToggleSide = () => {
-		setInputAmount(outputAmount);
-		setOutputAmount(inputAmount);
-		setZustandValue(tokenInputState, tokenOutput);
-		setZustandValue(tokenOutputState, tokenInput);
+		// setInputAmount(outputAmount);
+		// setOutputAmount(inputAmount);
+		// setZustandValue(tokenInputState, tokenOutputActive);
+		// setZustandValue(tokenOutputState, tokenInputActive);
 	};
 
 	return (
@@ -100,26 +86,23 @@ export const SwapContainer = () => {
 				padding={`${TSizes.margin_sm}`}
 				maxWidth={TSizes.widthCommonCard}
 			>
-				<TransactionPopup slippageAmount={slippageAmount} />
+				<TransactionPopup
+					getSlippageAmount={(value) => setSlippageAmount(value)}
+					getDeadlineMinutes={(value) => setDeadlineMinutes(value)}
+				/>
 
 				{!isSwaped ? (
 					<>
 						<Stack spacing={1.5}>
-							<CurrencyField
-								valueAmount={inputAmount}
-								currentToken={tokenInput}
-								field="input"
-								onChange={handleInputChange}
-								getMarkPrice={(value) => setInputMarkPrice(value)}
-							/>
+							<TokenCurrencyInputField handleChange={handleInputChange} currentField={isInput ? 'input' : 'output'} />
 
 							<ButtonSwapToggle toggleSwapType={handleToggleSide} />
 
-							<CurrencyField
-								valueAmount={outputAmount}
-								currentToken={tokenOutput}
-								field="output"
-								getMarkPrice={(value) => setOutputMarkPrice(value)}
+							<TokenCurrencyOutputField
+								currentField={isInput ? 'output' : 'input'}
+								inputMarkPrice={inputMarkPrice}
+								inputAmount={inputAmount}
+								setAmount={setInputAmount}
 							/>
 
 							<Stack direction={'row'} justifyContent={'space-between'} alignItems={'center'}>
@@ -149,13 +132,13 @@ export const SwapContainer = () => {
 							</MainButton>
 						</Stack>
 
-						{tokenInput && tokenOutput && <Cost />}
+						{tokenInputActive && tokenOutputActive && <Cost />}
 					</>
 				) : (
 					<ConfirmSwapContent
 						toggleSwapType={toggleSwapType}
-						tokenSellSelected={tokenInput}
-						tokenBuySelected={tokenOutput}
+						tokenSellSelected={tokenInputActive}
+						tokenBuySelected={tokenOutputActive}
 					/>
 				)}
 			</MainCard>

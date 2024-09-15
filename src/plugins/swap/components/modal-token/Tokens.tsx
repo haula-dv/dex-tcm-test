@@ -2,7 +2,6 @@ import { isTokenSearchState, tokenLoadingState, tokensSearchState, tokensState }
 import { MainButton } from '@/components/button/MainButton';
 import { SearchTokenField } from '@/components/form-control/SearchTokenField';
 import { TokenLoading } from '@/components/loading/TokenLoading';
-import { ITypeSwap } from '@/components/swap/CurrencyField';
 import { setColorThemeMode } from '@/utils/helpers';
 import { TSizes } from '@/utils/themes/custom-theme/sizes';
 import { Box, List, Stack, Typography } from '@mui/material';
@@ -18,7 +17,7 @@ import { ITokenType } from './TokenListModal';
 interface IProps {
 	handleSelectToken: (token: any) => void;
 	setTokenType: Dispatch<SetStateAction<ITokenType>>;
-	type: ITypeSwap;
+	type: 'input' | 'output';
 }
 
 export const Tokens = ({ handleSelectToken, setTokenType, type }: IProps) => {

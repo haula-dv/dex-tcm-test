@@ -10,10 +10,10 @@ import { setColorThemeMode } from '@/utils/helpers';
 
 interface IProps {
 	tokenSelected: ITokenType | null;
-	handleToggleModalTokenList: () => void;
+	handleToggle: () => void;
 }
 
-export const TokenSelect = ({ tokenSelected, handleToggleModalTokenList }: IProps) => {
+export const TokenSelect = ({ tokenSelected, handleToggle }: IProps) => {
 	return (
 		<Box flexShrink={0}>
 			<CustomTokenSelect
@@ -21,7 +21,7 @@ export const TokenSelect = ({ tokenSelected, handleToggleModalTokenList }: IProp
 				color={tokenSelected ? 'inherit' : 'primary'}
 				endIcon={<IconChevronDown size={'1.2rem'} />}
 				fullRounded
-				onClick={handleToggleModalTokenList}
+				onClick={handleToggle}
 				isSelectedToken={tokenSelected?.token ? true : false}
 			>
 				{tokenSelected ? (
