@@ -68,7 +68,7 @@ export const Tokens = ({ handleSelectToken, setTokenType, type }: IProps) => {
 							>
 								{(isSearchToken ? tokensSearch : tokens).length > 0 ? (
 									(isSearchToken ? tokensSearch : tokens).map((item, index) => {
-										const isSelected = (type == 'input' ? tokenInputCur : tokenOutputCur)?.token === item.token;
+										const isSelected = tokenInputCur?.token === item.token || tokenOutputCur?.token === item.token;
 										return (
 											<TokenItem
 												key={index}

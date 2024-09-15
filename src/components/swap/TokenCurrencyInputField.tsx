@@ -5,47 +5,72 @@ import { TokenSelect } from '@/plugins/swap/components/token/TokenSelect';
 import { tokenInputState, tokenOutputState } from '@/plugins/swap/store';
 import { filterAllowedCharacters, usdFormatter } from '@/utils/formatters/number';
 import { setColorThemeMode } from '@/utils/helpers';
-import { TSizes } from '@/utils/themes/custom-theme/sizes';
 import { Box, InputBase, Skeleton, Stack, Typography } from '@mui/material';
-import { styled, useTheme } from '@mui/material/styles';
+import { useTheme } from '@mui/material/styles';
 import { useMarkPrice } from '@orderly.network/hooks';
 import { setZustandValue } from 'nes-zustand';
 import React, { Dispatch, memo, SetStateAction, useMemo, useState } from 'react';
 import { useStore } from 'zustand';
+import { ContentCurrencyField } from './TokenCurrencyOutputField';
 
 export type ITypeSwap = 'input' | 'output';
 
 interface IProps {
 	handleChange: (value: string) => void;
+	inputAmount: string;
+	outputAmount: string;
+
 	currentField: 'input' | 'output';
 	loadingAmount: boolean;
 	setLoadingAmount: Dispatch<SetStateAction<boolean>>;
+	handleChangeToken: (token: ITokenType, type: string) => void;
 }
 
-const TokenCurrencyInputField = ({ handleChange, currentField, loadingAmount, setLoadingAmount }: IProps) => {
+const TokenCurrencyInputField = ({
+	inputAmount,
+	outputAmount,
+
+	handleChange,
+	currentField,
+	loadingAmount,
+	setLoadingAmount,
+	handleChangeToken,
+}: IProps) => {
 	// HOOKS
 	const theme = useTheme();
 
 	// STATES
 	const [isOpenToken, setIopenToken] = useState(false);
-	const [valueAmount, setValueAmount] = useState('');
 
 	// TOKEN
-	const tokenInputActive = useStore(tokenInputState, (state) => state.value);
-	const tokenOutputActive = useStore(tokenOutputState, (state) => state.value);
+	const sellTokenActive = useStore(tokenInputState, (state) => state.value); // UP
+	const buyTokenActive = useStore(tokenOutputState, (state) => state.value); // DOWN
 
-	const { data: inputMarkPrice } = useMarkPrice(`PERP_${tokenInputActive?.token}_USDC`);
-	const { data: outputMarkPrice } = useMarkPrice(`PERP_${tokenOutputActive?.token}_USDC`);
+	const { data: inputMarkPrice } = useMarkPrice(`PERP_${sellTokenActive?.token}_USDC`);
+	const { data: outputMarkPrice } = useMarkPrice(`PERP_${buyTokenActive?.token}_USDC`);
 
 	const onChange = (value: string) => {
-		if (currentField === 'output') {
-			// TODO
+		const newValue = filterAllowedCharacters(value);
+		handleChange(newValue);
+
+		if (!sellTokenActive && !buyTokenActive) {
 			return;
 		}
 
-		const newValue = filterAllowedCharacters(value);
-		setValueAmount(newValue);
-		handleChange(newValue);
+		// UP, DOWN
+		setZustandValue(tokenInputState, (prev: any) => {
+			return {
+				...prev,
+				isInputting: true,
+			};
+		});
+
+		setZustandValue(tokenOutputState, (prev: any) => {
+			return {
+				...prev,
+				isInputting: false,
+			};
+		});
 	};
 
 	const handleToggle = () => {
@@ -54,52 +79,47 @@ const TokenCurrencyInputField = ({ handleChange, currentField, loadingAmount, se
 
 	// Cacualtor balance of token
 	const currentPrice = useMemo(() => {
-		if (!tokenInputActive) {
+		if (!sellTokenActive && !buyTokenActive) {
 			return 0;
 		}
 
-		const value = +valueAmount * inputMarkPrice;
+		let price = inputMarkPrice;
+
+		if (sellTokenActive?.isInputting) {
+			price = inputMarkPrice;
+		} else {
+			price = outputMarkPrice;
+		}
+
+		const value = +inputAmount * price;
 
 		if (isNaN(value)) {
 			return 0;
 		}
 
 		return value;
-	}, [valueAmount, inputMarkPrice, tokenInputActive]);
+	}, [inputAmount, inputMarkPrice, sellTokenActive, outputMarkPrice, buyTokenActive]);
 
 	// Function to select a token
 	const handleSelectToken = (token: ITokenType) => {
-		setLoadingAmount(true);
-
-		let tokenKey = token.token;
-		if (token.token === 'WBTC') {
-			tokenKey = 'BTC';
-		}
-
-		token.token = tokenKey;
-
-		if (token.token === tokenOutputActive?.token) {
-			setZustandValue(tokenOutputState, tokenInputActive);
-		}
-
-		setZustandValue(tokenInputState, token);
+		handleChangeToken(token, 'up');
 		setIopenToken(false);
 	};
 
 	// Caculate output amount (THIS FUNCTION JUST WORK WHEN OUTPUT STATE)
 	const calculateOutputAmount = useMemo(() => {
-		if (currentField === 'input') {
-			return '';
+		if (sellTokenActive?.isInputting) {
+			return inputAmount;
 		}
 
 		// If no token is selected or the output mark price is invalid
-		if (!tokenOutputActive || outputMarkPrice <= 0 || isNaN(inputMarkPrice)) {
+		if (!buyTokenActive || outputMarkPrice <= 0 || isNaN(inputMarkPrice)) {
 			setLoadingAmount(false);
 			return ''; // Early return if conditions are not met
 		}
 
 		// Parse the input amount
-		const parsedInputAmount = parseFloat(valueAmount);
+		const parsedInputAmount = parseFloat(outputAmount);
 
 		// Ensure valid parsed input amount
 		if (isNaN(parsedInputAmount)) {
@@ -123,18 +143,18 @@ const TokenCurrencyInputField = ({ handleChange, currentField, loadingAmount, se
 		}, 1200);
 
 		return result.toFixed(6); // Return the formatted result
-	}, [valueAmount, inputMarkPrice, outputMarkPrice, tokenOutputActive]);
+	}, [inputAmount, outputAmount, inputMarkPrice, outputMarkPrice, buyTokenActive]);
 
 	return (
 		<>
-			<Content>
-				<Stack direction={'row'} justifyContent={'space-between'} pb="2px">
+			<ContentCurrencyField spacing={'4px'}>
+				<Stack direction={'row'} justifyContent={'space-between'} height={'18px'}>
 					<Typography
-						color={setColorThemeMode(theme.palette.grey[600], theme.palette.grey[200])}
+						color={setColorThemeMode(theme.palette.grey[600], theme.palette.grey[300])}
 						fontWeight={700}
 						fontSize={'12px'}
 					>
-						From
+						Sell
 					</Typography>
 
 					<Typography fontWeight={700} fontSize={'12px'}>
@@ -147,29 +167,37 @@ const TokenCurrencyInputField = ({ handleChange, currentField, loadingAmount, se
 						<React.Fragment>
 							{loadingAmount ? (
 								<Box flex={1}>
-									<Skeleton height={'30px'} width={'100px'} animation="wave" variant="text" />
+									<Skeleton height={'35px'} width={'200px'} animation="wave" variant="text" />
 								</Box>
 							) : (
 								<InputBase placeholder="0.0" value={calculateOutputAmount} />
 							)}
 						</React.Fragment>
 					) : (
-						<InputBase placeholder="0.0" value={valueAmount} onChange={(e) => onChange(e.target.value)} />
+						<InputBase placeholder="0.0" value={calculateOutputAmount} onChange={(e) => onChange(e.target.value)} />
 					)}
 
-					<TokenSelect handleToggle={handleToggle} tokenSelected={tokenInputActive} />
+					<TokenSelect handleToggle={handleToggle} tokenSelected={sellTokenActive} />
 				</Stack>
 
-				<Stack direction={'row'} justifyContent={'space-between'} alignItems={'center'} height={'18px'} pt="6px">
-					<Typography fontSize={'12px'} color={setColorThemeMode(theme.palette.grey[600], theme.palette.grey[200])}>
-						{currentPrice > 0 ? `$${usdFormatter.format(currentPrice)}` : ''}
-					</Typography>
+				<Stack direction={'row'} justifyContent={'space-between'} alignItems={'center'} height={'18px'}>
+					{loadingAmount ? (
+						<Skeleton height={'15px'} width={'60px'} animation="wave" variant="text" />
+					) : (
+						<Typography
+							fontSize={'12px'}
+							color={setColorThemeMode(theme.palette.grey[600], theme.palette.grey[300])}
+							fontWeight={600}
+						>
+							{currentPrice > 0 ? `$${usdFormatter.format(currentPrice)}` : ''}
+						</Typography>
+					)}
 
-					<Typography fontSize={'12px'} color={setColorThemeMode(theme.palette.grey[600], theme.palette.grey[200])}>
-						{tokenInputActive && `Balance: ${0}`}
+					<Typography fontSize={'12px'} color={setColorThemeMode(theme.palette.grey[600], theme.palette.grey[300])}>
+						{sellTokenActive && `Balance: ${0}`}
 					</Typography>
 				</Stack>
-			</Content>
+			</ContentCurrencyField>
 
 			<TokenListModal open={isOpenToken} onClose={handleToggle} field={'input'} handleSelectToken={handleSelectToken} />
 		</>
@@ -177,35 +205,3 @@ const TokenCurrencyInputField = ({ handleChange, currentField, loadingAmount, se
 };
 
 export default memo(TokenCurrencyInputField);
-
-export const Content = styled(Box)(({ theme }) => ({
-	borderRadius: TSizes.borderRadius,
-	backgroundColor: theme.palette.background.paper,
-	padding: TSizes.margin_common,
-	border: `1px solid ${theme.palette.background.paper}`,
-	transition: '0.6s',
-
-	'&:hover': {
-		borderColor: setColorThemeMode(theme.palette.grey[100], theme.palette.grey[600]),
-	},
-
-	'&:focus-within': {
-		borderColor: setColorThemeMode(theme.palette.grey[100], theme.palette.grey[600]),
-	},
-
-	'& .MuiInputBase-root': {
-		width: '100%',
-	},
-
-	'& .MuiInputBase-input': {
-		fontSize: '24px',
-		fontWeight: 600,
-		width: '100%',
-		color: setColorThemeMode(theme.palette.grey[500], theme.palette.common.white),
-
-		'&::-webkit-input-placeholder': {
-			color: setColorThemeMode(theme.palette.grey[500], theme.palette.common.white),
-			opacity: '1',
-		},
-	},
-}));

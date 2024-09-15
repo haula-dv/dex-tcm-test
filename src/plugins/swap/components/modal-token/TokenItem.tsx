@@ -15,7 +15,7 @@ interface IProps extends ListItemButtonProps {
 
 export const TokenItem = ({ isImportToken, handleSelectToken, item, isSelected, ...props }: IProps) => {
 	return (
-		<CustomListItem {...props} onClick={() => handleSelectToken(item)} selected={isSelected}>
+		<CustomListItem {...props} onClick={() => handleSelectToken(item)} selected={isSelected} disabled={isSelected}>
 			<ListItemIcon>
 				<TokenIcon url={getImageNextwork(item.token, 'symbol_logo')} size={30} symbol={item?.token} fontSize="7px" />
 			</ListItemIcon>
