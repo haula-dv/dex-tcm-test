@@ -227,8 +227,9 @@ const TokenCurrencyOutputField = ({
 					) : (
 						''
 					)}
+
 					<Typography fontSize={'12px'} color={setColorThemeMode(theme.palette.grey[600], theme.palette.grey[300])}>
-						{buyTokenActive && `Balance: ${0}`}
+						{buyTokenActive?.token && `Balance: ${0}`}
 					</Typography>
 				</Stack>
 			</ContentCurrencyField>
@@ -253,11 +254,11 @@ export const ContentCurrencyField = styled(Stack)(({ theme }) => ({
 	transition: '0.6s',
 
 	'&:hover': {
-		borderColor: setColorThemeMode(theme.palette.grey[100], theme.palette.grey[600]),
+		borderColor: setColorThemeMode(theme.palette.grey[100], theme.palette.grey[500]),
 	},
 
 	'&:focus-within': {
-		borderColor: setColorThemeMode(theme.palette.grey[100], theme.palette.grey[600]),
+		borderColor: setColorThemeMode(theme.palette.grey[100], theme.palette.grey[500]),
 	},
 
 	'& .MuiInputBase-root': {

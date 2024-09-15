@@ -10,7 +10,7 @@ import { setColorThemeMode } from '@/utils/helpers';
 import { TSizes } from '@/utils/themes/custom-theme/sizes';
 import { Box, Skeleton, Stack, Typography, useTheme } from '@mui/material';
 import { useMarkPrice } from '@orderly.network/hooks';
-import { IconChevronDown, IconHelp, IconTransform } from '@tabler/icons-react';
+import { IconChevronDown, IconHelp } from '@tabler/icons-react';
 import { useConnectWallet } from '@web3-onboard/react';
 import { setZustandValue } from 'nes-zustand';
 import { useCallback, useMemo, useState } from 'react';
@@ -40,7 +40,7 @@ export const SwapContainer = () => {
 
 	const [isInput, setInput] = useState(true);
 	const [loadingAmount, setLoadingAmount] = useState(false);
-	const [loadingDes, setLoadingDes] = useState(true);
+	const [loadingDes, setLoadingDes] = useState(false);
 
 	const [isEnterAmount, setIsEnterAmount] = useState(false);
 	const [isSwaped, setIsSwaped] = useState(false);
@@ -70,10 +70,13 @@ export const SwapContainer = () => {
 	const handleToggleSide = () => {
 		setLoadingAmount(true);
 		setLoadingDes(true);
+
 		setInput(!isInput);
 
 		setZustandValue(tokenInputState, buyTokenActived);
 		setZustandValue(tokenOutputState, sellTokenActived);
+		setInputAmount(outputAmount);
+		setOutputAmount(inputAmount);
 
 		setTimeout(() => {
 			setLoadingAmount(false);
@@ -160,22 +163,6 @@ export const SwapContainer = () => {
 								handleChangeToken={handleChangeToken}
 							/>
 
-							<Stack direction={'row'} justifyContent={'space-between'} alignItems={'center'}>
-								<Typography color={setColorThemeMode(useTheme().palette.text.primary, useTheme().palette.grey[50])}>
-									Slippage Tolerance
-								</Typography>
-
-								<Stack direction={'row'} alignItems={'center'} spacing={1}>
-									<Typography color={setColorThemeMode(useTheme().palette.text.primary, useTheme().palette.grey[50])}>
-										0978787667 ETH Per
-									</Typography>
-
-									<MainIconButton size="small" edge="end">
-										<IconTransform size={'1.2rem'} color={useTheme().palette.text.primary} />
-									</MainIconButton>
-								</Stack>
-							</Stack>
-
 							<MainButton
 								variant="contained"
 								color="primary"
@@ -191,20 +178,22 @@ export const SwapContainer = () => {
 							{loadingDes ? (
 								<Skeleton height={'24px'} width={'100px'} variant="text" />
 							) : (
-								sellTokenActived &&
-								buyTokenActived && (
-									<Typography>
-										1 {buyTokenActived.token} = {baseExchangeRate} {sellTokenActived?.token}
-										<span style={{ paddingLeft: '4px', color: theme.palette.grey[300] }}>
-											(${outputMarkPrice.toLocaleString()})
-										</span>
-									</Typography>
+								sellTokenActived?.token &&
+								buyTokenActived?.token && (
+									<>
+										<Typography>
+											1 {buyTokenActived.token} = {baseExchangeRate} {sellTokenActived?.token}
+											<span style={{ paddingLeft: '4px', color: theme.palette.grey[300] }}>
+												(${outputMarkPrice.toLocaleString()})
+											</span>
+										</Typography>
+
+										<MainIconButton size="small" edge="end">
+											<IconChevronDown size={'1rem'} />
+										</MainIconButton>
+									</>
 								)
 							)}
-
-							<MainIconButton size="small" edge="end">
-								<IconChevronDown size={'1rem'} />
-							</MainIconButton>
 						</Stack>
 
 						{/* {tokenInputActive && tokenOutputActive && <Cost />} */}
