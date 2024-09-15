@@ -44,7 +44,7 @@ export const SwapContainer = () => {
 	const [deadlineMinutes, setDeadlineMinutes] = useState('10');
 
 	// Mark price
-	const { data: inputMarkPrice } = useMarkPrice(`PERP_${tokenInputActive?.token ?? 'ETH'}_USDC`);
+	const { data: inputMarkPrice } = useMarkPrice(`PERP_${tokenInputActive?.token}_USDC`);
 
 	// Handle Enter amount
 	const handleEnterAmount = async () => {
@@ -73,9 +73,11 @@ export const SwapContainer = () => {
 	const handleToggleSide = () => {
 		// setInputAmount(outputAmount);
 		// setOutputAmount(inputAmount);
-		// setZustandValue(tokenInputState, tokenOutputActive);
-		// setZustandValue(tokenOutputState, tokenInputActive);
+		setZustandValue(tokenInputState, tokenOutputActive);
+		setZustandValue(tokenOutputState, tokenInputActive);
 	};
+
+	console.log(tokenOutputActive, tokenInputActive);
 
 	return (
 		<Box display={'flex'} alignItems={'center'} justifyContent={'center'} height={'calc(100vh - 56px)'}>

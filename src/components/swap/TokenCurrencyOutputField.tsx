@@ -32,9 +32,7 @@ const TokenCurrencyOutputField = ({ currentField, setAmount, inputMarkPrice, inp
 	const tokenInputActive = useStore(tokenInputState, (state) => state.value);
 	const tokenOutputActive = useStore(tokenOutputState, (state) => state.value);
 
-	const [keyToken, setKeyToken] = useState('');
-
-	const { data: outputMarkPrice } = useMarkPrice(`PERP_${keyToken}_USDC`);
+	const { data: outputMarkPrice } = useMarkPrice(`PERP_${tokenOutputActive?.token}_USDC`);
 
 	const onChange = (value: string) => {
 		const newValue = filterAllowedCharacters(value);
@@ -50,12 +48,13 @@ const TokenCurrencyOutputField = ({ currentField, setAmount, inputMarkPrice, inp
 	const handleSelectToken = (token: ITokenType) => {
 		setLoadingAmount(true);
 		let tokenKey = token.token;
+
 		if (token.token === 'WBTC') {
 			tokenKey = 'BTC';
 		}
 
 		token.token = tokenKey;
-		setKeyToken(tokenKey);
+
 		if (currentField == 'output') {
 			if (token.token === tokenInputActive?.token) {
 				setZustandValue(tokenInputState, tokenOutputActive);

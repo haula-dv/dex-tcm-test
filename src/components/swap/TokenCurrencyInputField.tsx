@@ -32,7 +32,8 @@ const TokenCurrencyInputField = ({ handleChange, currentField }: IProps) => {
 	const tokenInputActive = useStore(tokenInputState, (state) => state.value);
 	const tokenOutputActive = useStore(tokenOutputState, (state) => state.value);
 
-	const { data: markPrice } = useMarkPrice(`PERP_${tokenInputActive?.token ?? 'ETH'}_USDC`);
+	const [keyToken, setKeyToken] = useState('');
+	const { data: markPrice } = useMarkPrice(`PERP_${keyToken}_USDC`);
 
 	const onChange = (value: string) => {
 		if (currentField === 'output') {
@@ -66,6 +67,14 @@ const TokenCurrencyInputField = ({ handleChange, currentField }: IProps) => {
 
 	// Function to select a token
 	const handleSelectToken = (token: ITokenType) => {
+		let tokenKey = token.token;
+		if (token.token === 'WBTC') {
+			tokenKey = 'BTC';
+		}
+
+		token.token = tokenKey;
+		setKeyToken(tokenKey);
+
 		if (token.token === tokenOutputActive?.token) {
 			setZustandValue(tokenOutputState, tokenInputActive);
 		}
