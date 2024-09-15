@@ -84,21 +84,24 @@ const TokenCurrencyInputField = ({
 		}
 
 		let price = inputMarkPrice;
+		let amount = inputAmount;
 
 		if (sellTokenActive?.isInputting) {
 			price = inputMarkPrice;
+			amount = inputAmount;
 		} else {
 			price = outputMarkPrice;
+			amount = outputAmount;
 		}
 
-		const value = +inputAmount * price;
+		const value = +amount * price;
 
 		if (isNaN(value)) {
 			return 0;
 		}
 
 		return value;
-	}, [inputAmount, inputMarkPrice, sellTokenActive, outputMarkPrice, buyTokenActive]);
+	}, [inputAmount, inputMarkPrice, outputAmount, sellTokenActive, outputMarkPrice, buyTokenActive]);
 
 	// Function to select a token
 	const handleSelectToken = (token: ITokenType) => {
@@ -108,6 +111,7 @@ const TokenCurrencyInputField = ({
 
 	// Caculate output amount (THIS FUNCTION JUST WORK WHEN OUTPUT STATE)
 	const calculateOutputAmount = useMemo(() => {
+		// if it current inputting
 		if (sellTokenActive?.isInputting) {
 			return inputAmount;
 		}
@@ -147,7 +151,7 @@ const TokenCurrencyInputField = ({
 
 	return (
 		<>
-			<ContentCurrencyField spacing={'4px'}>
+			<ContentCurrencyField spacing={'4px'} isActived={sellTokenActive?.isInputting}>
 				<Stack direction={'row'} justifyContent={'space-between'} height={'18px'}>
 					<Typography
 						color={setColorThemeMode(theme.palette.grey[600], theme.palette.grey[300])}
@@ -163,14 +167,14 @@ const TokenCurrencyInputField = ({
 				</Stack>
 
 				<Stack direction={'row'} alignItems={'center'} height={'40px'}>
-					{currentField === 'output' ? (
+					{!sellTokenActive?.isInputting ? (
 						<React.Fragment>
 							{loadingAmount ? (
 								<Box flex={1}>
 									<Skeleton height={'35px'} width={'200px'} animation="wave" variant="text" />
 								</Box>
 							) : (
-								<InputBase placeholder="0.0" value={calculateOutputAmount} />
+								<InputBase placeholder="0.0" value={calculateOutputAmount} onChange={(e) => onChange(e.target.value)} />
 							)}
 						</React.Fragment>
 					) : (

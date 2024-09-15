@@ -56,6 +56,10 @@ const TokenCurrencyOutputField = ({
 	const stream = useTickerStream(`PERP_${sellTokenActive?.token}_USDC`);
 
 	const onChange = (value: string) => {
+		if (!buyTokenActive?.token && !sellTokenActive?.token) {
+			return;
+		}
+
 		const newValue = filterAllowedCharacters(value);
 		handleChangeInput(newValue);
 
@@ -104,14 +108,18 @@ const TokenCurrencyOutputField = ({
 		}
 
 		let price = inputMarkPrice;
+		let amount = '';
+
 		if (sellTokenActive?.isInputting) {
 			price = inputMarkPrice;
+			amount = inputAmount;
 		} else {
+			amount = outputAmount;
 			price = outputMarkPrice;
 		}
 
 		// Tính toán giá trị hiện tại (current price)
-		const currentValue = +inputAmount * price;
+		const currentValue = +amount * price;
 
 		// Nếu giá trị không hợp lệ, trả về 0
 		if (isNaN(currentValue)) {
@@ -123,7 +131,7 @@ const TokenCurrencyOutputField = ({
 		const priceChange = currentValue * (1 + dailyChangePercentageTemp / 100); // Tính số tiền thay đổi
 
 		return priceChange;
-	}, [inputAmount, inputMarkPrice, buyTokenActive, dailyChangePercentage]);
+	}, [inputAmount, inputMarkPrice, outputAmount, buyTokenActive, dailyChangePercentage]);
 
 	// Caculate amount
 	const calculateOutputAmount = useMemo(() => {
@@ -166,7 +174,7 @@ const TokenCurrencyOutputField = ({
 
 	return (
 		<>
-			<ContentCurrencyField spacing={'4px'}>
+			<ContentCurrencyField spacing={'4px'} isActived={buyTokenActive?.isInputting}>
 				<Stack direction={'row'} justifyContent={'space-between'} height={'18px'}>
 					<Typography
 						color={setColorThemeMode(theme.palette.grey[600], theme.palette.grey[300])}
@@ -178,7 +186,7 @@ const TokenCurrencyOutputField = ({
 				</Stack>
 
 				<Stack direction={'row'} alignItems={'center'} height={'40px'}>
-					{currentField === 'output' ? (
+					{sellTokenActive?.isInputting ? (
 						<React.Fragment>
 							{loadingAmount ? (
 								<Box flex={1}>
@@ -246,34 +254,42 @@ const TokenCurrencyOutputField = ({
 
 export default memo(TokenCurrencyOutputField);
 
-export const ContentCurrencyField = styled(Stack)(({ theme }) => ({
-	borderRadius: TSizes.borderRadius,
-	backgroundColor: theme.palette.background.paper,
-	padding: TSizes.margin_common,
-	border: `1px solid ${theme.palette.background.paper}`,
-	transition: '0.6s',
+interface IInput {
+	isActived?: boolean;
+}
 
-	'&:hover': {
-		borderColor: setColorThemeMode(theme.palette.grey[100], theme.palette.grey[500]),
-	},
+export const ContentCurrencyField = styled(Stack, { shouldForwardProp: (prop) => prop != 'isActived' })<IInput>(
+	({ theme, isActived }) => ({
+		borderRadius: TSizes.borderRadius,
+		backgroundColor: theme.palette.background.paper,
+		padding: TSizes.margin_common,
+		border: `1px solid ${
+			isActived ? setColorThemeMode(theme.palette.grey[100], theme.palette.grey[500]) : theme.palette.background.paper
+		}`,
+		transition: '0.6s',
 
-	'&:focus-within': {
-		borderColor: setColorThemeMode(theme.palette.grey[100], theme.palette.grey[500]),
-	},
-
-	'& .MuiInputBase-root': {
-		width: '100%',
-	},
-
-	'& .MuiInputBase-input': {
-		fontSize: '24px',
-		fontWeight: 600,
-		width: '100%',
-		color: setColorThemeMode(theme.palette.grey[500], theme.palette.common.white),
-
-		'&::-webkit-input-placeholder': {
-			color: setColorThemeMode(theme.palette.grey[500], theme.palette.common.white),
-			opacity: '1',
+		'&:hover': {
+			borderColor: setColorThemeMode(theme.palette.grey[100], theme.palette.grey[600]),
 		},
-	},
-}));
+
+		'&:focus-within': {
+			borderColor: setColorThemeMode(theme.palette.grey[100], theme.palette.grey[400]),
+		},
+
+		'& .MuiInputBase-root': {
+			width: '100%',
+		},
+
+		'& .MuiInputBase-input': {
+			fontSize: '24px',
+			fontWeight: 600,
+			width: '100%',
+			color: setColorThemeMode(theme.palette.grey[500], theme.palette.common.white),
+
+			'&::-webkit-input-placeholder': {
+				color: setColorThemeMode(theme.palette.grey[500], theme.palette.common.white),
+				opacity: '1',
+			},
+		},
+	}),
+);

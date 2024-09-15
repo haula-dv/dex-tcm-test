@@ -73,8 +73,9 @@ export const SwapContainer = () => {
 
 		setInput(!isInput);
 
-		setZustandValue(tokenInputState, buyTokenActived);
-		setZustandValue(tokenOutputState, sellTokenActived);
+		setZustandValue(tokenInputState, buyTokenActived); // Sell
+		setZustandValue(tokenOutputState, sellTokenActived); // Buy
+
 		setInputAmount(outputAmount);
 		setOutputAmount(inputAmount);
 
@@ -84,6 +85,7 @@ export const SwapContainer = () => {
 		}, 1200);
 	};
 
+	// Handle change token
 	const handleChangeToken = (token: ITokenType, type: string) => {
 		setLoadingAmount(true);
 		setLoadingDes(true);
@@ -96,9 +98,19 @@ export const SwapContainer = () => {
 		token.token = tokenKey;
 
 		if (type === 'down') {
-			setZustandValue(tokenOutputState, token);
+			setZustandValue(tokenOutputState, (prev: any) => {
+				return {
+					...token,
+					isInputting: prev?.isInputting,
+				};
+			});
 		} else {
-			setZustandValue(tokenInputState, token);
+			setZustandValue(tokenInputState, (prev: any) => {
+				return {
+					...token,
+					isInputting: prev?.isInputting,
+				};
+			});
 		}
 
 		setTimeout(() => {
@@ -170,7 +182,7 @@ export const SwapContainer = () => {
 								onClick={handleEnterAmount}
 								disabled={connecting}
 							>
-								{wallet ? 'Swap' : connecting ? 'Connecting wallet' : 'Connect wallet'}
+								{wallet ? 'Insufficient balance' : connecting ? 'Connecting wallet' : 'Connect wallet'}
 							</MainButton>
 						</Stack>
 
