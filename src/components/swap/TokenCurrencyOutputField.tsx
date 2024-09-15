@@ -10,7 +10,7 @@ import { Box, InputBase, Skeleton, Stack, Typography } from '@mui/material';
 import { styled, useTheme } from '@mui/material/styles';
 import { useMarkPrice } from '@orderly.network/hooks';
 import { setZustandValue } from 'nes-zustand';
-import { Dispatch, useMemo, useState } from 'react';
+import React, { Dispatch, SetStateAction, useMemo, useState } from 'react';
 import { useStore } from 'zustand';
 
 export type ITypeSwap = 'input' | 'output';
@@ -20,13 +20,23 @@ interface IProps {
 	inputAmount: string;
 	inputMarkPrice: number;
 	setAmount: Dispatch<any>;
+
+	loadingAmount: boolean;
+	setLoadingAmount: Dispatch<SetStateAction<boolean>>;
 }
 
-const TokenCurrencyOutputField = ({ currentField, setAmount, inputMarkPrice, inputAmount }: IProps) => {
+const TokenCurrencyOutputField = ({
+	currentField,
+	setAmount,
+	inputMarkPrice,
+	inputAmount,
+	loadingAmount,
+	setLoadingAmount,
+}: IProps) => {
 	// HOOKS
 	const theme = useTheme();
 	const [isOpenToken, setIopenToken] = useState(false);
-	const [loadingAmount, setLoadingAmount] = useState(false);
+	const [valueAmount, setValueAmount] = useState('');
 
 	// TOKEN
 	const tokenInputActive = useStore(tokenInputState, (state) => state.value);
@@ -70,14 +80,13 @@ const TokenCurrencyOutputField = ({ currentField, setAmount, inputMarkPrice, inp
 		}
 
 		setIopenToken(false);
-		setTimeout(() => {
-			setLoadingAmount(false);
-		}, 1000);
 	};
 
 	// Caculate amount
-	const calculateAmount = useMemo(() => {
-		setLoadingAmount(true);
+	const calculateOutputAmount = useMemo(() => {
+		if (currentField === 'input') {
+			return inputAmount;
+		}
 
 		// If no token is selected or the output mark price is invalid
 		if (!tokenOutputActive || outputMarkPrice <= 0 || isNaN(inputMarkPrice)) {
@@ -105,10 +114,12 @@ const TokenCurrencyOutputField = ({ currentField, setAmount, inputMarkPrice, inp
 		}
 
 		// Set loading to false after calculation is done
-		setLoadingAmount(false);
+		setTimeout(() => {
+			setLoadingAmount(false);
+		}, 1200);
 
 		return result.toFixed(6); // Return the formatted result
-	}, [inputAmount, inputMarkPrice, outputMarkPrice, tokenOutputActive]);
+	}, [inputAmount, inputMarkPrice, outputMarkPrice, tokenOutputActive, currentField]);
 
 	return (
 		<>
@@ -124,16 +135,18 @@ const TokenCurrencyOutputField = ({ currentField, setAmount, inputMarkPrice, inp
 				</Stack>
 
 				<Stack direction={'row'} alignItems={'center'} height={'40px'}>
-					{loadingAmount ? (
-						<Box flex={1}>
-							<Skeleton height={'30px'} width={'100px'} animation="wave" variant="text" />
-						</Box>
+					{currentField === 'output' ? (
+						<React.Fragment>
+							{loadingAmount ? (
+								<Box flex={1}>
+									<Skeleton height={'30px'} width={'100px'} animation="wave" variant="text" />
+								</Box>
+							) : (
+								<InputBase placeholder="0.0" value={calculateOutputAmount} />
+							)}
+						</React.Fragment>
 					) : (
-						<InputBase
-							placeholder="0.0"
-							value={calculateAmount}
-							// onChange={(e) => onChange(e.target.value)}
-						/>
+						<InputBase placeholder="0.0" value={calculateOutputAmount} onChange={(e) => onChange(e.target.value)} />
 					)}
 
 					<TokenSelect handleToggle={handleToggle} tokenSelected={tokenOutputActive} />

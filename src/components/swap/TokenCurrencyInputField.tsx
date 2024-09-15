@@ -6,11 +6,11 @@ import { tokenInputState, tokenOutputState } from '@/plugins/swap/store';
 import { filterAllowedCharacters, usdFormatter } from '@/utils/formatters/number';
 import { setColorThemeMode } from '@/utils/helpers';
 import { TSizes } from '@/utils/themes/custom-theme/sizes';
-import { Box, InputBase, Stack, Typography } from '@mui/material';
+import { Box, InputBase, Skeleton, Stack, Typography } from '@mui/material';
 import { styled, useTheme } from '@mui/material/styles';
 import { useMarkPrice } from '@orderly.network/hooks';
 import { setZustandValue } from 'nes-zustand';
-import { memo, useMemo, useState } from 'react';
+import React, { Dispatch, memo, SetStateAction, useMemo, useState } from 'react';
 import { useStore } from 'zustand';
 
 export type ITypeSwap = 'input' | 'output';
@@ -18,9 +18,11 @@ export type ITypeSwap = 'input' | 'output';
 interface IProps {
 	handleChange: (value: string) => void;
 	currentField: 'input' | 'output';
+	loadingAmount: boolean;
+	setLoadingAmount: Dispatch<SetStateAction<boolean>>;
 }
 
-const TokenCurrencyInputField = ({ handleChange, currentField }: IProps) => {
+const TokenCurrencyInputField = ({ handleChange, currentField, loadingAmount, setLoadingAmount }: IProps) => {
 	// HOOKS
 	const theme = useTheme();
 
@@ -32,8 +34,8 @@ const TokenCurrencyInputField = ({ handleChange, currentField }: IProps) => {
 	const tokenInputActive = useStore(tokenInputState, (state) => state.value);
 	const tokenOutputActive = useStore(tokenOutputState, (state) => state.value);
 
-	const [keyToken, setKeyToken] = useState('');
-	const { data: markPrice } = useMarkPrice(`PERP_${keyToken}_USDC`);
+	const { data: inputMarkPrice } = useMarkPrice(`PERP_${tokenInputActive?.token}_USDC`);
+	const { data: outputMarkPrice } = useMarkPrice(`PERP_${tokenOutputActive?.token}_USDC`);
 
 	const onChange = (value: string) => {
 		if (currentField === 'output') {
@@ -56,24 +58,25 @@ const TokenCurrencyInputField = ({ handleChange, currentField }: IProps) => {
 			return 0;
 		}
 
-		const value = +valueAmount * markPrice;
+		const value = +valueAmount * inputMarkPrice;
 
 		if (isNaN(value)) {
 			return 0;
 		}
 
-		return +valueAmount * markPrice;
-	}, [valueAmount, markPrice, tokenInputActive]);
+		return value;
+	}, [valueAmount, inputMarkPrice, tokenInputActive]);
 
 	// Function to select a token
 	const handleSelectToken = (token: ITokenType) => {
+		setLoadingAmount(true);
+
 		let tokenKey = token.token;
 		if (token.token === 'WBTC') {
 			tokenKey = 'BTC';
 		}
 
 		token.token = tokenKey;
-		setKeyToken(tokenKey);
 
 		if (token.token === tokenOutputActive?.token) {
 			setZustandValue(tokenOutputState, tokenInputActive);
@@ -82,6 +85,45 @@ const TokenCurrencyInputField = ({ handleChange, currentField }: IProps) => {
 		setZustandValue(tokenInputState, token);
 		setIopenToken(false);
 	};
+
+	// Caculate output amount (THIS FUNCTION JUST WORK WHEN OUTPUT STATE)
+	const calculateOutputAmount = useMemo(() => {
+		if (currentField === 'input') {
+			return '';
+		}
+
+		// If no token is selected or the output mark price is invalid
+		if (!tokenOutputActive || outputMarkPrice <= 0 || isNaN(inputMarkPrice)) {
+			setLoadingAmount(false);
+			return ''; // Early return if conditions are not met
+		}
+
+		// Parse the input amount
+		const parsedInputAmount = parseFloat(valueAmount);
+
+		// Ensure valid parsed input amount
+		if (isNaN(parsedInputAmount)) {
+			setLoadingAmount(false);
+			return '';
+		}
+
+		// Perform the exchange rate calculation
+		const exchangeRate = outputMarkPrice / inputMarkPrice;
+		const result = parsedInputAmount * exchangeRate;
+
+		// If the result is not valid
+		if (isNaN(result)) {
+			setLoadingAmount(false);
+			return '';
+		}
+
+		// Set loading to false after calculation is done
+		setTimeout(() => {
+			setLoadingAmount(false);
+		}, 1200);
+
+		return result.toFixed(6); // Return the formatted result
+	}, [valueAmount, inputMarkPrice, outputMarkPrice, tokenOutputActive]);
 
 	return (
 		<>
@@ -100,8 +142,20 @@ const TokenCurrencyInputField = ({ handleChange, currentField }: IProps) => {
 					</Typography>
 				</Stack>
 
-				<Stack direction={'row'} alignItems={'center'}>
-					<InputBase placeholder="0.0" value={valueAmount} onChange={(e) => onChange(e.target.value)} />
+				<Stack direction={'row'} alignItems={'center'} height={'40px'}>
+					{currentField === 'output' ? (
+						<React.Fragment>
+							{loadingAmount ? (
+								<Box flex={1}>
+									<Skeleton height={'30px'} width={'100px'} animation="wave" variant="text" />
+								</Box>
+							) : (
+								<InputBase placeholder="0.0" value={calculateOutputAmount} />
+							)}
+						</React.Fragment>
+					) : (
+						<InputBase placeholder="0.0" value={valueAmount} onChange={(e) => onChange(e.target.value)} />
+					)}
 
 					<TokenSelect handleToggle={handleToggle} tokenSelected={tokenInputActive} />
 				</Stack>

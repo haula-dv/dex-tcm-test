@@ -36,6 +36,7 @@ export const SwapContainer = () => {
 	const [outputAmount, setOutputAmount] = useState<any>('');
 
 	const [isInput, setInput] = useState(true);
+	const [loadingAmount, setLoadingAmount] = useState(false);
 
 	const [isEnterAmount, setIsEnterAmount] = useState(false);
 	const [isSwaped, setIsSwaped] = useState(false);
@@ -69,15 +70,23 @@ export const SwapContainer = () => {
 		setOutputAmount(value);
 	};
 
-	// This handle toggle side
-	const handleToggleSide = () => {
-		// setInputAmount(outputAmount);
-		// setOutputAmount(inputAmount);
-		setZustandValue(tokenInputState, tokenOutputActive);
-		setZustandValue(tokenOutputState, tokenInputActive);
+	// Reload state
+	const reloadCaculateOutputAmount = () => {
+		setLoadingAmount(true);
+
+		setTimeout(() => {
+			setLoadingAmount(false);
+		}, 2000);
 	};
 
-	console.log(tokenOutputActive, tokenInputActive);
+	// This handle toggle side
+	const handleToggleSide = () => {
+		setLoadingAmount(true);
+		setInput(!isInput);
+		setZustandValue(tokenInputState, tokenOutputActive);
+		setZustandValue(tokenOutputState, tokenInputActive);
+		reloadCaculateOutputAmount();
+	};
 
 	return (
 		<Box display={'flex'} alignItems={'center'} justifyContent={'center'} height={'calc(100vh - 56px)'}>
@@ -96,7 +105,12 @@ export const SwapContainer = () => {
 				{!isSwaped ? (
 					<>
 						<Stack spacing={1.5}>
-							<TokenCurrencyInputField handleChange={handleInputChange} currentField={isInput ? 'input' : 'output'} />
+							<TokenCurrencyInputField
+								handleChange={handleInputChange}
+								currentField={isInput ? 'input' : 'output'}
+								loadingAmount={loadingAmount}
+								setLoadingAmount={setLoadingAmount}
+							/>
 
 							<ButtonSwapToggle toggleSwapType={handleToggleSide} />
 
@@ -105,6 +119,8 @@ export const SwapContainer = () => {
 								inputMarkPrice={inputMarkPrice}
 								inputAmount={inputAmount}
 								setAmount={setInputAmount}
+								loadingAmount={loadingAmount}
+								setLoadingAmount={setLoadingAmount}
 							/>
 
 							<Stack direction={'row'} justifyContent={'space-between'} alignItems={'center'}>
