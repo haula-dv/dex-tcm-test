@@ -84,5 +84,6 @@ const CustomDialog = styled(Dialog, {
 		backgroundColor: `${setColorThemeMode(theme.palette.primary.light, theme.palette.grey[800])} !important`,
 		margin: '16px',
 		borderRadius: TSizes.borderRadiusMd,
+		border: `1px solid ${setColorThemeMode(theme.palette.grey[100], theme.palette.grey[700])}`,
 	},
 }));

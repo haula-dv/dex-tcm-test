@@ -8,7 +8,7 @@ import TokenCurrencyInputField from '@/components/swap/TokenCurrencyInputField';
 import TokenCurrencyOutputField from '@/components/swap/TokenCurrencyOutputField';
 import { setColorThemeMode } from '@/utils/helpers';
 import { TSizes } from '@/utils/themes/custom-theme/sizes';
-import { Box, Skeleton, Stack, Typography, useTheme } from '@mui/material';
+import { Box, Collapse, Skeleton, Stack, Typography, useTheme } from '@mui/material';
 import { useMarkPrice } from '@orderly.network/hooks';
 import { IconChevronDown, IconHelp } from '@tabler/icons-react';
 import { useConnectWallet } from '@web3-onboard/react';
@@ -18,6 +18,7 @@ import { useStore } from 'zustand';
 import { toggleSwapType } from '../handlers';
 import { isTransactionSubmittedState, tokenInputState, tokenOutputState } from '../store';
 import { ConfirmSwapContent } from './ConfirmSwap';
+import Cost from './Cost';
 import { ButtonSwapToggle } from './SwapIconToggle';
 import { TransactionPopup } from './token/TransactionSettingPopup';
 import { TransationSubmittedCard } from './TransationSubmittedCard';
@@ -29,11 +30,11 @@ export const SwapContainer = () => {
 	// State
 	const isTransactionSubmitted = useStore(isTransactionSubmittedState, (state) => state.value);
 
+	const [isShowCost, setIsShowCost] = useState(false);
+
 	// TOKEN
 	const sellTokenActived = useStore(tokenInputState, (state) => state.value); // UP
 	const buyTokenActived = useStore(tokenOutputState, (state) => state.value); // DOWN
-
-	const [isCurrentInputing, setIsCurrentInputing] = useState(true);
 
 	const [inputAmount, setInputAmount] = useState<any>('');
 	const [outputAmount, setOutputAmount] = useState<any>('');
@@ -186,7 +187,7 @@ export const SwapContainer = () => {
 							</MainButton>
 						</Stack>
 
-						<Stack direction={'row'} justifyContent={'space-between'} alignItems={'center'}>
+						<Stack direction={'row'} justifyContent={'space-between'} alignItems={'center'} pt={'4px'}>
 							{loadingDes ? (
 								<Skeleton height={'24px'} width={'100px'} variant="text" />
 							) : (
@@ -200,7 +201,7 @@ export const SwapContainer = () => {
 											</span>
 										</Typography>
 
-										<MainIconButton size="small" edge="end">
+										<MainIconButton size="small" edge="end" onClick={() => setIsShowCost(!isShowCost)}>
 											<IconChevronDown size={'1rem'} />
 										</MainIconButton>
 									</>
@@ -208,7 +209,9 @@ export const SwapContainer = () => {
 							)}
 						</Stack>
 
-						{/* {tokenInputActive && tokenOutputActive && <Cost />} */}
+						<Collapse in={isShowCost}>
+							<Cost slippageAmount={slippageAmount} />
+						</Collapse>
 					</>
 				) : (
 					<ConfirmSwapContent

@@ -1,6 +1,5 @@
 'use client';
 import { MainButton } from '@/components/button/MainButton';
-import { MainIconButton } from '@/components/button/MainIconButton';
 import { MainDialog } from '@/components/dialog/MainDialog';
 import CustomSwitch from '@/components/form-control/CustomSwitch';
 import MainTooltip from '@/components/MainTooltip';
@@ -67,15 +66,12 @@ export const TransactionPopup = ({ getSlippageAmount, getDeadlineMinutes }: IPro
 		}
 
 		setCurrentSlippageAmount(newValue);
-
 		getSlippageAmount(newValue);
 	};
 
 	// Handle change deadline minutes
 	const handleChangeDeadline = (value: string) => {
 		setDeadlineMinutes(value);
-
-		getDeadlineMinutes(value);
 	};
 
 	return (
@@ -85,9 +81,16 @@ export const TransactionPopup = ({ getSlippageAmount, getDeadlineMinutes }: IPro
 					Swap
 				</Typography>
 
-				<MainIconButton variant="text" isFullRounded onClick={handleClick} edge="end">
-					<IconSettings size={'1.5rem'} />
-				</MainIconButton>
+				<MainButton
+					endIcon={<IconSettings size={'1rem'} color={theme.palette.text.primary} />}
+					variant={setColorThemeMode('filledTonal', 'contained')}
+					color={setColorThemeMode('inherit', 'darkPrimary')}
+					size="small"
+					fullRounded
+					onClick={handleClick}
+				>
+					{currentSlippageAmount} % slippage
+				</MainButton>
 			</Stack>
 
 			<MainDialog open={open} handleClose={handleClose} hiddenHeader maxWidth="xs">
@@ -119,7 +122,10 @@ export const TransactionPopup = ({ getSlippageAmount, getDeadlineMinutes }: IPro
 									key={item.value}
 									variant="filledTonal"
 									color={currentSlippageAmount === item.percentValue ? 'darkPrimary' : 'darkGrey'}
-									onClick={() => handleChangeSlippage(item.percentValue)}
+									onClick={() => {
+										setCurrentSlippageAmount(item.percentValue);
+										getSlippageAmount(item.percentValue);
+									}}
 									size="small"
 									sx={{ flexShrink: 0 }}
 								>

@@ -16,7 +16,7 @@ export const MainButton = ({ children, isLoading, fullRounded, align = 'center',
 		<Button
 			disableElevation
 			sx={{
-				borderRadius: fullRounded ? '40px' : TSizes.borderRadius,
+				borderRadius: fullRounded ? '40px !important' : TSizes.borderRadius,
 				display: 'flex',
 				justifyContent: align,
 				borderWidth: borderWidth,
