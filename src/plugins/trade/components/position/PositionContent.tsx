@@ -27,6 +27,7 @@ const headTable: IHeadCell[] = [
 		hint: `Current unrealized profit or loss on your open positions across all widgets calculated using Mark Price.`,
 		align: 'right',
 	},
+	// { title: 'Order Time'},
 	{
 		title: '',
 		align: 'right',
@@ -114,6 +115,7 @@ const PositionContent = ({ symbol }: IProps) => {
 								<TableCell align="right" sx={{ color: theme.palette.warning.main }}>
 									{item.est_liq_price ? usdFormatter.format(item.est_liq_price) : '-'}
 								</TableCell>
+
 								<TableCell align="right" sx={{ whiteSpace: 'nowrap' }}>
 									<Typography
 										color={
@@ -125,6 +127,10 @@ const PositionContent = ({ symbol }: IProps) => {
 										{usdFormatter.format(item.unrealized_pnl)}({usdFormatter.format(item.unrealized_pnl_ROI * 100)}%)
 									</Typography>
 								</TableCell>
+
+								{/* <TableCell align="right">
+								{dayjs(item.timestamp).format('YYYY-MM-DD HH:mm:ss')}
+								</TableCell> */}
 
 								<TableCell align="right">
 									<UpdatePosition position={item} symbol={symbol} refresh={refresh} />

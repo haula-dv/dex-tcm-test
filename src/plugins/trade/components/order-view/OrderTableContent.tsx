@@ -96,7 +96,8 @@ const OrderTableContent = ({ orderBookStatus, symbol }: IProps) => {
 		{ title: 'Side' },
 		{ title: 'Quantity' },
 		{ title: 'Price', hint: 'Unreal. PnL' },
-		{ title: 'Trigger Price' },
+		{ title: 'Trigger' },
+		{ title: 'Order time' },
 	];
 
 	const headTableNew: IHeadCell[] = [
@@ -105,7 +106,8 @@ const OrderTableContent = ({ orderBookStatus, symbol }: IProps) => {
 		{ title: 'Side' },
 		{ title: 'Quantity' },
 		{ title: 'Price', hint: 'Unreal. PnL' },
-		{ title: 'Trigger Price' },
+		{ title: 'Trigger' },
+		{ title: 'Order time' },
 		{ title: '', align: 'right' },
 	];
 

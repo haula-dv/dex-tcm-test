@@ -2,6 +2,7 @@ import { MainButton } from '@/components/button/MainButton';
 import { baseFormatter, usdFormatter } from '@/utils/formatters/number';
 import { TableCell, TableRow } from '@mui/material';
 import { API } from '@orderly.network/types';
+import dayjs from 'dayjs';
 import { memo } from 'react';
 
 interface IProps {
@@ -26,6 +27,7 @@ const PendingOrder = ({ order, symbol, handleClickOrderItem, isHideCancel }: IPr
 			<TableCell>{baseFormatter.format(order.order.quantity)}</TableCell>
 			<TableCell>{order.order.price ? usdFormatter.format(order.order.price) : '-'}</TableCell>
 			<TableCell> {order.order.trigger_price ? usdFormatter.format(order.order.trigger_price) : '-'}</TableCell>
+			<TableCell> {dayjs(order.order.created_time).format('YYYY-MM-DD HH:mm:ss')}</TableCell>
 			{!isHideCancel && (
 				<TableCell align="right" sx={{ display: 'flex', justifyContent: 'flex-end' }}>
 					<MainButton size="xsmall" variant="contained" color="inherit" onClick={() => handleClickOrderItem(order)}>

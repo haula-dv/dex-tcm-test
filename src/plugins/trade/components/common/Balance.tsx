@@ -42,6 +42,7 @@ export const Balance = memo(({ availableWithdraw, quote, wallet }: IProps) => {
 				headers: {
 					'Content-Type': 'application/json',
 				},
+
 				body: JSON.stringify({
 					broker_id: AppInfo.BROKER_ID,
 					chain_id: String(Number(connectedChain?.id)),
@@ -65,6 +66,8 @@ export const Balance = memo(({ availableWithdraw, quote, wallet }: IProps) => {
 				message: 'Mint success! It might take a while to be received in your Orderly account',
 				autoDismiss: 8_000,
 			});
+
+			location.reload();
 		} catch (err) {
 			console.error(err);
 			if (update) {

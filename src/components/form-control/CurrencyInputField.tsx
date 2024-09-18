@@ -21,6 +21,7 @@ interface InputFieldProps<V extends FieldValues> {
 	helperText?: ReactNode;
 	hasError?: any;
 	extErrors?: any;
+	readOnly?: boolean;
 }
 
 const CurrencyInputField = <V extends FieldValues>({
@@ -38,6 +39,7 @@ const CurrencyInputField = <V extends FieldValues>({
 	hasError,
 	helperText,
 	extErrors,
+	readOnly,
 }: InputFieldProps<V>) => {
 	return (
 		<Stack width={'100%'}>
@@ -62,6 +64,7 @@ const CurrencyInputField = <V extends FieldValues>({
 								onValueChange={onValueChange}
 								max={max}
 								min={min}
+								readOnly={readOnly}
 							/>
 							{helperText && <Box>{helperText}</Box>}
 

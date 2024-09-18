@@ -4,17 +4,16 @@ import { ItemRow } from '@/plugins/pool/components/TokenSelected';
 import { usdFormatter } from '@/utils/formatters/number';
 import { Stack } from '@mui/material';
 import { useConnectWallet } from '@web3-onboard/react';
-import { memo } from 'react';
 
 interface IProps {
 	estLiqPrice: number | null | undefined;
-	freeCollateral: number | null | undefined;
-	markPrice: number | null | undefined;
+	estLeverage: number | null | undefined;
 	quote?: string;
 	direction: string;
+	baseDecimals: number;
 }
 
-const Details = ({ estLiqPrice, freeCollateral, markPrice, quote, direction }: IProps) => {
+const Details = ({ estLiqPrice, estLeverage, baseDecimals, quote, direction }: IProps) => {
 	const [{ wallet, connecting }, connect, disconnect] = useConnectWallet();
 
 	// Handle connect wallet button
@@ -22,12 +21,14 @@ const Details = ({ estLiqPrice, freeCollateral, markPrice, quote, direction }: I
 		await connect();
 	};
 
+	const formatter = new Intl.NumberFormat('en-US', { maximumFractionDigits: baseDecimals });
+
 	return (
 		<MainCard width="100%" backgroudColor="primaryLight">
 			<Stack spacing={'10px'}>
 				<ItemRow title="Est. Liq. price:" value={estLiqPrice ? `${usdFormatter.format(estLiqPrice)} ${quote}` : '-'} />
 				{/* <ItemRow title="Price Impact" value={'_'} /> */}
-				<ItemRow title="Account leverage:" value={freeCollateral ? `${usdFormatter.format(freeCollateral)}` : '_'} />
+				<ItemRow title="Account leverage:" value={estLeverage ? `⇒ ${formatter.format(estLeverage)}` : '_'} />
 				{/* <ItemRow
 					title={
 						<Stack direction={'row'} spacing={'6px'} alignItems={'center'}>
@@ -61,4 +62,4 @@ const Details = ({ estLiqPrice, freeCollateral, markPrice, quote, direction }: I
 	);
 };
 
-export default memo(Details);
+export default Details;

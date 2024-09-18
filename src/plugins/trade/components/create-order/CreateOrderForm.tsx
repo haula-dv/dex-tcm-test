@@ -1,9 +1,11 @@
 /* eslint-disable react-hooks/rules-of-hooks */
 import { MainCard } from '@/components/card/MainCard';
 import IconLoading from '@/components/icons/loading';
+import { getDecimalsFromTick } from '@/utils/formatters/api';
 import { TSizes } from '@/utils/themes/custom-theme/sizes';
 import { Stack, Typography, useTheme } from '@mui/material';
 import { useOrderEntry, useSymbolsInfo, useWithdraw } from '@orderly.network/hooks';
+import { toast } from '@orderly.network/react';
 import { OrderEntity, OrderSide, OrderType } from '@orderly.network/types';
 import { useConnectWallet, useNotifications } from '@web3-onboard/react';
 import { memo, ReactNode, useState } from 'react';
@@ -53,12 +55,15 @@ const CreateOrderForm = ({ symbol }: IProps) => {
 	const [_0, customNotification] = useNotifications();
 	const [_, base, quote] = symbol.split('_');
 
+	const symbolInfo = symbolsInfo[symbol]();
+	const [baseDecimals, quoteDecimals] = getDecimalsFromTick(symbolInfo);
+
 	const formContext = useForm<Inputs>({
 		defaultValues,
 		mode: 'all',
 	});
 
-	const { onSubmit, helper, maxQty, estLeverage, estLiqPrice, markPrice, freeCollateral } = useOrderEntry(
+	const { onSubmit, helper, maxQty, estLeverage, estLiqPrice } = useOrderEntry(
 		{
 			symbol,
 			side: match(formContext.watch('direction', 'Buy'))
@@ -79,12 +84,20 @@ const CreateOrderForm = ({ symbol }: IProps) => {
 
 	// Handle show modal confirm
 	const handleShowModal = () => {
+		const data = formContext.getValues();
+
+		if (data.price && +data.price > availableWithdraw) {
+			toast.error(`Your ${quote} balance is insufficient`);
+			return;
+		}
+
 		setOpenOrderConfirm(true);
 	};
 
 	// Submit form
 	const submitForm = async () => {
 		const data = formContext.getValues();
+
 		setLoading(true);
 
 		const { update } = customNotification({
@@ -173,8 +186,8 @@ const CreateOrderForm = ({ symbol }: IProps) => {
 
 							<Details
 								estLiqPrice={estLiqPrice}
-								freeCollateral={freeCollateral}
-								markPrice={markPrice}
+								estLeverage={estLeverage}
+								baseDecimals={baseDecimals}
 								quote={quote}
 								direction={formContext.watch('direction')}
 							/>

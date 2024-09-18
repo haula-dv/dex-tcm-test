@@ -1,24 +1,23 @@
 export const baseFormatter = new Intl.NumberFormat('en-US', { maximumSignificantDigits: 20 });
 export const usdFormatter = new Intl.NumberFormat('en-US', { maximumFractionDigits: 2 });
 
-// export function filterAllowedCharacters(value: string): string {
-// 	const commaPos = value.indexOf('.');
-// 	if (commaPos >= 0) {
-// 		return value.substring(0, commaPos) + '.' + value.substring(commaPos + 1).replace(/[^\d]/g, '');
-// 	} else {
-// 		return value.replace(/[^\d.,]/g, '');
-// 	}
-// }
-
 export function filterAllowedCharacters(value: string): string {
-	const filteredValue = value.replace(/[^\d.,]/g, '');
-
-	if (filteredValue === '') {
-		return '';
+	const commaPos = value.indexOf('.');
+	if (commaPos >= 0) {
+		return value.substring(0, commaPos) + '.' + value.substring(commaPos + 1).replace(/[^\d]/g, '');
 	} else {
-		return filteredValue;
+		return value.replace(/[^\d.,]/g, '');
 	}
 }
+
+// export function filterAllowedCharacters(value: string): string {
+// 	const filteredValue = value
+// 		.replace(/[^\d.,]/g, '') // Loại bỏ các ký tự không phải số, dấu chấm hoặc dấu phẩy
+// 		.replace(/,/g, '.') // Thay thế dấu phẩy thành dấu chấm (tùy thuộc vào định dạng)
+// 		.replace(/(?<!\d)\.(?=\d+)(?=.*\.)/g, ''); // Loại bỏ dấu chấm thứ hai trở đi
+
+// 	return filteredValue;
+// }
 
 export function getFormattedNumber(value: string, decimals: number): string {
 	let commaPos: number;

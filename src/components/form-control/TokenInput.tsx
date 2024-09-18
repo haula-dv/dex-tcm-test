@@ -23,6 +23,7 @@ export const TokenInput: FC<
 		className?: string;
 		hasError?: boolean;
 		suffix?: React.ReactNode;
+		readOnly?: boolean;
 	} & Partial<ControllerRenderProps>
 > = ({
 	id,
@@ -37,6 +38,7 @@ export const TokenInput: FC<
 	className,
 	hasError,
 	suffix,
+	readOnly,
 	...props
 }) => {
 	const theme = useTheme();
@@ -66,7 +68,6 @@ export const TokenInput: FC<
 			afterInputChange();
 		}
 	};
-
 	return (
 		<CustomTextField
 			id={`outlined-adornment-${suffix}`}
@@ -75,7 +76,6 @@ export const TokenInput: FC<
 			name={props.name}
 			readOnly={readonly ?? false}
 			placeholder={placeholder ?? '0.0'}
-			type="number"
 			onChange={(event) => {
 				let newValue = filterAllowedCharacters(event.target.value);
 				if (value !== newValue) {
@@ -97,11 +97,6 @@ export const TokenInput: FC<
 					setValue(newValue);
 				}
 				if (props.onChange) props.onChange(event);
-			}}
-			onBlur={(event) => {
-				const quantity = getFormattedNumber(event.target.value, decimals);
-				setValue(quantity);
-				if (props.onBlur) props.onBlur();
 			}}
 			endAdornment={
 				<InputAdornment position="end">
