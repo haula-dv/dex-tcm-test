@@ -36,23 +36,25 @@ function InputForm({ formContext, symbolsInfo, symbol, getInput, helper, maxQty 
 
 	return (
 		<>
-			<Collapse in={formContext.watch('type') === 'StopLimit' ? true : false}>
-				<CurrencyInputField
-					name="triggerPrice"
-					formContext={formContext}
-					suffix={quote}
-					decimals={quoteDecimals}
-					placeholder="Trigger"
-					rules={{
-						validate: {
-							custom: async (_, data) => {
-								const errors = await getValidationErrors(data, symbol, helper.validator);
-								return errors?.trigger_price != null ? errors.trigger_price.message : true;
+			{formContext.watch('type') === 'StopLimit' && (
+				<Collapse in={formContext.watch('type') === 'StopLimit' ? true : false}>
+					<CurrencyInputField
+						name="triggerPrice"
+						formContext={formContext}
+						suffix={quote}
+						decimals={quoteDecimals}
+						placeholder="Trigger"
+						rules={{
+							validate: {
+								custom: async (_, data) => {
+									const errors = await getValidationErrors(data, symbol, helper.validator);
+									return errors?.trigger_price != null ? errors.trigger_price.message : true;
+								},
 							},
-						},
-					}}
-				/>
-			</Collapse>
+						}}
+					/>
+				</Collapse>
+			)}
 
 			<Stack direction={'row'} alignItems={'start'} spacing={'10px'}>
 				<CurrencyInputField

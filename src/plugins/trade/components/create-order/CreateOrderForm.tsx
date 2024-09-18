@@ -86,7 +86,7 @@ const CreateOrderForm = ({ symbol }: IProps) => {
 	const handleShowModal = () => {
 		const data = formContext.getValues();
 
-		if (data.price && +data.price > availableWithdraw) {
+		if (data.price && data.quantity && Number(data.price) * Number(data.quantity) > availableWithdraw) {
 			toast.error(`Your ${quote} balance is insufficient`);
 			return;
 		}

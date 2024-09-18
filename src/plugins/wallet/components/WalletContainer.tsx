@@ -41,6 +41,8 @@ export default function WalletContainer() {
 				activeMode: prev.activeMode == 'light' ? 'dark' : 'light',
 			};
 		});
+
+		location.reload();
 	};
 
 	// Account Details
