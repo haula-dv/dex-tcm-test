@@ -11,11 +11,19 @@ import { useAccount, useChains, useDeposit } from '@orderly.network/hooks';
 import { IconDots, IconMoonStars, IconSun } from '@tabler/icons-react';
 import { useConnectWallet } from '@web3-onboard/react';
 import { setZustandValue } from 'nes-zustand';
+import Image from 'next/image';
 import { useEffect, useState } from 'react';
 import { useStore } from 'zustand';
 import AccountDetailPopup from './AccountDetailPopup';
 import NetworkContent from './NetworkContent';
 import { OrderlyConnect } from './OrderlyConnect';
+
+// ERC-20 Token ABI (for balanceOf and decimals)
+const ERC20_ABI = [
+	'function balanceOf(address owner) view returns (uint256)',
+	'function decimals() view returns (uint8)',
+	'function symbol() view returns (string)',
+];
 
 export default function WalletContainer() {
 	const themeSelector = useStore(themeSelectorState, (state) => state.value);
@@ -113,7 +121,7 @@ export default function WalletContainer() {
 								alignItems={'center'}
 								justifyContent={'center'}
 							>
-								🐼
+								<Image src={wallet.icon} height={20} width={20} alt={wallet.label} />
 							</Box>
 						</>
 					)}

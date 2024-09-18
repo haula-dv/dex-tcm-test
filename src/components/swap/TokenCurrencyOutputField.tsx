@@ -169,6 +169,8 @@ const TokenCurrencyOutputField = ({
 			setLoadingAmount(false);
 		}, 1200);
 
+		handleChangeInput(result.toFixed(6));
+
 		return result.toFixed(6); // Return the formatted result
 	}, [inputAmount, outputAmount, outputMarkPrice, buyTokenActive, inputMarkPrice]);
 

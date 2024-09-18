@@ -6,12 +6,16 @@ import { Item } from './SwapContainer';
 
 interface IProps {
 	slippageAmount: string;
+	handlePriceImpactCalculation: () => any;
 }
 
-const Cost = ({ slippageAmount }: IProps) => {
+const Cost = ({ slippageAmount, handlePriceImpactCalculation }: IProps) => {
 	return (
 		<Stack spacing={TSizes.margin_common}>
-			<Item title="Price Impact" value={<span style={{ color: useTheme().palette.success.main }}> {'<0.01%'}</span>} />
+			<Item
+				title="Price Impact"
+				value={<span style={{ color: useTheme().palette.success.main }}> {handlePriceImpactCalculation()}%</span>}
+			/>
 			<Item title="Max. slippage" value={slippageAmount} />
 			<Item title="Minimum recevied" value="9747.969 AMPL" />
 			<Item title="Liquidity Provider Fee" value={'0.0015ETH'} />

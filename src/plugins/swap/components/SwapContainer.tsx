@@ -9,9 +9,10 @@ import TokenCurrencyOutputField from '@/components/swap/TokenCurrencyOutputField
 import { setColorThemeMode } from '@/utils/helpers';
 import { TSizes } from '@/utils/themes/custom-theme/sizes';
 import { Box, Collapse, Skeleton, Stack, Typography, useTheme } from '@mui/material';
-import { useMarkPrice } from '@orderly.network/hooks';
+import { useMarkPrice, useOrderEntry } from '@orderly.network/hooks';
+import { OrderSide, OrderType } from '@orderly.network/types';
 import { IconChevronDown, IconHelp } from '@tabler/icons-react';
-import { useConnectWallet } from '@web3-onboard/react';
+import { useConnectWallet, useNotifications } from '@web3-onboard/react';
 import { setZustandValue } from 'nes-zustand';
 import { useCallback, useMemo, useState } from 'react';
 import { useStore } from 'zustand';
@@ -26,10 +27,10 @@ import { TransationSubmittedCard } from './TransationSubmittedCard';
 export const SwapContainer = () => {
 	const [{ wallet, connecting }, connect, disconnect] = useConnectWallet();
 	const theme = useTheme();
+	const [loading, setLoading] = useState(false);
 
 	// State
 	const isTransactionSubmitted = useStore(isTransactionSubmittedState, (state) => state.value);
-
 	const [isShowCost, setIsShowCost] = useState(false);
 
 	// TOKEN
@@ -52,20 +53,7 @@ export const SwapContainer = () => {
 	// Mark price
 	const { data: inputMarkPrice } = useMarkPrice(`PERP_${sellTokenActived?.token}_USDC`);
 	const { data: outputMarkPrice } = useMarkPrice(`PERP_${buyTokenActived?.token}_USDC`);
-
-	// Handle Enter amount
-	const handleEnterAmount = async () => {
-		if (!wallet) {
-			await connect();
-			return;
-		}
-
-		setIsEnterAmount(true);
-
-		if (isEnterAmount) {
-			setIsSwaped(true);
-		}
-	};
+	const [_0, customNotification] = useNotifications();
 
 	// This handle toggle side
 	const handleToggleSide = () => {
@@ -135,6 +123,120 @@ export const SwapContainer = () => {
 	const handleBuyInputChange = useCallback((value: string) => {
 		setOutputAmount(value);
 	}, []);
+
+	// This for SELL ETH => USDC
+	const { onSubmit, helper, maxQty, estLeverage, estLiqPrice, markPrice, freeCollateral } = useOrderEntry(
+		{
+			symbol: `PERP_${sellTokenActived?.token}_USDC`,
+			order_type: OrderType.MARKET,
+			side: OrderSide.SELL,
+			order_quantity: undefined,
+			order_price: undefined,
+		},
+		{ watchOrderbook: true },
+	);
+
+	const handleSubmitSwap = async () => {
+		setLoading(true);
+
+		const { update } = customNotification({
+			eventCode: 'createOrder',
+			type: 'pending',
+			message: 'Creating order...',
+		});
+
+		// Bước 1: Bán ETH lấy USDC
+		const sellData = {
+			symbol: `PERP_${sellTokenActived?.token}_USDC`, // Cặp token đang bán (ETH -> USDC)
+			side: OrderSide.SELL, // Bán ETH
+			order_type: OrderType.MARKET, // Lệnh thị trường
+			order_quantity: inputAmount, // Số lượng ETH muốn bán
+		};
+
+		try {
+			await onSubmit(sellData); // Gửi lệnh bán ETH
+
+			// Giả sử bạn đã lấy được giá BTC hiện tại từ orderbook hoặc API
+			const outputPriceInUSDC = outputMarkPrice; // markPrice là giá BTC/USDC lấy từ orderbook
+			const outputDesired = outputAmount; // inputAmountBTC là số lượng BTC bạn muốn mua
+
+			// Tính toán số lượng USDC cần thiết để mua BTC
+			const usdcNeeded = outputDesired * outputPriceInUSDC;
+
+			// Bước 2: Mua BTC dùng USDC
+			const buyData = {
+				symbol: `PERP_${buyTokenActived?.token}_USDC`, // Cặp token đang mua (BTC -> USDC)
+				side: OrderSide.BUY, // Mua BTC
+				order_type: OrderType.MARKET, // Lệnh thị trường
+				order_quantity: usdcNeeded, // Số lượng USDC để mua BTC (cần tính toán sau khi bán ETH)
+			};
+
+			const data = await onSubmit(buyData);
+			console.log('Buy Order:', data, usdcNeeded);
+
+			update({
+				eventCode: 'createOrderSuccess',
+				type: 'success',
+				message: 'Order successfully created!',
+				autoDismiss: 5_000,
+			});
+		} catch (error) {
+			console.error(`Unhandled error in "submitForm":`, error);
+			update({
+				eventCode: 'createOrderError',
+				type: 'error',
+				message: 'Order creation failed!',
+				autoDismiss: 5_000,
+			});
+		} finally {
+			setLoading(false);
+		}
+	};
+
+	// Handle Enter amount
+	const handleEnterAmount = async () => {
+		if (!wallet) {
+			await connect();
+			return;
+		}
+
+		console.log(outputAmount, inputAmount);
+
+		if (inputAmount && outputAmount) {
+			handleSubmitSwap();
+		}
+		// setIsEnterAmount(true);
+
+		// if (isEnterAmount) {
+		// 	setIsSwaped(true);
+		// }
+	};
+
+	const calculatePriceImpact = (expectedOutput: number, actualOutput: number): any => {
+		if (expectedOutput === 0 || actualOutput === 0) return 0;
+
+		// Tính toán Price Impact
+		let impact = ((expectedOutput - actualOutput) / expectedOutput) * 100;
+
+		// Giới hạn Price Impact trong khoảng -100% đến 100%
+		impact = Math.max(Math.min(impact, 100), -100);
+
+		// Trả về số làm tròn với 2 chữ số thập phân
+		return parseFloat(impact.toFixed(2));
+	};
+
+	const handlePriceImpactCalculation = useCallback(() => {
+		const expectedOutput = parseFloat(inputAmount) * parseFloat(baseExchangeRate);
+		const actualOutput = parseFloat(outputAmount);
+
+		// Kiểm tra giá trị hợp lệ
+		if (isNaN(expectedOutput) || isNaN(actualOutput) || expectedOutput <= 0 || actualOutput <= 0) {
+			return '0.00';
+		}
+
+		const priceImpact = calculatePriceImpact(expectedOutput, actualOutput);
+		return priceImpact;
+	}, [inputAmount, outputAmount, baseExchangeRate]);
 
 	return (
 		<Box display={'flex'} alignItems={'center'} justifyContent={'center'} height={'calc(100vh - 56px)'}>
@@ -210,7 +312,7 @@ export const SwapContainer = () => {
 						</Stack>
 
 						<Collapse in={isShowCost}>
-							<Cost slippageAmount={slippageAmount} />
+							<Cost slippageAmount={slippageAmount} handlePriceImpactCalculation={handlePriceImpactCalculation} />
 						</Collapse>
 					</>
 				) : (
