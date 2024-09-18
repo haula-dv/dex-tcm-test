@@ -94,7 +94,12 @@ function InputForm({ formContext, symbolsInfo, symbol, getInput, helper, maxQty 
 						.with('Buy', () => 'Buy')
 						.otherwise(() => 'Sell')}
 				</Typography>
-				<Typography fontSize={'12px'} color={theme.palette.success.main}>
+				<Typography
+					fontSize={'12px'}
+					color={match(formContext.watch('direction'))
+						.with('Buy', () => theme.palette.success.main)
+						.otherwise(() => theme.palette.error.main)}
+				>
 					{formatter.format(maxQty)} {base}
 				</Typography>
 			</Stack>

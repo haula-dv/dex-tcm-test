@@ -1,5 +1,6 @@
 import { MainButton } from '@/components/button/MainButton';
 import { baseFormatter, usdFormatter } from '@/utils/formatters/number';
+import { setColorThemeMode } from '@/utils/helpers';
 import { TableCell, TableRow } from '@mui/material';
 import { API } from '@orderly.network/types';
 import dayjs from 'dayjs';
@@ -30,7 +31,12 @@ const PendingOrder = ({ order, symbol, handleClickOrderItem, isHideCancel }: IPr
 			<TableCell> {dayjs(order.order.created_time).format('YYYY-MM-DD HH:mm:ss')}</TableCell>
 			{!isHideCancel && (
 				<TableCell align="right" sx={{ display: 'flex', justifyContent: 'flex-end' }}>
-					<MainButton size="xsmall" variant="contained" color="inherit" onClick={() => handleClickOrderItem(order)}>
+					<MainButton
+						size="xsmall"
+						variant="contained"
+						color={setColorThemeMode('greyLight', 'inherit')}
+						onClick={() => handleClickOrderItem(order)}
+					>
 						Cancel
 					</MainButton>
 				</TableCell>
