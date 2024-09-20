@@ -61,7 +61,12 @@ export const MainDialog = ({
 				</Stack>
 			)}
 
-			{isDivider && <Divider />}
+			{isDivider && (
+				<>
+					<Divider />
+					<Box mb="10px" />
+				</>
+			)}
 
 			<Box
 				pt={hiddenHeader ? TSizes.margin_common : 0}
@@ -88,6 +93,6 @@ const CustomDialog = styled(Dialog, {
 		backgroundColor: `${setColorThemeMode(theme.palette.primary.light, theme.palette.grey[800])} !important`,
 		margin: '16px',
 		borderRadius: TSizes.borderRadiusMd,
-		border: `1px solid ${setColorThemeMode(theme.palette.grey[100], theme.palette.grey[700])}`,
+		border: `1px solid ${setColorThemeMode('transparent', theme.palette.grey[700])}`,
 	},
 }));

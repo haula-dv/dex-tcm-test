@@ -105,7 +105,7 @@ const TpSlOrder = ({ symbol, position, refresh, handleCloseModal }: IProps) => {
 
 	return (
 		<form onSubmit={formContext.handleSubmit(submitForm)}>
-			<MainCard backgroudColor="common" width="100%">
+			<MainCard backgroudColor="transparent" width="100%" variant="outlined">
 				<Stack spacing={TSizes.margin_common}>
 					<CurrencyInputField
 						formContext={formContext}

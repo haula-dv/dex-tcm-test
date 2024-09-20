@@ -110,7 +110,7 @@ const StopOrder = ({ symbol, position, refresh, handleCloseModal }: IProps) => {
 					<StopOrderDirection formContext={formContext} />
 					<Box mt="10px" />
 
-					<MainCard backgroudColor="common" width="100%">
+					<MainCard backgroudColor="transparent" width="100%" variant="outlined">
 						<Stack spacing={TSizes.margin_common}>
 							<CurrencyInputField
 								name="trigger_price"

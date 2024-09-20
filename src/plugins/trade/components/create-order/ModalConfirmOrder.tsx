@@ -45,7 +45,7 @@ const ModalConfirmOrder = ({ open, loading, handleClose, submitForm, symbol, cur
 
 	return (
 		<MainDialog open={open} handleClose={handleClose} title="Confirm Order" maxWidth="xs" isDivider>
-			<Stack direction={'row'} justifyContent={'space-between'} alignItems={'center'} py="10px">
+			<Stack direction={'row'} justifyContent={'space-between'} alignItems={'center'} pb="10px">
 				<Typography fontSize={'18px'} fontWeight={600}>
 					{base}-PERP
 				</Typography>

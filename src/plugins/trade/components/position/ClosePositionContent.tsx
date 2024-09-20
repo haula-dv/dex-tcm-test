@@ -84,7 +84,7 @@ const ClosePositionContent = ({ symbol, position, refresh, handleCloseModal }: I
 	};
 
 	return (
-		<MainCard backgroudColor="common" width="100%">
+		<MainCard backgroudColor="transparent" width="100%" variant="outlined">
 			{symbolsInfo.isNil ? (
 				<IconLoading />
 			) : (
@@ -144,7 +144,6 @@ const ClosePositionContent = ({ symbol, position, refresh, handleCloseModal }: I
 						variant="contained"
 						color="primary"
 						fullWidth
-						size="small"
 						type="submit"
 						disabled={loading}
 						isLoading={loading}
