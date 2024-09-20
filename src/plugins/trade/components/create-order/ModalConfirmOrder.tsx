@@ -6,6 +6,8 @@ import { usdFormatter } from '@/utils/formatters/number';
 import { setColorThemeMode } from '@/utils/helpers';
 import { TSizes } from '@/utils/themes/custom-theme/sizes';
 import { Box, Divider, Stack, Typography, useTheme } from '@mui/material';
+import { useMarkPrice } from '@orderly.network/hooks';
+import { useMemo } from 'react';
 import { Inputs } from './CreateOrderForm';
 
 interface IProps {
@@ -21,27 +23,40 @@ const ModalConfirmOrder = ({ open, loading, handleClose, submitForm, symbol, cur
 	const [_, base, quote] = symbol.split('_');
 	const theme = useTheme();
 
-	const totalEst = () => {
-		const price = currentValue.price ? +currentValue.price : 0;
-		const quantity = currentValue.quantity ? +currentValue.quantity : 0;
+	const { data: markPrice } = useMarkPrice(symbol);
 
-		return price * quantity;
-	};
+	const totalPrice = useMemo(() => {
+		const quantity = currentValue.quantity ?? 0;
+		const price = currentValue.price ?? 0;
+
+		if (currentValue.type === 'Limit') {
+			const total = Number(quantity) * Number(price);
+			if (isNaN(total)) {
+				return 0;
+			}
+
+			return usdFormatter.format(total);
+		} else if (currentValue.type === 'Market') {
+			return usdFormatter.format(Number(quantity) * markPrice);
+		} else {
+			return 0;
+		}
+	}, [currentValue, markPrice]);
 
 	return (
-		<MainDialog open={open} handleClose={handleClose} title="Confirm Order" maxWidth="xs">
-			<Divider />
+		<MainDialog open={open} handleClose={handleClose} title="Confirm Order" maxWidth="xs" isDivider>
+			<Stack direction={'row'} justifyContent={'space-between'} alignItems={'center'} py="10px">
+				<Typography fontSize={'18px'} fontWeight={600}>
+					{base}-PERP
+				</Typography>
 
-			<Typography fontSize={'18px'} fontWeight={600} pt="10px">
-				{base}-PERP
-			</Typography>
+				<Typography color={theme.palette.success.main} fontWeight={600}>
+					{currentValue.type} {currentValue.direction}
+				</Typography>
+			</Stack>
 
-			<Typography color={theme.palette.success.main} pb="6px" fontWeight={600} pt="2px">
-				{currentValue.type} {currentValue.direction}
-			</Typography>
-
-			<MainCard backgroudColor="common" width="100%">
-				<Stack spacing={TSizes.margin_xs}>
+			<MainCard backgroudColor="transparent" disablePadding variant="outlined" width="100%">
+				<Stack spacing={TSizes.margin_xs} padding={TSizes.margin_xs}>
 					<ItemRow
 						title="Qty."
 						value={
@@ -66,11 +81,15 @@ const ModalConfirmOrder = ({ open, loading, handleClose, submitForm, symbol, cur
 							</Box>
 						}
 					/>
+				</Stack>
+				<Divider />
+				<Stack spacing={TSizes.margin_xs} padding={TSizes.margin_xs}>
 					<ItemRow
 						title="Est. Total"
 						value={
 							<Box fontWeight={600}>
-								{usdFormatter.format(totalEst())}
+								{totalPrice}
+
 								<span
 									style={{
 										paddingLeft: '6px',

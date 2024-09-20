@@ -46,8 +46,8 @@ const InputField = <V extends FieldValues>({
 							name={name}
 							value={value}
 							// onBlur={onBlur}
-							onChange={() => {
-								onExtChange ? onExtChange(value, onChange) : onChange(value);
+							onChange={(e) => {
+								onExtChange ? onExtChange(e.target.value, onChange) : onChange(value);
 							}}
 							endAdornment={
 								<InputAdornment position="end">

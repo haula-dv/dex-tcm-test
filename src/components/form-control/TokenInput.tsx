@@ -59,6 +59,7 @@ export const TokenInput: FC<
 				fixedNumber = max;
 				newValue = fixedNumber.toString();
 			}
+
 			setValue(newValue);
 		}
 	}, [decimals, max, min, outerValue, value]);

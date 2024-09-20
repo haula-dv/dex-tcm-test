@@ -35,18 +35,17 @@ const Details = ({ estLiqPrice, estLeverage, baseDecimals, quote, symbol, formCo
 		const quantity = formContext.watch('quantity') ?? 0;
 		const price = formContext.watch('price') ?? 0;
 
-		if (formContext.watch('type') === 'Limit') {
-			const total = Number(quantity) * Number(price);
-			if (isNaN(total)) {
-				return 0;
-			}
-
-			return usdFormatter.format(total);
-		} else if (formContext.watch('type') === 'Market') {
+		if (formContext.watch('type') === 'Market') {
 			return usdFormatter.format(Number(quantity) * markPrice);
-		} else {
+		}
+
+		const total = Number(quantity) * Number(price);
+
+		if (isNaN(total)) {
 			return 0;
 		}
+
+		return usdFormatter.format(total);
 	}, [formContext, markPrice]);
 
 	return (

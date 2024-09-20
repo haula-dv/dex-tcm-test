@@ -1,6 +1,6 @@
 import { setColorThemeMode } from '@/utils/helpers';
 import { TSizes } from '@/utils/themes/custom-theme/sizes';
-import { Box, Dialog, Stack, Typography } from '@mui/material';
+import { Box, Dialog, Divider, Stack, Typography } from '@mui/material';
 import { styled } from '@mui/material/styles';
 import { IconX } from '@tabler/icons-react';
 import { ReactNode } from 'react';
@@ -16,6 +16,7 @@ interface IProps {
 	isBGWhite?: boolean;
 	hiddenHeader?: boolean;
 	isFullwidth?: boolean;
+	isDivider?: boolean;
 }
 
 export const MainDialog = ({
@@ -28,6 +29,7 @@ export const MainDialog = ({
 	isBGWhite,
 	hiddenHeader,
 	isFullwidth = true,
+	isDivider = false,
 }: IProps) => {
 	return (
 		<CustomDialog
@@ -58,6 +60,8 @@ export const MainDialog = ({
 					</MainIconButton>
 				</Stack>
 			)}
+
+			{isDivider && <Divider />}
 
 			<Box
 				pt={hiddenHeader ? TSizes.margin_common : 0}

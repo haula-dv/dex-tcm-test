@@ -34,9 +34,22 @@ interface IProps {
 }
 
 const AmountSetOrderSide = ({ formContext, maxQty, formatter }: IProps) => {
-	const onExtChange = (val: any, onChange: any) => {
-		const onlyNumbers = val.replace(/[^0-9]/g, ''); // Loại bỏ các ký tự không phải số
-		onChange(onlyNumbers);
+	const onExtChange = (val: string, onChange: any) => {
+		const filteredValue = val
+			.replace(/[^\d.,]/g, '')
+			.replace(/,/g, '.')
+			.replace(/(?<!\d)\.(?=\d+)(?=.*\.)/g, '');
+
+		if (Number(filteredValue) > 100) {
+			onChange(100);
+		} else {
+			const caculatedAmount = (maxQty * Number(filteredValue)) / 100;
+
+			formContext.setValue('quantity', Number(formatter.format(caculatedAmount)) as any, {
+				shouldValidate: true,
+			});
+			onChange(filteredValue);
+		}
 	};
 
 	return (
@@ -79,7 +92,9 @@ const AmountSetOrderSide = ({ formContext, maxQty, formatter }: IProps) => {
 										variant={value == item.percentValue ? 'outlined' : 'filledTonal'}
 										onClick={() => {
 											const caculatedAmount = (maxQty * item.value) / 100;
-											formContext.setValue('quantity', Number(formatter.format(caculatedAmount)) as any);
+											formContext.setValue('quantity', Number(formatter.format(caculatedAmount)) as any, {
+												shouldValidate: true,
+											});
 											onChange(item.percentValue);
 										}}
 										size="small"
