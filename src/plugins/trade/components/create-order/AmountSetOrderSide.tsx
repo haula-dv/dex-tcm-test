@@ -44,8 +44,9 @@ const AmountSetOrderSide = ({ formContext, maxQty, formatter }: IProps) => {
 			onChange(100);
 		} else {
 			const caculatedAmount = (maxQty * Number(filteredValue)) / 100;
+			const truncatedAmount = Math.floor(caculatedAmount * 10000) / 10000; // Giữ lại 4 chữ số thập phân mà không làm tròn
 
-			formContext.setValue('quantity', Number(formatter.format(caculatedAmount)) as any, {
+			formContext.setValue('quantity', truncatedAmount as any, {
 				shouldValidate: true,
 			});
 			onChange(filteredValue);
@@ -92,7 +93,8 @@ const AmountSetOrderSide = ({ formContext, maxQty, formatter }: IProps) => {
 										variant={value == item.percentValue ? 'outlined' : 'filledTonal'}
 										onClick={() => {
 											const caculatedAmount = (maxQty * item.value) / 100;
-											formContext.setValue('quantity', Number(formatter.format(caculatedAmount)) as any, {
+											const truncatedAmount = Math.floor(caculatedAmount * 10000) / 10000;
+											formContext.setValue('quantity', truncatedAmount as any, {
 												shouldValidate: true,
 											});
 											onChange(item.percentValue);
