@@ -12,9 +12,7 @@ import { memo, ReactNode, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { match } from 'ts-pattern';
 import { Balance } from '../common/Balance';
-import AmountSetOrderSide from './AmountSetOrderSide';
 import Details from './Details';
-import DividerOrder from './DividerOrder';
 import InputForm from './InputForm';
 import ModalConfirmOrder from './ModalConfirmOrder';
 import OrderDirection from './OrderDirection';
@@ -26,11 +24,10 @@ interface IProps {
 
 export type Inputs = {
 	direction: 'Buy' | 'Sell';
-	type: 'Limit' | 'Market' | 'StopLimit' | 'StopMarket';
+	type: 'Market' | 'Limit' | 'StopLimit';
 	triggerPrice?: string;
 	price?: string;
 	quantity?: string;
-	baseQuantityTotal?: number;
 	orderSide?: string;
 };
 
@@ -40,7 +37,6 @@ const defaultValues: Inputs = {
 	triggerPrice: undefined,
 	price: undefined,
 	quantity: undefined,
-	baseQuantityTotal: undefined,
 	orderSide: undefined,
 };
 
@@ -63,21 +59,22 @@ const CreateOrderForm = ({ symbol }: IProps) => {
 		mode: 'all',
 	});
 
+	const { watch } = formContext;
+
 	const { onSubmit, helper, maxQty, estLeverage, estLiqPrice } = useOrderEntry(
 		{
 			symbol,
-			side: match(formContext.watch('direction', 'Buy'))
+			side: match(watch('direction', 'Buy'))
 				.with('Buy', () => OrderSide.BUY)
 				.with('Sell', () => OrderSide.SELL)
 				.exhaustive(),
-			order_type: match(formContext.watch('type', 'Market'))
+			order_type: match(watch('type', 'Market'))
 				.with('Market', () => OrderType.MARKET)
 				.with('Limit', () => OrderType.LIMIT)
 				.with('StopLimit', () => OrderType.STOP_LIMIT)
-				.with('StopMarket', () => OrderType.STOP_MARKET)
 				.exhaustive(),
-			order_quantity: formContext.watch('quantity', undefined),
-			order_price: formContext.watch('price', undefined),
+			order_quantity: watch('quantity', undefined),
+			order_price: watch('price', undefined),
 		},
 		{ watchOrderbook: true },
 	);
@@ -97,7 +94,6 @@ const CreateOrderForm = ({ symbol }: IProps) => {
 	// Submit form
 	const submitForm = async () => {
 		const data = formContext.getValues();
-
 		setLoading(true);
 
 		const { update } = customNotification({
@@ -128,25 +124,6 @@ const CreateOrderForm = ({ symbol }: IProps) => {
 		}
 	};
 
-	const getInput = (data: Inputs, symbol: string): OrderEntity => {
-		return {
-			symbol,
-			side: match(data.direction)
-				.with('Buy', () => OrderSide.BUY)
-				.with('Sell', () => OrderSide.SELL)
-				.exhaustive(),
-			order_type: match(data.type)
-				.with('Market', () => OrderType.MARKET)
-				.with('Limit', () => OrderType.LIMIT)
-				.with('StopLimit', () => OrderType.STOP_LIMIT)
-				.with('StopMarket', () => OrderType.STOP_MARKET)
-				.exhaustive(),
-			order_price: data.price,
-			order_quantity: data.quantity,
-			trigger_price: data.triggerPrice,
-		};
-	};
-
 	return (
 		<>
 			{symbolsInfo.isNil ? (
@@ -169,27 +146,22 @@ const CreateOrderForm = ({ symbol }: IProps) => {
 								</Typography>
 							</Stack>
 
-							<Stack spacing={'8px'}>
-								<InputForm
-									formContext={formContext}
-									getInput={getInput}
-									helper={helper}
-									maxQty={maxQty}
-									symbol={symbol}
-									symbolsInfo={symbolsInfo}
-								/>
-
-								<DividerOrder />
-							</Stack>
-
-							<AmountSetOrderSide formContext={formContext} />
+							<InputForm
+								formContext={formContext}
+								getInput={getInput}
+								helper={helper}
+								maxQty={maxQty}
+								symbol={symbol}
+								symbolsInfo={symbolsInfo}
+							/>
 
 							<Details
 								estLiqPrice={estLiqPrice}
 								estLeverage={estLeverage}
 								baseDecimals={baseDecimals}
 								quote={quote}
-								direction={formContext.watch('direction')}
+								symbol={symbol}
+								formContext={formContext}
 							/>
 						</Stack>
 
@@ -226,3 +198,21 @@ export const Item = ({ value, label }: IItemProps) => {
 };
 
 export default memo(CreateOrderForm);
+
+const getInput = (data: Inputs, symbol: string): OrderEntity => {
+	return {
+		symbol,
+		side: match(data.direction)
+			.with('Buy', () => OrderSide.BUY)
+			.with('Sell', () => OrderSide.SELL)
+			.exhaustive(),
+		order_type: match(data.type)
+			.with('Market', () => OrderType.MARKET)
+			.with('Limit', () => OrderType.LIMIT)
+			.with('StopLimit', () => OrderType.STOP_LIMIT)
+			.exhaustive(),
+		order_price: data.price,
+		order_quantity: data.quantity,
+		trigger_price: data.triggerPrice,
+	};
+};

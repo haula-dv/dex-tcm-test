@@ -3,10 +3,11 @@ import { getDecimalsFromTick } from '@/utils/formatters/api';
 import { Collapse, Stack, Typography, useTheme } from '@mui/material';
 import { useOrderEntry } from '@orderly.network/hooks';
 import { OrderEntity } from '@orderly.network/types';
-import { memo } from 'react';
 import { UseFormReturn } from 'react-hook-form';
 import { match } from 'ts-pattern';
+import AmountSetOrderSide from './AmountSetOrderSide';
 import { Inputs } from './CreateOrderForm';
+import DividerOrder from './DividerOrder';
 
 interface IProps {
 	formContext: UseFormReturn<Inputs>;
@@ -35,7 +36,7 @@ function InputForm({ formContext, symbolsInfo, symbol, getInput, helper, maxQty 
 	const formatter = new Intl.NumberFormat('en-US', { maximumFractionDigits: baseDecimals });
 
 	return (
-		<>
+		<Stack spacing={'8px'}>
 			{formContext.watch('type') === 'StopLimit' && (
 				<Collapse in={formContext.watch('type') === 'StopLimit' ? true : false}>
 					<CurrencyInputField
@@ -89,6 +90,7 @@ function InputForm({ formContext, symbolsInfo, symbol, getInput, helper, maxQty 
 					}}
 				/>
 			</Stack>
+
 			<Stack direction={'row'} justifyContent={'space-between'} mt={'2px !important'}>
 				<Typography fontSize={'12px'} color={theme.palette.grey[300]}>
 					Max{' '}
@@ -105,8 +107,12 @@ function InputForm({ formContext, symbolsInfo, symbol, getInput, helper, maxQty 
 					{formatter.format(maxQty)} {base}
 				</Typography>
 			</Stack>
-		</>
+
+			<DividerOrder />
+
+			<AmountSetOrderSide maxQty={maxQty} formContext={formContext} formatter={formatter} />
+		</Stack>
 	);
 }
 
-export default memo(InputForm);
+export default InputForm;

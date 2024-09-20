@@ -15,6 +15,7 @@ interface InputFieldProps<V extends FieldValues> {
 	inputMode?: 'numeric' | 'decimal' | 'amount';
 	readOnly?: boolean | null;
 	rules?: Omit<RegisterOptions<V, Path<V>>, 'disabled' | 'valueAsNumber' | 'valueAsDate' | 'setValueAs'> | undefined;
+	onExtChange?: (val: string, onChange: any) => void;
 }
 
 const InputField = <V extends FieldValues>({
@@ -27,6 +28,7 @@ const InputField = <V extends FieldValues>({
 	readOnly,
 	suffix,
 	rules,
+	onExtChange,
 }: InputFieldProps<V>) => {
 	const theme = useTheme();
 
@@ -43,8 +45,10 @@ const InputField = <V extends FieldValues>({
 							placeholder={placeholder}
 							name={name}
 							value={value}
-							onBlur={onBlur}
-							onChange={onChange}
+							// onBlur={onBlur}
+							onChange={() => {
+								onExtChange ? onExtChange(value, onChange) : onChange(value);
+							}}
 							endAdornment={
 								<InputAdornment position="end">
 									<Typography
@@ -63,9 +67,6 @@ const InputField = <V extends FieldValues>({
 								'aria-label': 'weight',
 							}}
 						/>
-						{/* <FormHelperText id="outlined-weight-helper-text">Weight</FormHelperText> */}
-
-						{/* <RenderFormError error={error?.message ?? ''} /> */}
 					</>
 				)}
 			/>

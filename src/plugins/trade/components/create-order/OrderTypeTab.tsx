@@ -10,11 +10,11 @@ import { UseFormReturn } from 'react-hook-form';
 import { Inputs } from './CreateOrderForm';
 
 const items: SelectOption[] = [
-	{ label: 'Market', value: 'Market' },
 	{ label: 'Limit', value: 'Limit' },
+	{ label: 'Market', value: 'Market' },
 	{ label: 'Stop', value: 'Stop' },
 	{ label: 'Stop limit', value: 'StopLimit' },
-	{ label: 'Stop market', value: 'StopMarket' },
+	// { label: 'Stop market', value: 'StopMarket' },
 ];
 
 interface IProps {
@@ -22,7 +22,7 @@ interface IProps {
 }
 
 const OrderTypeTab = ({ formContext }: IProps) => {
-	const [value, setValue] = useState<any>('Market');
+	const [value, setValue] = useState<any>('Limit');
 	const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
 	const open = Boolean(anchorEl);
 	const theme = useTheme();

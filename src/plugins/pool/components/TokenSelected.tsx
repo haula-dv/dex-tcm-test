@@ -143,25 +143,14 @@ export const ItemRow = ({ title, value }: IItemRow) => {
 	return (
 		<Stack direction={'row'} justifyContent={'space-between'} alignItems={'center'}>
 			{typeof title == 'string' ? (
-				<Typography
-					fontSize={'15px'}
-					color={setColorThemeMode(useTheme().palette.grey[500], useTheme().palette.common.white)}
-				>
+				<Typography color={setColorThemeMode(useTheme().palette.grey[500], useTheme().palette.grey[200])}>
 					{title}
 				</Typography>
 			) : (
-				<Box color={setColorThemeMode(useTheme().palette.grey[500], useTheme().palette.common.white)} fontSize={'15px'}>
-					{title}
-				</Box>
+				<Box color={setColorThemeMode(useTheme().palette.grey[500], useTheme().palette.grey[200])}>{title}</Box>
 			)}
 
-			{typeof value == 'string' ? (
-				<Typography fontWeight={600} fontSize={'15px'}>
-					{value}
-				</Typography>
-			) : (
-				<Box fontSize={'15px'}>{value}</Box>
-			)}
+			{typeof value == 'string' ? <Typography fontWeight={600}>{value}</Typography> : <Box>{value}</Box>}
 		</Stack>
 	);
 };
