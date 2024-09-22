@@ -1,8 +1,11 @@
 import CurrencyInputField from '@/components/form-control/CurrencyInputField';
+import { CustomTextField } from '@/components/form-control/TokenInput';
 import { getDecimalsFromTick } from '@/utils/formatters/api';
-import { Collapse, Stack, Typography, useTheme } from '@mui/material';
+import { setColorThemeMode } from '@/utils/helpers';
+import { Collapse, InputAdornment, Stack, Typography, useTheme } from '@mui/material';
 import { useOrderEntry } from '@orderly.network/hooks';
 import { OrderEntity } from '@orderly.network/types';
+import { memo, useEffect, useState } from 'react';
 import { UseFormReturn } from 'react-hook-form';
 import { match } from 'ts-pattern';
 import AmountSetOrderSide from './AmountSetOrderSide';
@@ -35,10 +38,35 @@ function InputForm({ formContext, symbolsInfo, symbol, getInput, helper, maxQty 
 
 	const formatter = new Intl.NumberFormat('en-US', { maximumFractionDigits: baseDecimals });
 
+	const [isHiddenMarket, setIsHiddenMarket] = useState(false);
+
+	useEffect(() => {
+		const { unsubscribe } = formContext.watch((value, { name, type }) => {
+			if (name === 'type') {
+				if (value.type === 'Market' || value.type === 'StopMarket') {
+					setIsHiddenMarket(true);
+					formContext.setValue('price', undefined, { shouldValidate: true });
+				} else {
+					setIsHiddenMarket(false);
+				}
+			}
+		});
+
+		return () => unsubscribe();
+	}, [formContext]);
+
 	return (
 		<Stack spacing={'8px'}>
-			{formContext.watch('type') === 'StopLimit' && (
-				<Collapse in={formContext.watch('type') === 'StopLimit' ? true : false}>
+			{match(formContext.watch('type'))
+				.with('StopLimit', () => true)
+				.with('StopMarket', () => true)
+				.otherwise(() => false) && (
+				<Collapse
+					in={match(formContext.watch('type'))
+						.with('StopLimit', () => true)
+						.with('StopMarket', () => true)
+						.otherwise(() => false)}
+				>
 					<CurrencyInputField
 						name="triggerPrice"
 						formContext={formContext}
@@ -58,21 +86,48 @@ function InputForm({ formContext, symbolsInfo, symbol, getInput, helper, maxQty 
 			)}
 
 			<Stack direction={'row'} alignItems={'start'} spacing={'10px'}>
-				<CurrencyInputField
-					name="price"
-					formContext={formContext}
-					suffix={quote}
-					decimals={quoteDecimals}
-					placeholder="0.0000"
-					rules={{
-						validate: {
-							custom: async (_, data) => {
-								const errors = await getValidationErrors(data, symbol, helper.validator);
-								return errors?.order_price != null ? errors.order_price.message : true;
+				{isHiddenMarket ? (
+					<CustomTextField
+						readOnly
+						placeholder="Market"
+						endAdornment={
+							<InputAdornment position="end">
+								<Typography
+									px={'6px'}
+									bgcolor={setColorThemeMode(theme.palette.primary.main, theme.palette.grey[800])}
+									fontWeight={600}
+									borderRadius={'40px'}
+									fontSize={'12px'}
+								>
+									{quote}
+								</Typography>
+							</InputAdornment>
+						}
+					/>
+				) : (
+					<CurrencyInputField
+						name="price"
+						formContext={formContext}
+						suffix={quote}
+						decimals={quoteDecimals}
+						placeholder={match(formContext.watch('type'))
+							.with('Market', () => 'Market')
+							.with('StopMarket', () => 'Market')
+							.otherwise(() => '0.0000')}
+						readOnly={match(formContext.watch('type'))
+							.with('Market', () => true)
+							.with('StopMarket', () => true)
+							.otherwise(() => false)}
+						rules={{
+							validate: {
+								custom: async (_, data) => {
+									const errors = await getValidationErrors(data, symbol, helper.validator);
+									return errors?.order_price != null ? errors.order_price.message : true;
+								},
 							},
-						},
-					}}
-				/>
+						}}
+					/>
+				)}
 
 				<CurrencyInputField
 					name="quantity"
@@ -115,4 +170,4 @@ function InputForm({ formContext, symbolsInfo, symbol, getInput, helper, maxQty 
 	);
 }
 
-export default InputForm;
+export default memo(InputForm);

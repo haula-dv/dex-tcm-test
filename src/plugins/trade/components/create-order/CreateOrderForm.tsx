@@ -24,7 +24,7 @@ interface IProps {
 
 export type Inputs = {
 	direction: 'Buy' | 'Sell';
-	type: 'Market' | 'Limit' | 'StopLimit';
+	type: 'Market' | 'Limit' | 'StopLimit' | 'StopMarket';
 	triggerPrice?: string;
 	price?: string;
 	quantity?: string;
@@ -72,6 +72,7 @@ const CreateOrderForm = ({ symbol }: IProps) => {
 				.with('Market', () => OrderType.MARKET)
 				.with('Limit', () => OrderType.LIMIT)
 				.with('StopLimit', () => OrderType.STOP_LIMIT)
+				.with('StopMarket', () => OrderType.STOP_MARKET)
 				.exhaustive(),
 			order_quantity: watch('quantity', undefined),
 			order_price: watch('price', undefined),
@@ -121,6 +122,7 @@ const CreateOrderForm = ({ symbol }: IProps) => {
 		} finally {
 			setLoading(false);
 			setOpenOrderConfirm(false);
+			formContext.reset();
 		}
 	};
 
@@ -210,6 +212,7 @@ const getInput = (data: Inputs, symbol: string): OrderEntity => {
 			.with('Market', () => OrderType.MARKET)
 			.with('Limit', () => OrderType.LIMIT)
 			.with('StopLimit', () => OrderType.STOP_LIMIT)
+			.with('StopMarket', () => OrderType.STOP_MARKET)
 			.exhaustive(),
 		order_price: data.price,
 		order_quantity: data.quantity,

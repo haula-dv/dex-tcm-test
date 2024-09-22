@@ -1,10 +1,11 @@
 import { MainButton } from '@/components/button/MainButton';
 import { MainCard } from '@/components/card/MainCard';
+import { MainChip } from '@/components/chip/MainChip';
 import { ItemRow } from '@/plugins/pool/components/TokenSelected';
 import { usdFormatter } from '@/utils/formatters/number';
 import { setColorThemeMode } from '@/utils/helpers';
-import { Box, Stack, useTheme } from '@mui/material';
-import { useMarkPrice } from '@orderly.network/hooks';
+import { Box, Stack, Typography, useTheme } from '@mui/material';
+import { useAccountInfo, useMarkPrice } from '@orderly.network/hooks';
 import { useConnectWallet } from '@web3-onboard/react';
 import { memo, useMemo } from 'react';
 import { UseFormReturn } from 'react-hook-form';
@@ -21,8 +22,8 @@ interface IProps {
 
 const Details = ({ estLiqPrice, estLeverage, baseDecimals, quote, symbol, formContext }: IProps) => {
 	const [{ wallet, connecting }, connect, disconnect] = useConnectWallet();
-
 	const { data: markPrice } = useMarkPrice(symbol);
+	const { data: accountInfo, isLoading } = useAccountInfo();
 
 	// Handle connect wallet button
 	const handleConnectWallet = async () => {
@@ -35,7 +36,7 @@ const Details = ({ estLiqPrice, estLeverage, baseDecimals, quote, symbol, formCo
 		const quantity = formContext.watch('quantity') ?? 0;
 		const price = formContext.watch('price') ?? 0;
 
-		if (formContext.watch('type') === 'Market') {
+		if (formContext.watch('type') === 'Market' || formContext.watch('type') === 'StopMarket') {
 			return usdFormatter.format(Number(quantity) * markPrice);
 		}
 
@@ -48,9 +49,48 @@ const Details = ({ estLiqPrice, estLeverage, baseDecimals, quote, symbol, formCo
 		return usdFormatter.format(total);
 	}, [formContext, markPrice]);
 
+	const theme = useTheme();
+
 	return (
 		<MainCard width="100%" backgroudColor="primaryLight">
+			<Typography pb={'10px'}>Details</Typography>
 			<Stack spacing={'6px'} pb={'10px'}>
+				<ItemRow
+					title="Expected Price"
+					value={
+						estLiqPrice ? (
+							<Box>
+								{usdFormatter.format(estLiqPrice)}{' '}
+								<span style={{ color: setColorThemeMode(theme.palette.grey[700], theme.palette.grey[300]) }}>
+									{quote}
+								</span>
+							</Box>
+						) : (
+							'-'
+						)
+					}
+				/>
+
+				<ItemRow title="Price Impact" value={'_'} />
+
+				<ItemRow title="Account leverage:" value={estLeverage ? `⇒ ${formatter.format(estLeverage)}` : '_'} />
+
+				<ItemRow
+					title={
+						<Stack direction={'row'} spacing={'6px'} alignItems={'center'}>
+							<Typography
+								fontSize={'15px'}
+								color={setColorThemeMode(useTheme().palette.grey[500], useTheme().palette.grey[300])}
+							>
+								Fee
+							</Typography>
+
+							<MainChip disabledPadding fullRounded label={'Taker'} />
+						</Stack>
+					}
+					value={isLoading ? '_' : accountInfo?.taker_fee_rate}
+				/>
+
 				<ItemRow
 					title="Total ≈"
 					value={
@@ -62,26 +102,6 @@ const Details = ({ estLiqPrice, estLeverage, baseDecimals, quote, symbol, formCo
 						</Box>
 					}
 				/>
-				<ItemRow title="Est. Liq. price:" value={estLiqPrice ? `${usdFormatter.format(estLiqPrice)} ${quote}` : '-'} />
-				{/* <ItemRow title="Price Impact" value={'_'} /> */}
-				<ItemRow title="Account leverage:" value={estLeverage ? `⇒ ${formatter.format(estLeverage)}` : '_'} />
-				{/* <ItemRow
-					title={
-						<Stack direction={'row'} spacing={'6px'} alignItems={'center'}>
-							<Typography
-								fontSize={'15px'}
-								color={setColorThemeMode(useTheme().palette.grey[500], useTheme().palette.common.white)}
-							>
-								Fee
-							</Typography>
-
-							<MainChip disabledPadding fullRounded label={'Taker'} />
-						</Stack>
-					}
-					value="_"
-				/>
-
-				<ItemRow title="Total" value="_" /> */}
 			</Stack>
 			<MainButton
 				fullWidth

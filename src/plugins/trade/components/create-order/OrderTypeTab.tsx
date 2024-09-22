@@ -14,7 +14,7 @@ const items: SelectOption[] = [
 	{ label: 'Market', value: 'Market' },
 	{ label: 'Stop', value: 'Stop' },
 	{ label: 'Stop limit', value: 'StopLimit' },
-	// { label: 'Stop market', value: 'StopMarket' },
+	{ label: 'Stop market', value: 'StopMarket' },
 ];
 
 interface IProps {

@@ -36,7 +36,7 @@ const ModalConfirmOrder = ({ open, loading, handleClose, submitForm, symbol, cur
 			}
 
 			return usdFormatter.format(total);
-		} else if (currentValue.type === 'Market') {
+		} else if (currentValue.type === 'Market' || currentValue.type === 'StopMarket') {
 			return usdFormatter.format(Number(quantity) * markPrice);
 		} else {
 			return 0;
@@ -66,10 +66,12 @@ const ModalConfirmOrder = ({ open, loading, handleClose, submitForm, symbol, cur
 						}
 					/>
 					<ItemRow
-						title="Price"
+						title={currentValue.type === 'StopMarket' ? 'Trigger' : 'Price'}
 						value={
 							<Box fontWeight={600}>
-								{usdFormatter.format(currentValue.price ? +currentValue.price : 0)}
+								{currentValue.type === 'StopMarket'
+									? usdFormatter.format(currentValue.triggerPrice ? +currentValue.triggerPrice : 0)
+									: usdFormatter.format(currentValue.price ? +currentValue.price : 0)}
 								<span
 									style={{
 										paddingLeft: '6px',

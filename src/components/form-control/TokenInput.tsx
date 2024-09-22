@@ -13,7 +13,7 @@ export const TokenInput: FC<
 	{
 		decimals: number;
 		id?: string;
-		readonly?: boolean;
+		readOnly?: boolean;
 		placeholder?: string;
 		afterInputChange?: Function;
 		value?: string | number;
@@ -23,11 +23,10 @@ export const TokenInput: FC<
 		className?: string;
 		hasError?: boolean;
 		suffix?: React.ReactNode;
-		readOnly?: boolean;
 	} & Partial<ControllerRenderProps>
 > = ({
 	id,
-	readonly,
+	readOnly,
 	placeholder,
 	decimals,
 	afterInputChange,
@@ -38,7 +37,6 @@ export const TokenInput: FC<
 	className,
 	hasError,
 	suffix,
-	readOnly,
 	...props
 }) => {
 	const theme = useTheme();
@@ -75,7 +73,7 @@ export const TokenInput: FC<
 			value={value}
 			onInput={onInputChange}
 			name={props.name}
-			readOnly={readonly ?? false}
+			readOnly={readOnly}
 			placeholder={placeholder ?? '0.0'}
 			onChange={(event) => {
 				let newValue = filterAllowedCharacters(event.target.value);
@@ -129,7 +127,6 @@ export const CustomTextField = styled(OutlinedInput)(({ theme }) => ({
 	backgroundColor: setColorThemeMode(theme.palette.primary.light, TColors.brownnDark),
 	height: TSizes.buttonHeightSmall,
 	width: '100%',
-
 	'& input': {
 		padding: '12px 0px 12px 14px',
 	},

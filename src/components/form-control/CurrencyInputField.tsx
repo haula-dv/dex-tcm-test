@@ -66,6 +66,7 @@ const CurrencyInputField = <V extends FieldValues>({
 								min={min}
 								readOnly={readOnly}
 							/>
+
 							{helperText && <Box>{helperText}</Box>}
 
 							<RenderFormError error={extErrors ? extErrors?.message : error?.message ?? ''} />
