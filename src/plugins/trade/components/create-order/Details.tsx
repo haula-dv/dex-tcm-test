@@ -43,9 +43,10 @@ const Details = ({ estLiqPrice = 0, estLeverage, baseDecimals, quote, base, symb
 			return '';
 		}
 
-		const price = ((Number(receivedPrice) - markPrice) / markPrice) * 100 * 100;
+		// Adjusted calculation: (received price - mark price) / mark price * 100
+		const price = ((Number(receivedPrice) - markPrice) / markPrice) * 100;
 		return `${price.toFixed(2)}%`;
-	}, [estLiqPrice, markPrice]);
+	}, [markPrice, formContext]);
 
 	const takerFeeRate = useMemo(() => {
 		if (!accountInfo) {
@@ -65,29 +66,45 @@ const Details = ({ estLiqPrice = 0, estLeverage, baseDecimals, quote, base, symb
 
 	const fee = useMemo(() => {
 		const feeRate = formContext.watch('type') === 'Market' ? takerFeeRate : makerFeeRate;
+
 		const totalFee = feeRate * quantity; // Số lượng phí cụ thể
 
 		// Nếu bạn muốn tính phần trăm phí dựa trên tổng giá trị giao dịch
 		const totalValue = quantity * estLiqPrice; // Tổng giá trị giao dịch
 		const feePercentage = (totalFee / totalValue) * 100; // Phần trăm phí
 
+		console.log(typeof feePercentage);
+
+		if (!isFinite(feePercentage)) {
+			return { totalFee: 0, feePercentage: 0 };
+		}
+
 		return { totalFee, feePercentage }; // Trả về cả hai giá trị
 	}, [takerFeeRate, makerFeeRate, quantity, formContext, estLiqPrice]);
 
 	const totalPrice = useMemo(() => {
 		if (isNaN(quantity) && isNaN(markPrice)) {
-			return '';
+			return 0;
 		}
 
 		const amount = Number(quantity) ?? 0;
 		const curPrice = Number(price) ?? 0;
 
 		if (formContext.watch('type') === 'Limit' || formContext.watch('type') === 'StopLimit') {
-			return amount * curPrice;
+			const total = amount * curPrice + fee.totalFee;
+			if (isNaN(total)) {
+				return 0;
+			}
+
+			return total;
 		}
 
 		const total = amount * markPrice + fee.totalFee;
-		return usdFormatter.format(total);
+		if (isNaN(total)) {
+			return 0;
+		}
+
+		return total;
 	}, [quantity, markPrice, fee, price, formContext]);
 
 	return (
@@ -107,20 +124,27 @@ const Details = ({ estLiqPrice = 0, estLeverage, baseDecimals, quote, base, symb
 								fontSize={'15px'}
 								color={setColorThemeMode(useTheme().palette.grey[500], useTheme().palette.grey[300])}
 							>
-								Fee {!isNaN(fee.feePercentage) ? `(${usdFormatter.format(fee.feePercentage)})%` : ''}
+								Fee {fee.feePercentage > 0 ? `(${usdFormatter.format(fee.feePercentage)})%` : ''}
 							</Typography>
 
 							<MainChip disabledPadding fullRounded label={'Taker'} />
 						</Stack>
 					}
-					value={`${fee.totalFee ? fee.totalFee : '-'} ${quote}`}
+					value={
+						<Box>
+							{fee.totalFee ? usdFormatter.format(fee.totalFee) : '-'}{' '}
+							<span style={{ color: setColorThemeMode(useTheme().palette.grey[700], useTheme().palette.grey[300]) }}>
+								{quote}
+							</span>
+						</Box>
+					}
 				/>
 
 				<ItemRow
 					title="Total ≈"
 					value={
 						<Box>
-							{totalPrice ?? '-'}{' '}
+							{totalPrice > 0 ? usdFormatter.format(totalPrice) : '-'}{' '}
 							<span style={{ color: setColorThemeMode(useTheme().palette.grey[700], useTheme().palette.grey[300]) }}>
 								{quote}
 							</span>
