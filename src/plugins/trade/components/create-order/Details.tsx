@@ -73,8 +73,6 @@ const Details = ({ estLiqPrice = 0, estLeverage, baseDecimals, quote, base, symb
 		const totalValue = quantity * estLiqPrice; // Tổng giá trị giao dịch
 		const feePercentage = (totalFee / totalValue) * 100; // Phần trăm phí
 
-		console.log(typeof feePercentage);
-
 		if (!isFinite(feePercentage)) {
 			return { totalFee: 0, feePercentage: 0 };
 		}
