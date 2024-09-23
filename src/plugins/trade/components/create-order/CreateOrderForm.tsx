@@ -162,6 +162,7 @@ const CreateOrderForm = ({ symbol }: IProps) => {
 								estLeverage={estLeverage}
 								baseDecimals={baseDecimals}
 								quote={quote}
+								base={base}
 								symbol={symbol}
 								formContext={formContext}
 							/>

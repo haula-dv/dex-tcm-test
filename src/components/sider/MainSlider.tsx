@@ -1,7 +1,7 @@
 import { Slider } from '@mui/material';
 import { styled } from '@mui/material/styles';
 
-export const CustomSlider = styled(Slider)(({ theme }) => ({
+export const MainSlider = styled(Slider)(({ theme }) => ({
 	'& span': {
 		color: theme.palette.success.main,
 	},

@@ -1,13 +1,17 @@
 import { MainButton } from '@/components/button/MainButton';
+import { MainCard } from '@/components/card/MainCard';
+import AmountSlider from '@/components/form-control/AmountSlider';
 import InputField from '@/components/form-control/InputField';
 import SwitchBase from '@/components/form-control/SwitcheBase';
 import { TColors } from '@/utils';
 import { setColorThemeMode } from '@/utils/helpers';
 import { TSizes } from '@/utils/themes/custom-theme/sizes';
-import { Box, Stack, Typography } from '@mui/material';
+import { Box, Collapse, Stack, Typography } from '@mui/material';
 import { styled, useTheme } from '@mui/material/styles';
+import { ChangeEvent, useState } from 'react';
 import { Controller, UseFormReturn } from 'react-hook-form';
 import { Inputs } from './CreateOrderForm';
+import DividerOrder from './DividerOrder';
 
 const slippages = [
 	{
@@ -53,64 +57,84 @@ const AmountSetOrderSide = ({ formContext, maxQty, formatter }: IProps) => {
 		}
 	};
 
+	const [isChecked, setIsChecked] = useState(false);
+	const handleChange = (event: ChangeEvent<HTMLInputElement>, checked: boolean) => {
+		setIsChecked(checked);
+	};
+
 	return (
 		<>
-			<Stack direction={'row'} alignItems={'center'} justifyContent={'space-between'} mt="-6px !important">
-				<Stack direction={'row'} alignItems={'center'} spacing={1}>
-					<Typography fontWeight={600} fontSize={'13px'}>
-						Amount
-					</Typography>
+			<DividerOrder />
 
-					<Typography color={useTheme().palette.grey[500]} fontSize={'12px'}>
-						Set order size
-					</Typography>
+			<MainCard disablePadding backgroudColor="transparent" variant="outlined">
+				<Stack direction={'row'} alignItems={'center'} justifyContent={'space-between'} px={TSizes.margin_common}>
+					<Stack direction={'row'} alignItems={'center'} spacing={1}>
+						<Typography fontWeight={600} fontSize={'13px'}>
+							Amount
+						</Typography>
+
+						<Typography color={useTheme().palette.grey[500]} fontSize={'12px'}>
+							Set order size
+						</Typography>
+					</Stack>
+
+					<SwitchBase label="Slider" onChange={handleChange} value={isChecked} />
 				</Stack>
 
-				<SwitchBase label="Slider" />
-			</Stack>
+				<Collapse in={isChecked}>
+					<Box px={TSizes.margin_common} pb={TSizes.margin_common}>
+						<AmountSlider
+							name="orderSide"
+							formContext={formContext}
+							max={maxQty}
+							maxQty={`${formatter.format(maxQty)}`}
+						/>
 
-			<Stack direction={'row'} spacing={TSizes.margin_xs} alignItems={'center'}>
-				<Box width={'100%'}>
-					<InputField
-						placeholder="0.00 x"
-						name="orderSide"
-						formContext={formContext}
-						suffix="NONE"
-						onExtChange={onExtChange}
-					/>
-				</Box>
+						<Stack direction={'row'} spacing={TSizes.margin_xs} pt={TSizes.margin_xs} alignItems={'center'}>
+							<Box width={'100%'}>
+								<InputField
+									placeholder="0.00 x"
+									name="orderSide"
+									formContext={formContext}
+									suffix="NONE"
+									onExtChange={onExtChange}
+								/>
+							</Box>
 
-				<Stack direction={'row'} spacing={'5px'} alignItems={'center'} width={'100%'}>
-					<Controller
-						control={formContext.control}
-						name="orderSide"
-						render={({ field: { value, onChange, name } }) => (
-							<>
-								{slippages.map((item) => (
-									<ButtonPercent
-										name={name}
-										key={item.value}
-										variant={value == item.percentValue ? 'outlined' : 'filledTonal'}
-										onClick={() => {
-											const caculatedAmount = (maxQty * item.value) / 100;
-											const truncatedAmount = Math.floor(caculatedAmount * 10000) / 10000;
-											formContext.setValue('quantity', truncatedAmount as any, {
-												shouldValidate: true,
-											});
-											onChange(item.percentValue);
-										}}
-										size="small"
-										color={value == item.percentValue ? 'darkGrey' : 'inherit'}
-										fullWidth
-									>
-										{item.label}
-									</ButtonPercent>
-								))}
-							</>
-						)}
-					/>
-				</Stack>
-			</Stack>
+							<Stack direction={'row'} spacing={'5px'} alignItems={'center'} width={'100%'}>
+								<Controller
+									control={formContext.control}
+									name="orderSide"
+									render={({ field: { value, onChange, name } }) => (
+										<>
+											{slippages.map((item) => (
+												<ButtonPercent
+													name={name}
+													key={item.value}
+													variant={value == item.percentValue ? 'outlined' : 'filledTonal'}
+													onClick={() => {
+														const caculatedAmount = (maxQty * item.value) / 100;
+														const truncatedAmount = Math.floor(caculatedAmount * 10000) / 10000;
+														formContext.setValue('quantity', truncatedAmount as any, {
+															shouldValidate: true,
+														});
+														onChange(item.percentValue);
+													}}
+													size="small"
+													color={value == item.percentValue ? 'darkGrey' : 'inherit'}
+													fullWidth
+												>
+													{item.label}
+												</ButtonPercent>
+											))}
+										</>
+									)}
+								/>
+							</Stack>
+						</Stack>
+					</Box>
+				</Collapse>
+			</MainCard>
 		</>
 	);
 };

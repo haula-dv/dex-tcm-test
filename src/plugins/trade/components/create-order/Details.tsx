@@ -15,12 +15,14 @@ interface IProps {
 	estLiqPrice: number | null | undefined;
 	estLeverage: number | null | undefined;
 	quote?: string;
+	base?: string;
 	symbol: string;
 	baseDecimals: number;
 	formContext: UseFormReturn<Inputs>;
 }
 
-const Details = ({ estLiqPrice, estLeverage, baseDecimals, quote, symbol, formContext }: IProps) => {
+const Details = ({ estLiqPrice, estLeverage, baseDecimals, quote, base, symbol, formContext }: IProps) => {
+	const theme = useTheme();
 	const [{ wallet, connecting }, connect, disconnect] = useConnectWallet();
 	const { data: markPrice } = useMarkPrice(symbol);
 	const { data: accountInfo, isLoading } = useAccountInfo();
@@ -49,29 +51,33 @@ const Details = ({ estLiqPrice, estLeverage, baseDecimals, quote, symbol, formCo
 		return usdFormatter.format(total);
 	}, [formContext, markPrice]);
 
-	const theme = useTheme();
+	const priceImpact = useMemo(() => {
+		if (estLiqPrice && isNaN(estLiqPrice)) {
+			return '';
+		}
+
+		const expectPrice = estLiqPrice ?? 0;
+		const price = ((expectPrice - markPrice) / markPrice) * 100;
+		return `${price.toFixed(2)}%`;
+	}, [estLiqPrice, markPrice]);
 
 	return (
 		<MainCard width="100%" backgroudColor="primaryLight">
 			<Typography pb={'10px'}>Details</Typography>
 			<Stack spacing={'6px'} pb={'10px'}>
-				<ItemRow
-					title="Expected Price"
-					value={
-						estLiqPrice ? (
-							<Box>
-								{usdFormatter.format(estLiqPrice)}{' '}
-								<span style={{ color: setColorThemeMode(theme.palette.grey[700], theme.palette.grey[300]) }}>
-									{quote}
-								</span>
-							</Box>
-						) : (
-							'-'
-						)
-					}
-				/>
+				<ItemRow title="Expected Price" value={'_'} />
+				{/* estLiqPrice ? (
+						<Box>
+							{usdFormatter.format(estLiqPrice)}{' '}
+							<span style={{ color: setColorThemeMode(theme.palette.grey[700], theme.palette.grey[300]) }}>
+								{quote}/{base}
+							</span>
+						</Box>
+					) : (
+						'-'
+					) */}
 
-				<ItemRow title="Price Impact" value={'_'} />
+				<ItemRow title="Price Impact" value={priceImpact ?? '_'} />
 
 				<ItemRow title="Account leverage:" value={estLeverage ? `⇒ ${formatter.format(estLeverage)}` : '_'} />
 

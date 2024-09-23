@@ -10,7 +10,6 @@ import { UseFormReturn } from 'react-hook-form';
 import { match } from 'ts-pattern';
 import AmountSetOrderSide from './AmountSetOrderSide';
 import { Inputs } from './CreateOrderForm';
-import DividerOrder from './DividerOrder';
 
 interface IProps {
 	formContext: UseFormReturn<Inputs>;
@@ -146,7 +145,7 @@ function InputForm({ formContext, symbolsInfo, symbol, getInput, helper, maxQty 
 				/>
 			</Stack>
 
-			<Stack direction={'row'} justifyContent={'space-between'} mt={'2px !important'}>
+			{/* <Stack direction={'row'} justifyContent={'space-between'} mt={'2px !important'}>
 				<Typography fontSize={'12px'} color={theme.palette.grey[300]}>
 					Max{' '}
 					{match(formContext.watch('direction'))
@@ -161,9 +160,7 @@ function InputForm({ formContext, symbolsInfo, symbol, getInput, helper, maxQty 
 				>
 					{formatter.format(maxQty)} {base}
 				</Typography>
-			</Stack>
-
-			<DividerOrder />
+			</Stack> */}
 
 			<AmountSetOrderSide maxQty={maxQty} formContext={formContext} formatter={formatter} />
 		</Stack>

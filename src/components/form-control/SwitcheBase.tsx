@@ -51,7 +51,7 @@ export default function SwitchBase({ label, ...props }: IProps) {
 	return (
 		<FormControlLabel
 			labelPlacement="start"
-			control={<Android12Switch defaultChecked {...props} />}
+			control={<Android12Switch {...props} />}
 			label={label}
 			sx={{ pr: 0, mr: '-10px' }}
 		/>
