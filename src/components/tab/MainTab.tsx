@@ -44,8 +44,7 @@ const MainTab = ({ tabs, onChange, fullWidth, height, children, defaultValue }: 
 					);
 				})}
 			</Stack>
-
-			{children}
+			<>{children}</>
 		</TabContext>
 	);
 };

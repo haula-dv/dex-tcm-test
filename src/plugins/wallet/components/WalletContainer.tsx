@@ -137,6 +137,7 @@ export default function WalletContainer() {
 					open={openAccountDetailsModal}
 					onClose={() => setAccountDetailsModal(false)}
 					wallet={wallet}
+					disconnect={disconnect}
 				/>
 			)}
 

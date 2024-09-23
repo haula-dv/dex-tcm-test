@@ -29,7 +29,7 @@ export const OrderBookContainer = ({ symbol }: IProps) => {
 	return (
 		<MainCard backgroudColor="primary" width="100%">
 			<Stack direction={'row'} spacing={'6px'} height={'56px'} width={'100%'}>
-				<MainTab tabs={tabs as any} onChange={handleChange} fullWidth height={TSizes.buttonHeight} />
+				<MainTab tabs={tabs} onChange={handleChange} fullWidth height={TSizes.buttonHeight} />
 			</Stack>
 
 			<Box

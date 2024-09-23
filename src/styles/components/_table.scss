@@ -5,3 +5,13 @@
 		font-size: 12px;
 	}
 }
+
+.MuiTableCell-body {
+	font-weight: 600 !important;
+	min-height: 45px !important;
+	cursor: pointer;
+}
+
+.MuiTableRow-root {
+	min-height: 45px !important;
+}

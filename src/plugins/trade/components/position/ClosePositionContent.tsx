@@ -3,7 +3,7 @@ import { MainCard } from '@/components/card/MainCard';
 import { RenderFormError } from '@/components/form-control/RenderErrors';
 import { TokenInput } from '@/components/form-control/TokenInput';
 import IconLoading from '@/components/icons/loading';
-import { CustomSlider } from '@/components/sider/MainSlider';
+import { MainSlider } from '@/components/sider/MainSlider';
 import { getDecimalsFromTick } from '@/utils/formatters/api';
 import { Typography } from '@mui/material';
 import { useOrderEntry, useSymbolsInfo } from '@orderly.network/hooks';
@@ -120,7 +120,7 @@ const ClosePositionContent = ({ symbol, position, refresh, handleCloseModal }: I
 									max={FixedNumber.fromString(String(position.position_qty))}
 								/>
 
-								<CustomSlider
+								<MainSlider
 									name={name}
 									value={[Number(value)]}
 									defaultValue={[100]}

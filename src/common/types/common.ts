@@ -32,4 +32,5 @@ export type IHeadCell = {
 	title: any;
 	hint?: string;
 	align?: 'left' | 'right' | 'center';
+	width?: number;
 };

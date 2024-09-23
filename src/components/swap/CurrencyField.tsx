@@ -111,7 +111,7 @@ const CurrencyField = ({ currentToken, onChange, field, valueAmount }: IProps) =
 				<Stack direction={'row'} alignItems={'center'}>
 					<InputBase placeholder="0.0" value={valueAmount} onChange={getPrice} />
 
-					<TokenSelect handleToggleModalTokenList={handleToggleModalTokenList} tokenSelected={currentToken} />
+					<TokenSelect handleToggle={handleToggleModalTokenList} tokenSelected={currentToken} />
 				</Stack>
 
 				<Stack direction={'row'} justifyContent={'space-between'} alignItems={'center'} height={'18px'} pt="6px">

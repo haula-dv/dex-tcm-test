@@ -32,68 +32,66 @@ const AmountSlider = <V extends FieldValues>({ name, max = 0, formContext, maxQt
 	const theme = useTheme();
 
 	return (
-		<Stack>
-			<Controller
-				name={name}
-				control={formContext.control}
-				render={({ field: { value = 0, onChange } }) => (
-					<>
-						<Box px="4px">
-							<MainSlider
-								name={name}
-								marks={marks}
-								size="small"
-								getAriaValueText={(value) => `${value}%`}
-								valueLabelFormat={(value) => `${value}%`}
-								value={Number(value)}
-								valueLabelDisplay="auto"
-								onChange={(event, newValue: any) => {
-									onChange(newValue);
+		<Controller
+			name={name}
+			control={formContext.control}
+			render={({ field: { value = 0, onChange } }) => (
+				<>
+					<Box px="4px" mt="-4px !important">
+						<MainSlider
+							name={name}
+							marks={marks}
+							size="small"
+							getAriaValueText={(value) => `${value}%`}
+							valueLabelFormat={(value) => `${value}%`}
+							value={Number(value)}
+							valueLabelDisplay="auto"
+							onChange={(event, newValue: any) => {
+								onChange(newValue);
 
-									if (newValue === 0) {
-										formContext.setValue('quantity' as any, 0 as any, {
-											shouldValidate: false,
-										});
-
-										return;
-									}
-
-									const caculatedAmount = (max * newValue) / 100;
-									const truncatedAmount = Math.floor(caculatedAmount * 10000) / 10000;
-									formContext.setValue('quantity' as any, truncatedAmount as any, {
-										shouldValidate: true,
+								if (newValue === 0) {
+									formContext.setValue('quantity' as any, 0 as any, {
+										shouldValidate: false,
 									});
-								}}
-							/>
-						</Box>
 
-						<Stack direction={'row'} justifyContent={'space-between'} mt="-6px !important">
-							<Typography fontSize={'12px'} color={theme.palette.success.main}>
-								{value}%
+									return;
+								}
+
+								const caculatedAmount = (max * newValue) / 100;
+								const truncatedAmount = Math.floor(caculatedAmount * 10000) / 10000;
+								formContext.setValue('quantity' as any, truncatedAmount as any, {
+									shouldValidate: true,
+								});
+							}}
+						/>
+					</Box>
+
+					<Stack direction={'row'} justifyContent={'space-between'} mt="-6px !important">
+						<Typography fontSize={'12px'} color={theme.palette.success.main}>
+							{value}%
+						</Typography>
+
+						<Stack direction={'row'} justifyContent={'space-between'} spacing={'2px'}>
+							<Typography fontSize={'12px'} color={theme.palette.grey[300]}>
+								Max{' '}
+								{match(formContext.watch('direction' as any) as any)
+									.with('Buy' as any, () => 'Buy')
+									.otherwise(() => 'Sell')}
 							</Typography>
-
-							<Stack direction={'row'} justifyContent={'space-between'} spacing={'2px'}>
-								<Typography fontSize={'12px'} color={theme.palette.grey[300]}>
-									Max{' '}
-									{match(formContext.watch('direction' as any) as any)
-										.with('Buy' as any, () => 'Buy')
-										.otherwise(() => 'Sell')}
-								</Typography>
-								<Typography
-									fontSize={'12px'}
-									color={match(formContext.watch('direction' as any) as any)
-										.with('Buy', () => theme.palette.success.main)
-										.otherwise(() => theme.palette.error.main)}
-								>
-									{' '}
-									{maxQty}
-								</Typography>
-							</Stack>
+							<Typography
+								fontSize={'12px'}
+								color={match(formContext.watch('direction' as any) as any)
+									.with('Buy', () => theme.palette.success.main)
+									.otherwise(() => theme.palette.error.main)}
+							>
+								{' '}
+								{maxQty}
+							</Typography>
 						</Stack>
-					</>
-				)}
-			/>
-		</Stack>
+					</Stack>
+				</>
+			)}
+		/>
 	);
 };
 

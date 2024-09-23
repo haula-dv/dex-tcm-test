@@ -100,6 +100,7 @@ const PositionContent = ({ symbol }: IProps) => {
 												? theme.palette.error.main
 												: theme.palette.success.main
 										}
+										fontWeight={600}
 									>
 										{item.position_qty}
 									</Typography>
@@ -123,8 +124,9 @@ const PositionContent = ({ symbol }: IProps) => {
 												? theme.palette.error.main
 												: theme.palette.success.main
 										}
+										fontWeight={600}
 									>
-										{usdFormatter.format(item.unrealized_pnl)}({usdFormatter.format(item.unrealized_pnl_ROI * 100)}%)
+										{usdFormatter.format(item.unrealized_pnl)} ({usdFormatter.format(item.unrealized_pnl_ROI * 100)}%)
 									</Typography>
 								</TableCell>
 

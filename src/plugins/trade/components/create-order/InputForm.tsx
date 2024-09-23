@@ -44,7 +44,6 @@ function InputForm({ formContext, symbolsInfo, symbol, getInput, helper, maxQty 
 			if (name === 'type') {
 				if (value.type === 'Market' || value.type === 'StopMarket') {
 					setIsHiddenMarket(true);
-					formContext.setValue('price', undefined, { shouldValidate: true });
 				} else {
 					setIsHiddenMarket(false);
 				}

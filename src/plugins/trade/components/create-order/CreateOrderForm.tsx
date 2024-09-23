@@ -103,6 +103,10 @@ const CreateOrderForm = ({ symbol }: IProps) => {
 			message: 'Creating order...',
 		});
 
+		if (data.type == 'Market' || data.type == 'StopMarket') {
+			data.price = undefined;
+		}
+
 		try {
 			await onSubmit(getInput(data, symbol));
 			update({

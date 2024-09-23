@@ -47,7 +47,7 @@ export const OrderViewContainer = ({ symbol }: IProps) => {
 					height="100%"
 					width="100%"
 					disablePadding
-					sx={{ overflowY: 'auto', height: '100%', pb: '40px' }}
+					sx={{ overflowY: 'auto', height: '100%', pb: '50px' }}
 				>
 					{tabs.map((item) => (
 						<TabPanel key={item.value} value={item.value} sx={{ p: 0, overflowY: 'auto', height: '100%' }}>

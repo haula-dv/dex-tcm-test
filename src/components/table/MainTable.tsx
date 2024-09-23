@@ -1,6 +1,6 @@
 import { IHeadCell } from '@/common';
 import { TSizes } from '@/utils/themes/custom-theme/sizes';
-import { Stack, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from '@mui/material';
+import { Stack, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, useTheme } from '@mui/material';
 import { memo, ReactNode } from 'react';
 import IconNoContent from '../icons/no-content';
 
@@ -11,6 +11,8 @@ interface IProps {
 }
 
 function MainTable({ headTable, children, isEmpty }: IProps) {
+	const theme = useTheme();
+
 	return (
 		<TableContainer>
 			<Table aria-label="position-table" size="small" stickyHeader>
@@ -20,12 +22,14 @@ function MainTable({ headTable, children, isEmpty }: IProps) {
 							<TableCell
 								key={index}
 								align={item.align}
+								width={item.width}
 								sx={{
 									borderTopLeftRadius: index == 0 ? TSizes.borderRadius : '',
 									borderBottomLeftRadius: index == 0 ? TSizes.borderRadius : '',
 									borderBottomRightRadius: index < headTable.length - 1 ? '' : TSizes.borderRadius,
 									borderTopRightRadius: index < headTable.length - 1 ? '' : TSizes.borderRadius,
 									borderBottom: 0,
+									color: `${theme.palette.grey[300]} !important`,
 								}}
 							>
 								{item.title}

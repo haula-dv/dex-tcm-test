@@ -10,6 +10,7 @@ import { Box, Stack, Typography, useTheme } from '@mui/material';
 import { useAccount } from '@orderly.network/hooks';
 import { WalletState } from '@orderly.network/hooks/esm/walletConnectorContext';
 import { useNotifications, useSetChain } from '@web3-onboard/react';
+import Image from 'next/image';
 import { memo, useState } from 'react';
 
 interface IProps {
@@ -109,7 +110,8 @@ export const Balance = memo(({ availableWithdraw, quote, wallet }: IProps) => {
 						<Box mb={TSizes.margin_xs} />
 
 						<MainButton size="xsmall" variant="outlined" color="inherit" fullWidth onClick={handleGetTestUSDC}>
-							Get 1,000 test {quote}
+							<Image src={'/images/USDC.png'} height={18} width={18} alt="" style={{ marginRight: '4px' }} /> Get 1,000
+							test {quote}
 						</MainButton>
 					</>
 				)}

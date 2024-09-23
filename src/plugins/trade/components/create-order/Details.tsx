@@ -12,8 +12,8 @@ import { UseFormReturn } from 'react-hook-form';
 import { Inputs } from './CreateOrderForm';
 
 interface IProps {
-	estLiqPrice: number | null | undefined;
-	estLeverage: number | null | undefined;
+	estLiqPrice: number | any | undefined;
+	estLeverage: number | any | undefined;
 	quote?: string;
 	base?: string;
 	symbol: string;
@@ -21,7 +21,7 @@ interface IProps {
 	formContext: UseFormReturn<Inputs>;
 }
 
-const Details = ({ estLiqPrice, estLeverage, baseDecimals, quote, base, symbol, formContext }: IProps) => {
+const Details = ({ estLiqPrice = 0, estLeverage, baseDecimals, quote, base, symbol, formContext }: IProps) => {
 	const theme = useTheme();
 	const [{ wallet, connecting }, connect, disconnect] = useConnectWallet();
 	const { data: markPrice } = useMarkPrice(symbol);
@@ -33,49 +33,68 @@ const Details = ({ estLiqPrice, estLeverage, baseDecimals, quote, base, symbol, 
 	};
 
 	const formatter = new Intl.NumberFormat('en-US', { maximumFractionDigits: baseDecimals });
-
-	const totalPrice = useMemo(() => {
-		const quantity = formContext.watch('quantity') ?? 0;
-		const price = formContext.watch('price') ?? 0;
-
-		if (formContext.watch('type') === 'Market' || formContext.watch('type') === 'StopMarket') {
-			return usdFormatter.format(Number(quantity) * markPrice);
-		}
-
-		const total = Number(quantity) * Number(price);
-
-		if (isNaN(total)) {
-			return 0;
-		}
-
-		return usdFormatter.format(total);
-	}, [formContext, markPrice]);
+	const quantity = Number(formContext.watch('quantity')) ?? 0;
+	const price = formContext.watch('price') ?? 0;
 
 	const priceImpact = useMemo(() => {
-		if (estLiqPrice && isNaN(estLiqPrice)) {
+		const receivedPrice: any = formContext.watch('price') ?? 0;
+
+		if (receivedPrice && isNaN(receivedPrice)) {
 			return '';
 		}
 
-		const expectPrice = estLiqPrice ?? 0;
-		const price = ((expectPrice - markPrice) / markPrice) * 100;
+		const price = ((Number(receivedPrice) - markPrice) / markPrice) * 100 * 100;
 		return `${price.toFixed(2)}%`;
 	}, [estLiqPrice, markPrice]);
+
+	const takerFeeRate = useMemo(() => {
+		if (!accountInfo) {
+			return 0;
+		}
+
+		return accountInfo?.taker_fee_rate ?? 0;
+	}, [accountInfo]);
+
+	const makerFeeRate = useMemo(() => {
+		if (!accountInfo) {
+			return 0;
+		}
+
+		return accountInfo?.maker_fee_rate ?? 0;
+	}, [accountInfo]);
+
+	const fee = useMemo(() => {
+		const feeRate = formContext.watch('type') === 'Market' ? takerFeeRate : makerFeeRate;
+		const totalFee = feeRate * quantity; // Số lượng phí cụ thể
+
+		// Nếu bạn muốn tính phần trăm phí dựa trên tổng giá trị giao dịch
+		const totalValue = quantity * estLiqPrice; // Tổng giá trị giao dịch
+		const feePercentage = (totalFee / totalValue) * 100; // Phần trăm phí
+
+		return { totalFee, feePercentage }; // Trả về cả hai giá trị
+	}, [takerFeeRate, makerFeeRate, quantity, formContext, estLiqPrice]);
+
+	const totalPrice = useMemo(() => {
+		if (isNaN(quantity) && isNaN(markPrice)) {
+			return '';
+		}
+
+		const amount = Number(quantity) ?? 0;
+		const curPrice = Number(price) ?? 0;
+
+		if (formContext.watch('type') === 'Limit' || formContext.watch('type') === 'StopLimit') {
+			return amount * curPrice;
+		}
+
+		const total = amount * markPrice + fee.totalFee;
+		return usdFormatter.format(total);
+	}, [quantity, markPrice, fee, price, formContext]);
 
 	return (
 		<MainCard width="100%" backgroudColor="primaryLight">
 			<Typography pb={'10px'}>Details</Typography>
 			<Stack spacing={'6px'} pb={'10px'}>
-				<ItemRow title="Expected Price" value={'_'} />
-				{/* estLiqPrice ? (
-						<Box>
-							{usdFormatter.format(estLiqPrice)}{' '}
-							<span style={{ color: setColorThemeMode(theme.palette.grey[700], theme.palette.grey[300]) }}>
-								{quote}/{base}
-							</span>
-						</Box>
-					) : (
-						'-'
-					) */}
+				<ItemRow title="Expected Price" value={formatter.format(markPrice)} />
 
 				<ItemRow title="Price Impact" value={priceImpact ?? '_'} />
 
@@ -88,20 +107,20 @@ const Details = ({ estLiqPrice, estLeverage, baseDecimals, quote, base, symbol, 
 								fontSize={'15px'}
 								color={setColorThemeMode(useTheme().palette.grey[500], useTheme().palette.grey[300])}
 							>
-								Fee
+								Fee {!isNaN(fee.feePercentage) ? `(${usdFormatter.format(fee.feePercentage)})%` : ''}
 							</Typography>
 
 							<MainChip disabledPadding fullRounded label={'Taker'} />
 						</Stack>
 					}
-					value={isLoading ? '_' : accountInfo?.taker_fee_rate}
+					value={`${fee.totalFee ? fee.totalFee : '-'} ${quote}`}
 				/>
 
 				<ItemRow
 					title="Total ≈"
 					value={
 						<Box>
-							{totalPrice}{' '}
+							{totalPrice ?? '-'}{' '}
 							<span style={{ color: setColorThemeMode(useTheme().palette.grey[700], useTheme().palette.grey[300]) }}>
 								{quote}
 							</span>

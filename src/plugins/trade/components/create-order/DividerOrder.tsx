@@ -1,8 +1,12 @@
 import { setColorThemeMode } from '@/utils/helpers';
 import { Divider, useTheme } from '@mui/material';
-import { memo } from 'react';
+import { memo, ReactNode } from 'react';
 
-const DividerOrder = () => {
+interface IProps {
+	children?: ReactNode;
+}
+
+const DividerOrder = ({ children = 'or' }: IProps) => {
 	return (
 		<Divider
 			sx={{
@@ -19,7 +23,7 @@ const DividerOrder = () => {
 				},
 			}}
 		>
-			or
+			{children}
 		</Divider>
 	);
 };

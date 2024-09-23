@@ -4,7 +4,7 @@ import { setColorThemeMode } from '@/utils/helpers';
 import { TableCell, TableRow, Typography, useTheme } from '@mui/material';
 import { API } from '@orderly.network/types';
 import dayjs from 'dayjs';
-import { memo } from 'react';
+import { memo, useMemo } from 'react';
 import { match } from 'ts-pattern';
 
 interface IProps {
@@ -14,20 +14,38 @@ interface IProps {
 	isHideCancel?: boolean;
 }
 
+function formatNumber(num: any) {
+	return num.toLocaleString('en-US', { minimumFractionDigits: 1, maximumFractionDigits: 1 });
+}
+
 const PendingOrder = ({ order, symbol, handleClickOrderItem, isHideCancel }: IProps) => {
-	const [_, base, quote] = order.order.symbol.split('_');
+	const [prep, base, quote] = order.order.symbol.split('_');
 	const theme = useTheme();
+
+	const totalEstPrice = useMemo(() => {
+		const quantity = order.order.quantity ?? 0;
+		const average_executed_price = (order.order as any).average_executed_price ?? 0;
+
+		const total = (quantity * average_executed_price) / 100;
+		const totalWithPrecision = Math.floor(total * 100) / 100;
+
+		// Format số với dấu phẩy và 1 chữ số thập phân
+		return totalWithPrecision.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+	}, [order.order]);
 
 	return (
 		<TableRow>
 			<TableCell>
-				{base} / {quote}
+				{base}-{prep}
 			</TableCell>
+
 			<TableCell>
 				{order.isAlgoOrder ? order.order.algo_type : ''} {order.order.type}
 			</TableCell>
+
 			<TableCell>
 				<Typography
+					fontWeight={600}
 					color={match(order.order.side)
 						.with('BUY', () => theme.palette.success.main)
 						.otherwise(() => theme.palette.error.main)}
@@ -35,18 +53,37 @@ const PendingOrder = ({ order, symbol, handleClickOrderItem, isHideCancel }: IPr
 					{order.order.side}
 				</Typography>
 			</TableCell>
+
 			<TableCell>
 				<Typography
 					color={match(order.order.side)
 						.with('BUY', () => theme.palette.success.main)
 						.otherwise(() => theme.palette.error.main)}
+					fontWeight={600}
 				>
 					{baseFormatter.format(order.order.quantity)}
 				</Typography>
 			</TableCell>
-			<TableCell>{order.order.price ? usdFormatter.format(order.order.price) : '-'}</TableCell>
+
+			<TableCell>
+				{order.order.type === 'MARKET' ? 'MARKET' : order.order.price ? usdFormatter.format(order.order.price) : '-'}
+			</TableCell>
+
+			<TableCell>
+				{' '}
+				{(order.order as any).average_executed_price
+					? usdFormatter.format((order.order as any).average_executed_price)
+					: '_'}{' '}
+			</TableCell>
+
 			<TableCell> {order.order.trigger_price ? usdFormatter.format(order.order.trigger_price) : '-'}</TableCell>
+
+			<TableCell> {totalEstPrice}</TableCell>
+
+			<TableCell> {order.order.total_fee}</TableCell>
+
 			<TableCell> {dayjs(order.order.created_time).format('YYYY-MM-DD HH:mm:ss')}</TableCell>
+
 			{!isHideCancel && (
 				<TableCell align="right" sx={{ display: 'flex', justifyContent: 'flex-end' }}>
 					<MainButton

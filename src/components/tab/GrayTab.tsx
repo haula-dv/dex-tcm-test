@@ -8,7 +8,6 @@ import { ReactNode, useState } from 'react';
 
 interface IProps {
 	tabs: ITab[];
-
 	children?: ReactNode;
 }
 

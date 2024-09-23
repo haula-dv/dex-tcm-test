@@ -12,26 +12,28 @@ import { useAccountInstance, useChains, useCollateral, useDeposit, useWithdraw }
 import { WalletState } from '@orderly.network/hooks/esm/walletConnectorContext';
 import { toast } from '@orderly.network/react';
 import { IconCopy, IconLogout } from '@tabler/icons-react';
-import { useConnectWallet, useNotifications, useSetChain } from '@web3-onboard/react';
+import { useNotifications, useSetChain } from '@web3-onboard/react';
+import { FixedNumber } from 'ethers';
 import { useMemo, useState } from 'react';
 import { AccountAvatar } from './AccountAvatar';
+import { DepositWithdrawDialog } from './DepositWithdrawDialog';
 
 interface IProps {
 	open: boolean;
 	onClose: () => void;
 	wallet: WalletState;
+	disconnect: (wallet: WalletState) => Promise<WalletState[]>;
 }
 
-export default function AccountDetailPopup({ onClose, open, wallet }: IProps) {
+export default function AccountDetailPopup({ onClose, open, wallet, disconnect }: IProps) {
 	const [_, { findByChainId }] = useChains();
 	const collateral = useCollateral();
-
-	const [{}, connect, disconnect] = useConnectWallet();
 	const [{ connectedChain }, setChain] = useSetChain();
 	const [{}, customNotification] = useNotifications();
 	const account = useAccountInstance();
 
 	const [loadingSettle, setLoadingSettle] = useState(false);
+	const [isOpenDeposit, setIsOpenDesposit] = useState(false);
 
 	// GET CURRENT CHAIN
 	const currentChain = useMemo(() => {
@@ -49,7 +51,7 @@ export default function AccountDetailPopup({ onClose, open, wallet }: IProps) {
 		srcChainId: Number(connectedChain?.id),
 	});
 
-	const { unsettledPnL, availableWithdraw } = useWithdraw();
+	const { withdraw, unsettledPnL, availableWithdraw } = useWithdraw();
 
 	// Handle disconnect wallet button
 	const handleDisconnect = async () => {
@@ -100,6 +102,10 @@ export default function AccountDetailPopup({ onClose, open, wallet }: IProps) {
 		}
 	};
 
+	const handleToggleDesposit = () => {
+		setIsOpenDesposit(!isOpenDeposit);
+	};
+
 	return (
 		<MainDialog title="Account Details" open={open} handleClose={onClose} maxWidth="xs">
 			<MainCard variant="outlined" width="100%" backgroudColor="transparent">
@@ -138,7 +144,7 @@ export default function AccountDetailPopup({ onClose, open, wallet }: IProps) {
 						Settle PnL
 					</MainButton>
 
-					<MainButton fullWidth variant="contained">
+					<MainButton fullWidth variant="contained" onClick={handleToggleDesposit}>
 						Deposit / Withdraw
 					</MainButton>
 				</Stack>
@@ -154,6 +160,17 @@ export default function AccountDetailPopup({ onClose, open, wallet }: IProps) {
 			>
 				Disconnect
 			</MainButton>
+
+			<DepositWithdrawDialog
+				open={isOpenDeposit}
+				onClose={handleToggleDesposit}
+				walletBalance={FixedNumber.fromString(deposit.balance, { decimals: 6 })}
+				orderlyBalance={FixedNumber.fromString(availableWithdraw.toPrecision(6), {
+					decimals: 6,
+				})}
+				withdraw={withdraw}
+				wallet={wallet}
+			/>
 		</MainDialog>
 	);
 }

@@ -22,7 +22,7 @@ export const Header = () => {
 	];
 
 	return (
-		<MainAppBar elevation={0} position="static">
+		<MainAppBar elevation={0} position="sticky">
 			<Box px={{ xs: '16px', xl: '60px' }}>
 				<Toolbar disableGutters>
 					<Stack direction={'row'} justifyContent={'space-between'} width={'100%'} alignItems={'center'}>
@@ -73,9 +73,10 @@ export const Header = () => {
 
 const MainAppBar = styled(AppBar)(({ theme }) => ({
 	backgroundColor: setColorThemeMode('#fff', theme.palette.grey[800]),
-	zIndex: 0,
+	zIndex: 10,
 	height: '56px',
 	borderRadius: '0px',
+	top: 0,
 	'& .MuiToolbar-root': {
 		height: '56px',
 		minHeight: 'auto',

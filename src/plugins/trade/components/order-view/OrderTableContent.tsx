@@ -91,24 +91,30 @@ const OrderTableContent = ({ orderBookStatus, symbol }: IProps) => {
 	};
 
 	const headTable: IHeadCell[] = [
-		{ title: 'Symbol' },
-		{ title: 'Type' },
-		{ title: 'Side' },
+		{ title: 'Symbol', width: 100 },
+		{ title: 'Type', width: 100 },
+		{ title: 'Side', width: 80 },
 		{ title: 'Quantity' },
-		{ title: 'Price', hint: 'Unreal. PnL' },
+		{ title: 'Order Price' },
+		{ title: 'Avg. price' },
 		{ title: 'Trigger' },
-		{ title: 'Order time' },
+		{ title: 'Est. total' },
+		{ title: 'Fee' },
+		{ title: 'Order time', width: 120 },
 	];
 
 	const headTableNew: IHeadCell[] = [
-		{ title: 'Symbol' },
-		{ title: 'Type' },
-		{ title: 'Side' },
+		{ title: 'Symbol', width: 100 },
+		{ title: 'Type', width: 100 },
+		{ title: 'Side', width: 80 },
 		{ title: 'Quantity' },
-		{ title: 'Price', hint: 'Unreal. PnL' },
+		{ title: 'Order Price' },
+		{ title: 'Avg. price' },
 		{ title: 'Trigger' },
-		{ title: 'Order time' },
-		{ title: '', align: 'right' },
+		{ title: 'Est. total' },
+		{ title: 'Fee' },
+		{ title: 'Order time', width: 100 },
+		{ title: '', align: 'right', width: 5 },
 	];
 
 	return (
