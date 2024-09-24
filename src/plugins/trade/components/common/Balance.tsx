@@ -89,6 +89,8 @@ export const Balance = memo(({ availableWithdraw, quote, wallet }: IProps) => {
 		}
 	};
 
+	const theme = useTheme();
+
 	return (
 		<>
 			<MainCard backgroudColor="primaryLight" width="100%">
@@ -100,8 +102,9 @@ export const Balance = memo(({ availableWithdraw, quote, wallet }: IProps) => {
 						Total balance
 					</Typography>
 
-					<Typography fontWeight={600}>
-						{usdFormatter.format(availableWithdraw)} {quote}
+					<Typography fontWeight={600} fontSize={'20px'}>
+						{usdFormatter.format(availableWithdraw)}{' '}
+						<span style={{ color: setColorThemeMode(theme.palette.grey[700], theme.palette.grey[300]) }}>{quote}</span>
 					</Typography>
 				</Stack>
 

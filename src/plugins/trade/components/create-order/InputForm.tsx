@@ -55,33 +55,29 @@ function InputForm({ formContext, symbolsInfo, symbol, getInput, helper, maxQty 
 
 	return (
 		<Stack spacing={'8px'}>
-			{match(formContext.watch('type'))
-				.with('StopLimit', () => true)
-				.with('StopMarket', () => true)
-				.otherwise(() => false) && (
-				<Collapse
-					in={match(formContext.watch('type'))
-						.with('StopLimit', () => true)
-						.with('StopMarket', () => true)
-						.otherwise(() => false)}
-				>
-					<CurrencyInputField
-						name="triggerPrice"
-						formContext={formContext}
-						suffix={quote}
-						decimals={quoteDecimals}
-						placeholder="Trigger"
-						rules={{
-							validate: {
-								custom: async (_, data) => {
-									const errors = await getValidationErrors(data, symbol, helper.validator);
-									return errors?.trigger_price != null ? errors.trigger_price.message : true;
-								},
+			<Collapse
+				in={match(formContext.watch('type'))
+					.with('StopLimit', () => true)
+					.with('StopMarket', () => true)
+					.otherwise(() => false)}
+				sx={{ mt: '-10px !important' }}
+			>
+				<CurrencyInputField
+					name="triggerPrice"
+					formContext={formContext}
+					suffix={quote}
+					decimals={quoteDecimals}
+					placeholder="Trigger"
+					rules={{
+						validate: {
+							custom: async (_, data) => {
+								const errors = await getValidationErrors(data, symbol, helper.validator);
+								return errors?.trigger_price != null ? errors.trigger_price.message : true;
 							},
-						}}
-					/>
-				</Collapse>
-			)}
+						},
+					}}
+				/>
+			</Collapse>
 
 			<Stack direction={'row'} alignItems={'start'} spacing={'10px'}>
 				{isHiddenMarket ? (

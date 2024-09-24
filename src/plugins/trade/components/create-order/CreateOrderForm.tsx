@@ -4,14 +4,21 @@ import IconLoading from '@/components/icons/loading';
 import { getDecimalsFromTick } from '@/utils/formatters/api';
 import { TSizes } from '@/utils/themes/custom-theme/sizes';
 import { Stack, Typography, useTheme } from '@mui/material';
-import { useOrderEntry, useSymbolsInfo, useWithdraw } from '@orderly.network/hooks';
-import { toast } from '@orderly.network/react';
+import {
+	useAccountInfo,
+	useCollateral,
+	useMarkPrice,
+	useOrderEntry,
+	useSymbolsInfo,
+	useWithdraw,
+} from '@orderly.network/hooks';
 import { OrderEntity, OrderSide, OrderType } from '@orderly.network/types';
 import { useConnectWallet, useNotifications } from '@web3-onboard/react';
-import { memo, ReactNode, useState } from 'react';
+import { memo, ReactNode, useMemo, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { match } from 'ts-pattern';
 import { Balance } from '../common/Balance';
+import AvailableWithdraw from './AvailableWithdraw';
 import Details from './Details';
 import InputForm from './InputForm';
 import ModalConfirmOrder from './ModalConfirmOrder';
@@ -48,8 +55,11 @@ const CreateOrderForm = ({ symbol }: IProps) => {
 	const symbolsInfo = useSymbolsInfo();
 	const [{ wallet }] = useConnectWallet();
 	const { availableWithdraw } = useWithdraw();
+	const collateral = useCollateral();
 	const [_0, customNotification] = useNotifications();
 	const [_, base, quote] = symbol.split('_');
+	const { data: markPrice } = useMarkPrice(symbol);
+	const { data: accountInfo } = useAccountInfo();
 
 	const symbolInfo = symbolsInfo[symbol]();
 	const [baseDecimals, quoteDecimals] = getDecimalsFromTick(symbolInfo);
@@ -81,14 +91,7 @@ const CreateOrderForm = ({ symbol }: IProps) => {
 	);
 
 	// Handle show modal confirm
-	const handleShowModal = () => {
-		const data = formContext.getValues();
-
-		if (data.price && data.quantity && Number(data.price) * Number(data.quantity) > availableWithdraw) {
-			toast.error(`Your ${quote} balance is insufficient`);
-			return;
-		}
-
+	const handleConfirmOrder = () => {
 		setOpenOrderConfirm(true);
 	};
 
@@ -126,9 +129,69 @@ const CreateOrderForm = ({ symbol }: IProps) => {
 		} finally {
 			setLoading(false);
 			setOpenOrderConfirm(false);
-			formContext.reset();
+			location.reload();
 		}
 	};
+
+	const quantity = Number(formContext.watch('quantity')) ?? 0;
+	const price = formContext.watch('price') ?? 0;
+
+	const takerFeeRate = useMemo(() => {
+		if (!accountInfo) {
+			return 0;
+		}
+
+		return accountInfo?.taker_fee_rate ?? 0;
+	}, [accountInfo]);
+
+	const makerFeeRate = useMemo(() => {
+		if (!accountInfo) {
+			return 0;
+		}
+
+		return accountInfo?.maker_fee_rate ?? 0;
+	}, [accountInfo]);
+
+	const fee = useMemo(() => {
+		const feeRate = formContext.watch('type') === 'Market' ? takerFeeRate : makerFeeRate;
+
+		const totalFee = feeRate * quantity; // Số lượng phí cụ thể
+
+		// Nếu bạn muốn tính phần trăm phí dựa trên tổng giá trị giao dịch
+		const totalValue = quantity * (estLiqPrice as any); // Tổng giá trị giao dịch
+		const feePercentage = (totalFee / totalValue) * 100; // Phần trăm phí
+
+		if (!isFinite(feePercentage)) {
+			return { totalFee: 0, feePercentage: 0 };
+		}
+
+		return { totalFee, feePercentage }; // Trả về cả hai giá trị
+	}, [takerFeeRate, makerFeeRate, quantity, formContext, estLiqPrice]);
+
+	const totalPrice = useMemo(() => {
+		if (isNaN(quantity)) {
+			return 0;
+		}
+
+		const amount = Number(quantity) ?? 0;
+		const curPrice = Number(price) ?? 0;
+
+		if (formContext.watch('type') === 'Limit' || formContext.watch('type') === 'StopLimit') {
+			const total = amount * curPrice + fee.totalFee;
+			if (isNaN(total)) {
+				return 0;
+			}
+
+			return total;
+		}
+
+		const total = amount * markPrice + fee.totalFee;
+		if (isNaN(total)) {
+			return 0;
+		}
+
+		return total;
+	}, [quantity, markPrice, fee, price, formContext]);
 
 	return (
 		<>
@@ -136,21 +199,14 @@ const CreateOrderForm = ({ symbol }: IProps) => {
 				<IconLoading />
 			) : (
 				<MainCard backgroudColor="primary" width="100%" height="100%">
-					{wallet && <Balance availableWithdraw={availableWithdraw} quote={quote} wallet={wallet} />}
+					{wallet && <Balance availableWithdraw={collateral.availableBalance} quote={quote} wallet={wallet} />}
 
-					<form onSubmit={formContext.handleSubmit(handleShowModal)}>
+					<form onSubmit={formContext.handleSubmit(handleConfirmOrder)}>
 						<Stack spacing={TSizes.margin_common}>
 							<OrderTypeTab formContext={formContext} />
 							<OrderDirection formContext={formContext} wallet={wallet} />
 
-							<Stack direction={'row'} alignItems={'center'} spacing={1}>
-								<Typography fontWeight={600} fontSize={'13px'}>
-									Amount
-								</Typography>
-								<Typography color={useTheme().palette.grey[500]} fontSize={'12px'}>
-									Set order size
-								</Typography>
-							</Stack>
+							<AvailableWithdraw balance={availableWithdraw} quote={quote} />
 
 							<InputForm
 								formContext={formContext}
@@ -162,11 +218,11 @@ const CreateOrderForm = ({ symbol }: IProps) => {
 							/>
 
 							<Details
-								estLiqPrice={estLiqPrice}
+								totalPrice={totalPrice}
 								estLeverage={estLeverage}
 								baseDecimals={baseDecimals}
 								quote={quote}
-								base={base}
+								fee={fee}
 								symbol={symbol}
 								formContext={formContext}
 							/>
@@ -179,6 +235,7 @@ const CreateOrderForm = ({ symbol }: IProps) => {
 							symbol={symbol}
 							currentValue={formContext.getValues()}
 							loading={loading}
+							totalPrice={totalPrice}
 						/>
 					</form>
 				</MainCard>
