@@ -3,7 +3,7 @@ import { MainCard } from '@/components/card/MainCard';
 import CurrencyInputField from '@/components/form-control/CurrencyInputField';
 import { RenderFormError } from '@/components/form-control/RenderErrors';
 import { TokenInput } from '@/components/form-control/TokenInput';
-import { CustomSlider } from '@/components/sider/MainSlider';
+import { MainSlider } from '@/components/sider/MainSlider';
 import { getDecimalsFromTick } from '@/utils/formatters/api';
 import { usdFormatter } from '@/utils/formatters/number';
 import { TSizes } from '@/utils/themes/custom-theme/sizes';
@@ -170,7 +170,7 @@ const TpSlOrder = ({ symbol, position, refresh, handleCloseModal }: IProps) => {
 									max={FixedNumber.fromString(String(Math.abs(position.position_qty)))}
 								/>
 
-								<CustomSlider
+								<MainSlider
 									name={name}
 									value={[Number(value)]}
 									defaultValue={[100]}

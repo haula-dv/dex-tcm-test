@@ -17,6 +17,7 @@ const AvailableWithdraw = ({ balance, quote }: IProps) => {
 		<Stack direction={'row'} alignItems={'center'} justifyContent={'space-between'}>
 			<Stack direction={'row'} alignItems={'center'} spacing={'6px'}>
 				<MainTooltip
+					arrow
 					title="Free collateral for placing new orders.
 Free collateral = Total balance + Total unsettlement PnL - Total position initial margin
 Free collateral for placing new orders.

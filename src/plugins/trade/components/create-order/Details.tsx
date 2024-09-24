@@ -15,13 +15,23 @@ interface IProps {
 	totalPrice: number;
 	fee: { feePercentage: number; totalFee: number };
 	estLeverage: number | any | undefined;
+	estLiqPrice: number | any | undefined;
 	quote?: string;
 	symbol: string;
 	baseDecimals: number;
 	formContext: UseFormReturn<Inputs>;
 }
 
-const Details = ({ totalPrice = 0, estLeverage, baseDecimals, quote, fee, symbol, formContext }: IProps) => {
+const Details = ({
+	totalPrice = 0,
+	estLeverage,
+	estLiqPrice,
+	baseDecimals,
+	quote,
+	fee,
+	symbol,
+	formContext,
+}: IProps) => {
 	const [{ wallet, connecting }, connect] = useConnectWallet();
 	const { data: markPrice } = useMarkPrice(symbol);
 	const theme = useTheme();
@@ -50,7 +60,7 @@ const Details = ({ totalPrice = 0, estLeverage, baseDecimals, quote, fee, symbol
 			<Typography pb={'10px'}>Details</Typography>
 
 			<Stack spacing={'6px'} pb={'10px'}>
-				<ItemRow title="Expected Price" value={formatter.format(markPrice)} />
+				<ItemRow title="Expected Price" value={formatter.format(estLiqPrice)} />
 
 				<ItemRow title="Price Impact" value={priceImpact ?? '_'} />
 
@@ -68,7 +78,7 @@ const Details = ({ totalPrice = 0, estLeverage, baseDecimals, quote, fee, symbol
 					}
 					value={
 						<Box>
-							{fee.totalFee ? fee.totalFee : '-'}{' '}
+							{fee.totalFee ? (Math.floor(fee.totalFee * 100) / 100).toLocaleString() : '-'}{' '}
 							<span style={{ color: setColorThemeMode(theme.palette.grey[700], theme.palette.grey[300]) }}>
 								{quote}
 							</span>
@@ -94,6 +104,7 @@ const Details = ({ totalPrice = 0, estLeverage, baseDecimals, quote, fee, symbol
 				variant="contained"
 				color="primary"
 				type={wallet ? 'submit' : 'button'}
+				// disabled={isBalanceSufficient}
 				onClick={() => {
 					return wallet ? null : handleConnectWallet();
 				}}

@@ -92,6 +92,15 @@ const CreateOrderForm = ({ symbol }: IProps) => {
 
 	// Handle show modal confirm
 	const handleConfirmOrder = () => {
+		if (!isBalanceSufficient) {
+			customNotification({
+				eventCode: 'error',
+				type: 'error',
+				message: 'Insufficient balance to place the order.',
+				autoDismiss: 5_000,
+			});
+			return;
+		}
 		setOpenOrderConfirm(true);
 	};
 
@@ -193,6 +202,11 @@ const CreateOrderForm = ({ symbol }: IProps) => {
 		return total;
 	}, [quantity, markPrice, fee, price, formContext]);
 
+	// Check if the balance is sufficient
+	const isBalanceSufficient = useMemo(() => {
+		return totalPrice <= collateral.availableBalance; // Compare total price with available balance
+	}, [totalPrice, collateral]);
+
 	return (
 		<>
 			{symbolsInfo.isNil ? (
@@ -225,6 +239,7 @@ const CreateOrderForm = ({ symbol }: IProps) => {
 								fee={fee}
 								symbol={symbol}
 								formContext={formContext}
+								estLiqPrice={estLiqPrice}
 							/>
 						</Stack>
 
