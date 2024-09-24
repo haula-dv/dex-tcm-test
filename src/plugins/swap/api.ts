@@ -1,4 +1,4 @@
-import { tokenLoadingState, tokensState } from '@/common';
+import { tokenLoadingState } from '@/common';
 import axios from 'axios';
 import { setZustandValue } from 'nes-zustand';
 import { tokenCoingeckoListState } from './store';
@@ -42,7 +42,7 @@ export const getTokensCoingeckoAPI = async () => {
 		// const res3 = await axios.get(urls[2]);
 
 		setZustandValue(tokenCoingeckoListState, remapToken(res1.data.tokens));
-		setZustandValue(tokensState, (prev) => [...prev, ...remapToken(res1.data.tokens)]);
+		// setZustandValue(tokensState, (prev) => [...prev, ...remapToken(res1.data.tokens)]);
 		// setZustandValue(tokenPancakeswapBnbListState, remap(res2.data.tokens));
 		// setZustandValue(tokenPancakeswapExtendedListState, remap(res3.data.tokens));
 	} catch (error) {

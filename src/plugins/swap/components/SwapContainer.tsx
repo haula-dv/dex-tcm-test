@@ -247,10 +247,16 @@ export const SwapContainer = () => {
 				padding={`${TSizes.margin_sm}`}
 				maxWidth={TSizes.widthCommonCard}
 			>
-				<TransactionPopup
-					getSlippageAmount={(value) => setSlippageAmount(value)}
-					getDeadlineMinutes={(value) => setDeadlineMinutes(value)}
-				/>
+				<Stack direction={'row'} alignItems={'center'} pb={'10px'}>
+					<Typography flex={1} fontSize={'18px'}>
+						Swap
+					</Typography>
+
+					<TransactionPopup
+						getSlippageAmount={(value) => setSlippageAmount(value)}
+						getDeadlineMinutes={(value) => setDeadlineMinutes(value)}
+					/>
+				</Stack>
 
 				{!isSwaped ? (
 					<>

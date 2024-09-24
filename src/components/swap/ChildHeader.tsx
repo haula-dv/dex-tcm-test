@@ -1,6 +1,8 @@
+import { TransactionPopup } from '@/plugins/swap/components/token/TransactionSettingPopup';
 import { Stack, Typography } from '@mui/material';
-import { IconArrowLeft, IconSettings } from '@tabler/icons-react';
+import { IconArrowLeft } from '@tabler/icons-react';
 import Link from 'next/link';
+import { useState } from 'react';
 import { MainIconButton } from '../button/MainIconButton';
 
 interface IProps {
@@ -9,8 +11,11 @@ interface IProps {
 }
 
 export const ChildHeader = ({ onBackLink, title }: IProps) => {
+	const [slippageAmount, setSlippageAmount] = useState('0.1');
+	const [deadlineMinutes, setDeadlineMinutes] = useState('10');
+
 	return (
-		<Stack direction={'row'} alignItems={'center'} justifyContent={'space-between'} pb={2}>
+		<Stack direction={'row'} alignItems={'center'} pb={2}>
 			{typeof onBackLink === 'string' ? (
 				<Link href={onBackLink}>
 					<MainIconButton size="small">
@@ -23,13 +28,14 @@ export const ChildHeader = ({ onBackLink, title }: IProps) => {
 				</MainIconButton>
 			)}
 
-			<Typography variant="h4" fontWeight={600}>
+			<Typography variant="h4" fontWeight={600} flex={1}>
 				{title}
 			</Typography>
 
-			<MainIconButton size="small">
-				<IconSettings />
-			</MainIconButton>
+			<TransactionPopup
+				getSlippageAmount={(value) => setSlippageAmount(value)}
+				getDeadlineMinutes={(value) => setDeadlineMinutes(value)}
+			/>
 		</Stack>
 	);
 };

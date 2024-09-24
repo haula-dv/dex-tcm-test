@@ -76,22 +76,16 @@ export const TransactionPopup = ({ getSlippageAmount, getDeadlineMinutes }: IPro
 
 	return (
 		<>
-			<Stack direction={'row'} width={'100%'} justifyContent={'space-between'} alignItems={'center'} pb="10px">
-				<Typography variant="h1" fontWeight={600}>
-					Swap
-				</Typography>
-
-				<MainButton
-					endIcon={<IconSettings size={'1rem'} color={theme.palette.text.primary} />}
-					variant={setColorThemeMode('filledTonal', 'contained')}
-					color={setColorThemeMode('inherit', 'darkPrimary')}
-					size="small"
-					fullRounded
-					onClick={handleClick}
-				>
-					{currentSlippageAmount} % slippage
-				</MainButton>
-			</Stack>
+			<MainButton
+				endIcon={<IconSettings size={'1rem'} color={theme.palette.text.primary} />}
+				variant={setColorThemeMode('filledTonal', 'contained')}
+				color={setColorThemeMode('inherit', 'darkPrimary')}
+				size="small"
+				fullRounded
+				onClick={handleClick}
+			>
+				{currentSlippageAmount} % slippage
+			</MainButton>
 
 			<MainDialog open={open} handleClose={handleClose} hiddenHeader maxWidth="xs">
 				<Box>

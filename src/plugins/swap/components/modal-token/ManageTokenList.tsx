@@ -1,12 +1,15 @@
 import { ITab } from '@/common/types/components/tab';
+import { MainButton } from '@/components/button/MainButton';
 import { MainIconButton } from '@/components/button/MainIconButton';
 import { MainCard } from '@/components/card/MainCard';
 import { SearchField } from '@/components/form-control/SearchField';
 import SwitchBase from '@/components/form-control/SwitcheBase';
+import MainTooltip from '@/components/MainTooltip';
 import { GrayTab } from '@/components/tab/GrayTab';
 import { TSizes } from '@/utils/themes/custom-theme/sizes';
-import { Box, Divider, Stack, Typography } from '@mui/material';
-import { IconArrowLeft, IconSettings, IconX } from '@tabler/icons-react';
+import TabPanel from '@mui/lab/TabPanel';
+import { Box, Divider, Stack, Typography, useTheme } from '@mui/material';
+import { IconArrowLeft, IconSettings, IconShare2, IconX } from '@tabler/icons-react';
 import Image from 'next/image';
 import { useStore } from 'zustand';
 import { tokenCoingeckoListState, tokenPancakeswapBnbListState, tokenPancakeswapExtendedListState } from '../../store';
@@ -20,10 +23,11 @@ export const ManageTokenList = ({ onBack, handleCloseModal }: IProps) => {
 	const tokenCoingecko1 = useStore(tokenCoingeckoListState, (state) => state.value);
 	const tokenCoingecko2 = useStore(tokenPancakeswapBnbListState, (state) => state.value);
 	const tokenCoingecko3 = useStore(tokenPancakeswapExtendedListState, (state) => state.value);
+	const theme = useTheme();
 
 	const tabs: ITab[] = [
-		{ label: 'Lists', value: 1 },
-		{ label: 'Tokens', value: 2 },
+		{ label: 'Lists', value: '1' },
+		{ label: 'Tokens', value: '2' },
 	];
 
 	const lists = [
@@ -71,35 +75,64 @@ export const ManageTokenList = ({ onBack, handleCloseModal }: IProps) => {
 			<Divider />
 
 			<Box p={TSizes.margin_xs}>
-				<GrayTab tabs={tabs} />
+				<GrayTab tabs={tabs}>
+					<TabPanel value={'1'} sx={{ px: 0, pb: 0 }}>
+						<Box pt={TSizes.margin_xs} />
 
-				<Box pt={TSizes.margin_xs} />
+						<SearchField placeholder="http:// or ipfs:// or ENS name" height={'48px'} />
 
-				<SearchField placeholder="http:// or ipfs:// or ENS name" height={'48px'} />
+						<Stack pt={TSizes.margin_xs} spacing={TSizes.margin_xs}>
+							{lists.map((item, index) => (
+								<MainCard key={index} isHover width="100%" backgroudColor="common">
+									<Stack direction={'row'} justifyContent={'space-between'} alignItems={'center'}>
+										<Stack direction={'row'} spacing={1} alignItems={'center'}>
+											<Image src={item.icon ? item.icon : '/images/token.png'} height={32} width={32} alt="" />
 
-				<Stack pt={TSizes.margin_xs} spacing={TSizes.margin_xs}>
-					{lists.map((item, index) => (
-						<MainCard key={index} isHover width="100%" backgroudColor="common">
-							<Stack direction={'row'} justifyContent={'space-between'} alignItems={'center'}>
-								<Stack direction={'row'} spacing={1} alignItems={'center'}>
-									<Image src={item.icon ? item.icon : '/images/token.png'} height={32} width={32} alt="" />
+											<Stack>
+												<Typography fontSize={'16px'}>{item.name}</Typography>
 
-									<Stack>
-										<Typography fontSize={'16px'}>{item.name}</Typography>
+												<Stack direction={'row'} spacing={1}>
+													<Typography fontSize={'14px'}>{item.tokens} token</Typography>
 
-										<Stack direction={'row'} spacing={1}>
-											<Typography fontSize={'14px'}>{item.tokens} token</Typography>
+													<MainTooltip
+														placement="top"
+														arrow
+														title={
+															<>
+																<Typography>{item.version}</Typography>
 
-											<IconSettings size={'1.2rem'} />
+																<a href={item.link} target="_blank" rel="noopener noreferrer">
+																	<MainButton
+																		size="xsmall"
+																		endIcon={<IconShare2 size={'1rem'} color={theme.palette.primary.dark} />}
+																	>
+																		See
+																	</MainButton>
+																</a>
+															</>
+														}
+													>
+														<IconSettings size={'1.2rem'} />
+													</MainTooltip>
+												</Stack>
+											</Stack>
 										</Stack>
-									</Stack>
-								</Stack>
 
-								<SwitchBase defaultChecked />
-							</Stack>
-						</MainCard>
-					))}
-				</Stack>
+										<SwitchBase defaultChecked />
+									</Stack>
+								</MainCard>
+							))}
+						</Stack>
+					</TabPanel>
+
+					<TabPanel value={'2'} sx={{ px: 0, pb: 0 }}>
+						<SearchField placeholder="0x0000" height={'48px'} />
+
+						<Typography pt="10px" fontSize={'18px'}>
+							0 Imported Tokens
+						</Typography>
+					</TabPanel>
+				</GrayTab>
 			</Box>
 		</>
 	);
