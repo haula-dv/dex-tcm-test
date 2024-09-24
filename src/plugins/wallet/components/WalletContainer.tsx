@@ -8,7 +8,7 @@ import { formartAddress } from '@/utils/formatters/token';
 import { setColorThemeMode } from '@/utils/helpers';
 import { Box, Stack, Typography, useTheme } from '@mui/material';
 import { useAccount, useChains, useDeposit } from '@orderly.network/hooks';
-import { IconDots, IconMoonStars, IconSun } from '@tabler/icons-react';
+import { IconMoonStars, IconSun } from '@tabler/icons-react';
 import { useConnectWallet } from '@web3-onboard/react';
 import { setZustandValue } from 'nes-zustand';
 import Image from 'next/image';
@@ -143,9 +143,9 @@ export default function WalletContainer() {
 
 			<OrderlyConnect />
 
-			<MainIconButton color="inherit">
+			{/* <MainIconButton color="inherit">
 				<IconDots />
-			</MainIconButton>
+			</MainIconButton> */}
 
 			<MainIconButton onClick={handleChangeTheme} color="inherit">
 				{themeSelector.activeMode == 'light' ? <IconSun /> : <IconMoonStars />}

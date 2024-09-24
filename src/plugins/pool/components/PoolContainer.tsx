@@ -56,12 +56,12 @@ export const PoolContainer = () => {
 						<Box pt={2} />
 						<TokenSelected />
 
-						<Stack direction={'row'} spacing={2} justifyContent={'center'} pt={2} alignItems={'center'}>
+						{/* <Stack direction={'row'} spacing={2} justifyContent={'center'} pt={2} alignItems={'center'}>
 							<Typography>{"Don't"} see a pool you joined?</Typography>
 							<MainButton variant="textLink" color="inherit">
 								Import It
 							</MainButton>
-						</Stack>
+						</Stack> */}
 					</MainCard>
 				</Stack>
 			</Box>

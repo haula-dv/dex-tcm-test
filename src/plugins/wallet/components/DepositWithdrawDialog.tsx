@@ -47,7 +47,7 @@ export const DepositWithdrawDialog = ({ open, onClose, wallet, walletBalance, or
 								<Stack direction={'row'}>
 									<InputBase placeholder="Quantity" sx={{ width: '100%' }} />
 
-									<Stack direction={'row'} alignItems={'center'} spacing={'6px'} pr="10px" flexShrink={0}>
+									<Stack direction={'row'} alignItems={'center'} spacing={'6px'} flexShrink={0}>
 										<Image src={'/images/USDC.png'} height={20} width={20} alt="" />
 										<Typography fontWeight={600}>USDC</Typography>
 									</Stack>
@@ -74,12 +74,23 @@ export const DepositWithdrawDialog = ({ open, onClose, wallet, walletBalance, or
 						<Box py={'4px'} />
 
 						<DividerOrder>
-							<IconArrowDown size={'1rem'} />
+							<IconArrowDown size={'1rem'} color={theme.palette.primary.dark} />
 						</DividerOrder>
 
-						<Box py={'4px'} />
+						<Box pt={'4px'} />
 
 						<ItemRow title="Your Tcmp Dex Trande account" value={<Logo height={44} width={44} />} />
+
+						<CustomField pt={'10px'}>
+							<Stack direction={'row'} alignItems={'center'}>
+								<InputBase placeholder="Quantity" sx={{ width: '100%', height: '100%' }} />
+
+								<Stack direction={'row'} alignItems={'center'} spacing={'6px'} flexShrink={0}>
+									<Image src={'/images/USDC.png'} height={20} width={20} alt="" />
+									<Typography fontWeight={600}>USDC</Typography>
+								</Stack>
+							</Stack>
+						</CustomField>
 					</TabPanel>
 
 					<TabPanel value="withdraw" sx={{ p: 0 }}>
