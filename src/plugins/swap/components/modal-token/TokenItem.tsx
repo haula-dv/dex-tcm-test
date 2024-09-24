@@ -1,9 +1,8 @@
-import { getImageNextwork, ITokenType } from '@/common';
-import { MainButton } from '@/components/button/MainButton';
+import { ITokenType } from '@/common';
 import { TokenIcon } from '@/components/token/TokenIcon';
 import { setColorThemeMode } from '@/utils/helpers';
 import { TSizes } from '@/utils/themes/custom-theme/sizes';
-import { Box, ListItemButton, ListItemButtonProps, ListItemIcon, ListItemText } from '@mui/material';
+import { ListItemButton, ListItemButtonProps, ListItemIcon, ListItemText } from '@mui/material';
 import { styled } from '@mui/material/styles';
 
 interface IProps extends ListItemButtonProps {
@@ -17,21 +16,13 @@ export const TokenItem = ({ isImportToken, handleSelectToken, item, isSelected, 
 	return (
 		<CustomListItem {...props} onClick={() => handleSelectToken(item)} selected={isSelected} disabled={isSelected}>
 			<ListItemIcon>
-				<TokenIcon url={getImageNextwork(item.token, 'symbol_logo')} size={30} symbol={item?.token} fontSize="7px" />
+				<TokenIcon url={item.logoURI} size={30} symbol={item?.token} fontSize="7px" />
 			</ListItemIcon>
 
 			<ListItemText
 				primary={item?.token}
 				secondary={`${item?.token_account_id?.slice(0, 20)}${item?.token_account_id.length > 20 ? '...' : ''}`}
 			/>
-
-			{isImportToken && (
-				<Box flexShrink={0}>
-					<MainButton size="small" variant="contained" color="darkPrimary">
-						Import
-					</MainButton>
-				</Box>
-			)}
 		</CustomListItem>
 	);
 };

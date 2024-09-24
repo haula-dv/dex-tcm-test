@@ -13,6 +13,7 @@ export interface ITokenParamsType {
 export interface ITokenType {
 	token: string;
 	token_account_id: string;
+	logoURI: string;
 	decimals: number;
 	minimum_increment: number;
 	amount: number;

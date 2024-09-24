@@ -15,6 +15,7 @@ const withPWA = withPWAInit({
 export default withPWA({
 	experimental: {
 		ppr: 'incremental',
+		reactCompiler: true,
 	},
 
 	images: {

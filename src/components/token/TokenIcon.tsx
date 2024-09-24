@@ -49,20 +49,22 @@ export const TokenIcon = ({ url, size = 20, symbol, fontSize }: IProps) => {
 	} else
 		return (
 			<Box flexShrink={0} height={size} width={size}>
-				<Image
-					src={url}
-					height={size}
-					width={size}
-					alt=""
-					onError={() => setIsError(true)}
-					placeholder="blur"
-					blurDataURL={url}
-					style={{
-						overflow: 'hidden',
-						borderRadius: '50%',
-						flexShrink: 0,
-					}}
-				/>
+				{url && (
+					<Image
+						src={url}
+						height={size}
+						width={size}
+						alt=""
+						onError={() => setIsError(true)}
+						// placeholder="blur"
+						// blurDataURL={url}
+						style={{
+							overflow: 'hidden',
+							borderRadius: '50%',
+							flexShrink: 0,
+						}}
+					/>
+				)}
 			</Box>
 		);
 };

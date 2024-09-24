@@ -44,8 +44,8 @@ const Details = ({
 	const priceImpact = useMemo(() => {
 		const receivedPrice: any = formContext.watch('price') ?? 0;
 
-		if (receivedPrice && isNaN(receivedPrice)) {
-			return '';
+		if (!receivedPrice) {
+			return '-';
 		}
 
 		// Adjusted calculation: (received price - mark price) / mark price * 100
@@ -60,11 +60,11 @@ const Details = ({
 			<Typography pb={'10px'}>Details</Typography>
 
 			<Stack spacing={'6px'} pb={'10px'}>
-				<ItemRow title="Expected Price" value={formatter.format(estLiqPrice)} />
+				<ItemRow title="Expected Price" value={estLiqPrice ? formatter.format(estLiqPrice) : '-'} />
 
 				<ItemRow title="Price Impact" value={priceImpact ?? '_'} />
 
-				<ItemRow title="Account leverage:" value={estLeverage ? `⇒ ${formatter.format(estLeverage)}` : '_'} />
+				<ItemRow title="Account leverage:" value={estLeverage ? `⇒ ${formatter.format(estLeverage)}` : '-'} />
 
 				<ItemRow
 					title={

@@ -7,10 +7,7 @@ import { tokenLoadingState, tokensState } from '../stores';
 export type IImageNextworkType = 'network_logo' | 'symbol_logo';
 
 // GET IMAGE NEXTWORK
-export const getImageNextwork = (
-	chain_id: number | string | undefined,
-	type: IImageNextworkType = 'network_logo',
-) => {
+export const getImageNextwork = (chain_id: number | string | undefined, type: IImageNextworkType = 'network_logo') => {
 	return `${TDotEnv.NEXTWORK_URL}static/${type}/${chain_id}.png`;
 };
 
@@ -26,7 +23,16 @@ export const getTokensAPI = async () => {
 	return await axiosClient
 		.get('/token')
 		.then((res) => {
-			setZustandValue(tokensState, res.data?.rows);
+			const remap =
+				res.data?.rows.length > 0 &&
+				res.data?.rows.map((item: any) => {
+					return {
+						...item,
+						isInputting: false,
+						logoURI: getImageNextwork(item.token, 'symbol_logo'),
+					};
+				});
+			setZustandValue(tokensState, remap);
 		})
 		.catch((err) => {
 			console.log(err);

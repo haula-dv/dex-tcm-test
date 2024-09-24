@@ -2,6 +2,7 @@ import { getTokensAPI } from '@/common';
 import { MainDialog } from '@/components/dialog/MainDialog';
 import { ITypeSwap } from '@/components/swap/TokenCurrencyInputField';
 import { useEffect, useState } from 'react';
+import { getTokensCoingeckoAPI } from '../../api';
 import { ImportToken } from './ImportToken';
 import { ManageTokenList } from './ManageTokenList';
 import { Tokens } from './Tokens';
@@ -18,8 +19,15 @@ export type ITokenType = 'importToken' | 'manageTokens' | 'tokens';
 export const TokenListModal = ({ open, onClose, handleSelectToken, field }: IProps) => {
 	const [tokenType, setTokenType] = useState<ITokenType>('tokens');
 
+	const fetchTokens = async () => {
+		await getTokensAPI();
+		await getTokensCoingeckoAPI();
+	};
+
 	useEffect(() => {
-		if (open) getTokensAPI();
+		if (open) {
+			fetchTokens();
+		}
 	}, [open]);
 
 	return (
@@ -31,6 +39,7 @@ export const TokenListModal = ({ open, onClose, handleSelectToken, field }: IPro
 			disablePadding
 			isBGWhite
 			hiddenHeader={tokenType !== 'tokens'}
+			isDivider={tokenType === 'tokens'}
 		>
 			{tokenType === 'tokens' && (
 				<Tokens handleSelectToken={handleSelectToken} setTokenType={setTokenType} type={field} />

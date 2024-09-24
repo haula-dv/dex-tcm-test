@@ -42,7 +42,9 @@ export const Tokens = ({ handleSelectToken, setTokenType, type }: IProps) => {
 
 	return (
 		<>
-			<Stack px={TSizes.margin_common}>{tokens.length > 0 && <SearchTokenField tokens={tokens} />}</Stack>
+			<Stack px={TSizes.margin_common}>
+				{tokens.length > 0 ? <SearchTokenField tokens={tokens} /> : <SearchTokenField tokens={[]} />}
+			</Stack>
 
 			<Box position={'relative'} pb={5}>
 				<Typography
