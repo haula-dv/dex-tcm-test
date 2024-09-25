@@ -70,6 +70,9 @@ const LightThemeColors = [
 				main: '#F2F2F2',
 				contrastText: '#B37350',
 			},
+			text: {
+				subTitle: '#3F3F3F',
+			},
 		},
 	},
 ];

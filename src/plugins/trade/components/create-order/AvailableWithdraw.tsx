@@ -1,9 +1,10 @@
 import { MainButton } from '@/components/button/MainButton';
+import { DepositWithdrawDialog } from '@/components/deposit/DepositWithdrawDialog';
 import MainTooltip from '@/components/MainTooltip';
 import { usdFormatter } from '@/utils/formatters/number';
 import { setColorThemeMode } from '@/utils/helpers';
 import { Stack, Typography, useTheme } from '@mui/material';
-import { memo } from 'react';
+import { memo, useState } from 'react';
 
 interface IProps {
 	balance: number;
@@ -12,6 +13,11 @@ interface IProps {
 
 const AvailableWithdraw = ({ balance, quote }: IProps) => {
 	const theme = useTheme();
+	const [open, setOpen] = useState(false);
+
+	const handleToggle = () => {
+		setOpen(!open);
+	};
 
 	return (
 		<Stack direction={'row'} alignItems={'center'} justifyContent={'space-between'}>
@@ -38,9 +44,11 @@ Free collateral = Total balance + Total unsettlement PnL - Total position initia
 				</Typography>
 			</Stack>
 
-			<MainButton size="small" variant="textLink">
+			<MainButton size="small" variant="textLink" onClick={handleToggle}>
 				Deposit
 			</MainButton>
+
+			<DepositWithdrawDialog open={open} onClose={handleToggle} />
 		</Stack>
 	);
 };

@@ -1,0 +1,297 @@
+.dark {
+	#orderly-deposit-form {
+		.orderly-bg-base-500 {
+			background-color: var(--grey700) !important;
+		}
+
+		.orderly-opacity-70 {
+			opacity: 1.8 !important;
+		}
+
+		.orderly-text-left {
+			color: var(--grey100);
+		}
+
+		#orderly-quantity-input-view {
+			.orderly-button-color-primary.orderly-button-variant-text {
+				color: var(--primaryDark) !important;
+				&:hover {
+					background-color: transparent !important;
+				}
+			}
+
+			.orderly-token-select {
+				span {
+					color: var(--grey100) !important;
+				}
+			}
+
+			.orderly-tabular-nums {
+				span {
+					color: var(--grey300) !important;
+				}
+			}
+
+			&.orderly-outline-primary {
+				outline-color: var(--grey500);
+			}
+		}
+
+		.orderly-mt-1 {
+			span {
+				color: var(--grey300) !important;
+			}
+		}
+
+		.orderly-border-divider {
+			border-color: var(--grey700) !important;
+			display: flex !important;
+		}
+
+		.orderly-text-primary-light {
+			color: var(--primaryDark) !important;
+		}
+	}
+
+	#orderly-withdraw-form {
+		.orderly-bg-base-500 {
+			background-color: var(--grey700) !important;
+		}
+
+		.orderly-outline-danger-light {
+			outline-color: color-mix(in srgb, var(--errorDark), transparent 60%);
+		}
+
+		.orderly-text-danger-light {
+			color: color-mix(in srgb, var(--errorDark), transparent 10%);
+		}
+
+		.orderly-opacity-70 {
+			opacity: 1.8 !important;
+		}
+
+		.orderly-text-left {
+			color: var(--grey100);
+		}
+
+		#orderly-quantity-input-view {
+			.orderly-button-color-primary.orderly-button-variant-text {
+				color: var(--primaryDark) !important;
+				&:hover {
+					background-color: transparent !important;
+				}
+			}
+
+			.orderly-token-select {
+				span {
+					color: var(--grey100) !important;
+				}
+			}
+
+			.orderly-tabular-nums {
+				span {
+					color: var(--grey300) !important;
+				}
+			}
+
+			&.orderly-outline-primary {
+				outline-color: var(--grey500);
+			}
+		}
+
+		.orderly-mt-1 {
+			span {
+				color: var(--grey300) !important;
+			}
+		}
+
+		.orderly-border-divider {
+			border-color: var(--grey700) !important;
+			display: flex !important;
+		}
+
+		.orderly-text-primary-light {
+			color: var(--primaryDark) !important;
+		}
+	}
+}
+
+.orderly-button-variant-contained {
+	&.orderly-button-color-primary {
+		background-color: var(--primaryDark) !important;
+	}
+}
+
+.orderly-outline-danger-light {
+	outline-color: color-mix(in srgb, var(--errorDark), transparent 60%) !important;
+}
+
+.orderly-text-danger-light {
+	color: color-mix(in srgb, var(--errorDark), transparent 10%) !important;
+}
+
+.light {
+	#orderly-deposit-form {
+		.orderly-bg-base-500 {
+			background-color: var(--grey100) !important;
+		}
+
+		.orderly-text-base-contrast-80 {
+			color: var(--grey700);
+		}
+
+		.orderly-opacity-70 {
+			opacity: 1.8 !important;
+		}
+
+		.orderly-text-base-contrast {
+			color: var(--grey600);
+		}
+
+		.orderly-text-left {
+			color: var(--grey600);
+		}
+
+		.orderly-text-base-contrast-36 {
+			color: rgb(var(--grey700) / 0.66);
+
+			div {
+				color: var(--grey500) !important;
+			}
+		}
+
+		input {
+			color: var(--grey700);
+			&::-webkit-input-placeholder {
+				color: var(--grey300);
+			}
+		}
+
+		#orderly-quantity-input-view {
+			.orderly-text-base-contrast {
+				color: rgb(var(--grey700) / 0.8);
+			}
+
+			.orderly-button-color-primary.orderly-button-variant-text {
+				color: var(--primaryDark) !important;
+
+				&:hover {
+					background-color: transparent !important;
+				}
+			}
+
+			.orderly-token-select {
+				span {
+					color: var(--grey700) !important;
+				}
+			}
+
+			.orderly-tabular-nums {
+				span {
+					color: var(--grey300) !important;
+				}
+			}
+
+			&.orderly-outline-primary {
+				outline-color: var(--grey200);
+			}
+		}
+
+		.orderly-mt-1 {
+			span {
+				color: var(--grey300) !important;
+			}
+		}
+
+		.orderly-border-divider {
+			border-color: var(--grey100) !important;
+			display: flex !important;
+		}
+
+		.orderly-text-primary-light {
+			color: var(--primaryDark) !important;
+		}
+	}
+
+	#orderly-withdraw-form {
+		.orderly-bg-base-500 {
+			background-color: var(--grey100) !important;
+		}
+
+		.orderly-text-base-contrast-80 {
+			color: var(--grey700);
+		}
+
+		.orderly-opacity-70 {
+			opacity: 1.8 !important;
+		}
+
+		.orderly-text-base-contrast {
+			color: var(--grey600);
+		}
+
+		.orderly-text-left {
+			color: var(--grey600);
+		}
+
+		.orderly-text-base-contrast-36 {
+			color: rgb(var(--grey700) / 0.66);
+
+			div {
+				color: var(--grey500) !important;
+			}
+		}
+
+		input {
+			color: var(--grey700);
+			&::-webkit-input-placeholder {
+				color: var(--grey300);
+			}
+		}
+
+		#orderly-quantity-input-view {
+			.orderly-text-base-contrast {
+				color: rgb(var(--grey700) / 0.8);
+			}
+
+			.orderly-button-color-primary.orderly-button-variant-text {
+				color: var(--primaryDark) !important;
+
+				&:hover {
+					background-color: transparent !important;
+				}
+			}
+
+			.orderly-token-select {
+				span {
+					color: var(--grey700) !important;
+				}
+			}
+
+			.orderly-tabular-nums {
+				span {
+					color: var(--grey300) !important;
+				}
+			}
+
+			&.orderly-outline-primary {
+				outline-color: var(--grey200);
+			}
+		}
+
+		.orderly-mt-1 {
+			span {
+				color: var(--grey300) !important;
+			}
+		}
+
+		.orderly-border-divider {
+			border-color: var(--grey100) !important;
+			display: flex !important;
+		}
+
+		.orderly-text-primary-light {
+			color: var(--primaryDark) !important;
+		}
+	}
+}

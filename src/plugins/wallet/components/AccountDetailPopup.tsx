@@ -13,10 +13,9 @@ import { WalletState } from '@orderly.network/hooks/esm/walletConnectorContext';
 import { toast } from '@orderly.network/react';
 import { IconCopy, IconLogout } from '@tabler/icons-react';
 import { useNotifications, useSetChain } from '@web3-onboard/react';
-import { FixedNumber } from 'ethers';
 import { useMemo, useState } from 'react';
+import { DepositWithdrawDialog } from '../../../components/deposit/DepositWithdrawDialog';
 import { AccountAvatar } from './AccountAvatar';
-import { DepositWithdrawDialog } from './DepositWithdrawDialog';
 
 interface IProps {
 	open: boolean;
@@ -161,16 +160,7 @@ export default function AccountDetailPopup({ onClose, open, wallet, disconnect }
 				Disconnect
 			</MainButton>
 
-			<DepositWithdrawDialog
-				open={isOpenDeposit}
-				onClose={handleToggleDesposit}
-				walletBalance={FixedNumber.fromString(deposit.balance, { decimals: 6 })}
-				orderlyBalance={FixedNumber.fromString(availableWithdraw.toPrecision(6), {
-					decimals: 6,
-				})}
-				withdraw={withdraw}
-				wallet={wallet}
-			/>
+			<DepositWithdrawDialog open={isOpenDeposit} onClose={handleToggleDesposit} />
 		</MainDialog>
 	);
 }

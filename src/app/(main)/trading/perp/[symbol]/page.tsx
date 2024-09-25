@@ -7,11 +7,6 @@ import '@orderly.network/react/dist/styles.css';
 import { useRouter } from 'next/navigation';
 import { useCallback, useEffect, useState } from 'react';
 
-// export const metadata: Metadata = {
-// 	title: '...',
-// 	description: '...',
-// };
-
 export default function PerpPage({ params }: { params: { symbol: string } }) {
 	const router = useRouter();
 	const [symbol, setSymbol] = useState(params.symbol);

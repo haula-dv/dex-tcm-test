@@ -67,6 +67,10 @@ const DarkThemeColors = [
 			},
 
 			divider: '#3F3F3F',
+
+			text: {
+				subTitle: '#BFBFBF',
+			},
 		},
 	},
 ];
