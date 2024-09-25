@@ -1,8 +1,9 @@
 'use client';
 import { setColorThemeMode } from '@/utils/helpers';
 import { TSizes } from '@/utils/themes/custom-theme/sizes';
-import { Card, CardProps } from '@mui/material';
+import { Box, Card, CardProps, Divider } from '@mui/material';
 import { styled } from '@mui/material/styles';
+import { ReactNode } from 'react';
 
 interface IProps extends CardProps {
 	children?: React.ReactNode;
@@ -17,6 +18,7 @@ interface IProps extends CardProps {
 	height?: string;
 	minHeight?: string;
 	maxHeight?: string;
+	isActionSlot?: ReactNode;
 }
 
 export const MainCard = ({
@@ -25,47 +27,53 @@ export const MainCard = ({
 	backgroudColor = 'white',
 	isHover,
 	disablePadding,
-	padding,
+	padding = TSizes.card_padding,
 	borderRadius,
 	width,
 	isSelected,
 	height,
 	minHeight,
 	maxHeight,
+	isActionSlot,
 	...props
 }: IProps) => {
 	return (
 		<CustomCard
 			elevation={0}
-			disablePadding={disablePadding}
 			isSelected={isSelected}
 			sx={{
 				maxWidth: maxWidth,
 				cursor: isHover ? 'pointer' : '',
-				padding: padding,
 				borderRadius: borderRadius,
 				transition: '0.6s',
 				height: height,
 				minHeight: minHeight,
 				maxHeight: maxHeight,
+				p: 0,
 			}}
 			backgroudColor={backgroudColor}
 			{...props}
 		>
-			{children}
+			<Box padding={disablePadding ? 0 : padding}>{children}</Box>
+
+			{isActionSlot && (
+				<>
+					<Divider />
+					<Box m={disablePadding ? 0 : padding}>{isActionSlot}</Box>
+				</>
+			)}
 		</CustomCard>
 	);
 };
 
 interface ICard {
 	backgroudColor?: 'primary' | 'primaryLight' | 'white' | 'grey' | 'darkgrey' | 'transparent' | 'common';
-	disablePadding?: boolean;
 	isSelected?: boolean;
 }
 
 const CustomCard = styled(Card, {
-	shouldForwardProp: (prop) => prop !== 'backgroudColor' && prop !== 'disablePadding' && prop !== 'isSelected',
-})<ICard>(({ theme, backgroudColor = 'grey', disablePadding, isSelected }) => ({
+	shouldForwardProp: (prop) => prop !== 'backgroudColor' && prop !== 'isSelected',
+})<ICard>(({ theme, backgroudColor = 'grey', isSelected }) => ({
 	borderRadius: TSizes.borderRadiusMd,
 	'&.MuiPaper-root': {
 		boxShadow: 'none',
@@ -104,5 +112,5 @@ const CustomCard = styled(Card, {
 		backgroundColor: theme.palette.grey[600],
 	}),
 
-	padding: disablePadding ? 0 : TSizes.card_padding,
+	// padding: disablePadding ? 0 : TSizes.card_padding,
 }));

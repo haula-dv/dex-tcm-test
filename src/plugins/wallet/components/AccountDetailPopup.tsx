@@ -7,7 +7,7 @@ import { usdFormatter } from '@/utils/formatters/number';
 import { idFromHexChainId } from '@/utils/formatters/token';
 import { setColorThemeMode } from '@/utils/helpers';
 import { TSizes } from '@/utils/themes/custom-theme/sizes';
-import { Box, Divider, Stack, useTheme } from '@mui/material';
+import { Box, Stack, useTheme } from '@mui/material';
 import { useAccountInstance, useChains, useCollateral, useDeposit, useWithdraw } from '@orderly.network/hooks';
 import { WalletState } from '@orderly.network/hooks/esm/walletConnectorContext';
 import { toast } from '@orderly.network/react';
@@ -107,7 +107,22 @@ export default function AccountDetailPopup({ onClose, open, wallet, disconnect }
 
 	return (
 		<MainDialog title="Account Details" open={open} handleClose={onClose} maxWidth="xs" isDivider>
-			<MainCard variant="outlined" width="100%" backgroudColor="transparent">
+			<MainCard
+				variant="outlined"
+				width="100%"
+				backgroudColor="transparent"
+				isActionSlot={
+					<Stack direction={'row'} spacing={TSizes.margin_common}>
+						<MainButton fullWidth onClick={handleSettle} disabled={loadingSettle} isLoading={loadingSettle}>
+							Settle PnL
+						</MainButton>
+
+						<MainButton fullWidth variant="contained" onClick={handleToggleDesposit}>
+							Deposit / Withdraw
+						</MainButton>
+					</Stack>
+				}
+			>
 				<Stack
 					direction={'row'}
 					alignItems={'center'}
@@ -134,20 +149,8 @@ export default function AccountDetailPopup({ onClose, open, wallet, disconnect }
 					<ItemRow title="Unsettled PnL:" value={`${usdFormatter.format(unsettledPnL)} $`} />
 					<ItemRow title="Withdrawable Balance" value={`${usdFormatter.format(availableWithdraw)} $`} />
 				</Stack>
-
-				<Box mt={TSizes.margin_common} />
-				<Divider />
-
-				<Stack direction={'row'} spacing={TSizes.margin_common} mt={TSizes.margin_common}>
-					<MainButton fullWidth onClick={handleSettle} disabled={loadingSettle} isLoading={loadingSettle}>
-						Settle PnL
-					</MainButton>
-
-					<MainButton fullWidth variant="contained" onClick={handleToggleDesposit}>
-						Deposit / Withdraw
-					</MainButton>
-				</Stack>
 			</MainCard>
+
 			<Box mt={TSizes.margin_common} />
 
 			<MainButton

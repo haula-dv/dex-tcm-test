@@ -1,5 +1,6 @@
 import { Box, Slider, Stack, Typography } from '@mui/material';
 import { styled, useTheme } from '@mui/material/styles';
+import { useEffect } from 'react';
 import { Controller, FieldValues, Path, UseFormReturn } from 'react-hook-form';
 import { match } from 'ts-pattern';
 
@@ -30,6 +31,24 @@ interface IProps<V extends FieldValues> {
 
 const AmountSlider = <V extends FieldValues>({ name, max = 0, formContext, maxQty }: IProps<V>) => {
 	const theme = useTheme();
+
+	// Watch quantity
+	useEffect(() => {
+		const watch = formContext.watch((value, { name }) => {
+			if (name === 'quantity') {
+				const qty = Number(value.quantity);
+				const maxQty = Number(max);
+				if (maxQty <= 0 && qty <= 0) {
+					return;
+				}
+
+				const percentage = (qty / maxQty) * 100;
+				formContext.setValue('orderSide' as any, percentage >= 100 ? 100 : (percentage.toFixed(0) as any));
+			}
+		});
+
+		return () => watch.unsubscribe();
+	}, [formContext, max]);
 
 	return (
 		<Controller

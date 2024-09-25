@@ -200,8 +200,6 @@ export const SwapContainer = () => {
 			return;
 		}
 
-		console.log(outputAmount, inputAmount);
-
 		if (inputAmount && outputAmount) {
 			handleSubmitSwap();
 		}
@@ -290,7 +288,11 @@ export const SwapContainer = () => {
 								onClick={handleEnterAmount}
 								disabled={connecting}
 							>
-								{wallet ? 'Insufficient balance' : connecting ? 'Connecting wallet' : 'Connect wallet'}
+								{wallet
+									? `Insufficient ${sellTokenActived?.token} balance`
+									: connecting
+									? 'Connecting wallet'
+									: 'Connect wallet'}
 							</MainButton>
 						</Stack>
 

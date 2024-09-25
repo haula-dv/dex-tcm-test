@@ -119,15 +119,17 @@ const UpdatePosition = ({ position, refresh, symbol }: IProps) => {
 
 				<Box pt={TSizes.margin_common} />
 
-				<MainTab tabs={tabs} defaultValue={'1'}>
-					<>
-						{tabs.map((item, index) => (
-							<TabPanel key={index} value={item.value} sx={{ p: 0 }}>
-								{item.children}
-							</TabPanel>
-						))}
-					</>
-				</MainTab>
+				<MainCard backgroudColor="transparent" variant="outlined">
+					<MainTab tabs={tabs} defaultValue={'1'}>
+						<>
+							{tabs.map((item, index) => (
+								<TabPanel key={index} value={item.value} sx={{ p: 0 }}>
+									{item.children}
+								</TabPanel>
+							))}
+						</>
+					</MainTab>
+				</MainCard>
 			</MainDialog>
 		</>
 	);
