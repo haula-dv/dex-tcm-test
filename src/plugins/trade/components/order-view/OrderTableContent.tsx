@@ -18,29 +18,17 @@ interface IProps {
 const OrderTableContent = ({ orderBookStatus, symbol }: IProps) => {
 	const [side, setSide] = useState<any>('ALL');
 	const [loading, setLoading] = useState(false);
-
 	const [currentOrder, setCurrentOrder] = useState<any>(null);
 	const [openModalConfirm, setOpenModalConfirm] = useState(false);
 	const [_0, customNotification] = useNotifications();
 
-	const [
-		data,
-		{
-			updateOrder,
-			cancelAlgoOrder,
-			cancelAlgoOrdersByTypes,
-			cancelAllOrders,
-			cancelAllTPSLOrders,
-			cancelOrder,
-			cancelTPSLChildOrder,
-			errors,
-			isLoading,
-			loadMore,
-			refresh,
-			updateAlgoOrder,
-			updateTPSLOrder,
-		},
-	] = useOrderStream({ status: orderBookStatus, side: side == 'ALL' ? '' : side });
+	const [ordersUntyped, { cancelAlgoOrder, cancelOrder, isLoading, loadMore, refresh }] = useOrderStream({
+		symbol,
+		status: orderBookStatus,
+		side: side == 'ALL' ? '' : side,
+	});
+
+	const orders = ordersUntyped as (API.Order | API.AlgoOrder)[];
 
 	const handleChange = (event: SelectChangeEvent) => {
 		setSide(event.target.value as string);
@@ -58,17 +46,20 @@ const OrderTableContent = ({ orderBookStatus, symbol }: IProps) => {
 
 	const onHandleCancelOrder = async () => {
 		setLoading(true);
+
 		const { update } = customNotification({
 			eventCode: 'cancelOrder',
 			type: 'pending',
 			message: 'Cancelling order...',
 		});
+
 		try {
 			if (currentOrder.isAlgoOrder) {
 				await cancelAlgoOrder(currentOrder.order.algo_order_id, symbol);
 			} else {
 				await cancelOrder(currentOrder.order.order_id, symbol);
 			}
+
 			update({
 				eventCode: 'cancelOrderSuccess',
 				type: 'success',
@@ -91,10 +82,10 @@ const OrderTableContent = ({ orderBookStatus, symbol }: IProps) => {
 	};
 
 	const headTable: IHeadCell[] = [
-		{ title: 'Symbol', width: 100 },
+		{ title: 'Symbol', width: 80 },
 		{ title: 'Type', width: 100 },
 		{ title: 'Side', width: 80 },
-		{ title: 'Quantity' },
+		{ title: 'Quantity', width: 100 },
 		{ title: 'Order Price' },
 		{ title: 'Avg. price' },
 		{ title: 'Trigger' },
@@ -104,16 +95,16 @@ const OrderTableContent = ({ orderBookStatus, symbol }: IProps) => {
 	];
 
 	const headTableNew: IHeadCell[] = [
-		{ title: 'Symbol', width: 100 },
+		{ title: 'Symbol', width: 80 },
 		{ title: 'Type', width: 100 },
 		{ title: 'Side', width: 80 },
-		{ title: 'Quantity' },
+		{ title: 'Quantity', width: 100 },
 		{ title: 'Order Price' },
 		{ title: 'Avg. price' },
 		{ title: 'Trigger' },
 		{ title: 'Est. total' },
 		{ title: 'Fee' },
-		{ title: 'Order time', width: 100 },
+		{ title: 'Order time', width: 120 },
 		{ title: '', align: 'right', width: 5 },
 	];
 
@@ -129,11 +120,12 @@ const OrderTableContent = ({ orderBookStatus, symbol }: IProps) => {
 
 			<MainTable
 				headTable={orderBookStatus === 'INCOMPLETE' ? headTableNew : (headTable as any)}
-				isEmpty={data && data.length > 0 ? false : true}
+				isEmpty={orders && orders.length > 0 ? false : true}
+				isLoading={isLoading}
 			>
-				{data &&
-					data.length > 0 &&
-					data.map((item, index) => {
+				{orders &&
+					orders.length > 0 &&
+					orders.map((item) => {
 						let order: { isAlgoOrder: false; order: API.Order } | { isAlgoOrder: true; order: API.AlgoOrder };
 						if ((item as API.Order).algo_order_id) {
 							order = { isAlgoOrder: true, order: item as API.AlgoOrder };

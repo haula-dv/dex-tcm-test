@@ -1,4 +1,3 @@
-import { ITab } from '@/common/types/components/tab';
 import { MainCard } from '@/components/card/MainCard';
 import MainTab from '@/components/tab/MainTab';
 import TabPanel from '@mui/lab/TabPanel';
@@ -35,13 +34,9 @@ export const OrderViewContainer = ({ symbol }: IProps) => {
 		},
 	];
 
-	const onTabChange = (newValue: ITab) => {
-		// setCurrentTab(newValue);
-	};
-
 	return (
 		<Box height={'20.5617%'} minHeight={'320px'} overflow={'hidden'} pt="10px" borderRadius={'16px'}>
-			<MainTab tabs={tabs as any} onChange={onTabChange}>
+			<MainTab tabs={tabs}>
 				<MainCard
 					backgroudColor="primaryLight"
 					height="100%"

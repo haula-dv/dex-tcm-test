@@ -3,7 +3,7 @@
 import { ITokenType } from '@/common';
 import { MainButton } from '@/components/button/MainButton';
 import { MainIconButton } from '@/components/button/MainIconButton';
-import { MainCard } from '@/components/card/MainCard';
+import { MainCardNotch } from '@/components/card/MainCardNotch';
 import TokenCurrencyInputField from '@/components/swap/TokenCurrencyInputField';
 import TokenCurrencyOutputField from '@/components/swap/TokenCurrencyOutputField';
 import { setColorThemeMode } from '@/utils/helpers';
@@ -240,10 +240,9 @@ export const SwapContainer = () => {
 
 	return (
 		<Box display={'flex'} alignItems={'center'} justifyContent={'center'} height={'calc(100vh - 56px)'}>
-			<MainCard
+			<MainCardNotch
 				backgroudColor="primary"
 				borderRadius="0px"
-				isNotch
 				padding={`${TSizes.margin_sm}`}
 				maxWidth={TSizes.widthCommonCard}
 			>
@@ -328,7 +327,7 @@ export const SwapContainer = () => {
 						tokenBuySelected={buyTokenActived}
 					/>
 				)}
-			</MainCard>
+			</MainCardNotch>
 
 			<TransationSubmittedCard
 				open={isTransactionSubmitted}

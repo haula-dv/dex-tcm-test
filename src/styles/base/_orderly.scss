@@ -97,3 +97,11 @@
 		color: var(--grey50);
 	}
 }
+
+.orderly-dialog-content {
+	background-color: var(--grey800) !important;
+
+	.orderly-dialog-title {
+		color: var(--grey50) !important;
+	}
+}

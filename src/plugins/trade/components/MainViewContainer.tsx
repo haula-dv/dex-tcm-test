@@ -20,7 +20,7 @@ export const MainViewContainer = ({ onSymbolChange, symbol }: IProps) => {
 			<MarketSlider />
 
 			<Grid container spacing={'16px'} height={'100%'} sx={{ display: 'flex' }}>
-				<Grid item md={7} sx={{ display: 'flex', flexDirection: 'column' }}>
+				<Grid item md={7.4} sx={{ display: 'flex', flexDirection: 'column' }}>
 					<Box>
 						<SymbolHeader onSymbolChange={onSymbolChange} symbol={symbol} />
 
@@ -35,11 +35,11 @@ export const MainViewContainer = ({ onSymbolChange, symbol }: IProps) => {
 					</Box>
 				</Grid>
 
-				<Grid item md={2.5} sx={{ display: 'flex', flexDirection: 'column', height: 'auto' }}>
+				<Grid item md={2.3} sx={{ display: 'flex', flexDirection: 'column', height: 'auto' }}>
 					<OrderBookContainer symbol={symbol} />
 				</Grid>
 
-				<Grid item md={2.5}>
+				<Grid item md={2.3}>
 					<Stack spacing={'10px'} height={'100%'}>
 						<MarketsContainer onSymbolChange={onSymbolChange} symbol={symbol} />
 						<BoxConnectWallet />

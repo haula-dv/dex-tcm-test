@@ -1,8 +1,9 @@
 'use client';
 import { setColorThemeMode } from '@/utils/helpers';
 import { TSizes } from '@/utils/themes/custom-theme/sizes';
-import { Card, CardProps } from '@mui/material';
+import { Box, Card, CardProps, Stack } from '@mui/material';
 import { styled } from '@mui/material/styles';
+import IconNotchCard from '../icons/notch';
 
 interface IProps extends CardProps {
 	children?: React.ReactNode;
@@ -19,7 +20,7 @@ interface IProps extends CardProps {
 	maxHeight?: string;
 }
 
-export const MainCard = ({
+export const MainCardNotch = ({
 	children,
 	maxWidth,
 	backgroudColor = 'white',
@@ -35,25 +36,38 @@ export const MainCard = ({
 	...props
 }: IProps) => {
 	return (
-		<CustomCard
-			elevation={0}
-			disablePadding={disablePadding}
-			isSelected={isSelected}
-			sx={{
-				maxWidth: maxWidth,
-				cursor: isHover ? 'pointer' : '',
-				padding: padding,
-				borderRadius: borderRadius,
-				transition: '0.6s',
-				height: height,
-				minHeight: minHeight,
-				maxHeight: maxHeight,
-			}}
-			backgroudColor={backgroudColor}
-			{...props}
-		>
-			{children}
-		</CustomCard>
+		<Box width={width} height={height} minHeight={minHeight} maxHeight={maxHeight}>
+			<Stack
+				display={'inline-flex'}
+				flexDirection={'column'}
+				width={width}
+				height={height}
+				minHeight={minHeight}
+				maxHeight={maxHeight}
+			>
+				<IconNotchCard />
+
+				<CustomCard
+					elevation={0}
+					disablePadding={disablePadding}
+					isSelected={isSelected}
+					sx={{
+						maxWidth: maxWidth,
+						cursor: isHover ? 'pointer' : '',
+						padding: padding,
+						borderRadius: borderRadius,
+						transition: '0.6s',
+						height: height,
+						minHeight: minHeight,
+						maxHeight: maxHeight,
+					}}
+					backgroudColor={backgroudColor}
+					{...props}
+				>
+					{children}
+				</CustomCard>
+			</Stack>
+		</Box>
 	);
 };
 

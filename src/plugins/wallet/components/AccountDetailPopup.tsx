@@ -50,7 +50,7 @@ export default function AccountDetailPopup({ onClose, open, wallet, disconnect }
 		srcChainId: Number(connectedChain?.id),
 	});
 
-	const { withdraw, unsettledPnL, availableWithdraw } = useWithdraw();
+	const { unsettledPnL, availableWithdraw } = useWithdraw();
 
 	// Handle disconnect wallet button
 	const handleDisconnect = async () => {
@@ -106,7 +106,7 @@ export default function AccountDetailPopup({ onClose, open, wallet, disconnect }
 	};
 
 	return (
-		<MainDialog title="Account Details" open={open} handleClose={onClose} maxWidth="xs">
+		<MainDialog title="Account Details" open={open} handleClose={onClose} maxWidth="xs" isDivider>
 			<MainCard variant="outlined" width="100%" backgroudColor="transparent">
 				<Stack
 					direction={'row'}

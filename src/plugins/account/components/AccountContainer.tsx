@@ -1,6 +1,6 @@
 'use client';
 import { MainButton } from '@/components/button/MainButton';
-import { MainCard } from '@/components/card/MainCard';
+import { MainCardNotch } from '@/components/card/MainCardNotch';
 import IconCheckActived from '@/components/icons/check-actived';
 import IconCheckInActived from '@/components/icons/check-inactived';
 import { TSizes } from '@/utils/themes/custom-theme/sizes';
@@ -28,7 +28,7 @@ export const AccountContainer = () => {
 	};
 
 	return (
-		<MainCard borderRadius="0px" isNotch backgroudColor="primary">
+		<MainCardNotch borderRadius="0px" backgroudColor="primary">
 			<Stack mt={'-20px'} pb={'30px'} zIndex={99} position={'relative'}>
 				<Typography variant="h3" fontWeight={700} textAlign={'center'}>
 					Connect to Swaplux
@@ -71,6 +71,6 @@ export const AccountContainer = () => {
 					Connect
 				</MainButton>
 			</Stack>
-		</MainCard>
+		</MainCardNotch>
 	);
 };

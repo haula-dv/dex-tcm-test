@@ -1,12 +1,10 @@
 import { IHeadCell } from '@/common';
-import IconLoading from '@/components/icons/loading';
 import MainTable from '@/components/table/MainTable';
 import { usdFormatter } from '@/utils/formatters/number';
 import { setColorThemeMode } from '@/utils/helpers';
 import { TSizes } from '@/utils/themes/custom-theme/sizes';
 import { Box, Stack, TableCell, TableRow, Typography, useTheme } from '@mui/material';
 import { useAccount, usePositionStream } from '@orderly.network/hooks';
-import { AccountStatusEnum } from '@orderly.network/types';
 import { memo } from 'react';
 import UpdatePosition from './UpdatePosition';
 
@@ -39,17 +37,17 @@ const PositionContent = ({ symbol }: IProps) => {
 	const { state } = useAccount();
 	const theme = useTheme();
 
-	if (state.status <= AccountStatusEnum.NotSignedIn) {
-		return;
-	}
+	// if (state.status <= AccountStatusEnum.NotSignedIn) {
+	// 	return;
+	// }
 
-	if (!positions.rows || loading) {
-		return (
-			<Stack spacing={TSizes.margin_common} m="10px">
-				<IconLoading />
-			</Stack>
-		);
-	}
+	// if (!positions.rows || loading) {
+	// 	return (
+	// 		<Stack spacing={TSizes.margin_common} m="10px">
+	// 			<IconLoading />
+	// 		</Stack>
+	// 	);
+	// }
 
 	const unrealPnL: number = positions?.aggregated?.unrealPnL ?? 0;
 
@@ -68,7 +66,7 @@ const PositionContent = ({ symbol }: IProps) => {
 						fontWeight={600}
 						color={unrealPnL.toString().startsWith('-') ? theme.palette.error.main : theme.palette.success.main}
 					>
-						{usdFormatter.format(positions.aggregated?.unrealPnL) ?? '0.00'}
+						{positions.aggregated?.unrealPnL ? usdFormatter.format(positions.aggregated?.unrealPnL) : '0.00'}
 					</Typography>
 				</Stack>
 
@@ -76,7 +74,9 @@ const PositionContent = ({ symbol }: IProps) => {
 					<Typography fontSize={'10px'} color={setColorThemeMode(theme.palette.grey[600], theme.palette.grey[200])}>
 						Notional
 					</Typography>
-					<Typography fontWeight={600}>{usdFormatter.format(positions.aggregated?.notional) ?? '0.00'}</Typography>
+					<Typography fontWeight={600}>
+						{positions.aggregated?.notional ? usdFormatter.format(positions.aggregated?.notional) : '0.00'}
+					</Typography>
 				</Stack>
 			</Stack>
 			<Box my={TSizes.margin_common} />

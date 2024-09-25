@@ -1,16 +1,27 @@
 import { IHeadCell } from '@/common';
 import { TSizes } from '@/utils/themes/custom-theme/sizes';
-import { Stack, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, useTheme } from '@mui/material';
-import { memo, ReactNode } from 'react';
+import {
+	Skeleton,
+	Stack,
+	Table,
+	TableBody,
+	TableCell,
+	TableContainer,
+	TableHead,
+	TableRow,
+	useTheme,
+} from '@mui/material';
+import React, { memo, ReactNode } from 'react';
 import IconNoContent from '../icons/no-content';
 
 interface IProps {
 	headTable: IHeadCell[];
 	children?: ReactNode;
 	isEmpty?: boolean;
+	isLoading?: boolean;
 }
 
-function MainTable({ headTable, children, isEmpty }: IProps) {
+function MainTable({ headTable, children, isEmpty, isLoading }: IProps) {
 	const theme = useTheme();
 
 	return (
@@ -39,16 +50,28 @@ function MainTable({ headTable, children, isEmpty }: IProps) {
 				</TableHead>
 
 				<TableBody>
-					{children}
-
-					{isEmpty && (
+					{isLoading ? (
 						<TableRow>
-							<TableCell align="center" colSpan={headTable.length} sx={{ border: 0 }}>
-								<Stack justifyContent={'center'} width={'100%'} alignItems={'center'} pt={2}>
-									<IconNoContent />
-								</Stack>
-							</TableCell>
+							{headTable.map((item, index) => (
+								<TableCell key={index} sx={{ border: 0 }}>
+									<Skeleton variant="text" animation="wave" height={'36px'} width={'100%'} />
+								</TableCell>
+							))}
 						</TableRow>
+					) : (
+						<React.Fragment>
+							{isEmpty ? (
+								<TableRow>
+									<TableCell align="center" colSpan={headTable.length} sx={{ border: 0 }}>
+										<Stack justifyContent={'center'} width={'100%'} alignItems={'center'} pt={2}>
+											<IconNoContent />
+										</Stack>
+									</TableCell>
+								</TableRow>
+							) : (
+								children
+							)}
+						</React.Fragment>
 					)}
 				</TableBody>
 			</Table>
