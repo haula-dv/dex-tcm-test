@@ -131,7 +131,15 @@ const TokenCurrencyOutputField = ({
 		const priceChange = currentValue * (1 + dailyChangePercentageTemp / 100); // Tính số tiền thay đổi
 
 		return priceChange;
-	}, [inputAmount, inputMarkPrice, outputAmount, buyTokenActive, dailyChangePercentage]);
+	}, [
+		sellTokenActive,
+		buyTokenActive,
+		inputMarkPrice,
+		dailyChangePercentage,
+		inputAmount,
+		outputAmount,
+		outputMarkPrice,
+	]);
 
 	// Caculate amount
 	const calculateOutputAmount = useMemo(() => {
@@ -172,7 +180,7 @@ const TokenCurrencyOutputField = ({
 		handleChangeInput(result.toFixed(6));
 
 		return result.toFixed(6); // Return the formatted result
-	}, [inputAmount, outputAmount, outputMarkPrice, buyTokenActive, inputMarkPrice]);
+	}, [buyTokenActive, outputMarkPrice, inputMarkPrice, inputAmount, handleChangeInput, outputAmount, setLoadingAmount]);
 
 	return (
 		<>
@@ -223,7 +231,7 @@ const TokenCurrencyOutputField = ({
 									fontSize={'12px'}
 									color={!dailyChange.startsWith('-') ? theme.palette.success.main : theme.palette.error.main}
 								>
-									({parseFloat(dailyChangePercentage || '0').toFixed(3)}%)
+									({parseFloat(dailyChangePercentage || '0').toFixed(2)}%)
 								</Typography>
 							) : (
 								<Typography

@@ -112,5 +112,5 @@ const CustomCard = styled(Card, {
 		backgroundColor: theme.palette.grey[600],
 	}),
 
-	// padding: disablePadding ? 0 : TSizes.card_padding,
+	padding: 0,
 }));

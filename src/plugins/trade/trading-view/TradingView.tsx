@@ -35,45 +35,10 @@ export const TradingMainView = ({ symbol, onSymbolChange }: IProps) => {
 
 	const background = setColorThemeMode(theme.palette.primary.light, '#322B27', theme);
 
-	// Watch and set widget chart
-	// useEffect(() => {
-	// 	const script = document.createElement('script');
-	// 	script.src = 'https://s3.tradingview.com/external-embedding/embed-widget-advanced-chart.js';
-	// 	script.type = 'text/javascript';
-	// 	script.async = true;
-	// 	script.innerHTML = `
-	// 		{
-	// 			"toolbar_bg": "#fff !important",
-	// 			"autosize": true,
-	// 			"symbol": "${base}",
-	// 			"interval": "${currentInterval}",
-	// 			"timezone": "Etc/UTC",
-	// 			"theme": "${theme.palette.mode}",
-	// 			"style": "${currentChartType}",
-	// 			"locale": "en",
-	// 			"backgroundColor": "${background}",
-	// 			"gridColor": "${background}",
-	// 			"allow_symbol_change": false,
-	// 			"save_image": false,
-	// 			"calendar": false,
-	// 			"studies": ${JSON.stringify(currentSelect)},
-	// 			"hide_volume": true,
-	// 			"hide_top_toolbar": true,
-	// 			"support_host": "https://www.tradingview.com"
-	// 			}`;
-
-	// 	if (container.current) {
-	// 		container.current.innerHTML = '';
-	// 		container.current.appendChild(script);
-	// 	}
-	// }, [symbol, currentInterval, base, currentChartType, currentSelect, background, theme]);
-
 	return (
 		<Box
-			flex={'1 1 0%'}
-			height={'100%'}
-			minHeight={'480px'}
 			borderRadius={'14px'}
+			width={'100%'}
 			overflow={'hidden'}
 			position={'relative'}
 			bgcolor={setColorThemeMode('#fff', '#131722')}

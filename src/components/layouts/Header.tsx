@@ -4,10 +4,9 @@ import { setColorThemeMode } from '@/utils/helpers';
 import { Mixins } from '@/utils/themes/custom-theme/mixins';
 import { TSizes } from '@/utils/themes/custom-theme/sizes';
 import { AppBar, Box, BoxProps, Stack, Toolbar, Typography } from '@mui/material';
-import { styled, useTheme } from '@mui/material/styles';
+import { styled } from '@mui/material/styles';
 import Link from 'next/link';
 import { useParams, usePathname } from 'next/navigation';
-import { MainButton } from '../button/MainButton';
 import Logo from '../icons/Logo';
 
 export const Header = () => {
@@ -15,9 +14,9 @@ export const Header = () => {
 	const params = useParams();
 
 	const navItems = [
-		{ label: 'Swap', to: '/swap', actived: ['/swap', `/trading/perp/${params.symbol}`, '/portfolio'] },
-		{ label: 'Pool', to: '/pool', actived: ['/pool', '/pool/add', '/pool/create-a-pair'] },
 		{ label: 'Trading', to: '/trading/perp', actived: [`/trading/perp/${params.symbol}`] },
+		{ label: 'Swap', to: '/swap', actived: ['/swap'] },
+		// { label: 'Pool', to: '/pool', actived: ['/pool', '/pool/add', '/pool/create-a-pair'] },
 		{ label: 'Portfolio', to: '/portfolio', actived: ['/portfolio'] },
 	];
 
@@ -29,7 +28,7 @@ export const Header = () => {
 						<Stack direction={'row'} alignItems={'center'} spacing={TSizes.margin_md}>
 							<Logo width="124px" height="40px" />
 
-							<Stack
+							{/* <Stack
 								direction={'row'}
 								border={2}
 								borderColor={setColorThemeMode(useTheme().palette.grey[600], '#fff')}
@@ -52,9 +51,9 @@ export const Header = () => {
 										</MainButton>
 									</Link>
 								))}
-							</Stack>
+							</Stack> */}
 
-							{navItems.slice(2, 5).map((navItem) => (
+							{navItems.map((navItem) => (
 								<Link key={navItem.label} href={navItem.to}>
 									<NavItem isActived={navItem.actived.includes(pathName)}>
 										<Typography>{navItem.label}</Typography>

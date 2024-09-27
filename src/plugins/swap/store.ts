@@ -21,7 +21,16 @@ export const tokenInputState = createZustandStore<ITokenType | null>({
 
 export const tokenOutputState = createZustandStore<ITokenType | null>({
 	key: 'tokenOutputState',
-	default: null,
+	default: {
+		token: 'BTC',
+		token_account_id: 'aurora',
+		decimals: 18,
+		minimum_increment: 0.00000001,
+		amount: 0,
+		isInputting: false,
+		logoURI: getImageNextwork('BTC', 'symbol_logo'),
+	},
+	// default: null,
 });
 
 export const tokenPancakeswapBnbListState = createZustandStore<ITokenType[]>({

@@ -5,6 +5,7 @@ import { setColorThemeMode } from '@/utils/helpers';
 import { TSizes } from '@/utils/themes/custom-theme/sizes';
 import { Box, Stack, TableCell, TableRow, Typography, useTheme } from '@mui/material';
 import { useAccount, usePositionStream } from '@orderly.network/hooks';
+import dayjs from 'dayjs';
 import { memo } from 'react';
 import UpdatePosition from './UpdatePosition';
 
@@ -52,12 +53,11 @@ const PositionContent = ({ symbol }: IProps) => {
 	const unrealPnL: number = positions?.aggregated?.unrealPnL ?? 0;
 
 	return (
-		<Box px={'10px'} pt={'10px'} pb={10} height={'100%'}>
-			<Stack direction={'row'} spacing={'10px'}>
-				{/* <Box className="position-head">
+		<Box px={'10px'} pt={'10px'} pb={6} height={'100%'}>
+			{/* <Box className="position-head">
 					<PositionsView aggregated={positions.aggregated} dataSource={[]} />
 				</Box> */}
-
+			<Stack direction={'row'} spacing={'10px'}>
 				<Stack>
 					<Typography fontSize={'10px'} color={setColorThemeMode(theme.palette.grey[600], theme.palette.grey[200])}>
 						Unreal. PnL
@@ -130,9 +130,7 @@ const PositionContent = ({ symbol }: IProps) => {
 									</Typography>
 								</TableCell>
 
-								{/* <TableCell align="right">
-								{dayjs(item.timestamp).format('YYYY-MM-DD HH:mm:ss')}
-								</TableCell> */}
+								<TableCell align="right">{dayjs(item.timestamp).format('YYYY-MM-DD HH:mm:ss')}</TableCell>
 
 								<TableCell align="right">
 									<UpdatePosition position={item} symbol={symbol} refresh={refresh} />

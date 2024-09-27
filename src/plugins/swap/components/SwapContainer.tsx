@@ -9,7 +9,7 @@ import TokenCurrencyOutputField from '@/components/swap/TokenCurrencyOutputField
 import { setColorThemeMode } from '@/utils/helpers';
 import { TSizes } from '@/utils/themes/custom-theme/sizes';
 import { Box, Collapse, Skeleton, Stack, Typography, useTheme } from '@mui/material';
-import { useMarkPrice, useOrderEntry } from '@orderly.network/hooks';
+import { useMarkPrice, useOrderEntry, useTickerStream } from '@orderly.network/hooks';
 import { OrderSide, OrderType } from '@orderly.network/types';
 import { IconChevronDown, IconHelp } from '@tabler/icons-react';
 import { useConnectWallet, useNotifications } from '@web3-onboard/react';
@@ -51,9 +51,10 @@ export const SwapContainer = () => {
 	const [deadlineMinutes, setDeadlineMinutes] = useState('10');
 
 	// Mark price
-	const { data: inputMarkPrice } = useMarkPrice(`PERP_${sellTokenActived?.token}_USDC`);
-	const { data: outputMarkPrice } = useMarkPrice(`PERP_${buyTokenActived?.token}_USDC`);
+	const { data: inputMarkPrice } = useMarkPrice(`PERP_${sellTokenActived?.token}_USDC`); // Sell
+	const { data: outputMarkPrice } = useMarkPrice(`PERP_${buyTokenActived?.token}_USDC`); // Buy
 	const [_0, customNotification] = useNotifications();
+	const stream = useTickerStream(`PERP_${sellTokenActived?.token}_USDC`);
 
 	// This handle toggle side
 	const handleToggleSide = () => {
@@ -106,15 +107,6 @@ export const SwapContainer = () => {
 			setLoadingDes(false);
 		}, 1200);
 	};
-
-	const baseExchangeRate = useMemo(() => {
-		const baseValue = 1;
-
-		let rate = outputMarkPrice / inputMarkPrice;
-		const result = baseValue * rate;
-
-		return result.toFixed(6);
-	}, [inputMarkPrice, outputMarkPrice]);
 
 	const handleSellInputChange = useCallback((value: string) => {
 		setInputAmount(value);
@@ -210,31 +202,28 @@ export const SwapContainer = () => {
 		// }
 	};
 
-	const calculatePriceImpact = (expectedOutput: number, actualOutput: number): any => {
-		if (expectedOutput === 0 || actualOutput === 0) return 0;
+	const baseExchangeRate = useMemo(() => {
+		const baseValue = 1;
 
-		// Tính toán Price Impact
-		let impact = ((expectedOutput - actualOutput) / expectedOutput) * 100;
+		let rate = outputMarkPrice / inputMarkPrice;
+		const result = baseValue * rate;
 
-		// Giới hạn Price Impact trong khoảng -100% đến 100%
-		impact = Math.max(Math.min(impact, 100), -100);
+		return result.toFixed(6);
+	}, [inputMarkPrice, outputMarkPrice]);
 
-		// Trả về số làm tròn với 2 chữ số thập phân
-		return parseFloat(impact.toFixed(2));
-	};
-
-	const handlePriceImpactCalculation = useCallback(() => {
-		const expectedOutput = parseFloat(inputAmount) * parseFloat(baseExchangeRate);
-		const actualOutput = parseFloat(outputAmount);
-
-		// Kiểm tra giá trị hợp lệ
-		if (isNaN(expectedOutput) || isNaN(actualOutput) || expectedOutput <= 0 || actualOutput <= 0) {
-			return '0.00';
+	const priceImpact = useMemo(() => {
+		if (!inputMarkPrice || !outputMarkPrice || !inputAmount || !outputAmount) {
+			return 0;
 		}
 
-		const priceImpact = calculatePriceImpact(expectedOutput, actualOutput);
-		return priceImpact;
-	}, [inputAmount, outputAmount, baseExchangeRate]);
+		// Expected output without slippage or price impact
+		const expectedOutput = (inputAmount * inputMarkPrice) / outputMarkPrice;
+
+		// Price impact formula
+		const impact = ((expectedOutput - outputAmount) / expectedOutput) * 100;
+
+		return impact.toFixed(2);
+	}, [inputAmount, outputAmount, inputMarkPrice, outputMarkPrice]);
 
 	return (
 		<Box display={'flex'} alignItems={'center'} justifyContent={'center'} height={'calc(100vh - 56px)'}>
@@ -245,7 +234,7 @@ export const SwapContainer = () => {
 				maxWidth={TSizes.widthCommonCard}
 			>
 				<Stack direction={'row'} alignItems={'center'} pb={'10px'}>
-					<Typography flex={1} fontSize={'18px'}>
+					<Typography flex={1} fontSize={'22px'}>
 						Swap
 					</Typography>
 
@@ -319,7 +308,7 @@ export const SwapContainer = () => {
 						</Stack>
 
 						<Collapse in={isShowCost}>
-							<Cost slippageAmount={slippageAmount} handlePriceImpactCalculation={handlePriceImpactCalculation} />
+							<Cost slippageAmount={slippageAmount} priceImpact={priceImpact as any} />
 						</Collapse>
 					</>
 				) : (
