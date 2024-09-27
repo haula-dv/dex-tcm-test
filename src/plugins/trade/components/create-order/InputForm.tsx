@@ -8,7 +8,6 @@ import { OrderEntity } from '@orderly.network/types';
 import { memo, useEffect, useState } from 'react';
 import { UseFormReturn } from 'react-hook-form';
 import { match } from 'ts-pattern';
-import AmountSetOrderSide from './AmountSetOrderSide';
 import { Inputs } from './CreateOrderForm';
 
 interface IProps {
@@ -56,10 +55,7 @@ function InputForm({ formContext, symbolsInfo, symbol, getInput, helper, maxQty 
 	return (
 		<Stack spacing={'8px'}>
 			<Collapse
-				in={match(formContext.watch('type'))
-					.with('StopLimit', () => true)
-					.with('StopMarket', () => true)
-					.otherwise(() => false)}
+				in={formContext.watch('type') === 'StopLimit' || formContext.watch('type') === 'StopMarket'}
 				sx={{ mt: '-10px !important' }}
 			>
 				<CurrencyInputField
@@ -79,7 +75,7 @@ function InputForm({ formContext, symbolsInfo, symbol, getInput, helper, maxQty 
 				/>
 			</Collapse>
 
-			<Stack direction={'row'} alignItems={'start'} spacing={'10px'}>
+			<Stack spacing={'10px'} direction={'row'} alignItems={'start'}>
 				{isHiddenMarket ? (
 					<CustomTextField
 						readOnly
@@ -140,13 +136,14 @@ function InputForm({ formContext, symbolsInfo, symbol, getInput, helper, maxQty 
 				/>
 			</Stack>
 
-			{/* <Stack direction={'row'} justifyContent={'space-between'} mt={'2px !important'}>
+			<Stack direction={'row'} justifyContent={'space-between'} mt={'2px !important'}>
 				<Typography fontSize={'12px'} color={theme.palette.grey[300]}>
 					Max{' '}
 					{match(formContext.watch('direction'))
 						.with('Buy', () => 'Buy')
 						.otherwise(() => 'Sell')}
 				</Typography>
+
 				<Typography
 					fontSize={'12px'}
 					color={match(formContext.watch('direction'))
@@ -155,9 +152,9 @@ function InputForm({ formContext, symbolsInfo, symbol, getInput, helper, maxQty 
 				>
 					{formatter.format(maxQty)} {base}
 				</Typography>
-			</Stack> */}
+			</Stack>
 
-			<AmountSetOrderSide maxQty={maxQty} formContext={formContext} formatter={formatter} />
+			{/* <AmountSetOrderSide maxQty={maxQty} formContext={formContext} formatter={formatter} /> */}
 		</Stack>
 	);
 }

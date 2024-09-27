@@ -3,7 +3,7 @@ import { TSizes } from '@/utils/themes/custom-theme/sizes';
 import TabContext from '@mui/lab/TabContext';
 import { Button, Stack } from '@mui/material';
 import { styled } from '@mui/material/styles';
-import { memo, ReactElement, useState } from 'react';
+import { memo, ReactElement, ReactNode, useState } from 'react';
 
 interface ITab {
 	label: string;
@@ -17,9 +17,10 @@ interface IProps {
 	children?: ReactElement;
 	height?: string;
 	defaultValue?: string | number;
+	rightSideTab?: ReactNode;
 }
 
-const MainTab = ({ tabs, onChange, fullWidth, height, children, defaultValue }: IProps) => {
+const MainTab = ({ tabs, onChange, fullWidth, height, children, defaultValue, rightSideTab }: IProps) => {
 	const [value, setValue] = useState<any>(tabs[0].value);
 
 	const handleChange = (val: ITab) => {
@@ -29,20 +30,24 @@ const MainTab = ({ tabs, onChange, fullWidth, height, children, defaultValue }: 
 
 	return (
 		<TabContext value={value ?? defaultValue}>
-			<Stack direction={'row'} spacing={'10px'} pb={'10px'} width={'100%'}>
-				{tabs.map((item, index) => {
-					return (
-						<TabItem
-							actived={value === item.value}
-							key={index}
-							fullWidth={fullWidth}
-							height={height}
-							onClick={(e) => handleChange(item)}
-						>
-							{item.label}
-						</TabItem>
-					);
-				})}
+			<Stack direction={'row'} pb={'10px'} width={'100%'} justifyContent={'space-between'}>
+				<Stack direction={'row'} spacing={'10px'} width={'100%'}>
+					{tabs.map((item, index) => {
+						return (
+							<TabItem
+								actived={value === item.value}
+								key={index}
+								fullWidth={fullWidth}
+								height={height}
+								onClick={(e) => handleChange(item)}
+							>
+								{item.label}
+							</TabItem>
+						);
+					})}
+				</Stack>
+
+				{rightSideTab}
 			</Stack>
 			<>{children}</>
 		</TabContext>

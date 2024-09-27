@@ -13,9 +13,10 @@ import PendingOrder from './PendingOrder';
 interface IProps {
 	orderBookStatus: OrderStatus;
 	symbol: string;
+	isShowAll: boolean;
 }
 
-const OrderTableContent = ({ orderBookStatus, symbol }: IProps) => {
+const OrderTableContent = ({ orderBookStatus, symbol, isShowAll }: IProps) => {
 	const [side, setSide] = useState<any>('ALL');
 	const [loading, setLoading] = useState(false);
 	const [currentOrder, setCurrentOrder] = useState<any>(null);
@@ -23,7 +24,7 @@ const OrderTableContent = ({ orderBookStatus, symbol }: IProps) => {
 	const [_0, customNotification] = useNotifications();
 
 	const [ordersUntyped, { cancelAlgoOrder, cancelOrder, isLoading, loadMore, refresh }] = useOrderStream({
-		symbol,
+		symbol: isShowAll ? '' : symbol,
 		status: orderBookStatus,
 		side: side == 'ALL' ? '' : side,
 	});

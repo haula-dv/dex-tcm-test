@@ -3,9 +3,9 @@ import MainCard from '@/components/card/MainCard';
 import { RenderFormError } from '@/components/form-control/RenderErrors';
 import { TokenInput } from '@/components/form-control/TokenInput';
 import IconLoading from '@/components/icons/loading';
-import { MainSlider } from '@/components/sider/MainSlider';
+import BaseSlider from '@/components/sider/BaseSlider';
 import { getDecimalsFromTick } from '@/utils/formatters/api';
-import { Typography } from '@mui/material';
+import { Box, Typography } from '@mui/material';
 import { useOrderEntry, useSymbolsInfo } from '@orderly.network/hooks';
 import { API, OrderEntity, OrderSide, OrderType } from '@orderly.network/types';
 import { useNotifications } from '@web3-onboard/react';
@@ -73,7 +73,7 @@ const ClosePositionContent = ({ symbol, position, refresh, handleCloseModal }: I
 			update({
 				eventCode: 'closePositionError',
 				type: 'error',
-				message: 'Closing position failed!',
+				message: `Closing position failed! ${err}`,
 				autoDismiss: 5_000,
 			});
 		} finally {
@@ -84,61 +84,56 @@ const ClosePositionContent = ({ symbol, position, refresh, handleCloseModal }: I
 	};
 
 	return (
-		<MainCard backgroudColor="transparent" width="100%" variant="outlined">
+		<>
 			{symbolsInfo.isNil ? (
 				<IconLoading />
 			) : (
 				<form onSubmit={formContext.handleSubmit(submitForm)}>
 					<Typography pb={2}>Partially or fully close your open position at mark price.</Typography>
 
-					<Controller
-						name="quantity"
-						control={formContext.control}
-						rules={{
-							validate: {
-								custom: async (_, data) => {
-									const errors = await getValidationErrors(data, symbol, helper.validator);
-									return errors?.order_quantity != null ? errors.order_quantity.message : true;
+					<MainCard variant="outlined" backgroudColor="transparent">
+						<Controller
+							name="quantity"
+							control={formContext.control}
+							rules={{
+								validate: {
+									custom: async (_, data) => {
+										const errors = await getValidationErrors(data, symbol, helper.validator);
+										return errors?.order_quantity != null ? errors.order_quantity.message : true;
+									},
 								},
-							},
-						}}
-						render={({ field: { name, onBlur, onChange, value }, fieldState: { error } }) => (
-							<>
-								<TokenInput
-									decimals={baseDecimals}
-									placeholder={'0.0000'}
-									name={name}
-									value={value}
-									onBlur={onBlur}
-									onChange={onChange}
-									suffix={base}
-									hasError={error != null}
-									onValueChange={(newVal) => {
-										value = newVal.toString();
-									}}
-									min={FixedNumber.fromString('0')}
-									max={FixedNumber.fromString(String(position.position_qty))}
-								/>
+							}}
+							render={({ field: { name, onBlur, onChange, value }, fieldState: { error } }) => (
+								<>
+									<TokenInput
+										decimals={baseDecimals}
+										placeholder={'0.0000'}
+										name={name}
+										value={value}
+										onBlur={onBlur}
+										onChange={onChange}
+										suffix={base}
+										hasError={error != null}
+										onValueChange={(newVal) => {
+											value = newVal.toString();
+										}}
+										min={FixedNumber.fromString('0')}
+										max={FixedNumber.fromString(String(position.position_qty))}
+									/>
 
-								<MainSlider
-									name={name}
-									value={[Number(value)]}
-									defaultValue={[100]}
-									onChange={(event, newValue: any) => {
-										onChange(newValue[0] as any);
-									}}
-									min={0}
-									max={position.position_qty}
-									step={symbolInfo.base_tick}
-									size="small"
-									aria-label="Small"
-									valueLabelDisplay="auto"
-								/>
+									<RenderFormError error={error?.message ?? ''} />
+								</>
+							)}
+						/>
 
-								<RenderFormError error={error?.message ?? ''} />
-							</>
-						)}
-					/>
+						<BaseSlider
+							min={0}
+							max={position.position_qty}
+							handleChange={(newValue) => formContext.setValue('quantity', newValue)}
+							amountQty={Number(formContext.watch('quantity')) ?? 0}
+						/>
+					</MainCard>
+					<Box mt="10px" />
 
 					<MainButton
 						variant="contained"
@@ -152,7 +147,7 @@ const ClosePositionContent = ({ symbol, position, refresh, handleCloseModal }: I
 					</MainButton>
 				</form>
 			)}
-		</MainCard>
+		</>
 	);
 };
 

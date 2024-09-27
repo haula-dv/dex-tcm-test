@@ -3,10 +3,9 @@ import MainCard from '@/components/card/MainCard';
 import CurrencyInputField from '@/components/form-control/CurrencyInputField';
 import { RenderFormError } from '@/components/form-control/RenderErrors';
 import { TokenInput } from '@/components/form-control/TokenInput';
-import { MainSlider } from '@/components/sider/MainSlider';
+import BaseSlider from '@/components/sider/BaseSlider';
 import { getDecimalsFromTick } from '@/utils/formatters/api';
 import { usdFormatter } from '@/utils/formatters/number';
-import { TSizes } from '@/utils/themes/custom-theme/sizes';
 import { Box, Stack, Typography, useTheme } from '@mui/material';
 import { useSymbolsInfo, useTPSLOrder } from '@orderly.network/hooks';
 import { API } from '@orderly.network/types';
@@ -56,6 +55,7 @@ const TpSlOrder = ({ symbol, position, refresh, handleCloseModal }: IProps) => {
 	}, [tp_trigger_price]);
 
 	const sl_trigger_price = formContext.watch('sl_trigger_price');
+
 	useEffect(() => {
 		if (sl_trigger_price == null) return;
 		setValue('sl_trigger_price', sl_trigger_price);
@@ -63,6 +63,7 @@ const TpSlOrder = ({ symbol, position, refresh, handleCloseModal }: IProps) => {
 	}, [sl_trigger_price]);
 
 	const quantity = formContext.watch('quantity');
+
 	useEffect(() => {
 		if (quantity == null) return;
 		setValue('quantity', quantity);
@@ -89,7 +90,7 @@ const TpSlOrder = ({ symbol, position, refresh, handleCloseModal }: IProps) => {
 			update({
 				eventCode: 'createStopOrderError',
 				type: 'error',
-				message: 'Order creation failed!',
+				message: `Order creation failed! ${err}`,
 				autoDismiss: 5_000,
 			});
 		} finally {
@@ -106,7 +107,7 @@ const TpSlOrder = ({ symbol, position, refresh, handleCloseModal }: IProps) => {
 	return (
 		<form onSubmit={formContext.handleSubmit(submitForm)}>
 			<MainCard backgroudColor="transparent" width="100%" variant="outlined">
-				<Stack spacing={TSizes.margin_common}>
+				<Stack spacing={'6px'}>
 					<CurrencyInputField
 						formContext={formContext}
 						name="tp_trigger_price"
@@ -147,56 +148,61 @@ const TpSlOrder = ({ symbol, position, refresh, handleCloseModal }: IProps) => {
 						}
 					/>
 
-					<Controller
-						name="quantity"
-						control={formContext.control}
-						render={({ field: { name, onBlur, onChange, value }, fieldState: { error } }) => (
-							<Stack>
-								<Typography fontSize={'12px'}>Quantity ({base})</Typography>
+					<MainCard variant="outlined" backgroudColor="transparent">
+						<Controller
+							name="quantity"
+							control={formContext.control}
+							render={({ field: { name, onBlur, onChange, value }, fieldState: { error } }) => (
+								<Stack>
+									<Typography fontSize={'12px'}>Quantity ({base})</Typography>
 
-								<TokenInput
-									decimals={baseDecimals}
-									placeholder={'0.0000'}
-									name={name}
-									value={value}
-									onBlur={onBlur}
-									onChange={onChange}
-									suffix={base}
-									hasError={errors?.quantity != null}
-									onValueChange={(newVal) => {
-										value = newVal.toString();
-									}}
-									min={FixedNumber.fromString('0')}
-									max={FixedNumber.fromString(String(Math.abs(position.position_qty)))}
-								/>
+									<TokenInput
+										decimals={baseDecimals}
+										placeholder={'0.0000'}
+										name={name}
+										value={value}
+										onBlur={onBlur}
+										onChange={onChange}
+										suffix={base}
+										hasError={errors?.quantity != null}
+										onValueChange={(newVal) => {
+											value = newVal.toString();
+										}}
+										min={FixedNumber.fromString('0')}
+										max={FixedNumber.fromString(String(Math.abs(position.position_qty)))}
+									/>
 
-								<MainSlider
-									name={name}
-									value={[Number(value)]}
-									defaultValue={[100]}
-									onChange={(event, newValue: any) => {
-										onChange(newValue[0] as any);
-									}}
-									min={0}
-									max={Math.abs(position.position_qty)}
-									step={symbolInfo.base_tick}
-									size="small"
-									aria-label="Small"
-									valueLabelDisplay="auto"
-								/>
-								<Typography textAlign={'center'}>
-									{value} {base}
-								</Typography>
+									<RenderFormError error={error?.message ?? ''} />
+								</Stack>
+							)}
+						/>
 
-								<RenderFormError error={error?.message ?? ''} />
-							</Stack>
-						)}
-					/>
+						<BaseSlider
+							min={0}
+							max={position.position_qty}
+							handleChange={(newValue) => formContext.setValue('quantity', newValue)}
+							amountQty={Number(formContext.watch('quantity')) ?? 0}
+						/>
+					</MainCard>
 				</Stack>
 			</MainCard>
 			<Box pt="10px" />
 
-			<MainButton type="submit" disabled={loading} isLoading={loading} variant="contained" fullWidth>
+			<MainButton
+				type="submit"
+				disabled={
+					loading || !formContext.watch('tp_trigger_price')
+						? true
+						: false || errors?.tp_trigger_price
+						? true
+						: false || errors?.sl_trigger_price
+						? true
+						: false
+				}
+				isLoading={loading}
+				variant="contained"
+				fullWidth
+			>
 				Create TP & SL Order
 			</MainButton>
 		</form>

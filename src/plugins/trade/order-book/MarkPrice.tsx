@@ -4,7 +4,7 @@ import { Stack, Typography, useTheme } from '@mui/material';
 import { OrderBookItem } from '@orderly.network/hooks';
 import { Decimal } from '@orderly.network/utils';
 import { IconArrowDown, IconArrowUp } from '@tabler/icons-react';
-import { memo, useMemo } from 'react';
+import { useMemo } from 'react';
 
 interface IProps {
 	markPrice: number;
@@ -75,4 +75,4 @@ const MarkPrice = ({ markPrice, lastPrice, asks, bids }: IProps) => {
 	);
 };
 
-export default memo(MarkPrice);
+export default MarkPrice;

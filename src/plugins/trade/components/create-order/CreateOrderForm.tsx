@@ -4,14 +4,7 @@ import IconLoading from '@/components/icons/loading';
 import { getDecimalsFromTick } from '@/utils/formatters/api';
 import { TSizes } from '@/utils/themes/custom-theme/sizes';
 import { Stack, Typography, useTheme } from '@mui/material';
-import {
-	useAccountInfo,
-	useCollateral,
-	useMarkPrice,
-	useOrderEntry,
-	useSymbolsInfo,
-	useWithdraw,
-} from '@orderly.network/hooks';
+import { useCollateral, useMarkPrice, useOrderEntry, useSymbolsInfo, useWithdraw } from '@orderly.network/hooks';
 import { OrderEntity, OrderSide, OrderType } from '@orderly.network/types';
 import { useConnectWallet, useNotifications } from '@web3-onboard/react';
 import { memo, ReactNode, useMemo, useState } from 'react';
@@ -59,7 +52,6 @@ const CreateOrderForm = ({ symbol }: IProps) => {
 	const [_0, customNotification] = useNotifications();
 	const [_, base, quote] = symbol.split('_');
 	const { data: markPrice } = useMarkPrice(symbol);
-	const { data: accountInfo } = useAccountInfo();
 
 	const symbolInfo = symbolsInfo[symbol]();
 	const [baseDecimals, quoteDecimals] = getDecimalsFromTick(symbolInfo);
@@ -145,38 +137,6 @@ const CreateOrderForm = ({ symbol }: IProps) => {
 	const quantity = Number(formContext.watch('quantity')) ?? 0;
 	const price = formContext.watch('price') ?? 0;
 
-	const takerFeeRate = useMemo(() => {
-		if (!accountInfo) {
-			return 0;
-		}
-
-		return accountInfo?.taker_fee_rate ?? 0;
-	}, [accountInfo]);
-
-	const makerFeeRate = useMemo(() => {
-		if (!accountInfo) {
-			return 0;
-		}
-
-		return accountInfo?.maker_fee_rate ?? 0;
-	}, [accountInfo]);
-
-	const fee = useMemo(() => {
-		const feeRate = formContext.watch('type') === 'Market' ? takerFeeRate : makerFeeRate;
-
-		const totalFee = feeRate * quantity; // Số lượng phí cụ thể
-
-		// Nếu bạn muốn tính phần trăm phí dựa trên tổng giá trị giao dịch
-		const totalValue = quantity * (estLiqPrice as any); // Tổng giá trị giao dịch
-		const feePercentage = (totalFee / totalValue) * 100; // Phần trăm phí
-
-		if (!isFinite(feePercentage)) {
-			return { totalFee: 0, feePercentage: 0 };
-		}
-
-		return { totalFee, feePercentage }; // Trả về cả hai giá trị
-	}, [takerFeeRate, makerFeeRate, quantity, formContext, estLiqPrice]);
-
 	const totalPrice = useMemo(() => {
 		if (isNaN(quantity)) {
 			return 0;
@@ -186,7 +146,7 @@ const CreateOrderForm = ({ symbol }: IProps) => {
 		const curPrice = Number(price) ?? 0;
 
 		if (formContext.watch('type') === 'Limit' || formContext.watch('type') === 'StopLimit') {
-			const total = amount * curPrice + fee.totalFee;
+			const total = amount * curPrice;
 			if (isNaN(total)) {
 				return 0;
 			}
@@ -194,13 +154,13 @@ const CreateOrderForm = ({ symbol }: IProps) => {
 			return total;
 		}
 
-		const total = amount * markPrice + fee.totalFee;
+		const total = amount * markPrice;
 		if (isNaN(total)) {
 			return 0;
 		}
 
 		return total;
-	}, [quantity, markPrice, fee, price, formContext]);
+	}, [quantity, markPrice, price, formContext]);
 
 	// Check if the balance is sufficient
 	const isBalanceSufficient = useMemo(() => {
@@ -236,7 +196,6 @@ const CreateOrderForm = ({ symbol }: IProps) => {
 								estLeverage={estLeverage}
 								baseDecimals={baseDecimals}
 								quote={quote}
-								fee={fee}
 								symbol={symbol}
 								formContext={formContext}
 								estLiqPrice={estLiqPrice}

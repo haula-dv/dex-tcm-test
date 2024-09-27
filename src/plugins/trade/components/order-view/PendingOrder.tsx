@@ -14,10 +14,6 @@ interface IProps {
 	isHideCancel?: boolean;
 }
 
-function formatNumber(num: any) {
-	return num.toLocaleString('en-US', { minimumFractionDigits: 1, maximumFractionDigits: 1 });
-}
-
 const PendingOrder = ({ order, symbol, handleClickOrderItem, isHideCancel }: IProps) => {
 	const [prep, base, quote] = order.order.symbol.split('_');
 	const theme = useTheme();

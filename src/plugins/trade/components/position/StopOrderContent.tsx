@@ -3,7 +3,7 @@ import MainCard from '@/components/card/MainCard';
 import CurrencyInputField from '@/components/form-control/CurrencyInputField';
 import { RenderFormError } from '@/components/form-control/RenderErrors';
 import { TokenInput } from '@/components/form-control/TokenInput';
-import { MainSlider } from '@/components/sider/MainSlider';
+import BaseSlider from '@/components/sider/BaseSlider';
 import { ItemRow } from '@/plugins/pool/components/TokenSelected';
 import { getDecimalsFromTick } from '@/utils/formatters/api';
 import { usdFormatter } from '@/utils/formatters/number';
@@ -38,6 +38,7 @@ const StopOrder = ({ symbol, position, refresh, handleCloseModal }: IProps) => {
 
 	const symbolsInfo = useSymbolsInfo();
 	position.position_qty = Math.abs(position.position_qty);
+
 	const formContext = useForm<StopOrderInputs>({
 		defaultValues: {
 			direction: 'TakeProfit',
@@ -46,6 +47,7 @@ const StopOrder = ({ symbol, position, refresh, handleCloseModal }: IProps) => {
 			quantity: position.position_qty,
 		},
 	});
+
 	const { onSubmit, helper } = useOrderEntry(
 		{
 			symbol,
@@ -54,6 +56,7 @@ const StopOrder = ({ symbol, position, refresh, handleCloseModal }: IProps) => {
 		},
 		{ watchOrderbook: true },
 	);
+
 	const [_0, customNotification] = useNotifications();
 
 	const submitForm: SubmitHandler<StopOrderInputs> = async (data) => {
@@ -163,7 +166,7 @@ const StopOrder = ({ symbol, position, refresh, handleCloseModal }: IProps) => {
 									},
 								}}
 								render={({ field: { name, onBlur, onChange, value }, fieldState: { error } }) => (
-									<Stack>
+									<Stack mb="-10px !important">
 										<TokenInput
 											decimals={baseDecimals}
 											placeholder={'0.0000'}
@@ -180,31 +183,23 @@ const StopOrder = ({ symbol, position, refresh, handleCloseModal }: IProps) => {
 											max={FixedNumber.fromString(String(position.position_qty))}
 										/>
 
-										<MainSlider
-											name={name}
-											value={[Number(value)]}
-											defaultValue={[100]}
-											onChange={(event, newValue: any) => {
-												onChange(newValue[0] as any);
-											}}
-											min={0}
-											max={position.position_qty}
-											step={symbolInfo.base_tick}
-											size="small"
-											aria-label="Small"
-											valueLabelDisplay="auto"
-										/>
-										<Typography textAlign={'center'}>
-											{value} {base}
-										</Typography>
-
 										<RenderFormError error={error?.message ?? ''} />
 									</Stack>
 								)}
 							/>
+
+							<BaseSlider
+								min={0}
+								max={position.position_qty}
+								handleChange={(newValue) => formContext.setValue('quantity', newValue)}
+								amountQty={Number(formContext.watch('quantity')) ?? 0}
+							/>
+
+							<Box mt="10px" />
 						</Stack>
 					</MainCard>
 					<Box mt="10px" />
+
 					<ItemRow
 						title="Est. PnL:"
 						value={
@@ -213,6 +208,7 @@ const StopOrder = ({ symbol, position, refresh, handleCloseModal }: IProps) => {
 								: '-'
 						}
 					/>
+
 					<Box mt="10px" />
 
 					<MainButton
@@ -220,7 +216,13 @@ const StopOrder = ({ symbol, position, refresh, handleCloseModal }: IProps) => {
 						color="primary"
 						fullWidth
 						type="submit"
-						disabled={loading}
+						disabled={
+							loading || !formContext.watch('quantity')
+								? true
+								: false || !formContext.watch('trigger_price')
+								? true
+								: false
+						}
 						isLoading={loading}
 					>
 						{match(formContext.watch('direction'))

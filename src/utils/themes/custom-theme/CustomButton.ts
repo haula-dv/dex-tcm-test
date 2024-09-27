@@ -15,14 +15,15 @@ export const CustomMuiButton = (theme: Theme) => {
 					lineHeight: '100%',
 					borderRadius: TSizes.borderRadius,
 					whiteSpace: 'nowrap',
+
 					'&.Mui-disabled': {
 						pointerEvents: 'all',
 						cursor: 'not-allowed !important',
-						backgroundColor: setColorThemeMode(theme.palette.grey[200], theme.palette.grey[700]),
+						backgroundColor: setColorThemeMode(theme.palette.grey[200], theme.palette.grey[700], theme),
 						color: theme.palette.grey[300],
 						'&:hover': {
 							color: theme.palette.grey[300],
-							backgroundColor: setColorThemeMode(theme.palette.grey[200], theme.palette.grey[700]),
+							backgroundColor: setColorThemeMode(theme.palette.grey[200], theme.palette.grey[700], theme),
 						},
 					},
 				},
@@ -36,7 +37,7 @@ export const CustomMuiButton = (theme: Theme) => {
 					},
 
 					'&.Mui-disabled': {
-						backgroundColor: `${setColorThemeMode(theme.palette.grey[200], theme.palette.grey[700])} !important`,
+						backgroundColor: `${setColorThemeMode(theme.palette.grey[200], theme.palette.grey[700], theme)} !important`,
 					},
 				},
 

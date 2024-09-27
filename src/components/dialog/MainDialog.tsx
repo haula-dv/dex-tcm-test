@@ -86,7 +86,7 @@ interface ICustomDialog {
 const CustomDialog = styled(Dialog, {
 	shouldForwardProp: (prop) => prop !== 'isBGWhite',
 })<ICustomDialog>(({ theme, isBGWhite }) => ({
-	zIndex: 9,
+	zIndex: 991,
 	'& .MuiDialog-paper': {
 		position: 'relative',
 		boxShadow: 'none',

@@ -91,7 +91,7 @@ const UpdatePosition = ({ position, refresh, symbol }: IProps) => {
 				size="xsmall"
 				variant="contained"
 				color="success"
-				sx={{ color: '#fff !important' }}
+				sx={{ color: '#fff !important', textTransform: 'none' }}
 				onClick={handleToggleModal}
 			>
 				Update

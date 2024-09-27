@@ -1,19 +1,14 @@
 import { MainButton } from '@/components/button/MainButton';
 import MainCard from '@/components/card/MainCard';
-import { MainChip } from '@/components/chip/MainChip';
 import { ItemRow } from '@/plugins/pool/components/TokenSelected';
-import { usdFormatter } from '@/utils/formatters/number';
-import { setColorThemeMode } from '@/utils/helpers';
-import { Box, Stack, Typography, useTheme } from '@mui/material';
-import { useMarkPrice } from '@orderly.network/hooks';
+import { Stack, Typography } from '@mui/material';
 import { useConnectWallet } from '@web3-onboard/react';
-import { memo, useMemo } from 'react';
+import { memo } from 'react';
 import { UseFormReturn } from 'react-hook-form';
 import { Inputs } from './CreateOrderForm';
 
 interface IProps {
 	totalPrice: number;
-	fee: { feePercentage: number; totalFee: number };
 	estLeverage: number | any | undefined;
 	estLiqPrice: number | any | undefined;
 	quote?: string;
@@ -22,36 +17,13 @@ interface IProps {
 	formContext: UseFormReturn<Inputs>;
 }
 
-const Details = ({
-	totalPrice = 0,
-	estLeverage,
-	estLiqPrice,
-	baseDecimals,
-	quote,
-	fee,
-	symbol,
-	formContext,
-}: IProps) => {
+const Details = ({ totalPrice = 0, estLeverage, estLiqPrice, baseDecimals, quote, formContext }: IProps) => {
 	const [{ wallet, connecting }, connect] = useConnectWallet();
-	const { data: markPrice } = useMarkPrice(symbol);
-	const theme = useTheme();
 
 	// Handle connect wallet button
 	const handleConnectWallet = async () => {
 		await connect();
 	};
-
-	const priceImpact = useMemo(() => {
-		const receivedPrice: any = formContext.watch('price') ?? 0;
-
-		if (!receivedPrice) {
-			return '-';
-		}
-
-		// Adjusted calculation: (received price - mark price) / mark price * 100
-		const price = ((Number(receivedPrice) - markPrice) / markPrice) * 100;
-		return `${price.toFixed(2)}%`;
-	}, [markPrice, formContext]);
 
 	const formatter = new Intl.NumberFormat('en-US', { maximumFractionDigits: baseDecimals });
 
@@ -60,7 +32,18 @@ const Details = ({
 			<Typography pb={'10px'}>Details</Typography>
 
 			<Stack spacing={'6px'} pb={'10px'}>
-				<ItemRow title="Expected Price" value={estLiqPrice ? formatter.format(estLiqPrice) : '-'} />
+				<ItemRow
+					title="Est. Liq. price"
+					value={
+						<>
+							{estLiqPrice ? formatter.format(estLiqPrice.toFixed(2)) : '-'} {quote}
+						</>
+					}
+				/>
+
+				<ItemRow title="Account leverage" value={estLeverage ? `${estLeverage}x` : '-'} />
+
+				{/* <ItemRow title="Expected Price" value={estLiqPrice ? formatter.format(estLiqPrice) : '-'} />
 
 				<ItemRow title="Price Impact" value={priceImpact ?? '_'} />
 
@@ -96,7 +79,7 @@ const Details = ({
 							</span>
 						</Box>
 					}
-				/>
+				/> */}
 			</Stack>
 
 			<MainButton
@@ -104,7 +87,6 @@ const Details = ({
 				variant="contained"
 				color="primary"
 				type={wallet ? 'submit' : 'button'}
-				// disabled={isBalanceSufficient}
 				onClick={() => {
 					return wallet ? null : handleConnectWallet();
 				}}
