@@ -37,8 +37,10 @@ export const TradingMainView = ({ symbol, onSymbolChange }: IProps) => {
 
 	return (
 		<Box
+			flex={'1 1 0%'}
+			height={'100%'}
+			minHeight={'480px'}
 			borderRadius={'14px'}
-			width={'100%'}
 			overflow={'hidden'}
 			position={'relative'}
 			bgcolor={setColorThemeMode('#fff', '#131722')}
