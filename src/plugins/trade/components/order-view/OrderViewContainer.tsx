@@ -1,4 +1,4 @@
-import { MainCard } from '@/components/card/MainCard';
+import MainCard from '@/components/card/MainCard';
 import MainTab from '@/components/tab/MainTab';
 import TabPanel from '@mui/lab/TabPanel';
 import { Box } from '@mui/material';

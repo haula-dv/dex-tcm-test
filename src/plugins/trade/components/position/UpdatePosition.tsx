@@ -1,6 +1,6 @@
 import { ITab } from '@/common/types/components/tab';
 import { MainButton } from '@/components/button/MainButton';
-import { MainCard } from '@/components/card/MainCard';
+import MainCard from '@/components/card/MainCard';
 import { MainDialog } from '@/components/dialog/MainDialog';
 import MainTab from '@/components/tab/MainTab';
 import { baseFormatter, usdFormatter } from '@/utils/formatters/number';

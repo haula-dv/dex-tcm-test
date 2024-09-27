@@ -1,5 +1,5 @@
 import { MainButton } from '@/components/button/MainButton';
-import { MainCard } from '@/components/card/MainCard';
+import MainCard from '@/components/card/MainCard';
 import CurrencyInputField from '@/components/form-control/CurrencyInputField';
 import { RenderFormError } from '@/components/form-control/RenderErrors';
 import { TokenInput } from '@/components/form-control/TokenInput';

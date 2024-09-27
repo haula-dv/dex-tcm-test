@@ -3,7 +3,7 @@ import { setColorThemeMode } from '@/utils/helpers';
 import { TSizes } from '@/utils/themes/custom-theme/sizes';
 import { Box, Card, CardProps, Divider } from '@mui/material';
 import { styled } from '@mui/material/styles';
-import { ReactNode } from 'react';
+import { memo, ReactNode } from 'react';
 
 interface IProps extends CardProps {
 	children?: React.ReactNode;
@@ -18,10 +18,11 @@ interface IProps extends CardProps {
 	height?: string;
 	minHeight?: string;
 	maxHeight?: string;
+	heightCard?: string;
 	isActionSlot?: ReactNode;
 }
 
-export const MainCard = ({
+const MainCard = ({
 	children,
 	maxWidth,
 	backgroudColor = 'white',
@@ -35,6 +36,7 @@ export const MainCard = ({
 	minHeight,
 	maxHeight,
 	isActionSlot,
+	heightCard = 'auto',
 	...props
 }: IProps) => {
 	return (
@@ -46,25 +48,29 @@ export const MainCard = ({
 				cursor: isHover ? 'pointer' : '',
 				borderRadius: borderRadius,
 				transition: '0.6s',
-				height: height,
-				minHeight: minHeight,
-				maxHeight: maxHeight,
+				height: heightCard,
+				// minHeight: minHeight,
+				// maxHeight: maxHeight,
 				p: 0,
 			}}
 			backgroudColor={backgroudColor}
 			{...props}
 		>
-			<Box padding={disablePadding ? 0 : padding}>{children}</Box>
+			<Box height={height} minHeight={minHeight} maxHeight={maxHeight} padding={disablePadding ? 0 : padding}>
+				{children}
+			</Box>
 
-			{isActionSlot && (
+			{isActionSlot ? (
 				<>
 					<Divider />
 					<Box m={disablePadding ? 0 : padding}>{isActionSlot}</Box>
 				</>
-			)}
+			) : null}
 		</CustomCard>
 	);
 };
+
+export default memo(MainCard);
 
 interface ICard {
 	backgroudColor?: 'primary' | 'primaryLight' | 'white' | 'grey' | 'darkgrey' | 'transparent' | 'common';

@@ -1,6 +1,6 @@
 import { MainButton } from '@/components/button/MainButton';
 import { MainIconButton } from '@/components/button/MainIconButton';
-import { MainCard } from '@/components/card/MainCard';
+import MainCard from '@/components/card/MainCard';
 import { CheckBoxBase } from '@/components/form-control/CheckBoxBase';
 import { TSizes } from '@/utils/themes/custom-theme/sizes';
 import { Box, Stack, Typography, useTheme } from '@mui/material';

@@ -1,6 +1,6 @@
 'use client';
 import { MainButton } from '@/components/button/MainButton';
-import { MainCard } from '@/components/card/MainCard';
+import MainCard from '@/components/card/MainCard';
 import { setColorThemeMode } from '@/utils/helpers';
 import { TSizes } from '@/utils/themes/custom-theme/sizes';
 import { Box, Stack, Typography } from '@mui/material';

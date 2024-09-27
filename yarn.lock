@@ -9803,6 +9803,11 @@ react-dom@19.0.0-rc-f994737d14-20240522:
   dependencies:
     scheduler "0.25.0-rc-f994737d14-20240522"
 
+react-fast-marquee@^1.6.5:
+  version "1.6.5"
+  resolved "https://registry.yarnpkg.com/react-fast-marquee/-/react-fast-marquee-1.6.5.tgz#98929ae93eef087a607a71e9d45ab76bba97dc16"
+  integrity sha512-swDnPqrT2XISAih0o74zQVE2wQJFMvkx+9VZXYYNSLb/CUcAzU9pNj637Ar2+hyRw6b4tP6xh4GQZip2ZCpQpg==
+
 react-hook-form-mui@^7.0.0:
   version "7.0.1"
   resolved "https://registry.yarnpkg.com/react-hook-form-mui/-/react-hook-form-mui-7.0.1.tgz#26c562c2bc99798db4611e5f3c49d11232ed7d1e"

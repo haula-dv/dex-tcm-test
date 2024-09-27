@@ -51,7 +51,7 @@ export const SwapContainer = () => {
 	const [deadlineMinutes, setDeadlineMinutes] = useState('10');
 
 	// Mark price
-	const { data: inputMarkPrice } = useMarkPrice(`PERP_${sellTokenActived?.token}_USDC`); // Sell
+	const { data: inputMarkPrice } = useMarkPrice(`PERP_${sellTokenActived?.token}_USDC`); // Sell Ex ETH
 	const { data: outputMarkPrice } = useMarkPrice(`PERP_${buyTokenActived?.token}_USDC`); // Buy
 	const [_0, customNotification] = useNotifications();
 	const stream = useTickerStream(`PERP_${sellTokenActived?.token}_USDC`);
@@ -120,7 +120,7 @@ export const SwapContainer = () => {
 	const { onSubmit, helper, maxQty, estLeverage, estLiqPrice, markPrice, freeCollateral } = useOrderEntry(
 		{
 			symbol: `PERP_${sellTokenActived?.token}_USDC`,
-			order_type: OrderType.MARKET,
+			order_type: OrderType.LIMIT,
 			side: OrderSide.SELL,
 			order_quantity: undefined,
 			order_price: undefined,
@@ -130,6 +130,8 @@ export const SwapContainer = () => {
 
 	const handleSubmitSwap = async () => {
 		setLoading(true);
+		const slippageTolerance = +slippageAmount;
+		const minAcceptablePrice = inputMarkPrice * (1 - slippageTolerance);
 
 		const { update } = customNotification({
 			eventCode: 'createOrder',
@@ -139,14 +141,16 @@ export const SwapContainer = () => {
 
 		// Bước 1: Bán ETH lấy USDC
 		const sellData = {
-			symbol: `PERP_${sellTokenActived?.token}_USDC`, // Cặp token đang bán (ETH -> USDC)
+			symbol: `PERP_${sellTokenActived?.token}_USDC`, // Sell (ETH -> USDC)
 			side: OrderSide.SELL, // Bán ETH
 			order_type: OrderType.MARKET, // Lệnh thị trường
 			order_quantity: inputAmount, // Số lượng ETH muốn bán
+			order_price: minAcceptablePrice,
 		};
 
 		try {
-			await onSubmit(sellData); // Gửi lệnh bán ETH
+			const sellRes = await onSubmit(sellData); // Gửi lệnh bán ETH
+			console.log(sellRes);
 
 			// Giả sử bạn đã lấy được giá BTC hiện tại từ orderbook hoặc API
 			const outputPriceInUSDC = outputMarkPrice; // markPrice là giá BTC/USDC lấy từ orderbook
@@ -159,11 +163,12 @@ export const SwapContainer = () => {
 			const buyData = {
 				symbol: `PERP_${buyTokenActived?.token}_USDC`, // Cặp token đang mua (BTC -> USDC)
 				side: OrderSide.BUY, // Mua BTC
-				order_type: OrderType.MARKET, // Lệnh thị trường
+				order_type: OrderType.LIMIT, // Lệnh thị trường
 				order_quantity: usdcNeeded, // Số lượng USDC để mua BTC (cần tính toán sau khi bán ETH)
 			};
 
 			const data = await onSubmit(buyData);
+
 			console.log('Buy Order:', data, usdcNeeded);
 
 			update({

@@ -1,6 +1,6 @@
 'use client';
 import { MainButton } from '@/components/button/MainButton';
-import { MainCard } from '@/components/card/MainCard';
+import MainCard from '@/components/card/MainCard';
 import { MainDialog } from '@/components/dialog/MainDialog';
 import { ChildHeader } from '@/components/swap/ChildHeader';
 import { TokenIcon } from '@/components/token/TokenIcon';

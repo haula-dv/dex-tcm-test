@@ -14,7 +14,7 @@ export default function RootLayout({
 		<div className={theme.palette.mode}>
 			<Header />
 
-			<Box px={{ xs: '16px', xl: '60px' }} position={'relative'}>
+			<Box px={{ xs: '16px' }} position={'relative'}>
 				{children}
 			</Box>
 		</div>

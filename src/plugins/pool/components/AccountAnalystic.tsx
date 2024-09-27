@@ -1,6 +1,6 @@
 'use client';
 import { MainIconButton } from '@/components/button/MainIconButton';
-import { MainCard } from '@/components/card/MainCard';
+import MainCard from '@/components/card/MainCard';
 import { Stack, Typography, useTheme } from '@mui/material';
 import { IconChevronDown } from '@tabler/icons-react';
 

@@ -1,12 +1,11 @@
 import { MainButton } from '@/components/button/MainButton';
-import { MainCard } from '@/components/card/MainCard';
+import MainCard from '@/components/card/MainCard';
 import { MainDialog } from '@/components/dialog/MainDialog';
 import { ItemRow } from '@/plugins/pool/components/TokenSelected';
 import { usdFormatter } from '@/utils/formatters/number';
 import { setColorThemeMode } from '@/utils/helpers';
 import { TSizes } from '@/utils/themes/custom-theme/sizes';
 import { Box, Divider, Stack, Typography, useTheme } from '@mui/material';
-import { useMarkPrice } from '@orderly.network/hooks';
 import { Inputs } from './CreateOrderForm';
 
 interface IProps {
@@ -22,8 +21,6 @@ interface IProps {
 const ModalConfirmOrder = ({ open, loading, handleClose, submitForm, symbol, currentValue, totalPrice }: IProps) => {
 	const [_, base, quote] = symbol.split('_');
 	const theme = useTheme();
-
-	const { data: markPrice } = useMarkPrice(symbol);
 
 	return (
 		<MainDialog open={open} handleClose={handleClose} title="Confirm Order" maxWidth="xs" isDivider>

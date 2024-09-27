@@ -1,7 +1,7 @@
 import { MainButton } from '@/components/button/MainButton';
-import { MainCard } from '@/components/card/MainCard';
+import MainCard from '@/components/card/MainCard';
 import { setColorThemeMode } from '@/utils/helpers';
-import { Typography, useTheme } from '@mui/material';
+import { Box, Typography, useTheme } from '@mui/material';
 import { useAccount } from '@orderly.network/hooks';
 import { useConnectWallet } from '@web3-onboard/react';
 import { memo } from 'react';
@@ -22,19 +22,21 @@ const BoxConnectWallet = () => {
 	}
 
 	return (
-		<MainCard backgroudColor="primary">
-			<Typography
-				textAlign={'center'}
-				py={'40px'}
-				color={setColorThemeMode(theme.palette.common.black, theme.palette.grey[200])}
-			>
-				Connect your Ethereum wallet to deposit funds & start trading.
-			</Typography>
+		<Box>
+			<MainCard backgroudColor="primary">
+				<Typography
+					textAlign={'center'}
+					color={setColorThemeMode(theme.palette.common.black, theme.palette.grey[200])}
+					pb="24px"
+				>
+					Connect your Ethereum wallet to deposit funds & start trading.
+				</Typography>
 
-			<MainButton fullWidth isLoading={connecting} variant="contained" color="primary" onClick={handleConnectWallet}>
-				Connect Wallet
-			</MainButton>
-		</MainCard>
+				<MainButton fullWidth isLoading={connecting} variant="contained" color="primary" onClick={handleConnectWallet}>
+					Connect Wallet
+				</MainButton>
+			</MainCard>
+		</Box>
 	);
 };
 

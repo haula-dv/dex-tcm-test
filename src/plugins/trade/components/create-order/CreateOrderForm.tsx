@@ -1,5 +1,5 @@
 /* eslint-disable react-hooks/rules-of-hooks */
-import { MainCard } from '@/components/card/MainCard';
+import MainCard from '@/components/card/MainCard';
 import IconLoading from '@/components/icons/loading';
 import { getDecimalsFromTick } from '@/utils/formatters/api';
 import { TSizes } from '@/utils/themes/custom-theme/sizes';
@@ -212,7 +212,7 @@ const CreateOrderForm = ({ symbol }: IProps) => {
 			{symbolsInfo.isNil ? (
 				<IconLoading />
 			) : (
-				<MainCard backgroudColor="primary" width="100%" height="100%">
+				<MainCard backgroudColor="primary" width="100%" height="100%" heightCard="100%">
 					{wallet && <Balance availableWithdraw={collateral.availableBalance} quote={quote} wallet={wallet} />}
 
 					<form onSubmit={formContext.handleSubmit(handleConfirmOrder)}>

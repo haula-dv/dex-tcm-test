@@ -1,7 +1,7 @@
 /* eslint-disable react-hooks/rules-of-hooks */
 'use client';
 import { MainButton } from '@/components/button/MainButton';
-import { MainCard } from '@/components/card/MainCard';
+import MainCard from '@/components/card/MainCard';
 import { TokenIcon } from '@/components/token/TokenIcon';
 import { RemoveLiquidityModal } from '@/plugins/pool/liquidity/RemoveLiquidityModal';
 import { setColorThemeMode } from '@/utils/helpers';

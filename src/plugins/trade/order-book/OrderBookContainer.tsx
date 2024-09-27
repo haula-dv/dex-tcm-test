@@ -1,5 +1,5 @@
 import { ITab } from '@/common/types/components/tab';
-import { MainCard } from '@/components/card/MainCard';
+import MainCard from '@/components/card/MainCard';
 import MainTab from '@/components/tab/MainTab';
 import { TColors } from '@/utils';
 import { setColorThemeMode } from '@/utils/helpers';
@@ -33,7 +33,7 @@ export const OrderBookContainer = ({ symbol }: IProps) => {
 			</Stack>
 
 			<Box
-				sx={{ height: 'calc(-220px + 100vh)', minHeight: 'calc(800px - 20px)', overflowY: 'auto' }}
+				sx={{ height: 'calc(-195px + 100vh)', minHeight: 'calc(800px - 20px)', overflowY: 'auto' }}
 				bgcolor={setColorThemeMode(useTheme().palette.primary.light, TColors.brownnDark)}
 				borderRadius={TSizes.borderRadius}
 				p="10px"

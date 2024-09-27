@@ -1,5 +1,5 @@
 import { MainButton } from '@/components/button/MainButton';
-import { MainCard } from '@/components/card/MainCard';
+import MainCard from '@/components/card/MainCard';
 import AmountSlider from '@/components/form-control/AmountSlider';
 import InputField from '@/components/form-control/InputField';
 import SwitchBase from '@/components/form-control/SwitcheBase';

@@ -1,6 +1,6 @@
 import { MainButton } from '@/components/button/MainButton';
 import { MainIconButton } from '@/components/button/MainIconButton';
-import { MainCard } from '@/components/card/MainCard';
+import MainCard from '@/components/card/MainCard';
 import { MainDialog } from '@/components/dialog/MainDialog';
 import { ItemRow } from '@/plugins/pool/components/TokenSelected';
 import { usdFormatter } from '@/utils/formatters/number';

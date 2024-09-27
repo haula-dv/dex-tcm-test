@@ -1,6 +1,6 @@
 'use client';
 import { MainButton } from '@/components/button/MainButton';
-import { MainCard } from '@/components/card/MainCard';
+import MainCard from '@/components/card/MainCard';
 import InputPasswordField from '@/components/form-control/InputPasswordField';
 import IconNotchCard from '@/components/icons/notch';
 import { TSizes } from '@/utils/themes/custom-theme/sizes';

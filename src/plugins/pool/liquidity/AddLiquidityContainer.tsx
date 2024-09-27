@@ -1,6 +1,6 @@
 'use client';
 import { MainButton } from '@/components/button/MainButton';
-import { MainCard } from '@/components/card/MainCard';
+import MainCard from '@/components/card/MainCard';
 import { ChildHeader } from '@/components/swap/ChildHeader';
 import CurrencyField from '@/components/swap/CurrencyField';
 import { ButtonSwapToggle } from '@/plugins/swap/components/SwapIconToggle';

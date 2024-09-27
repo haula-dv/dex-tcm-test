@@ -1,6 +1,6 @@
 import { ITab } from '@/common/types/components/tab';
 import { MainButton } from '@/components/button/MainButton';
-import { MainCard } from '@/components/card/MainCard';
+import MainCard from '@/components/card/MainCard';
 import { MainDialog } from '@/components/dialog/MainDialog';
 import { GrayTab } from '@/components/tab/GrayTab';
 import { setColorThemeMode } from '@/utils/helpers';

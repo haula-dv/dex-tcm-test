@@ -22,11 +22,11 @@ export const Header = () => {
 
 	return (
 		<MainAppBar elevation={0} position="sticky">
-			<Box px={{ xs: '16px', xl: '60px' }}>
+			<Box px={{ xs: '16px' }}>
 				<Toolbar disableGutters>
 					<Stack direction={'row'} justifyContent={'space-between'} width={'100%'} alignItems={'center'}>
 						<Stack direction={'row'} alignItems={'center'} spacing={TSizes.margin_md}>
-							<Logo width="124px" height="40px" />
+							<Logo width="80px" height="40px" />
 
 							{/* <Stack
 								direction={'row'}

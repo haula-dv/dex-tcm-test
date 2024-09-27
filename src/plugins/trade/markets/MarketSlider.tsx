@@ -1,10 +1,16 @@
 import { setColorThemeMode } from '@/utils/helpers';
-import { Box, Skeleton, Stack, Typography } from '@mui/material';
+import { Box, Skeleton, Stack } from '@mui/material';
 import { styled, useTheme } from '@mui/material/styles';
 import { useMarketsStream } from '@orderly.network/hooks';
 import { memo, useEffect, useRef, useState } from 'react';
+import Marquee from 'react-fast-marquee';
+import MarketItem from './MarketItem';
 
-const MarketSlider = () => {
+interface IProps {
+	onChangeSymbol: (symbol: string) => void;
+}
+
+const MarketSlider = ({ onChangeSymbol }: IProps) => {
 	const { data } = useMarketsStream();
 	const [showBefore, setShowBefore] = useState(false);
 	const [showAfter, setShowAfter] = useState(true);
@@ -36,40 +42,15 @@ const MarketSlider = () => {
 	}, [itemRef]);
 
 	return (
-		<Wrapper showBefore={showBefore} showAfter={showAfter}>
+		<Wrapper showBefore={true} showAfter={true}>
 			<ItemWrap ref={itemRef} direction={'row'} height={'48px'} alignItems={'center'} spacing={'16px'}>
 				{data ? (
-					data?.length > 0 &&
-					data?.map((market, index) => (
-						<Stack direction={'row'} spacing={'18px'} key={index}>
-							<Stack direction={'row'} spacing={'8px'}>
-								<Typography fontWeight={600} fontSize={'14px'} whiteSpace={'nowrap'}>
-									{market.symbol}
-								</Typography>
-
-								<Typography fontWeight={600} fontSize={'14px'} whiteSpace={'nowrap'}>
-									{(market as any).index_price.toFixed(2)}
-								</Typography>
-
-								<Typography
-									fontWeight={600}
-									fontSize={'14px'}
-									color={
-										(market as any).change && (market as any).change.toString().startsWith('-')
-											? theme.palette.error.main
-											: theme.palette.success.main
-									}
-									whiteSpace={'nowrap'}
-								>
-									{((market as any).change * 100).toFixed(2)} %
-								</Typography>
-							</Stack>
-
-							{index < data.length - 1 && (
-								<Box height={'18px'} width={'2px'} bgcolor={setColorThemeMode(theme.palette.common.black, '#fff')} />
-							)}
-						</Stack>
-					))
+					<Marquee autoFill pauseOnClick pauseOnHover speed={20}>
+						{data?.length > 0 &&
+							data?.map((market, index) => (
+								<MarketItem onChangeSymbol={onChangeSymbol} key={index} index={index} market={market} />
+							))}
+					</Marquee>
 				) : (
 					<Skeleton variant="text" height={'46px'} sx={{ flexShrink: 0 }} animation="wave" width={'120px'} />
 				)}
@@ -97,10 +78,9 @@ const Wrapper = styled(Box, { shouldForwardProp: (prop) => prop !== 'showBefore'
 			right: 0,
 			height: '100%',
 			width: '100px',
-			background: showAfter
-				? `linear-gradient(to left, ${setColorThemeMode(theme.palette.primary.light, '#322D2B')}, transparent)`
-				: 'transparent',
+			background: `linear-gradient(to left, ${setColorThemeMode(theme.palette.primary.light, '#322D2B')}, transparent)`,
 			pointerEvents: 'none',
+			zIndex: 99,
 		},
 
 		'&::before': {
@@ -115,7 +95,7 @@ const Wrapper = styled(Box, { shouldForwardProp: (prop) => prop !== 'showBefore'
 				: 'transparent',
 			pointerEvents: 'none',
 			transition: '0.6s',
-			zIndex: 1,
+			zIndex: 99,
 		},
 	}),
 );

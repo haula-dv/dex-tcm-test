@@ -1,5 +1,5 @@
 import { MainButton } from '@/components/button/MainButton';
-import { MainCard } from '@/components/card/MainCard';
+import MainCard from '@/components/card/MainCard';
 import { MainDialog } from '@/components/dialog/MainDialog';
 import { TokenIcon } from '@/components/token/TokenIcon';
 import { ItemRow } from '@/plugins/pool/components/TokenSelected';

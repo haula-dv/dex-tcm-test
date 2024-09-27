@@ -1,7 +1,7 @@
 import { ITab } from '@/common/types/components/tab';
 import { MainButton } from '@/components/button/MainButton';
 import { MainIconButton } from '@/components/button/MainIconButton';
-import { MainCard } from '@/components/card/MainCard';
+import MainCard from '@/components/card/MainCard';
 import { SearchField } from '@/components/form-control/SearchField';
 import SwitchBase from '@/components/form-control/SwitcheBase';
 import MainTooltip from '@/components/MainTooltip';

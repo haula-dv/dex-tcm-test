@@ -1,4 +1,4 @@
-import { MainCard } from '@/components/card/MainCard';
+import MainCard from '@/components/card/MainCard';
 import IconLoading from '@/components/icons/loading';
 import { useOrderbookStream, useSymbolsInfo } from '@orderly.network/hooks';
 import { DesktopOrderBook } from '@orderly.network/react/esm/block';
