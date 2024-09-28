@@ -17,7 +17,7 @@ interface InputFieldProps<V extends FieldValues> {
 	rules?: Omit<RegisterOptions<V, Path<V>>, 'disabled' | 'valueAsNumber' | 'valueAsDate' | 'setValueAs'> | undefined;
 	hint?: string;
 	onValueChange?: (value: FixedNumber) => void | Promise<void>;
-	label?: string;
+	label?: string | ReactNode;
 	helperText?: ReactNode;
 	hasError?: any;
 	extErrors?: any;
@@ -43,7 +43,7 @@ const CurrencyInputField = <V extends FieldValues>({
 }: InputFieldProps<V>) => {
 	return (
 		<Stack width={'100%'}>
-			{label && <Typography fontSize={'12px'}>{label}</Typography>}
+			{typeof label == 'string' ? <Typography fontSize={'12px'}>{label}</Typography> : label}
 
 			<FormControl fullWidth>
 				<Controller

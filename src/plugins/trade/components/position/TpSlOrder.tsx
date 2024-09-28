@@ -4,9 +4,11 @@ import CurrencyInputField from '@/components/form-control/CurrencyInputField';
 import { RenderFormError } from '@/components/form-control/RenderErrors';
 import { TokenInput } from '@/components/form-control/TokenInput';
 import BaseSlider from '@/components/sider/BaseSlider';
+import { ItemRow } from '@/plugins/pool/components/TokenSelected';
 import { getDecimalsFromTick } from '@/utils/formatters/api';
 import { usdFormatter } from '@/utils/formatters/number';
-import { Box, Stack, Typography, useTheme } from '@mui/material';
+import { setColorThemeMode } from '@/utils/helpers';
+import { Box, Divider, Stack, Typography, useTheme } from '@mui/material';
 import { useSymbolsInfo, useTPSLOrder } from '@orderly.network/hooks';
 import { API } from '@orderly.network/types';
 import { useNotifications } from '@web3-onboard/react';
@@ -43,7 +45,15 @@ const TpSlOrder = ({ symbol, position, refresh, handleCloseModal }: IProps) => {
 		},
 	});
 
+	// Create TPSL
 	const [algoOrder, { setValue, submit, errors }] = useTPSLOrder(position);
+
+	// Update TPSL
+	// const [orders, { updateTPSLOrder }] = useOrderStream({
+	// 	symbol: position.symbol,
+	// 	includes: [AlgoOrderRootType.TP_SL, AlgoOrderRootType.POSITIONAL_TP_SL], // Show only TP/SL orders
+	// });
+
 	const [_0, customNotification] = useNotifications();
 
 	const tp_trigger_price = formContext.watch('tp_trigger_price');
@@ -77,8 +87,14 @@ const TpSlOrder = ({ symbol, position, refresh, handleCloseModal }: IProps) => {
 			type: 'pending',
 			message: 'Creating order...',
 		});
+
 		try {
+			// Create TPSL
 			await submit();
+
+			const childOrders = [{}];
+			// updateTPSLOrder(orderId, childOrders);
+
 			update({
 				eventCode: 'createStopOrderSuccess',
 				type: 'success',
@@ -106,103 +122,114 @@ const TpSlOrder = ({ symbol, position, refresh, handleCloseModal }: IProps) => {
 
 	return (
 		<form onSubmit={formContext.handleSubmit(submitForm)}>
-			<MainCard backgroudColor="transparent" width="100%" variant="outlined">
+			<MainCard variant="outlined" backgroudColor={setColorThemeMode('white', 'transparent')}>
 				<Stack spacing={'6px'}>
+					<Controller
+						name="quantity"
+						control={formContext.control}
+						render={({ field: { name, onBlur, onChange, value }, fieldState: { error } }) => (
+							<Stack>
+								<Typography fontSize={'11px'} lineHeight={'11px'} pb="6px">
+									Quantity
+								</Typography>
+
+								<TokenInput
+									decimals={baseDecimals}
+									placeholder={'0.0000'}
+									name={name}
+									value={value}
+									onBlur={onBlur}
+									onChange={onChange}
+									suffix={base}
+									hasError={errors?.quantity != null}
+									onValueChange={(newVal) => {
+										value = newVal.toString();
+									}}
+									min={FixedNumber.fromString('0')}
+									max={FixedNumber.fromString(String(Math.abs(position.position_qty)))}
+								/>
+
+								<RenderFormError error={error?.message ?? ''} />
+							</Stack>
+						)}
+					/>
+
+					<BaseSlider
+						min={0}
+						max={position.position_qty}
+						handleChange={(newValue) => formContext.setValue('quantity', newValue)}
+						amountQty={Number(formContext.watch('quantity')) ?? 0}
+					/>
+
+					<Box pt="2px" />
+
+					<Divider />
+
 					<CurrencyInputField
 						formContext={formContext}
 						name="tp_trigger_price"
 						decimals={quoteDecimals}
 						placeholder="0.0"
-						label={`TP Trigger Price (${quote})`}
 						hasError={errors?.tp_trigger_price != null}
 						extErrors={errors?.tp_trigger_price}
-						helperText={
-							<Stack direction={'row'} justifyContent={'space-between'}>
-								<Typography fontSize={'11px'} color={theme.palette.grey[500]}>
-									Est. PnL:
-								</Typography>
-								<Typography fontSize={'12px'}>
-									{algoOrder.tp_pnl != null ? `${usdFormatter.format(algoOrder.tp_pnl)} ${quote}` : '-'}
-								</Typography>
-							</Stack>
+						label={
+							<ItemRow
+								title={<Typography fontSize={'11px'}>TP Price</Typography>}
+								value={
+									<Typography fontSize={'11px'}>
+										<span style={{ color: setColorThemeMode(theme.palette.grey[800], theme.palette.grey[300]) }}>
+											Est. PnL:
+										</span>{' '}
+										<span
+											style={{
+												color: algoOrder.tp_pnl?.toString().startsWith('-')
+													? theme.palette.error.main
+													: theme.palette.success.main,
+											}}
+										>
+											{algoOrder.tp_pnl != null ? `${usdFormatter.format(algoOrder.tp_pnl)} ${quote}` : '-'}
+										</span>
+									</Typography>
+								}
+							/>
 						}
 					/>
 
 					<CurrencyInputField
 						formContext={formContext}
-						name="tp_trigger_price"
+						name="sl_trigger_price"
 						decimals={quoteDecimals}
 						placeholder="0.0"
-						label={`SL Trigger Price (${quote})`}
 						hasError={errors?.sl_trigger_price != null}
 						extErrors={errors?.sl_trigger_price}
-						helperText={
-							<Stack direction={'row'} justifyContent={'space-between'}>
-								<Typography fontSize={'11px'} color={theme.palette.grey[500]}>
-									Est. PnL:
-								</Typography>
-								<Typography fontSize={'12px'}>
-									{algoOrder.sl_pnl != null ? `${usdFormatter.format(algoOrder.sl_pnl)} ${quote}` : '-'}
-								</Typography>
-							</Stack>
+						label={
+							<ItemRow
+								title={<Typography fontSize={'11px'}>SL Price</Typography>}
+								value={
+									<Typography fontSize={'11px'}>
+										<span style={{ color: setColorThemeMode(theme.palette.grey[800], theme.palette.grey[300]) }}>
+											Est. PnL:
+										</span>{' '}
+										<span
+											style={{
+												color: algoOrder.sl_pnl?.toString().startsWith('-')
+													? theme.palette.error.main
+													: theme.palette.success.main,
+											}}
+										>
+											{algoOrder.sl_pnl != null ? `${usdFormatter.format(algoOrder.sl_pnl)} ${quote}` : '-'}
+										</span>
+									</Typography>
+								}
+							/>
 						}
 					/>
-
-					<MainCard variant="outlined" backgroudColor="transparent">
-						<Controller
-							name="quantity"
-							control={formContext.control}
-							render={({ field: { name, onBlur, onChange, value }, fieldState: { error } }) => (
-								<Stack>
-									<Typography fontSize={'12px'}>Quantity ({base})</Typography>
-
-									<TokenInput
-										decimals={baseDecimals}
-										placeholder={'0.0000'}
-										name={name}
-										value={value}
-										onBlur={onBlur}
-										onChange={onChange}
-										suffix={base}
-										hasError={errors?.quantity != null}
-										onValueChange={(newVal) => {
-											value = newVal.toString();
-										}}
-										min={FixedNumber.fromString('0')}
-										max={FixedNumber.fromString(String(Math.abs(position.position_qty)))}
-									/>
-
-									<RenderFormError error={error?.message ?? ''} />
-								</Stack>
-							)}
-						/>
-
-						<BaseSlider
-							min={0}
-							max={position.position_qty}
-							handleChange={(newValue) => formContext.setValue('quantity', newValue)}
-							amountQty={Number(formContext.watch('quantity')) ?? 0}
-						/>
-					</MainCard>
 				</Stack>
 			</MainCard>
+
 			<Box pt="10px" />
 
-			<MainButton
-				type="submit"
-				disabled={
-					loading || !formContext.watch('tp_trigger_price')
-						? true
-						: false || errors?.tp_trigger_price
-						? true
-						: false || errors?.sl_trigger_price
-						? true
-						: false
-				}
-				isLoading={loading}
-				variant="contained"
-				fullWidth
-			>
+			<MainButton type="submit" disabled={loading} isLoading={loading} variant="contained" fullWidth>
 				Create TP & SL Order
 			</MainButton>
 		</form>

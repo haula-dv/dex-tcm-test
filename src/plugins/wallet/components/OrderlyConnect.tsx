@@ -61,6 +61,7 @@ export const OrderlyConnect = () => {
 		});
 		try {
 			await account.createOrderlyKey(365);
+
 			update({
 				eventCode: 'orderlyKeySuccess',
 				type: 'success',

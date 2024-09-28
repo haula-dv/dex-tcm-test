@@ -1,10 +1,10 @@
-import { MainIconButton } from '@/components/button/MainIconButton';
+import { MainButton } from '@/components/button/MainButton';
 import { baseFormatter, usdFormatter } from '@/utils/formatters/number';
-import { TableCell, TableRow, Typography, useTheme } from '@mui/material';
+import { setColorThemeMode } from '@/utils/helpers';
+import { Stack, TableCell, TableRow, Typography, useTheme } from '@mui/material';
 import { API } from '@orderly.network/types';
-import { IconDots } from '@tabler/icons-react';
 import dayjs from 'dayjs';
-import { memo, useMemo, useState } from 'react';
+import { useMemo } from 'react';
 import { match } from 'ts-pattern';
 
 interface IProps {
@@ -16,13 +16,6 @@ interface IProps {
 const HistoryOrderItem = ({ order, symbol, handleClickOrderItem }: IProps) => {
 	const [prep, base, quote] = order.order.symbol.split('_');
 	const theme = useTheme();
-
-	const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
-	const open = Boolean(anchorEl);
-
-	const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
-		setAnchorEl(event.currentTarget);
-	};
 
 	const totalEstPrice = useMemo(() => {
 		const quantity = order.order.quantity ?? 0;
@@ -38,12 +31,27 @@ const HistoryOrderItem = ({ order, symbol, handleClickOrderItem }: IProps) => {
 	return (
 		<TableRow
 			sx={{
-				bgcolor:
+				backgroundColor:
 					(order.order as any).status === 'CANCELLED'
-						? '#111'
+						? setColorThemeMode(theme.palette.grey[100], '#3f3f3f61')
 						: '' || (order.order as any).algo_status === 'CANCELLED'
-						? '#111'
+						? setColorThemeMode(theme.palette.grey[100], '#3f3f3f61')
 						: '',
+
+				opacity:
+					(order.order as any).status === 'CANCELLED'
+						? '0.6'
+						: '1' || (order.order as any).algo_status === 'CANCELLED'
+						? '0.6'
+						: '1',
+				'&:hover': {
+					backgroundColor:
+						(order.order as any).status === 'CANCELLED'
+							? `${setColorThemeMode(theme.palette.grey[100], '#3f3f3f61')} !important`
+							: '' || (order.order as any).algo_status === 'CANCELLED'
+							? `${setColorThemeMode(theme.palette.grey[100], '#3f3f3f61')} !important`
+							: '',
+				},
 			}}
 		>
 			<TableCell>
@@ -97,22 +105,31 @@ const HistoryOrderItem = ({ order, symbol, handleClickOrderItem }: IProps) => {
 
 			<TableCell> {(order.order as any).status ?? (order.order as any).algo_status}</TableCell>
 
-			<TableCell> {dayjs(order.order.created_time).format('YYYY-MM-DD HH:mm:ss')}</TableCell>
+			<TableCell width={'200px'}> {dayjs(order.order.created_time).format('YYYY-MM-DD HH:mm')}</TableCell>
 
-			<TableCell align="right" sx={{ display: 'flex', justifyContent: 'flex-end' }}>
-				<MainIconButton
-					size="small"
-					id="order-button"
-					aria-controls={open ? 'order-menu' : undefined}
-					aria-haspopup="true"
-					aria-expanded={open ? 'true' : undefined}
-					onClick={handleClick}
-				>
-					<IconDots size={'1rem'} />
-				</MainIconButton>
+			<TableCell align="right" padding="checkbox">
+				<Stack direction={'row'}>
+					{(order.order as any).status === 'CANCELLED' && (
+						<MainButton size="xsmall" variant="outlined" onClick={() => handleClickOrderItem(order, 'renew')}>
+							Renew
+						</MainButton>
+					)}
+
+					{(order.order as any).status == 'NEW' && (
+						<MainButton size="xsmall" variant="outlined" onClick={() => handleClickOrderItem(order, 'cancel')}>
+							Cancel
+						</MainButton>
+					)}
+
+					{(order.order as any).algo_status == 'NEW' && (
+						<MainButton size="xsmall" variant="outlined" onClick={() => handleClickOrderItem(order, 'cancel')}>
+							Cancel
+						</MainButton>
+					)}
+				</Stack>
 			</TableCell>
 		</TableRow>
 	);
 };
 
-export default memo(HistoryOrderItem);
+export default HistoryOrderItem;

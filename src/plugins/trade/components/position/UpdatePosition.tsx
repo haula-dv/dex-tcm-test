@@ -1,17 +1,13 @@
 import { ITab } from '@/common/types/components/tab';
 import { MainButton } from '@/components/button/MainButton';
-import MainCard from '@/components/card/MainCard';
 import { MainDialog } from '@/components/dialog/MainDialog';
 import MainTab from '@/components/tab/MainTab';
 import { baseFormatter, usdFormatter } from '@/utils/formatters/number';
-import { setColorThemeMode } from '@/utils/helpers';
-import { TSizes } from '@/utils/themes/custom-theme/sizes';
 import TabPanel from '@mui/lab/TabPanel';
-import { Box, Grid, Stack, Typography, useTheme } from '@mui/material';
+import { useTheme } from '@mui/material';
 import { API } from '@orderly.network/types';
-import { memo, useState } from 'react';
+import { useState } from 'react';
 import ClosePositionContent from './ClosePositionContent';
-import StopOrderContent from './StopOrderContent';
 import TpSlOrder from './TpSlOrder';
 
 interface IProps {
@@ -69,13 +65,13 @@ const UpdatePosition = ({ position, refresh, symbol }: IProps) => {
 				/>
 			),
 		},
-		{
-			label: 'Stop Market',
-			value: '2',
-			children: (
-				<StopOrderContent symbol={symbol} position={position} refresh={refresh} handleCloseModal={handleToggleModal} />
-			),
-		},
+		// {
+		// 	label: 'Stop Market',
+		// 	value: '2',
+		// 	children: (
+		// 		<StopOrderContent symbol={symbol} position={position} refresh={refresh} handleCloseModal={handleToggleModal} />
+		// 	),
+		// },
 		{
 			label: 'TP/SL',
 			value: '3',
@@ -98,41 +94,18 @@ const UpdatePosition = ({ position, refresh, symbol }: IProps) => {
 			</MainButton>
 
 			<MainDialog open={open} handleClose={handleToggleModal} title="Update Position" maxWidth="xs" isDivider>
-				<MainCard backgroudColor="transparent" width="100%" variant="outlined">
-					<Grid container spacing={TSizes.margin_common}>
-						{items.map((item, index) => (
-							<Grid key={index} item md={6}>
-								<Stack>
-									<Typography
-										fontSize={'12px'}
-										color={setColorThemeMode(theme.palette.grey[600], theme.palette.grey[200])}
-									>
-										{item.label}
-									</Typography>
-
-									<Typography fontWeight={600}>{item.value}</Typography>
-								</Stack>
-							</Grid>
+				<MainTab tabs={tabs} defaultValue={'1'}>
+					<>
+						{tabs.map((item, index) => (
+							<TabPanel key={index} value={item.value} sx={{ p: 0 }}>
+								{item.children}
+							</TabPanel>
 						))}
-					</Grid>
-				</MainCard>
-
-				<Box pt={TSizes.margin_common} />
-
-				<MainCard backgroudColor="transparent" variant="outlined">
-					<MainTab tabs={tabs} defaultValue={'1'}>
-						<>
-							{tabs.map((item, index) => (
-								<TabPanel key={index} value={item.value} sx={{ p: 0 }}>
-									{item.children}
-								</TabPanel>
-							))}
-						</>
-					</MainTab>
-				</MainCard>
+					</>
+				</MainTab>
 			</MainDialog>
 		</>
 	);
 };
 
-export default memo(UpdatePosition);
+export default UpdatePosition;

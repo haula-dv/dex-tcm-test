@@ -1,10 +1,12 @@
 import { IHeadCell } from '@/common';
 import MainTable from '@/components/table/MainTable';
 import { FormControl, MenuItem, Select, SelectChangeEvent, Stack } from '@mui/material';
-import { useOrderStream } from '@orderly.network/hooks';
+import { useAccountInfo, useOrderStream } from '@orderly.network/hooks';
+import { toast } from '@orderly.network/react';
 import { AlgoOrderRootType, API, OrderStatus } from '@orderly.network/types';
 import { useNotifications } from '@web3-onboard/react';
 import { memo, useState } from 'react';
+import TPSLOrderItem from './TPSLOrderItem';
 
 interface IProps {
 	orderBookStatus: OrderStatus;
@@ -15,6 +17,7 @@ interface IProps {
 const OrderTableContentTPSL = ({ orderBookStatus, symbol, isShowAll }: IProps) => {
 	const [side, setSide] = useState<any>('ALL');
 	const [_0, customNotification] = useNotifications();
+	const [isLoadingCancel, setIsLoadingCancel] = useState(false);
 
 	const [ordersUntyped, { isLoading }] = useOrderStream({
 		symbol: isShowAll ? '' : symbol,
@@ -24,6 +27,8 @@ const OrderTableContentTPSL = ({ orderBookStatus, symbol, isShowAll }: IProps) =
 	});
 
 	const orders = ordersUntyped as (API.Order | API.AlgoOrder)[];
+
+	const { data: accountInfo } = useAccountInfo();
 
 	const handleChange = (event: SelectChangeEvent) => {
 		setSide(event.target.value as string);
@@ -40,6 +45,18 @@ const OrderTableContentTPSL = ({ orderBookStatus, symbol, isShowAll }: IProps) =
 		{ title: '', width: 100 },
 	];
 
+	const cancelTPSLOrder = async (order: any) => {
+		// setIsLoadingCancel(true);
+
+		try {
+			//
+		} catch (error: any) {
+			toast.error(error.message);
+		} finally {
+			setIsLoadingCancel(false);
+		}
+	};
+
 	return (
 		<Stack p={1}>
 			<FormControl sx={{ maxWidth: '100px', pb: 1 }}>
@@ -54,7 +71,21 @@ const OrderTableContentTPSL = ({ orderBookStatus, symbol, isShowAll }: IProps) =
 				{orders &&
 					orders.length > 0 &&
 					orders.map((item, index) => {
-						return <div key={index}>{index} testing...</div>;
+						let order: { isAlgoOrder: false; order: API.Order } | { isAlgoOrder: true; order: API.AlgoOrder };
+						if ((item as API.Order).algo_order_id) {
+							order = { isAlgoOrder: true, order: item as API.AlgoOrder };
+						} else {
+							order = { isAlgoOrder: false, order: item as API.Order };
+						}
+
+						return (
+							<TPSLOrderItem
+								key={order.isAlgoOrder ? order.order.algo_order_id : order.order.order_id}
+								order={order}
+								cancelTPSLOrder={cancelTPSLOrder}
+								isLoadingCancel={isLoadingCancel}
+							/>
+						);
 					})}
 			</MainTable>
 		</Stack>

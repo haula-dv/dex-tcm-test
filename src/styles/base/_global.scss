@@ -2,6 +2,7 @@ html {
 	font-family: var(--orderly-font-family) !important;
 	color: var(--grey900);
 }
+
 body {
 	font-family: var(--orderly-font-family) !important;
 	color: var(--grey900);
@@ -75,11 +76,6 @@ input::-webkit-inner-spin-button {
 	display: none !important;
 }
 
-iframe {
-	html.theme-dark #widget-container {
-		border-color: #fff !important;
-	}
-}
 
 .tcmp-orderbook {
 	#orderly-order-book-depth {
@@ -91,6 +87,7 @@ iframe {
 	.orderly-select-btn {
 		height: 28px !important;
 	}
+
 	.orderly-select-none {
 		height: 28px !important;
 	}
@@ -106,10 +103,12 @@ iframe {
 	padding-bottom: 12px !important;
 }
 
-.tcmp-orderbook > div:first-child {
-	// display: none;
-}
 
 .z-indexed.svelte-w5zexe {
 	z-index: 99999 !important;
+}
+
+.menu-form-control {
+	margin-top: 6px;
+	box-shadow: none !important;
 }

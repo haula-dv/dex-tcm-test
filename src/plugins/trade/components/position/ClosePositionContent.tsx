@@ -5,6 +5,7 @@ import { TokenInput } from '@/components/form-control/TokenInput';
 import IconLoading from '@/components/icons/loading';
 import BaseSlider from '@/components/sider/BaseSlider';
 import { getDecimalsFromTick } from '@/utils/formatters/api';
+import { setColorThemeMode } from '@/utils/helpers';
 import { Box, Typography } from '@mui/material';
 import { useOrderEntry, useSymbolsInfo } from '@orderly.network/hooks';
 import { API, OrderEntity, OrderSide, OrderType } from '@orderly.network/types';
@@ -91,7 +92,7 @@ const ClosePositionContent = ({ symbol, position, refresh, handleCloseModal }: I
 				<form onSubmit={formContext.handleSubmit(submitForm)}>
 					<Typography pb={2}>Partially or fully close your open position at mark price.</Typography>
 
-					<MainCard variant="outlined" backgroudColor="transparent">
+					<MainCard variant="outlined" backgroudColor={setColorThemeMode('white', 'transparent')}>
 						<Controller
 							name="quantity"
 							control={formContext.control}

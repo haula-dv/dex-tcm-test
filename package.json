@@ -45,6 +45,7 @@
 		"add": "^2.0.6",
 		"axios": "^1.7.2",
 		"babel-plugin-react-compiler": "^0.0.0-experimental-6067d4e-20240923",
+		"bs58": "^6.0.0",
 		"common-es": "^1.0.1",
 		"cookies-next": "^4.2.1",
 		"date-fns": "^3.6.0",

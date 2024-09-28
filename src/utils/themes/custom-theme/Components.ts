@@ -122,7 +122,7 @@ const components = (theme: Theme) => {
 			styleOverrides: {
 				root: {
 					backgroundColor: setColorThemeMode(
-						theme.palette.grey[600],
+						theme.palette.grey[50],
 						`color-mix(in srgb, ${theme.palette.grey[600]}, transparent 90%)`,
 						theme,
 					),
