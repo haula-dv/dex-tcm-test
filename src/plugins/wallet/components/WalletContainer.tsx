@@ -76,6 +76,7 @@ export default function WalletContainer() {
 		});
 
 		const response = await res.json();
+		console.log(response);
 	};
 
 	// Watch wallet change

@@ -13,7 +13,7 @@ import { useSymbolsInfo, useTPSLOrder } from '@orderly.network/hooks';
 import { API } from '@orderly.network/types';
 import { useNotifications } from '@web3-onboard/react';
 import { FixedNumber } from 'ethers';
-import { memo, useEffect, useState } from 'react';
+import { memo, useState } from 'react';
 import { Controller, SubmitHandler, useForm } from 'react-hook-form';
 
 type TpSlOrderInputs = {
@@ -43,32 +43,13 @@ const TpSlOrder = ({ symbol, position, refresh, handleCloseModal }: IProps) => {
 		},
 	});
 
-	const [algoOrder, { setValue, submit, errors }] = useTPSLOrder(position);
+	const [ComputedAlgoOrder, { setValue, submit, errors }] = useTPSLOrder(position);
 
 	const [_0, customNotification] = useNotifications();
-	const { watch } = formContext;
-
-	const tp_trigger_price = watch('tp_trigger_price');
-	const sl_trigger_price = watch('sl_trigger_price');
-	const quantity = watch('quantity');
-
-	useEffect(() => {
-		if (tp_trigger_price == null) return;
-		setValue('tp_trigger_price', tp_trigger_price);
-	}, [tp_trigger_price]);
-
-	useEffect(() => {
-		if (sl_trigger_price == null) return;
-		setValue('sl_trigger_price', sl_trigger_price);
-	}, [sl_trigger_price]);
-
-	useEffect(() => {
-		if (quantity == null) return;
-		setValue('quantity', quantity);
-	}, [quantity]);
 
 	const submitForm: SubmitHandler<TpSlOrderInputs> = async () => {
 		setLoading(true);
+
 		const { update } = customNotification({
 			eventCode: 'createStopOrder',
 			type: 'pending',
@@ -108,7 +89,6 @@ const TpSlOrder = ({ symbol, position, refresh, handleCloseModal }: IProps) => {
 
 	return (
 		<form onSubmit={formContext.handleSubmit(submitForm)}>
-			{JSON.stringify(errors?.tp_trigger_price)}
 			<MainCard variant="outlined" backgroudColor={setColorThemeMode('white', 'transparent')}>
 				<Stack spacing={'6px'}>
 					<Controller
@@ -131,6 +111,7 @@ const TpSlOrder = ({ symbol, position, refresh, handleCloseModal }: IProps) => {
 									hasError={errors?.quantity != null}
 									onValueChange={(newVal) => {
 										value = newVal.toString();
+										setValue('quantity', value);
 									}}
 									min={FixedNumber.fromString('0')}
 									max={FixedNumber.fromString(String(Math.abs(position.position_qty)))}
@@ -159,6 +140,7 @@ const TpSlOrder = ({ symbol, position, refresh, handleCloseModal }: IProps) => {
 						placeholder="0.0"
 						extErrors={errors?.tp_trigger_price}
 						hasError={errors?.tp_trigger_price != null}
+						onValueChange={(val) => setValue('tp_trigger_price', val._value)}
 						label={
 							<ItemRow
 								title={<Typography fontSize={'11px'}>TP Price</Typography>}
@@ -169,12 +151,14 @@ const TpSlOrder = ({ symbol, position, refresh, handleCloseModal }: IProps) => {
 										</span>{' '}
 										<span
 											style={{
-												color: algoOrder.tp_pnl?.toString().startsWith('-')
-													? theme.palette.error.main
-													: theme.palette.success.main,
+												color: ComputedAlgoOrder.tp_pnl?.toString().startsWith('-')
+													? theme.palette.success.main
+													: theme.palette.error.main,
 											}}
 										>
-											{algoOrder.tp_pnl != null ? `${usdFormatter.format(algoOrder.tp_pnl)} ${quote}` : '-'}
+											{ComputedAlgoOrder.tp_pnl != null
+												? `${usdFormatter.format(ComputedAlgoOrder.tp_pnl.toString().replace('-', '') as any)} ${quote}`
+												: '-'}
 										</span>
 									</Typography>
 								}
@@ -189,6 +173,7 @@ const TpSlOrder = ({ symbol, position, refresh, handleCloseModal }: IProps) => {
 						placeholder="0.0"
 						extErrors={errors?.sl_trigger_price}
 						hasError={errors?.sl_trigger_price != null}
+						onValueChange={(val) => setValue('sl_trigger_price', val._value)}
 						label={
 							<ItemRow
 								title={<Typography fontSize={'11px'}>SL Price</Typography>}
@@ -199,12 +184,14 @@ const TpSlOrder = ({ symbol, position, refresh, handleCloseModal }: IProps) => {
 										</span>{' '}
 										<span
 											style={{
-												color: algoOrder.sl_pnl?.toString().startsWith('-')
-													? theme.palette.error.main
-													: theme.palette.success.main,
+												color: ComputedAlgoOrder.sl_pnl?.toString().startsWith('-')
+													? theme.palette.success.main
+													: theme.palette.error.main,
 											}}
 										>
-											{algoOrder.sl_pnl != null ? `${usdFormatter.format(algoOrder.sl_pnl)} ${quote}` : '-'}
+											{ComputedAlgoOrder.sl_pnl != null
+												? `${usdFormatter.format(ComputedAlgoOrder.sl_pnl.toString().replace('-', '') as any)} ${quote}`
+												: '-'}
 										</span>
 									</Typography>
 								}
