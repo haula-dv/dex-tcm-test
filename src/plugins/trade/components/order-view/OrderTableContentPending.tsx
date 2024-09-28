@@ -5,7 +5,7 @@ import MainTable from '@/components/table/MainTable';
 import { TSizes } from '@/utils/themes/custom-theme/sizes';
 import { FormControl, MenuItem, Select, SelectChangeEvent, Stack, Typography } from '@mui/material';
 import { useOrderStream } from '@orderly.network/hooks';
-import { API, OrderStatus } from '@orderly.network/types';
+import { AlgoOrderRootType, API, OrderStatus } from '@orderly.network/types';
 import { useNotifications } from '@web3-onboard/react';
 import { memo, useState } from 'react';
 import PendingOrder from './PendingOrder';
@@ -17,7 +17,7 @@ interface IProps {
 	isShowAll: boolean;
 }
 
-const OrderTableContent = ({ orderBookStatus, symbol, isShowAll }: IProps) => {
+const OrderTableContentPending = ({ orderBookStatus, symbol, isShowAll }: IProps) => {
 	const [side, setSide] = useState<any>('ALL');
 	const [loading, setLoading] = useState(false);
 	const [currentOrder, setCurrentOrder] = useState<any>(null);
@@ -32,6 +32,7 @@ const OrderTableContent = ({ orderBookStatus, symbol, isShowAll }: IProps) => {
 		symbol: isShowAll ? '' : symbol,
 		status: orderBookStatus,
 		side: side == 'ALL' ? '' : side,
+		excludes: [AlgoOrderRootType.TP_SL, AlgoOrderRootType.POSITIONAL_TP_SL], // Do not show TP/SL orders
 	});
 
 	const orders = ordersUntyped as (API.Order | API.AlgoOrder)[];
@@ -108,19 +109,6 @@ const OrderTableContent = ({ orderBookStatus, symbol, isShowAll }: IProps) => {
 		{ title: 'Est. total' },
 		{ title: 'Fee' },
 		{ title: 'Order time', width: 120 },
-	];
-
-	const headTableNew: IHeadCell[] = [
-		{ title: 'Symbol', width: 80 },
-		{ title: 'Type', width: 100 },
-		{ title: 'Side', width: 80 },
-		{ title: 'Quantity', width: 100 },
-		{ title: 'Order Price' },
-		{ title: 'Avg. price' },
-		{ title: 'Trigger' },
-		{ title: 'Est. total' },
-		{ title: 'Fee' },
-		{ title: 'Order time', width: 120 },
 		{ title: '', align: 'right', width: 5 },
 	];
 
@@ -134,11 +122,7 @@ const OrderTableContent = ({ orderBookStatus, symbol, isShowAll }: IProps) => {
 				</Select>
 			</FormControl>
 
-			<MainTable
-				headTable={orderBookStatus === 'INCOMPLETE' ? headTableNew : (headTable as any)}
-				isEmpty={orders && orders.length > 0 ? false : true}
-				isLoading={isLoading}
-			>
+			<MainTable headTable={headTable} isEmpty={orders && orders.length > 0 ? false : true} isLoading={isLoading}>
 				{orders &&
 					orders.length > 0 &&
 					orders.map((item) => {
@@ -154,7 +138,6 @@ const OrderTableContent = ({ orderBookStatus, symbol, isShowAll }: IProps) => {
 								key={order.isAlgoOrder ? order.order.algo_order_id : order.order.order_id}
 								order={order}
 								symbol={symbol}
-								isHideCancel={orderBookStatus === 'INCOMPLETE' ? false : true}
 								handleClickOrderItem={handleClickOrderItem}
 							/>
 						);
@@ -196,4 +179,4 @@ const OrderTableContent = ({ orderBookStatus, symbol, isShowAll }: IProps) => {
 	);
 };
 
-export default memo(OrderTableContent);
+export default memo(OrderTableContentPending);

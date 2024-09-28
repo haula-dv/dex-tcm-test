@@ -6,7 +6,10 @@ import { Box } from '@mui/material';
 import { OrderStatus } from '@orderly.network/types';
 import { useState } from 'react';
 import PositionContent from '../position/PositionContent';
-import OrderTableContent from './OrderTableContent';
+import OrderTableContentFilled from './OrderTableContentFilled';
+import OrderTableContentHistory from './OrderTableContentHistory';
+import OrderTableContentPending from './OrderTableContentPending';
+import OrderTableContentTPSL from './OrderTableContentTPSL';
 
 interface IProps {
 	symbol: string;
@@ -25,28 +28,36 @@ export const OrderViewContainer = ({ symbol }: IProps) => {
 			label: 'Pending',
 			value: 'pending',
 			children: (
-				<OrderTableContent orderBookStatus={OrderStatus.INCOMPLETE} symbol={symbol} isShowAll={isShowAllInstrument} />
+				<OrderTableContentPending
+					orderBookStatus={OrderStatus.INCOMPLETE}
+					symbol={symbol}
+					isShowAll={isShowAllInstrument}
+				/>
 			),
 		},
 		{
 			label: 'TP/SL',
 			value: 'TP/SL',
 			children: (
-				<OrderTableContent orderBookStatus={OrderStatus.FILLED} symbol={symbol} isShowAll={isShowAllInstrument} />
+				<OrderTableContentTPSL orderBookStatus={OrderStatus.NEW} symbol={symbol} isShowAll={isShowAllInstrument} />
 			),
 		},
 		{
 			label: 'Filled',
 			value: 'filled',
 			children: (
-				<OrderTableContent orderBookStatus={OrderStatus.FILLED} symbol={symbol} isShowAll={isShowAllInstrument} />
+				<OrderTableContentFilled orderBookStatus={OrderStatus.FILLED} symbol={symbol} isShowAll={isShowAllInstrument} />
 			),
 		},
 		{
 			label: 'Order history',
 			value: 'order_history',
 			children: (
-				<OrderTableContent orderBookStatus={OrderStatus.COMPLETED} symbol={symbol} isShowAll={isShowAllInstrument} />
+				<OrderTableContentHistory
+					orderBookStatus={OrderStatus.COMPLETED}
+					symbol={symbol}
+					isShowAll={isShowAllInstrument}
+				/>
 			),
 		},
 	];
