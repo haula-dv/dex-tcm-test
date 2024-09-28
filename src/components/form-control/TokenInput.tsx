@@ -58,7 +58,13 @@ export const TokenInput: FC<
 				newValue = fixedNumber.toString();
 			}
 
-			setValue(newValue);
+			// Format giá trị với dấu phẩy cho UI
+			const formattedValue = Number(newValue).toLocaleString(undefined, {
+				minimumFractionDigits: decimals,
+				maximumFractionDigits: decimals,
+			});
+
+			setValue(formattedValue);
 		}
 	}, [decimals, max, min, outerValue, value]);
 
@@ -92,7 +98,13 @@ export const TokenInput: FC<
 					if (onValueChange) {
 						onValueChange(fixedNumber);
 					}
-					event.target.value = newValue;
+
+					const formattedValue = Number(newValue).toLocaleString(undefined, {
+						minimumFractionDigits: decimals,
+						maximumFractionDigits: decimals,
+					});
+
+					setValue(formattedValue);
 					setValue(newValue);
 				}
 				if (props.onChange) props.onChange(event);
@@ -138,11 +150,11 @@ export const CustomTextField = styled(OutlinedInput)(({ theme }) => ({
 
 	'& .MuiOutlinedInput-input::-webkit-input-placeholder': {
 		color: setColorThemeMode(theme.palette.grey[900], theme.palette.common.white),
-		opacity: '1',
+		opacity: '0.6',
 	},
 	'& .MuiOutlinedInput-input.Mui-disabled::-webkit-input-placeholder': {
 		color: theme.palette.text.secondary,
-		opacity: '1',
+		opacity: '0.6',
 	},
 	'& .MuiOutlinedInput-notchedOutline': {
 		border: 0,

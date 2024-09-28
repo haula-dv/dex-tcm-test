@@ -27,9 +27,10 @@ interface IProps<V extends FieldValues> {
 	name: Path<V>;
 	max?: number;
 	maxQty?: string;
+	extChange?: (val: any) => void;
 }
 
-const AmountSlider = <V extends FieldValues>({ name, max = 0, formContext, maxQty }: IProps<V>) => {
+const AmountSlider = <V extends FieldValues>({ name, max = 0, formContext, maxQty, extChange }: IProps<V>) => {
 	const theme = useTheme();
 
 	// Watch quantity
@@ -43,7 +44,7 @@ const AmountSlider = <V extends FieldValues>({ name, max = 0, formContext, maxQt
 				}
 
 				const percentage = (qty / maxQty) * 100;
-				formContext.setValue('orderSide' as any, percentage >= 100 ? 100 : (percentage.toFixed(0) as any));
+				formContext.setValue('orderSide' as any, percentage >= 100 ? 100 : (parseFloat(percentage.toFixed(1)) as any));
 			}
 		});
 
@@ -67,7 +68,6 @@ const AmountSlider = <V extends FieldValues>({ name, max = 0, formContext, maxQt
 							valueLabelDisplay="auto"
 							onChange={(event, newValue: any) => {
 								onChange(newValue);
-
 								if (newValue === 0) {
 									formContext.setValue('quantity' as any, 0 as any, {
 										shouldValidate: false,
@@ -78,9 +78,18 @@ const AmountSlider = <V extends FieldValues>({ name, max = 0, formContext, maxQt
 
 								const caculatedAmount = (max * newValue) / 100;
 								const truncatedAmount = Math.floor(caculatedAmount * 10000) / 10000;
+								if (caculatedAmount >= 100) {
+									formContext.setValue('quantity' as any, max as any, {
+										shouldValidate: true,
+									});
+									return;
+								}
+
 								formContext.setValue('quantity' as any, truncatedAmount as any, {
 									shouldValidate: true,
 								});
+
+								extChange && extChange(truncatedAmount);
 							}}
 						/>
 					</Box>

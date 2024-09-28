@@ -10,7 +10,7 @@ import { Divider, Stack, Typography, useTheme } from '@mui/material';
 import { useChains } from '@orderly.network/hooks';
 import { IconChevronDown } from '@tabler/icons-react';
 import { useConnectWallet, useSetChain } from '@web3-onboard/react';
-import { useCallback, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 
 export default function NetworkContent() {
 	const theme = useTheme();
@@ -55,6 +55,13 @@ export default function NetworkContent() {
 		[setChain, wallet],
 	);
 
+	useEffect(() => {
+		if (currentChain()) {
+			const isMainet = currentChain()?.network_infos.mainnet;
+			localStorage.setItem('networkId', isMainet ? 'mainnet' : 'testnet');
+		}
+	}, [currentChain()]);
+
 	return (
 		<>
 			<MainButton
@@ -75,9 +82,15 @@ export default function NetworkContent() {
 					color: setColorThemeMode(theme.palette.common.black, theme.palette.common.white),
 				}}
 				aria-expanded={openNetworkEl ? 'true' : undefined}
-				startIcon={<TokenIcon url={getImageNextwork(currentChain()?.network_infos?.chain_id, 'network_logo')} />}
+				startIcon={
+					currentChain() ? (
+						<TokenIcon url={getImageNextwork(currentChain()?.network_infos?.chain_id, 'network_logo')} />
+					) : (
+						''
+					)
+				}
 			>
-				{currentChain()?.network_infos?.name}
+				{currentChain() ? currentChain()?.network_infos?.name : 'Unsupport Network'}
 			</MainButton>
 
 			<StyledMenu

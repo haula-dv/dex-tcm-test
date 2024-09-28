@@ -189,6 +189,7 @@ const CreateOrderForm = ({ symbol }: IProps) => {
 								maxQty={maxQty}
 								symbol={symbol}
 								symbolsInfo={symbolsInfo}
+								markPrice={markPrice}
 							/>
 
 							<Details

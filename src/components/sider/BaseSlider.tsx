@@ -21,7 +21,6 @@ const BaseSlider = ({ max, handleChange, amountQty, ...props }: IProps) => {
 	};
 
 	useEffect(() => {
-		console.log(amountQty);
 		if (amountQty) {
 			const percentage = (amountQty / max) * 100;
 			setNewValue(parseFloat(percentage.toFixed(1)));

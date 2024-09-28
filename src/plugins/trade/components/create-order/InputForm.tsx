@@ -1,10 +1,11 @@
+import AmountSlider from '@/components/form-control/AmountSlider';
 import CurrencyInputField from '@/components/form-control/CurrencyInputField';
 import { CustomTextField } from '@/components/form-control/TokenInput';
 import { getDecimalsFromTick } from '@/utils/formatters/api';
 import { setColorThemeMode } from '@/utils/helpers';
 import { Collapse, InputAdornment, Stack, Typography, useTheme } from '@mui/material';
 import { OrderEntity } from '@orderly.network/types';
-import { memo, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { UseFormReturn } from 'react-hook-form';
 import { match } from 'ts-pattern';
 import { getValidationErrors, Inputs } from './CreateOrderForm';
@@ -16,9 +17,10 @@ interface IProps {
 	getInput: (data: Inputs, symbol: string) => OrderEntity;
 	helper: any;
 	maxQty: number;
+	markPrice: number;
 }
 
-function InputForm({ formContext, symbolsInfo, symbol, getInput, helper, maxQty }: IProps) {
+function InputForm({ formContext, symbolsInfo, symbol, getInput, helper, maxQty, markPrice }: IProps) {
 	const symbolInfo = symbolsInfo[symbol]();
 	const [_, base, quote] = symbol.split('_');
 	const theme = useTheme();
@@ -42,6 +44,55 @@ function InputForm({ formContext, symbolsInfo, symbol, getInput, helper, maxQty 
 
 		return () => unsubscribe();
 	}, [formContext]);
+
+	// Handle Convert price USDC to Base
+	const onValueChangePrice = (val: any) => {
+		const usdcAmountPrice = parseFloat(val);
+		const baseMarkPrice = markPrice;
+
+		if (!usdcAmountPrice) {
+			formContext.setValue('quantity', '', {
+				shouldValidate: true,
+				shouldDirty: true,
+			});
+			return;
+		}
+
+		const calculatedQty = usdcAmountPrice / baseMarkPrice;
+
+		const formattedQty = parseFloat(calculatedQty.toFixed(baseDecimals));
+
+		formContext.setValue('quantity', formattedQty as any, {
+			shouldValidate: true,
+			shouldDirty: true,
+		});
+	};
+
+	const onValueConvertQtyToPrice = (val: any) => {
+		if (formContext.watch('type') == 'Market') {
+			return;
+		}
+
+		const amountQty = parseFloat(val);
+		const baseMarkPrice = markPrice;
+
+		if (!amountQty) {
+			formContext.setValue('price', '', {
+				shouldValidate: true,
+				shouldDirty: true,
+			});
+			return;
+		}
+
+		const calculatedQty = amountQty * baseMarkPrice;
+
+		const formattedQty = parseFloat(calculatedQty.toFixed(quoteDecimals));
+
+		formContext.setValue('price', formattedQty as any, {
+			shouldValidate: true,
+			shouldDirty: true,
+		});
+	};
 
 	return (
 		<Stack spacing={'8px'}>
@@ -107,6 +158,7 @@ function InputForm({ formContext, symbolsInfo, symbol, getInput, helper, maxQty 
 								},
 							},
 						}}
+						onValueChange={(val) => onValueChangePrice(val._value)}
 					/>
 				)}
 
@@ -116,6 +168,7 @@ function InputForm({ formContext, symbolsInfo, symbol, getInput, helper, maxQty 
 					suffix={base}
 					decimals={baseDecimals}
 					placeholder="0.0000"
+					onValueChange={(val) => onValueConvertQtyToPrice(val._value)}
 					rules={{
 						validate: {
 							custom: async (_, data) => {
@@ -127,27 +180,15 @@ function InputForm({ formContext, symbolsInfo, symbol, getInput, helper, maxQty 
 				/>
 			</Stack>
 
-			<Stack direction={'row'} justifyContent={'space-between'} mt={'2px !important'}>
-				<Typography fontSize={'12px'} color={theme.palette.grey[300]}>
-					Max{' '}
-					{match(formContext.watch('direction'))
-						.with('Buy', () => 'Buy')
-						.otherwise(() => 'Sell')}
-				</Typography>
-
-				<Typography
-					fontSize={'12px'}
-					color={match(formContext.watch('direction'))
-						.with('Buy', () => theme.palette.success.main)
-						.otherwise(() => theme.palette.error.main)}
-				>
-					{formatter.format(maxQty)} {base}
-				</Typography>
-			</Stack>
-
-			{/* <AmountSetOrderSide maxQty={maxQty} formContext={formContext} formatter={formatter} /> */}
+			<AmountSlider
+				name="orderSide"
+				formContext={formContext}
+				max={maxQty}
+				maxQty={`${formatter.format(maxQty)}`}
+				extChange={(val) => onValueConvertQtyToPrice(val)}
+			/>
 		</Stack>
 	);
 }
 
-export default memo(InputForm);
+export default InputForm;

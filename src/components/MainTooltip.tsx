@@ -1,7 +1,6 @@
 import { setColorThemeMode } from '@/utils/helpers';
 import { styled } from '@mui/material/styles';
 import Tooltip, { TooltipProps, tooltipClasses } from '@mui/material/Tooltip';
-import { memo } from 'react';
 
 const MainTooltip = styled(({ className, ...props }: TooltipProps) => (
 	<Tooltip {...props} classes={{ popper: className }} />
@@ -22,4 +21,4 @@ const MainTooltip = styled(({ className, ...props }: TooltipProps) => (
 	},
 }));
 
-export default memo(MainTooltip);
+export default MainTooltip;
