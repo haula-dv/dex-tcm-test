@@ -104,7 +104,7 @@ const TPSLOrderItem = ({ order, cancelTPSLOrder, isLoadingCancel }: IProps) => {
 
 			<TableCell> {dayjs(order.order.created_time).format('YYYY-MM-DD HH:mm:ss')}</TableCell>
 
-			<TableCell align="right" sx={{ display: 'flex', justifyContent: 'flex-end' }}>
+			<TableCell align="right" padding="checkbox">
 				<Stack direction={'row'} spacing={'6px'}>
 					<MainButton size="xsmall" variant="outlined">
 						Edit

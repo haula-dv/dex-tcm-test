@@ -2,10 +2,13 @@ import { themeSelectorState } from '@/common/stores/common';
 import { MainButton } from '@/components/button/MainButton';
 import { MainIconButton } from '@/components/button/MainIconButton';
 import IconLoading from '@/components/icons/loading';
+import { signAndSendRequest } from '@/utils/config/signer';
 import { TLocalStorage } from '@/utils/constants/key_store';
+import { getBaseUrl } from '@/utils/constants/orderly';
 import { usdFormatter } from '@/utils/formatters/number';
 import { formartAddress } from '@/utils/formatters/token';
 import { setColorThemeMode } from '@/utils/helpers';
+import { loadOrderlyKey } from '@/utils/helpers/orderlyHelper';
 import { Box, Stack, Typography, useTheme } from '@mui/material';
 import { useAccount, useChains, useDeposit } from '@orderly.network/hooks';
 import { IconMoonStars, IconSun } from '@tabler/icons-react';
@@ -17,13 +20,6 @@ import { useStore } from 'zustand';
 import AccountDetailPopup from './AccountDetailPopup';
 import NetworkContent from './NetworkContent';
 import { OrderlyConnect } from './OrderlyConnect';
-
-// ERC-20 Token ABI (for balanceOf and decimals)
-const ERC20_ABI = [
-	'function balanceOf(address owner) view returns (uint256)',
-	'function decimals() view returns (uint8)',
-	'function symbol() view returns (string)',
-];
 
 export default function WalletContainer() {
 	const themeSelector = useStore(themeSelectorState, (state) => state.value);
@@ -61,6 +57,27 @@ export default function WalletContainer() {
 		setAccountDetailsModal(!openAccountDetailsModal);
 	};
 
+	const updateFee = async () => {
+		const orderlyAccountId = account.accountId;
+
+		if (!orderlyAccountId && !account.address) {
+			return;
+		}
+
+		const orderlyKey: any = loadOrderlyKey(account.address ?? '');
+
+		const res = await signAndSendRequest(orderlyAccountId ?? '', orderlyKey, `${getBaseUrl()}/broker/fee_rate/set`, {
+			method: 'POST',
+			body: JSON.stringify({
+				maker_fee_rate: 0.02,
+				taker_fee_rate: 0.01,
+				account_ids: [`${orderlyAccountId}`],
+			}),
+		});
+
+		const response = await res.json();
+	};
+
 	// Watch wallet change
 	useEffect(() => {
 		if (Array.isArray(wallet?.accounts) && wallet.accounts.length > 0) {
@@ -81,7 +98,7 @@ export default function WalletContainer() {
 	return (
 		<Stack direction={'row'} spacing={1} alignItems={'center'}>
 			<NetworkContent />
-
+			{/* <button onClick={updateFee}>test</button> */}
 			{connecting ? (
 				<MainButton
 					startIcon={<IconLoading height="20px" width="20px" />}

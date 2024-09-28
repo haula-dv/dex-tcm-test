@@ -80,11 +80,6 @@ const CurrencyInputField = <V extends FieldValues>({
 											onValueChange(fixedNumber);
 										}
 
-										const formattedValue = Number(newValue).toLocaleString(undefined, {
-											minimumFractionDigits: decimals,
-											maximumFractionDigits: decimals,
-										});
-
 										onChange(newValue);
 									}
 								}}

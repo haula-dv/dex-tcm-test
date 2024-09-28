@@ -1,3 +1,9 @@
+function base64UrlEncode(buffer: Uint8Array): string {
+	const base64 = Buffer.from(buffer).toString('base64');
+	// Convert base64 to base64url by replacing characters
+	return base64.replace(/=/g, '').replace(/\+/g, '-').replace(/\//g, '_');
+}
+
 import { getPublicKey, sign } from '@noble/ed25519';
 import { encodeBase58 } from 'ethers';
 
@@ -24,7 +30,7 @@ export async function signAndSendRequest(
 			'orderly-timestamp': String(timestamp),
 			'orderly-account-id': orderlyAccountId,
 			'orderly-key': `ed25519:${encodeBase58(await getPublicKey(privateKey))}`,
-			'orderly-signature': Buffer.from(orderlySignature).toString('base64url'),
+			'orderly-signature': base64UrlEncode(orderlySignature), // Using custom base64url encoding function
 			...(init?.headers ?? {}),
 		},
 		...(init ?? {}),

@@ -1,7 +1,10 @@
 import { IHeadCell } from '@/common';
 import MainTable from '@/components/table/MainTable';
+import { signAndSendRequest } from '@/utils/config/signer';
+import { getBaseUrl } from '@/utils/constants/orderly';
+import { loadOrderlyKey } from '@/utils/helpers/orderlyHelper';
 import { FormControl, MenuItem, Select, SelectChangeEvent, Stack } from '@mui/material';
-import { useAccountInfo, useOrderStream } from '@orderly.network/hooks';
+import { useAccount, useOrderStream } from '@orderly.network/hooks';
 import { toast } from '@orderly.network/react';
 import { AlgoOrderRootType, API, OrderStatus } from '@orderly.network/types';
 import { useNotifications } from '@web3-onboard/react';
@@ -28,7 +31,7 @@ const OrderTableContentTPSL = ({ orderBookStatus, symbol, isShowAll }: IProps) =
 
 	const orders = ordersUntyped as (API.Order | API.AlgoOrder)[];
 
-	const { data: accountInfo } = useAccountInfo();
+	const { account: accountInfo } = useAccount();
 
 	const handleChange = (event: SelectChangeEvent) => {
 		setSide(event.target.value as string);
@@ -46,10 +49,27 @@ const OrderTableContentTPSL = ({ orderBookStatus, symbol, isShowAll }: IProps) =
 	];
 
 	const cancelTPSLOrder = async (order: any) => {
-		// setIsLoadingCancel(true);
+		setIsLoadingCancel(true);
 
 		try {
-			//
+			const orderlyAccountId = accountInfo?.accountId;
+
+			if (!orderlyAccountId) {
+				return;
+			}
+
+			const orderlyKey: any = loadOrderlyKey(accountInfo.address ?? '');
+
+			await signAndSendRequest(
+				orderlyAccountId ?? '',
+				orderlyKey,
+				`${getBaseUrl()}/algo/order?order_id=${order.algo_order_id}&symbol=${order.symbol}`,
+				{
+					method: 'DELETE',
+				},
+			);
+
+			toast.success('Order Canceled!');
 		} catch (error: any) {
 			toast.error(error.message);
 		} finally {

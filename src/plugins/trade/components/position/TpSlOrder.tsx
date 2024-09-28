@@ -32,9 +32,7 @@ interface IProps {
 const TpSlOrder = ({ symbol, position, refresh, handleCloseModal }: IProps) => {
 	const [loading, setLoading] = useState(false);
 	const theme = useTheme();
-
 	const symbolsInfo = useSymbolsInfo();
-
 	position.position_qty = Math.abs(position.position_qty);
 
 	const formContext = useForm<TpSlOrderInputs>({
@@ -45,39 +43,28 @@ const TpSlOrder = ({ symbol, position, refresh, handleCloseModal }: IProps) => {
 		},
 	});
 
-	// Create TPSL
 	const [algoOrder, { setValue, submit, errors }] = useTPSLOrder(position);
 
-	// Update TPSL
-	// const [orders, { updateTPSLOrder }] = useOrderStream({
-	// 	symbol: position.symbol,
-	// 	includes: [AlgoOrderRootType.TP_SL, AlgoOrderRootType.POSITIONAL_TP_SL], // Show only TP/SL orders
-	// });
-
 	const [_0, customNotification] = useNotifications();
+	const { watch } = formContext;
 
-	const tp_trigger_price = formContext.watch('tp_trigger_price');
+	const tp_trigger_price = watch('tp_trigger_price');
+	const sl_trigger_price = watch('sl_trigger_price');
+	const quantity = watch('quantity');
 
 	useEffect(() => {
 		if (tp_trigger_price == null) return;
 		setValue('tp_trigger_price', tp_trigger_price);
-		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [tp_trigger_price]);
-
-	const sl_trigger_price = formContext.watch('sl_trigger_price');
 
 	useEffect(() => {
 		if (sl_trigger_price == null) return;
 		setValue('sl_trigger_price', sl_trigger_price);
-		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [sl_trigger_price]);
-
-	const quantity = formContext.watch('quantity');
 
 	useEffect(() => {
 		if (quantity == null) return;
 		setValue('quantity', quantity);
-		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [quantity]);
 
 	const submitForm: SubmitHandler<TpSlOrderInputs> = async () => {
@@ -89,7 +76,6 @@ const TpSlOrder = ({ symbol, position, refresh, handleCloseModal }: IProps) => {
 		});
 
 		try {
-			// Create TPSL
 			await submit();
 
 			const childOrders = [{}];
@@ -122,6 +108,7 @@ const TpSlOrder = ({ symbol, position, refresh, handleCloseModal }: IProps) => {
 
 	return (
 		<form onSubmit={formContext.handleSubmit(submitForm)}>
+			{JSON.stringify(errors?.tp_trigger_price)}
 			<MainCard variant="outlined" backgroudColor={setColorThemeMode('white', 'transparent')}>
 				<Stack spacing={'6px'}>
 					<Controller
@@ -170,8 +157,8 @@ const TpSlOrder = ({ symbol, position, refresh, handleCloseModal }: IProps) => {
 						name="tp_trigger_price"
 						decimals={quoteDecimals}
 						placeholder="0.0"
-						hasError={errors?.tp_trigger_price != null}
 						extErrors={errors?.tp_trigger_price}
+						hasError={errors?.tp_trigger_price != null}
 						label={
 							<ItemRow
 								title={<Typography fontSize={'11px'}>TP Price</Typography>}
@@ -200,8 +187,8 @@ const TpSlOrder = ({ symbol, position, refresh, handleCloseModal }: IProps) => {
 						name="sl_trigger_price"
 						decimals={quoteDecimals}
 						placeholder="0.0"
-						hasError={errors?.sl_trigger_price != null}
 						extErrors={errors?.sl_trigger_price}
+						hasError={errors?.sl_trigger_price != null}
 						label={
 							<ItemRow
 								title={<Typography fontSize={'11px'}>SL Price</Typography>}
