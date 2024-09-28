@@ -82,11 +82,7 @@ const OrderTableContentFilled = ({ orderBookStatus, symbol, isShowAll }: IProps)
 						}
 
 						return (
-							<FilledOrder
-								key={order.isAlgoOrder ? order.order.algo_order_id : order.order.order_id}
-								order={order}
-								symbol={symbol}
-							/>
+							<FilledOrder key={order.isAlgoOrder ? order.order.algo_order_id : order.order.order_id} order={order} />
 						);
 					})}
 			</MainTable>

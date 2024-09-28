@@ -1,17 +1,28 @@
+import { MainIconButton } from '@/components/button/MainIconButton';
 import { baseFormatter, usdFormatter } from '@/utils/formatters/number';
 import { TableCell, TableRow, Typography, useTheme } from '@mui/material';
 import { API } from '@orderly.network/types';
+import { IconDots } from '@tabler/icons-react';
 import dayjs from 'dayjs';
-import { memo, useMemo } from 'react';
+import { memo, useMemo, useState } from 'react';
 import { match } from 'ts-pattern';
 
 interface IProps {
 	order: { isAlgoOrder: false; order: API.Order } | { isAlgoOrder: true; order: API.AlgoOrder };
+	symbol: string;
+	handleClickOrderItem: (order: any, type: string) => void;
 }
 
-const FilledOrder = ({ order }: IProps) => {
+const HistoryOrderItem = ({ order, symbol, handleClickOrderItem }: IProps) => {
 	const [prep, base, quote] = order.order.symbol.split('_');
 	const theme = useTheme();
+
+	const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
+	const open = Boolean(anchorEl);
+
+	const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
+		setAnchorEl(event.currentTarget);
+	};
 
 	const totalEstPrice = useMemo(() => {
 		const quantity = order.order.quantity ?? 0;
@@ -25,7 +36,16 @@ const FilledOrder = ({ order }: IProps) => {
 	}, [order.order]);
 
 	return (
-		<TableRow>
+		<TableRow
+			sx={{
+				bgcolor:
+					(order.order as any).status === 'CANCELLED'
+						? '#111'
+						: '' || (order.order as any).algo_status === 'CANCELLED'
+						? '#111'
+						: '',
+			}}
+		>
 			<TableCell>
 				{base}-{prep}
 			</TableCell>
@@ -69,15 +89,30 @@ const FilledOrder = ({ order }: IProps) => {
 
 			<TableCell> {order.order.trigger_price ? usdFormatter.format(order.order.trigger_price) : '-'}</TableCell>
 
+			<TableCell> {(order.order as any).realized_pnl}</TableCell>
+
 			<TableCell> {totalEstPrice}</TableCell>
 
 			<TableCell> {order.order.total_fee}</TableCell>
 
-			<TableCell> {(order.order as any).status}</TableCell>
+			<TableCell> {(order.order as any).status ?? (order.order as any).algo_status}</TableCell>
 
 			<TableCell> {dayjs(order.order.created_time).format('YYYY-MM-DD HH:mm:ss')}</TableCell>
+
+			<TableCell align="right" sx={{ display: 'flex', justifyContent: 'flex-end' }}>
+				<MainIconButton
+					size="small"
+					id="order-button"
+					aria-controls={open ? 'order-menu' : undefined}
+					aria-haspopup="true"
+					aria-expanded={open ? 'true' : undefined}
+					onClick={handleClick}
+				>
+					<IconDots size={'1rem'} />
+				</MainIconButton>
+			</TableCell>
 		</TableRow>
 	);
 };
 
-export default memo(FilledOrder);
+export default memo(HistoryOrderItem);

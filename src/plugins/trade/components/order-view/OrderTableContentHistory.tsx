@@ -2,9 +2,10 @@ import { IHeadCell } from '@/common';
 import MainTable from '@/components/table/MainTable';
 import { FormControl, MenuItem, Select, SelectChangeEvent, Stack } from '@mui/material';
 import { useOrderStream } from '@orderly.network/hooks';
-import { AlgoOrderRootType, API, OrderStatus } from '@orderly.network/types';
+import { API, OrderStatus } from '@orderly.network/types';
 import { useNotifications } from '@web3-onboard/react';
 import { memo, useState } from 'react';
+import HistoryOrderItem from './HistoryOrderItem';
 
 interface IProps {
 	orderBookStatus: OrderStatus;
@@ -25,9 +26,7 @@ const OrderTableContentHistory = ({ orderBookStatus, symbol, isShowAll }: IProps
 		{ cancelAlgoOrder, cancelOrder, updateOrder, updateAlgoOrder, isLoading, submitting, loadMore, refresh },
 	] = useOrderStream({
 		symbol: isShowAll ? '' : symbol,
-		status: orderBookStatus,
 		side: side == 'ALL' ? '' : side,
-		excludes: [AlgoOrderRootType.TP_SL, AlgoOrderRootType.POSITIONAL_TP_SL], // Do not show TP/SL orders
 	});
 
 	const orders = ordersUntyped as (API.Order | API.AlgoOrder)[];
@@ -37,18 +36,22 @@ const OrderTableContentHistory = ({ orderBookStatus, symbol, isShowAll }: IProps
 	};
 
 	const headTable: IHeadCell[] = [
-		{ title: 'Symbol', width: 80 },
-		{ title: 'Type', width: 100 },
-		{ title: 'Side', width: 80 },
-		{ title: 'Quantity', width: 100 },
-		{ title: 'Order Price' },
-		{ title: 'Avg. price' },
+		{ title: 'Symbol', width: 60 },
+		{ title: 'Type', width: 50 },
+		{ title: 'Side', width: 50 },
+		{ title: 'Quantity' },
+		{ title: 'Price' },
+		{ title: 'Avg.' },
 		{ title: 'Trigger' },
+		{ title: 'Realized PnL' },
 		{ title: 'Est. total' },
 		{ title: 'Fee' },
 		{ title: 'Status' },
-		{ title: 'Order time', width: 120 },
+		{ title: 'Time' },
+		{ title: '', width: 50 },
 	];
+
+	const handleClickOrderItem = (value: any): any => {};
 
 	return (
 		<Stack p={1}>
@@ -71,7 +74,14 @@ const OrderTableContentHistory = ({ orderBookStatus, symbol, isShowAll }: IProps
 							order = { isAlgoOrder: false, order: item as API.Order };
 						}
 
-						return <div key={index}>{index}</div>;
+						return (
+							<HistoryOrderItem
+								key={order.isAlgoOrder ? order.order.algo_order_id : order.order.order_id}
+								order={order}
+								handleClickOrderItem={handleClickOrderItem}
+								symbol={symbol}
+							/>
+						);
 					})}
 			</MainTable>
 		</Stack>

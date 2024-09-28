@@ -30,16 +30,14 @@ const OrderTableContentTPSL = ({ orderBookStatus, symbol, isShowAll }: IProps) =
 	};
 
 	const headTable: IHeadCell[] = [
-		{ title: 'Symbol', width: 80 },
-		{ title: 'Type', width: 100 },
-		{ title: 'Side', width: 80 },
-		{ title: 'Quantity', width: 100 },
-		{ title: 'Order Price' },
-		{ title: 'Avg. price' },
+		{ title: 'Symbol' },
+		{ title: 'Side' },
+		{ title: 'Quantity' },
 		{ title: 'Trigger' },
-		{ title: 'Est. total' },
-		{ title: 'Fee' },
+		{ title: 'Price' },
+		{ title: 'Notional' },
 		{ title: 'Order time', width: 120 },
+		{ title: '', width: 100 },
 	];
 
 	return (
@@ -56,7 +54,7 @@ const OrderTableContentTPSL = ({ orderBookStatus, symbol, isShowAll }: IProps) =
 				{orders &&
 					orders.length > 0 &&
 					orders.map((item, index) => {
-						return <div key={index}>{index}</div>;
+						return <div key={index}>{index} testing...</div>;
 					})}
 			</MainTable>
 		</Stack>

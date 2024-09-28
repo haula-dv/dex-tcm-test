@@ -41,6 +41,7 @@ function MainTable({ headTable, children, isEmpty, isLoading }: IProps) {
 									borderTopRightRadius: index < headTable.length - 1 ? '' : TSizes.borderRadius,
 									borderBottom: 0,
 									color: `${theme.palette.grey[300]} !important`,
+									whiteSpace: 'nowrap',
 								}}
 							>
 								{item.title}
