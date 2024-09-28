@@ -16,10 +16,15 @@ interface IProps {
 	onClose: () => void;
 	orderActived: { isAlgoOrder: false; order: API.Order } | { isAlgoOrder: true; order: API.AlgoOrder };
 	updateOrder: (orderId: string, order: OrderEntity) => Promise<any>;
+	updateAlgoOrder: (orderId: string, order: OrderEntity) => Promise<any>;
 	submitting: boolean;
 }
 
-const UpdateOrderModal = ({ onClose, open, orderActived, updateOrder, submitting }: IProps) => {
+const convertedText = (text: any) => {
+	return text.charAt(0) + text.slice(1).toLowerCase();
+};
+
+const UpdateOrderModal = ({ onClose, open, orderActived, updateOrder, updateAlgoOrder, submitting }: IProps) => {
 	const theme = useTheme();
 	const [_, base, quote] = orderActived.order.symbol.split('_');
 	const symbol = orderActived.order.symbol;
@@ -30,10 +35,11 @@ const UpdateOrderModal = ({ onClose, open, orderActived, updateOrder, submitting
 	const [openConfirm, setOpenConfrim] = useState(false);
 
 	const defaultValues: Inputs = {
-		direction: 'Buy',
-		type: 'Limit',
+		direction: convertedText(orderActived.order.side),
+		type: convertedText(orderActived.order.type),
 		quantity: orderActived.order.quantity as any,
-		price: orderActived.order.price as any,
+		price: orderActived.order.price ? String(orderActived.order.price) : undefined,
+		triggerPrice: orderActived.order.trigger_price ? String(orderActived.order.trigger_price) : undefined,
 	};
 
 	const formContext = useForm({
@@ -48,6 +54,7 @@ const UpdateOrderModal = ({ onClose, open, orderActived, updateOrder, submitting
 			order_type: orderActived.order.type as OrderType,
 			order_quantity: formContext.watch('quantity', undefined),
 			order_price: formContext.watch('price', undefined),
+			trigger_price: formContext.watch('triggerPrice', undefined),
 		},
 		{ watchOrderbook: true },
 	);
@@ -55,7 +62,12 @@ const UpdateOrderModal = ({ onClose, open, orderActived, updateOrder, submitting
 	const handleUpdate = async () => {
 		const data = formContext.getValues();
 		try {
-			await updateOrder((orderActived.order as any).order_id as any, getInput(data, symbol));
+			if (orderActived.isAlgoOrder) {
+				await updateAlgoOrder(String(orderActived.order.algo_order_id), getInput(data, symbol));
+			} else {
+				await updateOrder((orderActived.order as any).order_id as any, getInput(data, symbol));
+			}
+
 			toast.success('Order edited');
 		} catch (err: any) {
 			toast.error(err.message);
@@ -69,21 +81,39 @@ const UpdateOrderModal = ({ onClose, open, orderActived, updateOrder, submitting
 		<MainDialog maxWidth="xs" open={open} handleClose={onClose} title="Update Order" isDivider>
 			<form onSubmit={formContext.handleSubmit(() => setOpenConfrim(true))}>
 				<Stack direction={'row'} alignItems={'start'} spacing={'10px'} pb="20px">
-					<CurrencyInputField
-						name="price"
-						formContext={formContext}
-						suffix={quote}
-						decimals={quoteDecimals}
-						rules={{
-							validate: {
-								custom: async (_, data) => {
-									const errors = await getValidationErrors(data, symbol, helper.validator);
-									console.log(errors);
-									return errors?.order_price != null ? errors.order_price.message : true;
+					{orderActived.isAlgoOrder ? (
+						<CurrencyInputField
+							name="triggerPrice"
+							formContext={formContext}
+							suffix={quote}
+							decimals={quoteDecimals}
+							placeholder="Trigger"
+							rules={{
+								validate: {
+									custom: async (_, data) => {
+										const errors = await getValidationErrors(data, symbol, helper.validator);
+										return errors?.trigger_price != null ? errors.trigger_price.message : true;
+									},
 								},
-							},
-						}}
-					/>
+							}}
+						/>
+					) : (
+						<CurrencyInputField
+							name="price"
+							formContext={formContext}
+							suffix={quote}
+							decimals={quoteDecimals}
+							rules={{
+								validate: {
+									custom: async (_, data) => {
+										const errors = await getValidationErrors(data, symbol, helper.validator);
+										console.log(errors);
+										return errors?.order_price != null ? errors.order_price.message : true;
+									},
+								},
+							}}
+						/>
+					)}
 
 					<CurrencyInputField
 						name="quantity"
@@ -128,7 +158,8 @@ const UpdateOrderModal = ({ onClose, open, orderActived, updateOrder, submitting
 				<Typography fontSize={'18px'} color={setColorThemeMode(theme.palette.grey[500], theme.palette.grey[300])}>
 					You agree changing the price of ETH-PERP order to{' '}
 					<span style={{ color: theme.palette.success.main }}>
-						{formContext.getValues('price')} ({quote}) - {formContext.getValues('quantity')} ({base}).
+						{orderActived.isAlgoOrder ? formContext.getValues('triggerPrice') : formContext.getValues('price')} ({quote}
+						) - {formContext.getValues('quantity')} ({base}).
 					</span>
 				</Typography>
 

@@ -216,13 +216,7 @@ const StopOrder = ({ symbol, position, refresh, handleCloseModal }: IProps) => {
 						color="primary"
 						fullWidth
 						type="submit"
-						disabled={
-							loading || !formContext.watch('quantity')
-								? true
-								: false || !formContext.watch('trigger_price')
-								? true
-								: false
-						}
+						disabled={loading || !formContext.watch('quantity') ? true : false}
 						isLoading={loading}
 					>
 						{match(formContext.watch('direction'))

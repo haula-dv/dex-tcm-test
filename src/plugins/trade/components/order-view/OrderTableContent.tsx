@@ -25,12 +25,14 @@ const OrderTableContent = ({ orderBookStatus, symbol, isShowAll }: IProps) => {
 	const [isOpenModalUpdate, setIsOpenUpdate] = useState(false);
 	const [_0, customNotification] = useNotifications();
 
-	const [ordersUntyped, { cancelAlgoOrder, cancelOrder, updateOrder, isLoading, submitting, loadMore, refresh }] =
-		useOrderStream({
-			symbol: isShowAll ? '' : symbol,
-			status: orderBookStatus,
-			side: side == 'ALL' ? '' : side,
-		});
+	const [
+		ordersUntyped,
+		{ cancelAlgoOrder, cancelOrder, updateOrder, updateAlgoOrder, isLoading, submitting, loadMore, refresh },
+	] = useOrderStream({
+		symbol: isShowAll ? '' : symbol,
+		status: orderBookStatus,
+		side: side == 'ALL' ? '' : side,
+	});
 
 	const orders = ordersUntyped as (API.Order | API.AlgoOrder)[];
 
@@ -186,6 +188,7 @@ const OrderTableContent = ({ orderBookStatus, symbol, isShowAll }: IProps) => {
 					onClose={handleToggleModalUpdate}
 					orderActived={currentOrder}
 					updateOrder={updateOrder}
+					updateAlgoOrder={updateAlgoOrder}
 					submitting={submitting.updateOrder}
 				/>
 			)}
