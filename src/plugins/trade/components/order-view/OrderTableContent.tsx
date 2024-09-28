@@ -9,6 +9,7 @@ import { API, OrderStatus } from '@orderly.network/types';
 import { useNotifications } from '@web3-onboard/react';
 import { memo, useState } from 'react';
 import PendingOrder from './PendingOrder';
+import UpdateOrderModal from './UpdateOrderModal';
 
 interface IProps {
 	orderBookStatus: OrderStatus;
@@ -21,13 +22,15 @@ const OrderTableContent = ({ orderBookStatus, symbol, isShowAll }: IProps) => {
 	const [loading, setLoading] = useState(false);
 	const [currentOrder, setCurrentOrder] = useState<any>(null);
 	const [openModalConfirm, setOpenModalConfirm] = useState(false);
+	const [isOpenModalUpdate, setIsOpenUpdate] = useState(false);
 	const [_0, customNotification] = useNotifications();
 
-	const [ordersUntyped, { cancelAlgoOrder, cancelOrder, isLoading, loadMore, refresh }] = useOrderStream({
-		symbol: isShowAll ? '' : symbol,
-		status: orderBookStatus,
-		side: side == 'ALL' ? '' : side,
-	});
+	const [ordersUntyped, { cancelAlgoOrder, cancelOrder, updateOrder, isLoading, submitting, loadMore, refresh }] =
+		useOrderStream({
+			symbol: isShowAll ? '' : symbol,
+			status: orderBookStatus,
+			side: side == 'ALL' ? '' : side,
+		});
 
 	const orders = ordersUntyped as (API.Order | API.AlgoOrder)[];
 
@@ -35,9 +38,14 @@ const OrderTableContent = ({ orderBookStatus, symbol, isShowAll }: IProps) => {
 		setSide(event.target.value as string);
 	};
 
-	const handleClickOrderItem = (order: any) => {
+	const handleClickOrderItem = (order: any, type: string) => {
 		setCurrentOrder(order);
-		setOpenModalConfirm(true);
+
+		if (type == 'cancel') {
+			setOpenModalConfirm(true);
+		} else if (type == 'update') {
+			handleToggleModalUpdate();
+		}
 	};
 
 	const handleClose = () => {
@@ -80,6 +88,11 @@ const OrderTableContent = ({ orderBookStatus, symbol, isShowAll }: IProps) => {
 			refresh();
 			handleClose();
 		}
+	};
+
+	// Handle toggle modal update
+	const handleToggleModalUpdate = () => {
+		setIsOpenUpdate(!isOpenModalUpdate);
 	};
 
 	const headTable: IHeadCell[] = [
@@ -166,6 +179,16 @@ const OrderTableContent = ({ orderBookStatus, symbol, isShowAll }: IProps) => {
 					</MainButton>
 				</Stack>
 			</MainDialog>
+
+			{currentOrder && isOpenModalUpdate && (
+				<UpdateOrderModal
+					open={isOpenModalUpdate}
+					onClose={handleToggleModalUpdate}
+					orderActived={currentOrder}
+					updateOrder={updateOrder}
+					submitting={submitting.updateOrder}
+				/>
+			)}
 		</Stack>
 	);
 };

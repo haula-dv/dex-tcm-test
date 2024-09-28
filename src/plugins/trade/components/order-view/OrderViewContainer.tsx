@@ -22,22 +22,29 @@ export const OrderViewContainer = ({ symbol }: IProps) => {
 			children: <PositionContent symbol={symbol} isShowAll={isShowAllInstrument} />,
 		},
 		{
-			label: 'Orders',
-			value: 'orders',
+			label: 'Pending',
+			value: 'pending',
 			children: (
 				<OrderTableContent orderBookStatus={OrderStatus.INCOMPLETE} symbol={symbol} isShowAll={isShowAllInstrument} />
 			),
 		},
 		{
-			label: 'Fills',
-			value: 'fills',
+			label: 'TP/SL',
+			value: 'TP/SL',
 			children: (
 				<OrderTableContent orderBookStatus={OrderStatus.FILLED} symbol={symbol} isShowAll={isShowAllInstrument} />
 			),
 		},
 		{
-			label: 'Payments',
-			value: 'payments',
+			label: 'Filled',
+			value: 'filled',
+			children: (
+				<OrderTableContent orderBookStatus={OrderStatus.FILLED} symbol={symbol} isShowAll={isShowAllInstrument} />
+			),
+		},
+		{
+			label: 'Order history',
+			value: 'order_history',
 			children: (
 				<OrderTableContent orderBookStatus={OrderStatus.COMPLETED} symbol={symbol} isShowAll={isShowAllInstrument} />
 			),

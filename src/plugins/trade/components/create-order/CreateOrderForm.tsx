@@ -130,7 +130,7 @@ const CreateOrderForm = ({ symbol }: IProps) => {
 		} finally {
 			setLoading(false);
 			setOpenOrderConfirm(false);
-			location.reload();
+			// location.reload();
 		}
 	};
 
@@ -237,7 +237,7 @@ export const Item = ({ value, label }: IItemProps) => {
 
 export default memo(CreateOrderForm);
 
-const getInput = (data: Inputs, symbol: string): OrderEntity => {
+export const getInput = (data: Inputs, symbol: string): OrderEntity => {
 	return {
 		symbol,
 		side: match(data.direction)
@@ -255,3 +255,11 @@ const getInput = (data: Inputs, symbol: string): OrderEntity => {
 		trigger_price: data.triggerPrice,
 	};
 };
+
+export async function getValidationErrors(
+	data: Inputs,
+	symbol: string,
+	validator: ReturnType<typeof useOrderEntry>['helper']['validator'],
+): Promise<ReturnType<ReturnType<typeof useOrderEntry>['helper']['validator']>> {
+	return validator(getInput(data, symbol));
+}

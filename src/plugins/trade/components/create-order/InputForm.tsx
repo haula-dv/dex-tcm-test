@@ -3,12 +3,11 @@ import { CustomTextField } from '@/components/form-control/TokenInput';
 import { getDecimalsFromTick } from '@/utils/formatters/api';
 import { setColorThemeMode } from '@/utils/helpers';
 import { Collapse, InputAdornment, Stack, Typography, useTheme } from '@mui/material';
-import { useOrderEntry } from '@orderly.network/hooks';
 import { OrderEntity } from '@orderly.network/types';
 import { memo, useEffect, useState } from 'react';
 import { UseFormReturn } from 'react-hook-form';
 import { match } from 'ts-pattern';
-import { Inputs } from './CreateOrderForm';
+import { getValidationErrors, Inputs } from './CreateOrderForm';
 
 interface IProps {
 	formContext: UseFormReturn<Inputs>;
@@ -25,14 +24,6 @@ function InputForm({ formContext, symbolsInfo, symbol, getInput, helper, maxQty 
 	const theme = useTheme();
 
 	const [baseDecimals, quoteDecimals] = getDecimalsFromTick(symbolInfo);
-
-	async function getValidationErrors(
-		data: Inputs,
-		symbol: string,
-		validator: ReturnType<typeof useOrderEntry>['helper']['validator'],
-	): Promise<ReturnType<ReturnType<typeof useOrderEntry>['helper']['validator']>> {
-		return validator(getInput(data, symbol));
-	}
 
 	const formatter = new Intl.NumberFormat('en-US', { maximumFractionDigits: baseDecimals });
 
