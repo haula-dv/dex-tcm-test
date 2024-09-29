@@ -115,7 +115,7 @@ export const TokenInput: FC<
 						px={'6px'}
 						bgcolor={setColorThemeMode(theme.palette.primary.main, theme.palette.grey[800])}
 						fontWeight={600}
-						borderRadius={'40px'}
+						borderRadius={'8px'}
 						fontSize={'12px'}
 					>
 						{suffix}
@@ -137,15 +137,16 @@ export const CustomTextField = styled(OutlinedInput)(({ theme }) => ({
 	borderRadius: TSizes.borderRadius,
 	fontSize: '13px',
 	backgroundColor: setColorThemeMode(theme.palette.primary.light, TColors.brownnDark),
-	height: TSizes.buttonHeightSmall,
+	height: TSizes.buttonHeight,
 	width: '100%',
 	'& input': {
-		padding: '12px 0px 12px 14px',
+		textAlign: 'right',
+		padding: '12px 6px 12px 14px',
 	},
 
 	'& .MuiInputAdornment-root': {
 		marginLeft: '0px',
-		marginRight: '-8px',
+		marginRight: '-4px',
 	},
 
 	'& .MuiOutlinedInput-input::-webkit-input-placeholder': {

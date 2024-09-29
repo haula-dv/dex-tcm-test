@@ -29,6 +29,7 @@ export type Inputs = {
 	price?: string;
 	quantity?: string;
 	orderSide?: string;
+	total?: string;
 };
 
 const defaultValues: Inputs = {
@@ -38,6 +39,7 @@ const defaultValues: Inputs = {
 	price: undefined,
 	quantity: undefined,
 	orderSide: undefined,
+	total: undefined,
 };
 
 const CreateOrderForm = ({ symbol }: IProps) => {
@@ -78,6 +80,7 @@ const CreateOrderForm = ({ symbol }: IProps) => {
 				.exhaustive(),
 			order_quantity: watch('quantity', undefined),
 			order_price: watch('price', undefined),
+			total: watch('total', undefined),
 		},
 		{ watchOrderbook: true },
 	);
@@ -254,6 +257,7 @@ export const getInput = (data: Inputs, symbol: string): OrderEntity => {
 		order_price: data.price,
 		order_quantity: data.quantity,
 		trigger_price: data.triggerPrice,
+		total: data.total,
 	};
 };
 

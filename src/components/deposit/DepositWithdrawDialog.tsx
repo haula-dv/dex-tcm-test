@@ -28,11 +28,11 @@ export const DepositWithdrawDialog = ({ open, onClose }: IProps) => {
 			<MainTab tabs={tabs}>
 				<Box className={themeSelector.activeMode} mt="-10px !important">
 					<TabPanel value="deposit" sx={{ p: 0 }}>
-						<Deposit onOk={onClose} />
+						<Deposit onOk={onClose} onCancel={onClose} />
 					</TabPanel>
 
 					<TabPanel value="withdraw" sx={{ p: 0 }}>
-						<Withdraw onOk={onClose} />
+						<Withdraw onOk={onClose} onCancel={onClose} />
 					</TabPanel>
 				</Box>
 			</MainTab>

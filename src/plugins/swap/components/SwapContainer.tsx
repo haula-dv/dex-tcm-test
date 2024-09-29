@@ -2,16 +2,16 @@
 'use client';
 import { ITokenType } from '@/common';
 import { MainButton } from '@/components/button/MainButton';
-import { MainIconButton } from '@/components/button/MainIconButton';
 import { MainCardNotch } from '@/components/card/MainCardNotch';
 import TokenCurrencyInputField from '@/components/swap/TokenCurrencyInputField';
 import TokenCurrencyOutputField from '@/components/swap/TokenCurrencyOutputField';
+import { getDecimalsFromTick } from '@/utils/formatters/api';
 import { setColorThemeMode } from '@/utils/helpers';
 import { TSizes } from '@/utils/themes/custom-theme/sizes';
-import { Box, Collapse, Skeleton, Stack, Typography, useTheme } from '@mui/material';
-import { useMarkPrice, useOrderEntry, useTickerStream } from '@orderly.network/hooks';
+import { Box, Skeleton, Stack, Typography, useTheme } from '@mui/material';
+import { useMarkPrice, useOrderEntry, useSymbolsInfo } from '@orderly.network/hooks';
 import { OrderSide, OrderType } from '@orderly.network/types';
-import { IconChevronDown, IconHelp } from '@tabler/icons-react';
+import { IconHelp } from '@tabler/icons-react';
 import { useConnectWallet, useNotifications } from '@web3-onboard/react';
 import { setZustandValue } from 'nes-zustand';
 import { useCallback, useMemo, useState } from 'react';
@@ -19,7 +19,6 @@ import { useStore } from 'zustand';
 import { toggleSwapType } from '../handlers';
 import { isTransactionSubmittedState, tokenInputState, tokenOutputState } from '../store';
 import { ConfirmSwapContent } from './ConfirmSwap';
-import Cost from './Cost';
 import { ButtonSwapToggle } from './SwapIconToggle';
 import { TransactionPopup } from './token/TransactionSettingPopup';
 import { TransationSubmittedCard } from './TransationSubmittedCard';
@@ -54,7 +53,6 @@ export const SwapContainer = () => {
 	const { data: inputMarkPrice } = useMarkPrice(`PERP_${sellTokenActived?.token}_USDC`); // Sell Ex ETH
 	const { data: outputMarkPrice } = useMarkPrice(`PERP_${buyTokenActived?.token}_USDC`); // Buy
 	const [_0, customNotification] = useNotifications();
-	const stream = useTickerStream(`PERP_${sellTokenActived?.token}_USDC`);
 
 	// This handle toggle side
 	const handleToggleSide = () => {
@@ -116,8 +114,8 @@ export const SwapContainer = () => {
 		setOutputAmount(value);
 	}, []);
 
-	// This for SELL ETH => USDC
-	const { onSubmit, helper, maxQty, estLeverage, estLiqPrice, markPrice, freeCollateral } = useOrderEntry(
+	// SELL ETH => USDC
+	const { onSubmit } = useOrderEntry(
 		{
 			symbol: `PERP_${sellTokenActived?.token}_USDC`,
 			order_type: OrderType.LIMIT,
@@ -127,6 +125,22 @@ export const SwapContainer = () => {
 		},
 		{ watchOrderbook: true },
 	);
+
+	// BUY BTC => USDC
+	const { onSubmit: buyTokenSubmit } = useOrderEntry(
+		{
+			symbol: `PERP_${buyTokenActived?.token}_USDC`,
+			order_type: OrderType.LIMIT,
+			side: OrderSide.BUY,
+			order_quantity: undefined,
+			order_price: undefined,
+		},
+		{ watchOrderbook: true },
+	);
+
+	const symbolsInfo = useSymbolsInfo();
+	const symbolInfo = symbolsInfo[`PERP_${sellTokenActived?.token}_USDC`]();
+	const [baseDecimals, quoteDecimals] = getDecimalsFromTick(symbolInfo);
 
 	const handleSubmitSwap = async () => {
 		setLoading(true);
@@ -139,37 +153,38 @@ export const SwapContainer = () => {
 			message: 'Creating order...',
 		});
 
-		// Bước 1: Bán ETH lấy USDC
+		// SELL
+		const amountQty = parseFloat(inputAmount);
+		const calculatedQty = amountQty * inputMarkPrice;
+		const formattedPrice = parseFloat(calculatedQty.toFixed(quoteDecimals));
+
 		const sellData = {
-			symbol: `PERP_${sellTokenActived?.token}_USDC`, // Sell (ETH -> USDC)
-			side: OrderSide.SELL, // Bán ETH
-			order_type: OrderType.MARKET, // Lệnh thị trường
-			order_quantity: inputAmount, // Số lượng ETH muốn bán
-			order_price: minAcceptablePrice,
+			symbol: `PERP_${sellTokenActived?.token}_USDC`,
+			side: OrderSide.SELL,
+			order_type: OrderType.LIMIT,
+			order_quantity: inputAmount,
+			order_price: formattedPrice, // USDC
 		};
 
+		// BUY
+		const amountOutput = parseFloat(outputAmount);
+		const priceUSDC = formattedPrice / amountOutput;
+		const formattedPriceUSDC = parseFloat(priceUSDC.toFixed(quoteDecimals));
+
+		const buyData = {
+			symbol: `PERP_${buyTokenActived?.token}_USDC`, // Cặp token đang mua (BTC -> USDC)
+			side: OrderSide.BUY, // Mua BTC
+			order_type: OrderType.LIMIT, // Lệnh thị trường
+			order_quantity: outputAmount, // EX: 0.2678 Số lượng USDC để mua BTC (cần tính toán sau khi bán ETH)
+			order_price: formattedPriceUSDC,
+		};
+
+		console.log(sellData);
+		console.log(buyData);
+
 		try {
-			const sellRes = await onSubmit(sellData); // Gửi lệnh bán ETH
-			console.log(sellRes);
-
-			// Giả sử bạn đã lấy được giá BTC hiện tại từ orderbook hoặc API
-			const outputPriceInUSDC = outputMarkPrice; // markPrice là giá BTC/USDC lấy từ orderbook
-			const outputDesired = outputAmount; // inputAmountBTC là số lượng BTC bạn muốn mua
-
-			// Tính toán số lượng USDC cần thiết để mua BTC
-			const usdcNeeded = outputDesired * outputPriceInUSDC;
-
-			// Bước 2: Mua BTC dùng USDC
-			const buyData = {
-				symbol: `PERP_${buyTokenActived?.token}_USDC`, // Cặp token đang mua (BTC -> USDC)
-				side: OrderSide.BUY, // Mua BTC
-				order_type: OrderType.LIMIT, // Lệnh thị trường
-				order_quantity: usdcNeeded, // Số lượng USDC để mua BTC (cần tính toán sau khi bán ETH)
-			};
-
-			const data = await onSubmit(buyData);
-
-			console.log('Buy Order:', data, usdcNeeded);
+			await onSubmit(sellData);
+			await buyTokenSubmit(buyData);
 
 			update({
 				eventCode: 'createOrderSuccess',
@@ -182,7 +197,7 @@ export const SwapContainer = () => {
 			update({
 				eventCode: 'createOrderError',
 				type: 'error',
-				message: 'Order creation failed!',
+				message: `Order creation failed! ${error}`,
 				autoDismiss: 5_000,
 			});
 		} finally {
@@ -304,17 +319,17 @@ export const SwapContainer = () => {
 											</span>
 										</Typography>
 
-										<MainIconButton size="small" edge="end" onClick={() => setIsShowCost(!isShowCost)}>
+										{/* <MainIconButton size="small" edge="end">
 											<IconChevronDown size={'1rem'} />
-										</MainIconButton>
+										</MainIconButton> */}
 									</>
 								)
 							)}
 						</Stack>
 
-						<Collapse in={isShowCost}>
+						{/* <Collapse in={isShowCost}>
 							<Cost slippageAmount={slippageAmount} priceImpact={priceImpact as any} />
-						</Collapse>
+						</Collapse> */}
 					</>
 				) : (
 					<ConfirmSwapContent

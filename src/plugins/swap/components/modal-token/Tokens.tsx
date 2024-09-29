@@ -1,4 +1,4 @@
-import { isTokenSearchState, tokenLoadingState, tokensSearchState, tokensState } from '@/common';
+import { getImageNextwork, isTokenSearchState, tokenLoadingState, tokensSearchState, tokensState } from '@/common';
 import { MainButton } from '@/components/button/MainButton';
 import { SearchTokenField } from '@/components/form-control/SearchTokenField';
 import { TokenLoading } from '@/components/loading/TokenLoading';
@@ -6,8 +6,9 @@ import { setColorThemeMode } from '@/utils/helpers';
 import { TSizes } from '@/utils/themes/custom-theme/sizes';
 import { Box, List, Stack, Typography } from '@mui/material';
 import { styled, useTheme } from '@mui/material/styles';
+import { MarketsType, useMarkets } from '@orderly.network/hooks';
 import { IconEdit } from '@tabler/icons-react';
-import { Dispatch, SetStateAction, useState } from 'react';
+import { Dispatch, SetStateAction, useMemo, useState } from 'react';
 import InfiniteScroll from 'react-infinite-scroll-component';
 import { useStore } from 'zustand';
 import { tokenInputState, tokenOutputState } from '../../store';
@@ -21,7 +22,28 @@ interface IProps {
 }
 
 export const Tokens = ({ handleSelectToken, setTokenType, type }: IProps) => {
-	const tokens = useStore(tokensState, (state) => state.value);
+	const [data, { addToHistory, favoriteTabs, updateFavoriteTabs, updateSymbolFavoriteState }] = useMarkets(
+		MarketsType.ALL,
+	);
+
+	const remapToken = useMemo(() => {
+		return data && data.length > 0
+			? data.map((item: any) => {
+					const [_, base, quote] = item.symbol.split('_');
+					return {
+						token: base,
+						token_account_id: item?.mark_price.toString() ?? '',
+						logoURI: getImageNextwork(base, 'symbol_logo'),
+						decimals: 0,
+						minimum_increment: 0,
+						amount: 0,
+						isInputting: false,
+					};
+			  })
+			: [];
+	}, [data]);
+
+	const tokens = useStore(tokensState, (state) => remapToken);
 	const isSearchToken = useStore(isTokenSearchState, (state) => state.value);
 	const tokensSearch = useStore(tokensSearchState, (state) => state.value);
 

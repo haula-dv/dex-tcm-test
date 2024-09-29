@@ -59,15 +59,25 @@ function InputForm({ formContext, symbolsInfo, symbol, getInput, helper, maxQty,
 		}
 
 		const calculatedQty = usdcAmountPrice / baseMarkPrice;
-
 		const formattedQty = parseFloat(calculatedQty.toFixed(baseDecimals));
 
 		formContext.setValue('quantity', formattedQty as any, {
 			shouldValidate: true,
 			shouldDirty: true,
 		});
+
+		// Set TOTAL
+		if (!formattedQty) {
+			return;
+		}
+
+		const caculatedTotal = usdcAmountPrice * Number(formattedQty);
+		const formattedTotal = parseFloat(caculatedTotal.toFixed(quoteDecimals));
+
+		formContext.setValue('total', String(formattedTotal));
 	};
 
+	// EX Base to USDC
 	const onValueConvertQtyToPrice = (val: any) => {
 		if (formContext.watch('type') == 'Market') {
 			return;
@@ -85,13 +95,31 @@ function InputForm({ formContext, symbolsInfo, symbol, getInput, helper, maxQty,
 		}
 
 		const calculatedQty = amountQty * baseMarkPrice;
+		const formattedPrice = parseFloat(calculatedQty.toFixed(quoteDecimals));
 
-		const formattedQty = parseFloat(calculatedQty.toFixed(quoteDecimals));
-
-		formContext.setValue('price', formattedQty as any, {
+		formContext.setValue('price', formattedPrice as any, {
 			shouldValidate: true,
 			shouldDirty: true,
 		});
+
+		// Set TOTAL
+		if (!formattedPrice) {
+			return;
+		}
+
+		const caculatedTotal = amountQty * Number(formattedPrice);
+		const formattedTotal = parseFloat(caculatedTotal.toFixed(quoteDecimals));
+		formContext.setValue('total', String(formattedTotal));
+	};
+
+	// On total Change
+	const onTotalChange = (val: any) => {
+		formContext.setValue('quantity', val, {
+			shouldValidate: true,
+			shouldDirty: true,
+		});
+
+		// onValueConvertQtyToPrice()
 	};
 
 	return (
@@ -117,7 +145,7 @@ function InputForm({ formContext, symbolsInfo, symbol, getInput, helper, maxQty,
 				/>
 			</Collapse>
 
-			<Stack spacing={'10px'} direction={'row'} alignItems={'start'}>
+			<Stack spacing={'10px'}>
 				{isHiddenMarket ? (
 					<CustomTextField
 						readOnly
@@ -142,6 +170,7 @@ function InputForm({ formContext, symbolsInfo, symbol, getInput, helper, maxQty,
 						formContext={formContext}
 						suffix={quote}
 						decimals={quoteDecimals}
+						prefix={'Price'}
 						placeholder={match(formContext.watch('type'))
 							.with('Market', () => 'Market')
 							.with('StopMarket', () => 'Market')
@@ -168,6 +197,7 @@ function InputForm({ formContext, symbolsInfo, symbol, getInput, helper, maxQty,
 					suffix={base}
 					decimals={baseDecimals}
 					placeholder="0.0000"
+					prefix={'Quantity'}
 					onValueChange={(val) => onValueConvertQtyToPrice(val._value)}
 					rules={{
 						validate: {
@@ -186,6 +216,24 @@ function InputForm({ formContext, symbolsInfo, symbol, getInput, helper, maxQty,
 				max={maxQty}
 				maxQty={`${formatter.format(maxQty)}`}
 				extChange={(val) => onValueConvertQtyToPrice(val)}
+			/>
+
+			<CurrencyInputField
+				name="total"
+				formContext={formContext}
+				suffix={quote}
+				decimals={baseDecimals}
+				prefix={'Total~'}
+				placeholder="0.0000"
+				onValueChange={(val) => onTotalChange(val._value)}
+				rules={{
+					validate: {
+						custom: async (_, data) => {
+							const errors = await getValidationErrors(data, symbol, helper.validator);
+							return errors?.total != null ? errors.total.message : true;
+						},
+					},
+				}}
 			/>
 		</Stack>
 	);

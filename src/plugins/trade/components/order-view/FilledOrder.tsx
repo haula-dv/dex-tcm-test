@@ -1,8 +1,11 @@
+import { getDecimalsFromTick } from '@/utils/formatters/api';
 import { baseFormatter, usdFormatter } from '@/utils/formatters/number';
+import { totalEstPrice } from '@/utils/helpers/format';
 import { TableCell, TableRow, Typography, useTheme } from '@mui/material';
+import { useSymbolsInfo } from '@orderly.network/hooks';
 import { API } from '@orderly.network/types';
 import dayjs from 'dayjs';
-import { memo, useMemo } from 'react';
+import { memo } from 'react';
 import { match } from 'ts-pattern';
 
 interface IProps {
@@ -13,16 +16,9 @@ const FilledOrder = ({ order }: IProps) => {
 	const [prep, base, quote] = order.order.symbol.split('_');
 	const theme = useTheme();
 
-	const totalEstPrice = useMemo(() => {
-		const quantity = order.order.quantity ?? 0;
-		const average_executed_price = (order.order as any).average_executed_price ?? 0;
-
-		const total = (quantity * average_executed_price) / 100;
-		const totalWithPrecision = Math.floor(total * 100) / 100;
-
-		// Format số với dấu phẩy và 1 chữ số thập phân
-		return totalWithPrecision.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
-	}, [order.order]);
+	const symbolsInfo = useSymbolsInfo();
+	const symbolInfo = symbolsInfo[order.order.symbol]();
+	const [baseDecimals, quoteDecimals] = getDecimalsFromTick(symbolInfo);
 
 	return (
 		<TableRow>
@@ -69,7 +65,9 @@ const FilledOrder = ({ order }: IProps) => {
 
 			<TableCell> {order.order.trigger_price ? usdFormatter.format(order.order.trigger_price) : '-'}</TableCell>
 
-			<TableCell> {totalEstPrice}</TableCell>
+			<TableCell>
+				{totalEstPrice(order.order.quantity, (order.order as any).average_executed_price ?? 0, baseDecimals)}
+			</TableCell>
 
 			<TableCell> {order.order.total_fee}</TableCell>
 

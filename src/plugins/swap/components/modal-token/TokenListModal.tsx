@@ -1,4 +1,3 @@
-import { getTokensAPI } from '@/common';
 import { MainDialog } from '@/components/dialog/MainDialog';
 import { ITypeSwap } from '@/components/swap/TokenCurrencyInputField';
 import { useEffect, useState } from 'react';
@@ -20,7 +19,7 @@ export const TokenListModal = ({ open, onClose, handleSelectToken, field }: IPro
 	const [tokenType, setTokenType] = useState<ITokenType>('tokens');
 
 	const fetchTokens = async () => {
-		await getTokensAPI();
+		// await getTokensAPI();
 		await getTokensCoingeckoAPI();
 	};
 

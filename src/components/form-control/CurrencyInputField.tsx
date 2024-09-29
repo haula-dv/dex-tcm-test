@@ -13,6 +13,7 @@ interface InputFieldProps<V extends FieldValues> {
 	name: Path<V>;
 	decimals: number;
 	suffix?: React.ReactNode;
+	prefix?: React.ReactNode;
 	min?: FixedNumber;
 	max?: FixedNumber;
 	placeholder?: string;
@@ -32,6 +33,7 @@ const CurrencyInputField = <V extends FieldValues>({
 	decimals,
 	placeholder,
 	suffix,
+	prefix,
 	rules,
 	hint,
 	min,
@@ -83,13 +85,24 @@ const CurrencyInputField = <V extends FieldValues>({
 										onChange(newValue);
 									}
 								}}
+								startAdornment={
+									<InputAdornment position="start">
+										<Typography
+											fontWeight={600}
+											fontSize="12px"
+											color={setColorThemeMode(theme.palette.grey[600], theme.palette.grey[300])}
+										>
+											{prefix ? prefix : name}
+										</Typography>
+									</InputAdornment>
+								}
 								endAdornment={
 									<InputAdornment position="end">
 										<Typography
 											px={'6px'}
 											bgcolor={setColorThemeMode(theme.palette.primary.main, theme.palette.grey[800])}
 											fontWeight={600}
-											borderRadius={'40px'}
+											borderRadius={'8px'}
 											fontSize={'12px'}
 										>
 											{suffix}

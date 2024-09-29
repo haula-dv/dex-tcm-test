@@ -10,7 +10,7 @@ import { Box, InputBase, Skeleton, Stack, Typography } from '@mui/material';
 import { styled, useTheme } from '@mui/material/styles';
 import { useMarkPrice, useTickerStream } from '@orderly.network/hooks';
 import { setZustandValue } from 'nes-zustand';
-import React, { Dispatch, memo, SetStateAction, useMemo, useState } from 'react';
+import React, { Dispatch, SetStateAction, useMemo, useState } from 'react';
 import { useStore } from 'zustand';
 
 export type ITypeSwap = 'input' | 'output';
@@ -262,7 +262,7 @@ const TokenCurrencyOutputField = ({
 	);
 };
 
-export default memo(TokenCurrencyOutputField);
+export default TokenCurrencyOutputField;
 
 interface IInput {
 	isActived?: boolean;
