@@ -15,7 +15,10 @@ interface IProps {
 	symbolsInfo: any;
 	symbol: string;
 	getInput: (data: Inputs, symbol: string) => OrderEntity;
-	helper: any;
+	helper: {
+		calculate: (values: Partial<OrderEntity>, field: keyof OrderEntity, value: any) => Partial<OrderEntity>;
+		validator: (values: Partial<OrderEntity>) => any;
+	};
 	maxQty: number;
 	markPrice: number;
 }
@@ -72,9 +75,8 @@ function InputForm({ formContext, symbolsInfo, symbol, getInput, helper, maxQty,
 		}
 
 		const caculatedTotal = usdcAmountPrice * Number(formattedQty);
-		const formattedTotal = parseFloat(caculatedTotal.toFixed(quoteDecimals));
-
-		formContext.setValue('total', String(formattedTotal));
+		const newValue = helper.calculate(getInput(formContext.getValues(), symbol), 'order_price', val);
+		formContext.setValue('total', String(newValue.total));
 	};
 
 	// EX Base to USDC
@@ -107,19 +109,18 @@ function InputForm({ formContext, symbolsInfo, symbol, getInput, helper, maxQty,
 			return;
 		}
 
-		const caculatedTotal = amountQty * Number(formattedPrice);
-		const formattedTotal = parseFloat(caculatedTotal.toFixed(quoteDecimals));
-		formContext.setValue('total', String(formattedTotal));
+		const newValue = helper.calculate(getInput(formContext.getValues(), symbol), 'order_quantity', val);
+		formContext.setValue('total', String(newValue.total));
 	};
 
 	// On total Change
 	const onTotalChange = (val: any) => {
-		formContext.setValue('quantity', val, {
+		const newValue = helper.calculate(getInput(formContext.getValues(), symbol), 'total', val);
+
+		formContext.setValue('quantity', newValue.order_quantity as any, {
 			shouldValidate: true,
 			shouldDirty: true,
 		});
-
-		// onValueConvertQtyToPrice()
 	};
 
 	return (
