@@ -89,7 +89,7 @@ const CurrencyInputField = <V extends FieldValues>({
 									<InputAdornment position="start">
 										<Typography
 											fontWeight={600}
-											fontSize="12px"
+											fontSize="14px"
 											color={setColorThemeMode(theme.palette.grey[600], theme.palette.grey[300])}
 										>
 											{prefix ? prefix : name}
@@ -103,7 +103,7 @@ const CurrencyInputField = <V extends FieldValues>({
 											bgcolor={setColorThemeMode(theme.palette.primary.main, theme.palette.grey[800])}
 											fontWeight={600}
 											borderRadius={'8px'}
-											fontSize={'12px'}
+											fontSize={'14px'}
 										>
 											{suffix}
 										</Typography>

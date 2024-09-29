@@ -1,8 +1,6 @@
 import { MainButton } from '@/components/button/MainButton';
 import MainCard from '@/components/card/MainCard';
 import CurrencyInputField from '@/components/form-control/CurrencyInputField';
-import { RenderFormError } from '@/components/form-control/RenderErrors';
-import { TokenInput } from '@/components/form-control/TokenInput';
 import BaseSlider from '@/components/sider/BaseSlider';
 import { ItemRow } from '@/plugins/pool/components/TokenSelected';
 import { getDecimalsFromTick } from '@/utils/formatters/api';
@@ -15,7 +13,7 @@ import { API, OrderEntity, OrderSide, OrderType } from '@orderly.network/types';
 import { useNotifications } from '@web3-onboard/react';
 import { FixedNumber } from 'ethers';
 import { memo, useState } from 'react';
-import { Controller, SubmitHandler, useForm } from 'react-hook-form';
+import { SubmitHandler, useForm } from 'react-hook-form';
 import { P, match } from 'ts-pattern';
 import StopOrderDirection from './StopOrderDirection';
 
@@ -120,6 +118,7 @@ const StopOrder = ({ symbol, position, refresh, handleCloseModal }: IProps) => {
 								formContext={formContext}
 								decimals={quoteDecimals}
 								suffix={quote}
+								prefix="Trigger price"
 								rules={{
 									validate: {
 										min: (_, data) => {
@@ -154,9 +153,15 @@ const StopOrder = ({ symbol, position, refresh, handleCloseModal }: IProps) => {
 								}}
 							/>
 
-							<Controller
+							<CurrencyInputField
 								name="quantity"
-								control={formContext.control}
+								formContext={formContext}
+								decimals={baseDecimals}
+								placeholder={'0.0000'}
+								min={FixedNumber.fromString('0')}
+								max={FixedNumber.fromString(String(position.position_qty))}
+								suffix={base}
+								prefix="Quantity"
 								rules={{
 									validate: {
 										custom: async (_, data) => {
@@ -165,27 +170,6 @@ const StopOrder = ({ symbol, position, refresh, handleCloseModal }: IProps) => {
 										},
 									},
 								}}
-								render={({ field: { name, onBlur, onChange, value }, fieldState: { error } }) => (
-									<Stack mb="-10px !important">
-										<TokenInput
-											decimals={baseDecimals}
-											placeholder={'0.0000'}
-											name={name}
-											value={value}
-											onBlur={onBlur}
-											onChange={onChange}
-											suffix={base}
-											hasError={error != null}
-											onValueChange={(newVal) => {
-												value = newVal.toString();
-											}}
-											min={FixedNumber.fromString('0')}
-											max={FixedNumber.fromString(String(position.position_qty))}
-										/>
-
-										<RenderFormError error={error?.message ?? ''} />
-									</Stack>
-								)}
 							/>
 
 							<BaseSlider

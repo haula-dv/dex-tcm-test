@@ -1,8 +1,6 @@
 import { MainButton } from '@/components/button/MainButton';
 import MainCard from '@/components/card/MainCard';
 import CurrencyInputField from '@/components/form-control/CurrencyInputField';
-import { RenderFormError } from '@/components/form-control/RenderErrors';
-import { TokenInput } from '@/components/form-control/TokenInput';
 import BaseSlider from '@/components/sider/BaseSlider';
 import { ItemRow } from '@/plugins/pool/components/TokenSelected';
 import { getDecimalsFromTick } from '@/utils/formatters/api';
@@ -12,9 +10,8 @@ import { Box, Divider, Stack, Typography, useTheme } from '@mui/material';
 import { useSymbolsInfo, useTPSLOrder } from '@orderly.network/hooks';
 import { API } from '@orderly.network/types';
 import { useNotifications } from '@web3-onboard/react';
-import { FixedNumber } from 'ethers';
 import { memo, useState } from 'react';
-import { Controller, SubmitHandler, useForm } from 'react-hook-form';
+import { SubmitHandler, useForm } from 'react-hook-form';
 
 type TpSlOrderInputs = {
 	tp_trigger_price?: string;
@@ -41,9 +38,13 @@ const TpSlOrder = ({ symbol, position, refresh, handleCloseModal }: IProps) => {
 			sl_trigger_price: undefined,
 			quantity: String(Math.abs(position.position_qty)),
 		},
+		mode: 'all',
 	});
 
-	const [ComputedAlgoOrder, { setValue, submit, errors }] = useTPSLOrder(position);
+	const [ComputedAlgoOrder, { setValue, submit, errors }] = useTPSLOrder({
+		...position,
+		symbol,
+	});
 
 	const [_0, customNotification] = useNotifications();
 
@@ -91,41 +92,31 @@ const TpSlOrder = ({ symbol, position, refresh, handleCloseModal }: IProps) => {
 		<form onSubmit={formContext.handleSubmit(submitForm)}>
 			<MainCard variant="outlined" backgroudColor={setColorThemeMode('white', 'transparent')}>
 				<Stack spacing={'6px'}>
-					<Controller
+					<CurrencyInputField
 						name="quantity"
-						control={formContext.control}
-						render={({ field: { name, onBlur, onChange, value }, fieldState: { error } }) => (
-							<Stack>
-								<Typography fontSize={'11px'} lineHeight={'11px'} pb="6px">
-									Quantity
-								</Typography>
-
-								<TokenInput
-									decimals={baseDecimals}
-									placeholder={'0.0000'}
-									name={name}
-									value={value}
-									onBlur={onBlur}
-									onChange={onChange}
-									suffix={base}
-									hasError={errors?.quantity != null}
-									onValueChange={(newVal) => {
-										value = newVal.toString();
-										setValue('quantity', value);
-									}}
-									min={FixedNumber.fromString('0')}
-									max={FixedNumber.fromString(String(Math.abs(position.position_qty)))}
-								/>
-
-								<RenderFormError error={error?.message ?? ''} />
-							</Stack>
-						)}
+						formContext={formContext}
+						decimals={baseDecimals}
+						suffix={base}
+						prefix={'Quantity'}
+						placeholder="0.0"
+						onValueChange={(newVal) => {
+							setValue('quantity', newVal._value);
+						}}
+						rules={{
+							validate: {
+								custom: async (_, data) => {
+									return errors?.quantity != null ? errors.quantity.message : true;
+								},
+							},
+						}}
 					/>
 
 					<BaseSlider
 						min={0}
 						max={position.position_qty}
-						handleChange={(newValue) => formContext.setValue('quantity', newValue)}
+						handleChange={(newValue) => {
+							setValue('quantity', newValue.toString()), formContext.setValue('quantity', newValue.toString());
+						}}
 						amountQty={Number(formContext.watch('quantity')) ?? 0}
 					/>
 
@@ -138,9 +129,16 @@ const TpSlOrder = ({ symbol, position, refresh, handleCloseModal }: IProps) => {
 						name="tp_trigger_price"
 						decimals={quoteDecimals}
 						placeholder="0.0"
-						extErrors={errors?.tp_trigger_price}
-						hasError={errors?.tp_trigger_price != null}
+						prefix={'TP Triger Price'}
+						suffix={quote}
 						onValueChange={(val) => setValue('tp_trigger_price', val._value)}
+						rules={{
+							validate: {
+								custom: (_, data) => {
+									return errors?.tp_trigger_price != null ? errors?.tp_trigger_price.message : true;
+								},
+							},
+						}}
 						label={
 							<ItemRow
 								title={<Typography fontSize={'11px'}>TP Price</Typography>}
@@ -170,10 +168,17 @@ const TpSlOrder = ({ symbol, position, refresh, handleCloseModal }: IProps) => {
 						formContext={formContext}
 						name="sl_trigger_price"
 						decimals={quoteDecimals}
+						prefix={'SL Triger Price'}
+						suffix={quote}
 						placeholder="0.0"
-						extErrors={errors?.sl_trigger_price}
-						hasError={errors?.sl_trigger_price != null}
 						onValueChange={(val) => setValue('sl_trigger_price', val._value)}
+						rules={{
+							validate: {
+								custom: (_, data) => {
+									return errors?.sl_trigger_price != null ? errors?.sl_trigger_price.message : true;
+								},
+							},
+						}}
 						label={
 							<ItemRow
 								title={<Typography fontSize={'11px'}>SL Price</Typography>}
@@ -203,7 +208,13 @@ const TpSlOrder = ({ symbol, position, refresh, handleCloseModal }: IProps) => {
 
 			<Box pt="10px" />
 
-			<MainButton type="submit" disabled={loading} isLoading={loading} variant="contained" fullWidth>
+			<MainButton
+				type="submit"
+				disabled={loading || !formContext.formState.isDirty}
+				isLoading={loading}
+				variant="contained"
+				fullWidth
+			>
 				Create TP & SL Order
 			</MainButton>
 		</form>

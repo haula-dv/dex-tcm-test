@@ -1,7 +1,6 @@
 import { MainButton } from '@/components/button/MainButton';
 import MainCard from '@/components/card/MainCard';
-import { RenderFormError } from '@/components/form-control/RenderErrors';
-import { TokenInput } from '@/components/form-control/TokenInput';
+import CurrencyInputField from '@/components/form-control/CurrencyInputField';
 import IconLoading from '@/components/icons/loading';
 import BaseSlider from '@/components/sider/BaseSlider';
 import { getDecimalsFromTick } from '@/utils/formatters/api';
@@ -10,9 +9,8 @@ import { Box, Typography } from '@mui/material';
 import { useOrderEntry, useSymbolsInfo } from '@orderly.network/hooks';
 import { API, OrderEntity, OrderSide, OrderType } from '@orderly.network/types';
 import { useNotifications } from '@web3-onboard/react';
-import { FixedNumber } from 'ethers';
 import { memo, useState } from 'react';
-import { Controller, SubmitHandler, useForm } from 'react-hook-form';
+import { SubmitHandler, useForm } from 'react-hook-form';
 
 type Inputs = {
 	direction: OrderSide;
@@ -30,13 +28,14 @@ const ClosePositionContent = ({ symbol, position, refresh, handleCloseModal }: I
 	const [loading, setLoading] = useState(false);
 
 	const symbolsInfo = useSymbolsInfo();
-	position.position_qty = Math.abs(position.position_qty);
+
 	const formContext = useForm<Inputs>({
 		defaultValues: {
 			direction: position.position_qty > 0 ? OrderSide.SELL : OrderSide.BUY,
 			type: OrderType.MARKET,
-			quantity: position.position_qty,
+			quantity: Math.abs(position.position_qty),
 		},
+		mode: 'all',
 	});
 
 	const { onSubmit, helper } = useOrderEntry(
@@ -49,7 +48,6 @@ const ClosePositionContent = ({ symbol, position, refresh, handleCloseModal }: I
 	);
 
 	const [_0, customNotification] = useNotifications();
-
 	const symbolInfo = symbolsInfo[symbol]();
 	const [_, base] = symbol.split('_');
 	const [baseDecimals] = getDecimalsFromTick(symbolInfo);
@@ -84,6 +82,8 @@ const ClosePositionContent = ({ symbol, position, refresh, handleCloseModal }: I
 		}
 	};
 
+	// const newValue = helper.calculate(getInput(formContext.getValues(), symbol), 'order_quantity', 1);
+
 	return (
 		<>
 			{symbolsInfo.isNil ? (
@@ -93,9 +93,13 @@ const ClosePositionContent = ({ symbol, position, refresh, handleCloseModal }: I
 					<Typography pb={2}>Partially or fully close your open position at mark price.</Typography>
 
 					<MainCard variant="outlined" backgroudColor={setColorThemeMode('white', 'transparent')}>
-						<Controller
+						<CurrencyInputField
 							name="quantity"
-							control={formContext.control}
+							formContext={formContext}
+							decimals={baseDecimals}
+							placeholder="0.0000"
+							prefix={'Quantity'}
+							suffix={base}
 							rules={{
 								validate: {
 									custom: async (_, data) => {
@@ -104,33 +108,16 @@ const ClosePositionContent = ({ symbol, position, refresh, handleCloseModal }: I
 									},
 								},
 							}}
-							render={({ field: { name, onBlur, onChange, value }, fieldState: { error } }) => (
-								<>
-									<TokenInput
-										decimals={baseDecimals}
-										placeholder={'0.0000'}
-										name={name}
-										value={value}
-										onBlur={onBlur}
-										onChange={onChange}
-										suffix={base}
-										hasError={error != null}
-										onValueChange={(newVal) => {
-											value = newVal.toString();
-										}}
-										min={FixedNumber.fromString('0')}
-										max={FixedNumber.fromString(String(position.position_qty))}
-									/>
-
-									<RenderFormError error={error?.message ?? ''} />
-								</>
-							)}
 						/>
 
 						<BaseSlider
 							min={0}
-							max={position.position_qty}
-							handleChange={(newValue) => formContext.setValue('quantity', newValue)}
+							max={Math.abs(position.position_qty)}
+							handleChange={(newValue) =>
+								formContext.setValue('quantity', newValue, {
+									shouldValidate: true,
+								})
+							}
 							amountQty={Number(formContext.watch('quantity')) ?? 0}
 						/>
 					</MainCard>

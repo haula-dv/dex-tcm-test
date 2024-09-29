@@ -16,14 +16,20 @@ const BaseSlider = ({ max, handleChange, amountQty, ...props }: IProps) => {
 	const onChange = (newValue: any) => {
 		const caculatedAmount = (max * newValue) / 100;
 		const truncatedAmount = Math.floor(caculatedAmount * 10000) / 10000;
-		handleChange(truncatedAmount);
+		handleChange(truncatedAmount == 0 ? '' : (truncatedAmount as any));
 		setNewValue(newValue);
 	};
 
 	useEffect(() => {
 		if (amountQty) {
 			const percentage = (amountQty / max) * 100;
-			setNewValue(parseFloat(percentage.toFixed(1)));
+			if (percentage >= 100) {
+				setNewValue(100);
+			} else {
+				setNewValue(parseFloat(percentage.toFixed(1)));
+			}
+		} else {
+			setNewValue(0);
 		}
 	}, [amountQty, max]);
 
