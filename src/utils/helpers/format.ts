@@ -22,8 +22,8 @@ const formatNumber = (num: number) => {
 	return parts.join('.');
 };
 
-export const totalEstPrice = (quantity: number, average_executed_price: number, baseDecimals: number) => {
-	const total = (quantity * average_executed_price) / 1000;
+export const totalEstPrice = (quantity: number, price: number, baseDecimals: number) => {
+	const total = (quantity * price) / 1000;
 	const formattedPrice = parseFloat(total.toFixed(baseDecimals + 2));
 
 	// Format số với dấu phẩy và 1 chữ số thập phân

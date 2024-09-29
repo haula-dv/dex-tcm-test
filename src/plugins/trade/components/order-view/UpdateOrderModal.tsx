@@ -1,9 +1,10 @@
 import { MainButton } from '@/components/button/MainButton';
+import MainCard from '@/components/card/MainCard';
 import { MainDialog } from '@/components/dialog/MainDialog';
 import CurrencyInputField from '@/components/form-control/CurrencyInputField';
 import { getDecimalsFromTick } from '@/utils/formatters/api';
 import { setColorThemeMode } from '@/utils/helpers';
-import { Divider, Stack, Typography, useTheme } from '@mui/material';
+import { Stack, Typography, useTheme } from '@mui/material';
 import { useOrderEntry, useSymbolsInfo } from '@orderly.network/hooks';
 import { toast } from '@orderly.network/react';
 import { API, OrderEntity, OrderSide, OrderType } from '@orderly.network/types';
@@ -65,7 +66,10 @@ const UpdateOrderModal = ({ onClose, open, orderActived, updateOrder, updateAlgo
 			if (orderActived.isAlgoOrder) {
 				await updateAlgoOrder(String(orderActived.order.algo_order_id), getInput(data, symbol));
 			} else {
-				await updateOrder((orderActived.order as any).order_id as any, getInput(data, symbol));
+				await updateOrder((orderActived.order as any).order_id as any, {
+					...getInput(data, symbol),
+					reduce_only: true,
+				});
 			}
 
 			toast.success('Order edited');
@@ -80,59 +84,63 @@ const UpdateOrderModal = ({ onClose, open, orderActived, updateOrder, updateAlgo
 	return (
 		<MainDialog maxWidth="xs" open={open} handleClose={onClose} title="Update Order" isDivider>
 			<form onSubmit={formContext.handleSubmit(() => setOpenConfrim(true))}>
-				<Stack direction={'row'} alignItems={'start'} spacing={'10px'} pb="20px">
-					{orderActived.isAlgoOrder ? (
+				<MainCard backgroudColor="transparent" variant="outlined">
+					<Stack spacing={'10px'}>
+						{orderActived.isAlgoOrder ? (
+							<CurrencyInputField
+								name="triggerPrice"
+								formContext={formContext}
+								suffix={quote}
+								prefix="Trigger price"
+								decimals={quoteDecimals}
+								placeholder="0.0000"
+								rules={{
+									validate: {
+										custom: async (_, data) => {
+											const errors = await getValidationErrors(data, symbol, helper.validator);
+											return errors?.trigger_price != null ? errors.trigger_price.message : true;
+										},
+									},
+								}}
+							/>
+						) : (
+							<CurrencyInputField
+								name="price"
+								formContext={formContext}
+								suffix={quote}
+								prefix="Price"
+								placeholder="0.0000"
+								decimals={quoteDecimals}
+								rules={{
+									validate: {
+										custom: async (_, data) => {
+											const errors = await getValidationErrors(data, symbol, helper.validator);
+											console.log(errors);
+											return errors?.order_price != null ? errors.order_price.message : true;
+										},
+									},
+								}}
+							/>
+						)}
+
 						<CurrencyInputField
-							name="triggerPrice"
+							name="quantity"
 							formContext={formContext}
-							suffix={quote}
-							decimals={quoteDecimals}
-							placeholder="Trigger"
+							suffix={base}
+							decimals={baseDecimals}
+							placeholder="0.0000"
+							prefix="Quantity"
 							rules={{
 								validate: {
 									custom: async (_, data) => {
 										const errors = await getValidationErrors(data, symbol, helper.validator);
-										return errors?.trigger_price != null ? errors.trigger_price.message : true;
+										return errors?.order_quantity != null ? errors.order_quantity.message : true;
 									},
 								},
 							}}
 						/>
-					) : (
-						<CurrencyInputField
-							name="price"
-							formContext={formContext}
-							suffix={quote}
-							decimals={quoteDecimals}
-							rules={{
-								validate: {
-									custom: async (_, data) => {
-										const errors = await getValidationErrors(data, symbol, helper.validator);
-										console.log(errors);
-										return errors?.order_price != null ? errors.order_price.message : true;
-									},
-								},
-							}}
-						/>
-					)}
-
-					<CurrencyInputField
-						name="quantity"
-						formContext={formContext}
-						suffix={base}
-						decimals={baseDecimals}
-						placeholder="0.0000"
-						rules={{
-							validate: {
-								custom: async (_, data) => {
-									const errors = await getValidationErrors(data, symbol, helper.validator);
-									return errors?.order_quantity != null ? errors.order_quantity.message : true;
-								},
-							},
-						}}
-					/>
-				</Stack>
-
-				<Divider />
+					</Stack>
+				</MainCard>
 
 				<Stack direction={'row'} spacing={'10px'} pt="10px" justifyContent={'flex-end'}>
 					<MainButton onClick={onClose}>Cancel</MainButton>

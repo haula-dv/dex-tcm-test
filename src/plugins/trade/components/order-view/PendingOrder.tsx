@@ -1,11 +1,13 @@
 import { MainIconButton } from '@/components/button/MainIconButton';
 import { MainPopup } from '@/components/popup/MainPopup';
+import { getDecimalsFromTick } from '@/utils/formatters/api';
 import { baseFormatter, usdFormatter } from '@/utils/formatters/number';
 import { MenuItem, TableCell, TableRow, Typography, useTheme } from '@mui/material';
+import { useSymbolsInfo } from '@orderly.network/hooks';
 import { API } from '@orderly.network/types';
 import { IconCancel, IconDots, IconEdit } from '@tabler/icons-react';
 import dayjs from 'dayjs';
-import { memo, useMemo, useState } from 'react';
+import { memo, useState } from 'react';
 import { match } from 'ts-pattern';
 
 interface IProps {
@@ -30,16 +32,14 @@ const PendingOrder = ({ order, symbol, handleClickOrderItem }: IProps) => {
 		handleClickOrderItem(order, type);
 	};
 
-	const totalEstPrice = useMemo(() => {
-		const quantity = order.order.quantity ?? 0;
-		const average_executed_price = (order.order as any).average_executed_price ?? 0;
+	const symbolsInfo = useSymbolsInfo();
+	const symbolInfo = symbolsInfo[order.order.symbol]();
+	const [baseDecimals, quoteDecimals] = getDecimalsFromTick(symbolInfo);
 
-		const total = (quantity * average_executed_price) / 100;
-		const totalWithPrecision = Math.floor(total * 100) / 100;
-
-		// Format số với dấu phẩy và 1 chữ số thập phân
-		return totalWithPrecision.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
-	}, [order.order]);
+	const totalEstPrice = (quantity: number, price: number, baseDecimals: number) => {
+		const total = quantity * price;
+		return total ? total.toLocaleString() : '--';
+	};
 
 	return (
 		<TableRow>
@@ -86,7 +86,7 @@ const PendingOrder = ({ order, symbol, handleClickOrderItem }: IProps) => {
 
 			<TableCell> {order.order.trigger_price ? usdFormatter.format(order.order.trigger_price) : '-'}</TableCell>
 
-			<TableCell> {totalEstPrice}</TableCell>
+			<TableCell>{totalEstPrice(order.order.quantity, order.order.price ?? 0, quoteDecimals)}</TableCell>
 
 			<TableCell> {order.order.total_fee}</TableCell>
 

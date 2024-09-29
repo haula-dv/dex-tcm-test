@@ -145,17 +145,18 @@ const OrderTableContentPending = ({ orderBookStatus, symbol, isShowAll }: IProps
 			</MainTable>
 
 			<MainDialog open={openModalConfirm} handleClose={handleClose} title="Cancel order" maxWidth="xs" isDivider>
-				<Typography py={4}>Are you really sure, that you want to cancel this order?</Typography>
+				<Typography pt={2} pb={3} fontSize={'18px'}>
+					Are you really sure, that you want to cancel this order?
+				</Typography>
 
 				<Stack direction={'row'} spacing={TSizes.margin_common} justifyContent={'flex-end'}>
-					<MainButton variant="contained" color="error" onClick={handleClose} size="small">
+					<MainButton variant="contained" color="error" onClick={handleClose}>
 						No
 					</MainButton>
 
 					<MainButton
 						variant="contained"
 						color="success"
-						size="small"
 						onClick={onHandleCancelOrder}
 						isLoading={loading}
 						disabled={loading}

@@ -72,11 +72,7 @@ export const OrderViewContainer = ({ symbol }: IProps) => {
 				tabs={tabs}
 				rightSideTab={
 					<Box flexShrink={0}>
-						<CheckBoxBase
-							label="Show all instruments"
-							onChange={onShowAllInstrument}
-							defaultValue={isShowAllInstrument}
-						/>
+						<CheckBoxBase label="Show all symbols" onChange={onShowAllInstrument} defaultValue={isShowAllInstrument} />
 					</Box>
 				}
 			>
