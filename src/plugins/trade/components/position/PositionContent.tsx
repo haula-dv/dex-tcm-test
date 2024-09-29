@@ -39,10 +39,6 @@ const PositionContent = ({ symbol, isShowAll }: IProps) => {
 
 	return (
 		<Box px={'10px'} pt={'10px'} pb={6} height={'100%'}>
-			{/* <Box className="position-head">
-					<PositionsView aggregated={positions.aggregated} dataSource={[]} />
-				</Box> */}
-
 			<Stack direction={'row'} spacing={'10px'}>
 				<Stack>
 					<Typography fontSize={'10px'} color={setColorThemeMode(theme.palette.grey[600], theme.palette.grey[200])}>
@@ -65,6 +61,7 @@ const PositionContent = ({ symbol, isShowAll }: IProps) => {
 					</Typography>
 				</Stack>
 			</Stack>
+
 			<Box my={TSizes.margin_common} />
 
 			<MainTable

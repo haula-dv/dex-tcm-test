@@ -10,7 +10,7 @@ import { Box, Divider, Stack, Typography, useTheme } from '@mui/material';
 import { useSymbolsInfo, useTPSLOrder } from '@orderly.network/hooks';
 import { API } from '@orderly.network/types';
 import { useNotifications } from '@web3-onboard/react';
-import { memo, useState } from 'react';
+import { memo, useEffect, useState } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 
 type TpSlOrderInputs = {
@@ -30,19 +30,19 @@ const TpSlOrder = ({ symbol, position, refresh, handleCloseModal }: IProps) => {
 	const [loading, setLoading] = useState(false);
 	const theme = useTheme();
 	const symbolsInfo = useSymbolsInfo();
-	position.position_qty = Math.abs(position.position_qty);
 
 	const formContext = useForm<TpSlOrderInputs>({
 		defaultValues: {
 			tp_trigger_price: undefined,
 			sl_trigger_price: undefined,
-			quantity: String(Math.abs(position.position_qty)),
+			quantity: Math.abs(position.position_qty),
 		},
 		mode: 'all',
 	});
 
 	const [ComputedAlgoOrder, { setValue, submit, errors }] = useTPSLOrder({
 		...position,
+
 		symbol,
 	});
 
@@ -60,7 +60,7 @@ const TpSlOrder = ({ symbol, position, refresh, handleCloseModal }: IProps) => {
 		try {
 			await submit();
 
-			const childOrders = [{}];
+			// const childOrders = [{}];
 			// updateTPSLOrder(orderId, childOrders);
 
 			update({
@@ -88,6 +88,10 @@ const TpSlOrder = ({ symbol, position, refresh, handleCloseModal }: IProps) => {
 	const [_, base, quote] = symbol.split('_');
 	const [baseDecimals, quoteDecimals] = getDecimalsFromTick(symbolInfo);
 
+	useEffect(() => {
+		setValue('size', 'BUY');
+	}, []);
+
 	return (
 		<form onSubmit={formContext.handleSubmit(submitForm)}>
 			<MainCard variant="outlined" backgroudColor={setColorThemeMode('white', 'transparent')}>
@@ -100,7 +104,7 @@ const TpSlOrder = ({ symbol, position, refresh, handleCloseModal }: IProps) => {
 						prefix={'Quantity'}
 						placeholder="0.0"
 						onValueChange={(newVal) => {
-							setValue('quantity', newVal._value);
+							setValue('quantity', String(newVal));
 						}}
 						rules={{
 							validate: {
@@ -113,7 +117,7 @@ const TpSlOrder = ({ symbol, position, refresh, handleCloseModal }: IProps) => {
 
 					<BaseSlider
 						min={0}
-						max={position.position_qty}
+						max={Math.abs(position.position_qty)}
 						handleChange={(newValue) => {
 							setValue('quantity', newValue.toString()), formContext.setValue('quantity', newValue.toString());
 						}}
@@ -131,7 +135,7 @@ const TpSlOrder = ({ symbol, position, refresh, handleCloseModal }: IProps) => {
 						placeholder="0.0"
 						prefix={'TP Triger Price'}
 						suffix={quote}
-						onValueChange={(val) => setValue('tp_trigger_price', val._value)}
+						onValueChange={(val) => setValue('tp_trigger_price', String(val))}
 						rules={{
 							validate: {
 								custom: (_, data) => {
@@ -171,7 +175,7 @@ const TpSlOrder = ({ symbol, position, refresh, handleCloseModal }: IProps) => {
 						prefix={'SL Triger Price'}
 						suffix={quote}
 						placeholder="0.0"
-						onValueChange={(val) => setValue('sl_trigger_price', val._value)}
+						onValueChange={(val) => setValue('sl_trigger_price', String(val))}
 						rules={{
 							validate: {
 								custom: (_, data) => {
