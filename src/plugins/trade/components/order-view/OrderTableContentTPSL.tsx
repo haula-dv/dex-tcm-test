@@ -7,17 +7,29 @@ import { FormControl, MenuItem, Select, SelectChangeEvent, Stack } from '@mui/ma
 import { useAccount, useOrderStream } from '@orderly.network/hooks';
 import { toast } from '@orderly.network/react';
 import { AlgoOrderRootType, API, OrderStatus } from '@orderly.network/types';
+import Decimal from 'decimal.js-light';
 import { memo, useState } from 'react';
 import TPSLOrderItem from './TPSLOrderItem';
+import { UpdateTPSLModal } from './UpdateTPSLModal';
 
 interface IProps {
 	orderBookStatus: OrderStatus;
 	symbol: string;
 	isShowAll: boolean;
+
+	positions: {
+		readonly rows: API.PositionTPSLExt[] | null;
+		readonly aggregated: any;
+		readonly totalCollateral: Decimal;
+		readonly totalValue: Decimal;
+		readonly totalUnrealizedROI: number;
+	};
 }
 
-const OrderTableContentTPSL = ({ orderBookStatus, symbol, isShowAll }: IProps) => {
+const OrderTableContentTPSL = ({ orderBookStatus, symbol, isShowAll, positions }: IProps) => {
 	const [side, setSide] = useState<any>('ALL');
+	const [openModalUpdateTPSL, setOpenModalUpdateTPSL] = useState(false);
+	const [orderActived, setOrderActived] = useState<API.AlgoOrder | null>(null);
 
 	const [ordersUntyped, { isLoading }] = useOrderStream({
 		symbol: isShowAll ? '' : symbol,
@@ -27,7 +39,6 @@ const OrderTableContentTPSL = ({ orderBookStatus, symbol, isShowAll }: IProps) =
 	});
 
 	const orders = ordersUntyped as API.AlgoOrder[];
-
 	const { account: accountInfo } = useAccount();
 
 	const handleChange = (event: SelectChangeEvent) => {
@@ -70,6 +81,15 @@ const OrderTableContentTPSL = ({ orderBookStatus, symbol, isShowAll }: IProps) =
 		}
 	};
 
+	const handleToggleModalUpdateTPSL = () => {
+		setOpenModalUpdateTPSL(!openModalUpdateTPSL);
+	};
+
+	const handleClickItem = (order: API.AlgoOrder, type: string) => {
+		setOrderActived(order);
+		handleToggleModalUpdateTPSL();
+	};
+
 	return (
 		<Stack p={1}>
 			<FormControl sx={{ maxWidth: '100px', pb: 1 }}>
@@ -84,9 +104,20 @@ const OrderTableContentTPSL = ({ orderBookStatus, symbol, isShowAll }: IProps) =
 				{orders &&
 					orders.length > 0 &&
 					orders.map((item, index) => {
-						return <TPSLOrderItem key={index} order={item} cancelTPSLOrder={cancelTPSLOrder} />;
+						return (
+							<TPSLOrderItem key={index} order={item} cancelTPSLOrder={cancelTPSLOrder} onClickItem={handleClickItem} />
+						);
 					})}
 			</MainTable>
+
+			{orderActived && openModalUpdateTPSL && (
+				<UpdateTPSLModal
+					open={openModalUpdateTPSL}
+					onClose={handleToggleModalUpdateTPSL}
+					orderActived={orderActived}
+					positions={positions.rows ?? []}
+				/>
+			)}
 		</Stack>
 	);
 };

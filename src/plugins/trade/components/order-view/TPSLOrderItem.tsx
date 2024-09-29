@@ -11,9 +11,10 @@ import { match } from 'ts-pattern';
 interface IProps {
 	order: API.AlgoOrder;
 	cancelTPSLOrder: (order: any) => Promise<void>;
+	onClickItem: (order: API.AlgoOrder, type: string) => void;
 }
 
-const TPSLOrderItem = ({ order, cancelTPSLOrder }: IProps) => {
+const TPSLOrderItem = ({ order, cancelTPSLOrder, onClickItem }: IProps) => {
 	const [prep, base, quote] = order.symbol.split('_');
 	const theme = useTheme();
 
@@ -129,7 +130,7 @@ const TPSLOrderItem = ({ order, cancelTPSLOrder }: IProps) => {
 
 			<TableCell align="right" padding="checkbox">
 				<Stack direction={'row'} spacing={'6px'}>
-					<MainButton size="xsmall" variant="outlined">
+					<MainButton size="xsmall" variant="outlined" onClick={() => onClickItem(order, 'edit')}>
 						Edit
 					</MainButton>
 

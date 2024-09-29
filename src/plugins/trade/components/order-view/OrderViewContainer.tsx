@@ -3,6 +3,7 @@ import { CheckBoxBase } from '@/components/form-control/CheckBoxBase';
 import MainTab from '@/components/tab/MainTab';
 import TabPanel from '@mui/lab/TabPanel';
 import { Box } from '@mui/material';
+import { usePositionStream } from '@orderly.network/hooks';
 import { OrderStatus } from '@orderly.network/types';
 import { useState } from 'react';
 import PositionContent from '../position/PositionContent';
@@ -17,12 +18,15 @@ interface IProps {
 
 export const OrderViewContainer = ({ symbol }: IProps) => {
 	const [isShowAllInstrument, setShowAllInstrument] = useState(true);
+	const [positions, _info, { refresh, loading }] = usePositionStream(isShowAllInstrument ? '' : symbol);
 
 	const tabs = [
 		{
-			label: 'Positions',
+			label: `Positions ${positions.rows?.length && `(${positions.rows?.length})`}`,
 			value: 'positions',
-			children: <PositionContent symbol={symbol} isShowAll={isShowAllInstrument} />,
+			children: (
+				<PositionContent positions={positions} symbol={symbol} isShowAll={isShowAllInstrument} refresh={refresh} />
+			),
 		},
 		{
 			label: 'Pending',
@@ -39,7 +43,12 @@ export const OrderViewContainer = ({ symbol }: IProps) => {
 			label: 'TP/SL',
 			value: 'TP/SL',
 			children: (
-				<OrderTableContentTPSL orderBookStatus={OrderStatus.NEW} symbol={symbol} isShowAll={isShowAllInstrument} />
+				<OrderTableContentTPSL
+					orderBookStatus={OrderStatus.NEW}
+					symbol={symbol}
+					isShowAll={isShowAllInstrument}
+					positions={positions}
+				/>
 			),
 		},
 		{

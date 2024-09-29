@@ -4,7 +4,8 @@ import { usdFormatter } from '@/utils/formatters/number';
 import { setColorThemeMode } from '@/utils/helpers';
 import { TSizes } from '@/utils/themes/custom-theme/sizes';
 import { Box, Stack, Typography, useTheme } from '@mui/material';
-import { usePositionStream } from '@orderly.network/hooks';
+import { API } from '@orderly.network/types';
+import Decimal from 'decimal.js-light';
 import { memo } from 'react';
 import PositionItem from './PositionItem';
 
@@ -31,10 +32,20 @@ const headTable: IHeadCell[] = [
 	{ title: '', width: 50 },
 ];
 
-const PositionContent = ({ symbol, isShowAll }: IProps) => {
-	const [positions, _info, { refresh, loading }] = usePositionStream(isShowAll ? '' : symbol);
-	const theme = useTheme();
+interface IProps {
+	positions: {
+		readonly rows: API.PositionTPSLExt[] | null;
+		readonly aggregated: any;
+		readonly totalCollateral: Decimal;
+		readonly totalValue: Decimal;
+		readonly totalUnrealizedROI: number;
+	};
 
+	refresh: any;
+}
+
+const PositionContent = ({ symbol, positions, refresh }: IProps) => {
+	const theme = useTheme();
 	const unrealPnL: number = positions?.aggregated?.unrealPnL ?? 0;
 
 	return (
@@ -64,11 +75,7 @@ const PositionContent = ({ symbol, isShowAll }: IProps) => {
 
 			<Box my={TSizes.margin_common} />
 
-			<MainTable
-				headTable={headTable}
-				isEmpty={positions.rows && positions.rows.length > 0 ? false : true}
-				isLoading={loading}
-			>
+			<MainTable headTable={headTable} isEmpty={positions.rows && positions.rows.length > 0 ? false : true}>
 				{positions.rows &&
 					positions.rows.length > 0 &&
 					positions.rows.map((item, index) => {
