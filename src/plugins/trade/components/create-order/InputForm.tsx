@@ -84,7 +84,10 @@ function InputForm({ formContext, symbolsInfo, symbol, getInput, helper, maxQty,
 		if (formContext.watch('type') == 'Market' || formContext.watch('type') == 'StopMarket') {
 			const newValue = helper.calculate(getInput(formContext.getValues(), symbol), 'order_quantity', val);
 
-			formContext.setValue('total', String(newValue.total));
+			formContext.setValue('total', !val ? '' : String(newValue.total), {
+				shouldValidate: true,
+				shouldDirty: true,
+			});
 			return;
 		}
 
@@ -93,6 +96,10 @@ function InputForm({ formContext, symbolsInfo, symbol, getInput, helper, maxQty,
 
 		if (!amountQty) {
 			formContext.setValue('price', '', {
+				shouldValidate: true,
+				shouldDirty: true,
+			});
+			formContext.setValue('total', '', {
 				shouldValidate: true,
 				shouldDirty: true,
 			});
@@ -107,13 +114,11 @@ function InputForm({ formContext, symbolsInfo, symbol, getInput, helper, maxQty,
 			shouldDirty: true,
 		});
 
-		// Set TOTAL
-		if (!formattedPrice) {
-			return;
-		}
-
 		const newValue = helper.calculate(getInput(formContext.getValues(), symbol), 'order_quantity', val);
-		formContext.setValue('total', String(newValue.total));
+		formContext.setValue('total', !val ? '' : String(newValue.total), {
+			shouldValidate: true,
+			shouldDirty: true,
+		});
 	};
 
 	// On total Change
@@ -203,7 +208,7 @@ function InputForm({ formContext, symbolsInfo, symbol, getInput, helper, maxQty,
 					decimals={baseDecimals}
 					placeholder="0.0000"
 					prefix={'Quantity'}
-					onValueChange={(val) => onChangeQuanityExt(val._value)}
+					onValueChange={(val) => onChangeQuanityExt(val._value == '0.0' ? '' : val._value)}
 					rules={{
 						validate: {
 							custom: async (_, data) => {
