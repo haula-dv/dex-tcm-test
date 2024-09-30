@@ -49,7 +49,7 @@ function InputForm({ formContext, symbolsInfo, symbol, getInput, helper, maxQty,
 	}, [formContext]);
 
 	// Handle Convert price USDC to Base
-	const onValueChangePrice = (val: any) => {
+	const onChangePriceExt = (val: any) => {
 		const usdcAmountPrice = parseFloat(val);
 		const baseMarkPrice = markPrice;
 
@@ -80,8 +80,11 @@ function InputForm({ formContext, symbolsInfo, symbol, getInput, helper, maxQty,
 	};
 
 	// EX Base to USDC
-	const onValueConvertQtyToPrice = (val: any) => {
-		if (formContext.watch('type') == 'Market') {
+	const onChangeQuanityExt = (val: any) => {
+		if (formContext.watch('type') == 'Market' || formContext.watch('type') == 'StopMarket') {
+			const newValue = helper.calculate(getInput(formContext.getValues(), symbol), 'order_quantity', val);
+
+			formContext.setValue('total', String(newValue.total));
 			return;
 		}
 
@@ -133,8 +136,9 @@ function InputForm({ formContext, symbolsInfo, symbol, getInput, helper, maxQty,
 					name="triggerPrice"
 					formContext={formContext}
 					suffix={quote}
+					prefix="Trigger price"
 					decimals={quoteDecimals}
-					placeholder="Trigger"
+					placeholder="0.0000"
 					rules={{
 						validate: {
 							custom: async (_, data) => {
@@ -188,7 +192,7 @@ function InputForm({ formContext, symbolsInfo, symbol, getInput, helper, maxQty,
 								},
 							},
 						}}
-						onValueChange={(val) => onValueChangePrice(val._value)}
+						onValueChange={(val) => onChangePriceExt(val._value)}
 					/>
 				)}
 
@@ -199,7 +203,7 @@ function InputForm({ formContext, symbolsInfo, symbol, getInput, helper, maxQty,
 					decimals={baseDecimals}
 					placeholder="0.0000"
 					prefix={'Quantity'}
-					onValueChange={(val) => onValueConvertQtyToPrice(val._value)}
+					onValueChange={(val) => onChangeQuanityExt(val._value)}
 					rules={{
 						validate: {
 							custom: async (_, data) => {
@@ -216,7 +220,7 @@ function InputForm({ formContext, symbolsInfo, symbol, getInput, helper, maxQty,
 				formContext={formContext}
 				max={maxQty}
 				maxQty={`${formatter.format(maxQty)}`}
-				extChange={(val) => onValueConvertQtyToPrice(val)}
+				extChange={(val) => onChangeQuanityExt(val)}
 			/>
 
 			<CurrencyInputField

@@ -165,32 +165,32 @@ export const SwapContainer = () => {
 
 		// SELL
 		const amountQty = parseFloat(inputAmount);
-		const calculatedQty = amountQty * inputMarkPrice;
-		const formattedPrice = parseFloat(calculatedQty.toFixed(quoteDecimals));
+		const calculatedPrice = amountQty * inputMarkPrice;
+		const formattedPrice = parseFloat(calculatedPrice.toFixed(quoteDecimals));
 
 		const sellData = {
 			symbol: `PERP_${sellTokenActived?.token}_USDC`,
 			side: OrderSide.SELL,
-			order_type: OrderType.LIMIT,
+			order_type: OrderType.MARKET,
 			order_quantity: inputAmount,
-			order_price: formattedPrice, // USDC
+			// order_price: formattedPrice, // USDC
 		};
 
 		// BUY
 		const amountOutput = parseFloat(outputAmount);
-		const priceUSDC = amountOutput * outputMarkPrice;
+		const priceUSDC = amountOutput * outputMarkPrice + formattedPrice;
 		const formattedPriceUSDC = parseFloat(priceUSDC.toFixed(quoteDecimals));
 
 		const buyData = {
 			symbol: `PERP_${buyTokenActived?.token}_USDC`, // Cặp token đang mua (BTC -> USDC)
 			side: OrderSide.BUY, // Mua BTC
-			order_type: OrderType.LIMIT, // Lệnh thị trường
+			order_type: OrderType.MARKET, // Lệnh thị trường
 			order_quantity: outputAmount, // EX: 0.2678 Số lượng USDC để mua BTC (cần tính toán sau khi bán ETH)
-			order_price: formattedPriceUSDC,
+			// order_price: 39888,
 		};
 
-		console.log(sellData);
 		console.log(buyData);
+		console.log(formattedPriceUSDC);
 
 		try {
 			await onSubmit(sellData);
