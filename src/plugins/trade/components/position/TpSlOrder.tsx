@@ -133,7 +133,7 @@ const TpSlOrder = ({ symbol, position, refresh, handleCloseModal }: IProps) => {
 						name="tp_trigger_price"
 						decimals={quoteDecimals}
 						placeholder="0.0"
-						prefix={'TP Triger Price'}
+						prefix={'TP price'}
 						suffix={quote}
 						onValueChange={(val) => setValue('tp_trigger_price', String(val))}
 						rules={{
@@ -145,7 +145,7 @@ const TpSlOrder = ({ symbol, position, refresh, handleCloseModal }: IProps) => {
 						}}
 						label={
 							<ItemRow
-								title={<Typography fontSize={'11px'}>TP Price</Typography>}
+								title={<Typography fontSize={'11px'}>Take profit</Typography>}
 								value={
 									<Typography fontSize={'11px'}>
 										<span style={{ color: setColorThemeMode(theme.palette.grey[800], theme.palette.grey[300]) }}>
@@ -158,8 +158,12 @@ const TpSlOrder = ({ symbol, position, refresh, handleCloseModal }: IProps) => {
 													: theme.palette.success.main,
 											}}
 										>
-											{ComputedAlgoOrder.tp_pnl != null
-												? `${usdFormatter.format(ComputedAlgoOrder.tp_pnl.toString().replace('-', '') as any)} ${quote}`
+											{formContext.watch('tp_trigger_price')
+												? ComputedAlgoOrder.tp_pnl != null
+													? `${usdFormatter.format(
+															ComputedAlgoOrder.tp_pnl.toString().replace('-', '') as any,
+													  )} ${quote}`
+													: '-'
 												: '-'}
 										</span>
 									</Typography>
@@ -172,7 +176,7 @@ const TpSlOrder = ({ symbol, position, refresh, handleCloseModal }: IProps) => {
 						formContext={formContext}
 						name="sl_trigger_price"
 						decimals={quoteDecimals}
-						prefix={'SL Triger Price'}
+						prefix={'SL price'}
 						suffix={quote}
 						placeholder="0.0"
 						onValueChange={(val) => setValue('sl_trigger_price', String(val))}
@@ -185,7 +189,7 @@ const TpSlOrder = ({ symbol, position, refresh, handleCloseModal }: IProps) => {
 						}}
 						label={
 							<ItemRow
-								title={<Typography fontSize={'11px'}>SL Price</Typography>}
+								title={<Typography fontSize={'11px'}>Stop loss</Typography>}
 								value={
 									<Typography fontSize={'11px'}>
 										<span style={{ color: setColorThemeMode(theme.palette.grey[800], theme.palette.grey[300]) }}>
@@ -198,9 +202,13 @@ const TpSlOrder = ({ symbol, position, refresh, handleCloseModal }: IProps) => {
 													: theme.palette.success.main,
 											}}
 										>
-											{ComputedAlgoOrder.sl_pnl != null
-												? `${usdFormatter.format(ComputedAlgoOrder.sl_pnl.toString().replace('-', '') as any)} ${quote}`
-												: '-'}
+											{formContext.watch('sl_trigger_price')
+												? ComputedAlgoOrder.sl_pnl != null
+													? `${usdFormatter.format(
+															ComputedAlgoOrder.sl_pnl.toString().replace('-', '') as any,
+													  )} ${quote}`
+													: '-'
+												: '--'}
 										</span>
 									</Typography>
 								}

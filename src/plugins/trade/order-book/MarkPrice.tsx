@@ -15,6 +15,7 @@ interface IProps {
 
 const MarkPrice = ({ markPrice, lastPrice, asks, bids }: IProps) => {
 	const [prevLastPrice, middlePrice] = lastPrice;
+	const theme = useTheme(); // Always call useTheme outside of conditional logic
 
 	const spread = useMemo(() => {
 		if (bids.length === 0 && asks.length === 0) {
@@ -43,17 +44,17 @@ const MarkPrice = ({ markPrice, lastPrice, asks, bids }: IProps) => {
 					fontWeight={600}
 					color={`${
 						middlePrice < prevLastPrice
-							? useTheme().palette.success.main
+							? theme.palette.success.main
 							: middlePrice > prevLastPrice
-							? useTheme().palette.error.main
+							? theme.palette.error.main
 							: ''
 					}`}
 				>
 					{middlePrice.toLocaleString()}
 				</Typography>
 
-				{middlePrice < prevLastPrice && <IconArrowUp size={'1rem'} color={useTheme().palette.success.main} />}
-				{middlePrice > prevLastPrice && <IconArrowDown size={'1rem'} color={useTheme().palette.error.main} />}
+				{middlePrice < prevLastPrice && <IconArrowUp size={'1rem'} color={theme.palette.success.main} />}
+				{middlePrice > prevLastPrice && <IconArrowDown size={'1rem'} color={theme.palette.error.main} />}
 			</Stack>
 
 			<MainTooltip

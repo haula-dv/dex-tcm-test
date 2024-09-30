@@ -130,11 +130,17 @@ const TPSLOrderItem = ({ order, cancelTPSLOrder, onClickItem }: IProps) => {
 
 			<TableCell align="right" padding="checkbox">
 				<Stack direction={'row'} spacing={'6px'}>
-					<MainButton size="xsmall" variant="outlined" onClick={() => onClickItem(order, 'edit')}>
+					<MainButton size="xsmall" variant="outlined" color="inherit" onClick={() => onClickItem(order, 'edit')}>
 						Edit
 					</MainButton>
 
-					<MainButton size="xsmall" variant="outlined" onClick={() => cancelTPSL(order)} isLoading={isLoadingCancel}>
+					<MainButton
+						size="xsmall"
+						variant="outlined"
+						color="inherit"
+						onClick={() => cancelTPSL(order)}
+						isLoading={isLoadingCancel}
+					>
 						Cancel
 					</MainButton>
 				</Stack>

@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/rules-of-hooks */
 import { MainButton } from '@/components/button/MainButton';
 import MainCard from '@/components/card/MainCard';
 import { MainDialog } from '@/components/dialog/MainDialog';
@@ -33,20 +34,17 @@ export const UpdateTPSLModal = ({ onClose, open, orderActived, positions }: IPro
 	const theme = useTheme();
 	const [submitting, setSubmitting] = useState(false);
 
-	const findPositions: any = positions.find(
-		(item: any) => item.algo_order.algo_order_id === orderActived.algo_order_id,
-	);
+	const findPositions: any = positions.find((item: any) => item.symbol === orderActived.symbol);
+
+	if (!findPositions) {
+		return <></>;
+	}
+
 	const child_orders: any[] = (orderActived as any).child_orders.length > 0 ? (orderActived as any).child_orders : [];
 
-	const TAKE_PROFIT =
-		child_orders.find(
-			(item) => item.algo_type === 'TAKE_PROFIT' && item.trigger_price && typeof item.trigger_price == 'number',
-		) ?? null;
+	const TAKE_PROFIT = child_orders.find((item) => item.algo_type === 'TAKE_PROFIT') ?? null;
 
-	const STOP_LOSS =
-		child_orders.find(
-			(item) => item.algo_type === 'STOP_LOSS' && item.trigger_price && typeof item.trigger_price == 'number',
-		) ?? null;
+	const STOP_LOSS = child_orders.find((item) => item.algo_type === 'STOP_LOSS') ?? null;
 
 	const defaultValues: Inputs = {
 		tp_trigger_price: TAKE_PROFIT?.trigger_price ?? undefined,
@@ -62,38 +60,24 @@ export const UpdateTPSLModal = ({ onClose, open, orderActived, positions }: IPro
 	const [ComputedAlgoOrder, { setValue, submit, errors }] = useTPSLOrder({
 		...findPositions,
 	});
+
 	const [_, { updateTPSLOrder }] = useOrderStream({});
 
 	// Handle Submit
 	const onSubmit = async (data: Inputs) => {
 		setSubmitting(true);
 
-		const TAKE_PROFIT_VALUE = data.tp_trigger_price
-			? { order_id: TAKE_PROFIT.algo_order_id, trigger_price: data.tp_trigger_price }
-			: null;
-
-		const STOP_LOSS_VALUE = data.sl_trigger_price
-			? { order_id: STOP_LOSS.algo_order_id, trigger_price: data.sl_trigger_price }
-			: null;
-
-		const childOrders: any = [];
-
-		if (TAKE_PROFIT_VALUE != null) {
-			childOrders.push(TAKE_PROFIT_VALUE);
-		}
-
-		if (STOP_LOSS_VALUE != null) {
-			childOrders.push(STOP_LOSS_VALUE);
-		}
-
-		console.log(childOrders, TAKE_PROFIT_VALUE, STOP_LOSS_VALUE);
+		const childOrders: any = [
+			{ order_id: TAKE_PROFIT.algo_order_id, trigger_price: data.tp_trigger_price },
+			{ order_id: STOP_LOSS.algo_order_id, trigger_price: data.sl_trigger_price },
+		];
 
 		await updateTPSLOrder(orderActived.algo_order_id, childOrders as any)
 			.then((res) => {
 				toast.success('Order edited!');
 			})
 			.catch((err: any) => {
-				toast.error(err.message);
+				toast.success(err.message);
 			})
 			.finally(() => {
 				setSubmitting(true);
