@@ -115,7 +115,7 @@ export const SwapContainer = () => {
 	}, []);
 
 	// SELL ETH => USDC
-	const { onSubmit } = useOrderEntry(
+	const { onSubmit, helper } = useOrderEntry(
 		{
 			symbol: `PERP_${sellTokenActived?.token}_USDC`,
 			order_type: OrderType.LIMIT,
@@ -141,6 +141,16 @@ export const SwapContainer = () => {
 	const symbolsInfo = useSymbolsInfo();
 	const symbolInfo = symbolsInfo[`PERP_${sellTokenActived?.token}_USDC`]();
 	const [baseDecimals, quoteDecimals] = getDecimalsFromTick(symbolInfo);
+
+	const newValue = helper.calculate(
+		{
+			symbol: `PERP_${sellTokenActived?.token}_USDC`,
+			order_type: OrderType.LIMIT,
+			order_price: undefined,
+		},
+		'order_quantity',
+		inputAmount,
+	);
 
 	const handleSubmitSwap = async () => {
 		setLoading(true);
@@ -168,7 +178,7 @@ export const SwapContainer = () => {
 
 		// BUY
 		const amountOutput = parseFloat(outputAmount);
-		const priceUSDC = formattedPrice / amountOutput;
+		const priceUSDC = amountOutput * outputMarkPrice;
 		const formattedPriceUSDC = parseFloat(priceUSDC.toFixed(quoteDecimals));
 
 		const buyData = {

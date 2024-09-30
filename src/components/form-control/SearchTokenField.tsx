@@ -5,7 +5,7 @@ import { Box, InputBase, styled } from '@mui/material';
 import { IconX } from '@tabler/icons-react';
 import { debounce } from 'lodash';
 import { setZustandValue } from 'nes-zustand';
-import { ChangeEvent, useCallback, useState } from 'react';
+import { ChangeEvent, useCallback, useEffect, useState } from 'react';
 import { MainIconButton } from '../button/MainIconButton';
 import IconSearch from '../icons/search';
 
@@ -44,6 +44,10 @@ export const SearchTokenField = ({ tokens }: IProps) => {
 		setZustandValue(isTokenSearchState, false);
 		setZustandValue(tokensState, tokens);
 	};
+
+	useEffect(() => {
+		return () => handleClear();
+	}, []);
 
 	return (
 		<CustomSearchField>

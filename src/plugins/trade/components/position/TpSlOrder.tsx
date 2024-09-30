@@ -154,8 +154,8 @@ const TpSlOrder = ({ symbol, position, refresh, handleCloseModal }: IProps) => {
 										<span
 											style={{
 												color: ComputedAlgoOrder.tp_pnl?.toString().startsWith('-')
-													? theme.palette.success.main
-													: theme.palette.error.main,
+													? theme.palette.error.main
+													: theme.palette.success.main,
 											}}
 										>
 											{ComputedAlgoOrder.tp_pnl != null
@@ -194,8 +194,8 @@ const TpSlOrder = ({ symbol, position, refresh, handleCloseModal }: IProps) => {
 										<span
 											style={{
 												color: ComputedAlgoOrder.sl_pnl?.toString().startsWith('-')
-													? theme.palette.success.main
-													: theme.palette.error.main,
+													? theme.palette.error.main
+													: theme.palette.success.main,
 											}}
 										>
 											{ComputedAlgoOrder.sl_pnl != null

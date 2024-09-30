@@ -98,8 +98,9 @@ export default function WalletContainer() {
 
 	return (
 		<Stack direction={'row'} spacing={1} alignItems={'center'}>
+			{/* <MainButton onClick={updateFee}>updateFee </MainButton> */}
 			<NetworkContent />
-			{/* <button onClick={updateFee}>test</button> */}
+
 			{connecting ? (
 				<MainButton
 					startIcon={<IconLoading height="20px" width="20px" />}
