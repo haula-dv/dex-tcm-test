@@ -256,7 +256,7 @@ export const SwapContainer = () => {
 	}, [inputAmount, outputAmount, inputMarkPrice, outputMarkPrice]);
 
 	return (
-		<Box display={'flex'} alignItems={'center'} justifyContent={'center'} height={'calc(100vh - 56px)'}>
+		<Box display={'flex'} alignItems={'center'} justifyContent={'center'} height={'calc(100vh - 56px)'} px="16px">
 			<MainCardNotch
 				backgroudColor="primary"
 				borderRadius="0px"

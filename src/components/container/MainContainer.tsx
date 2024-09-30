@@ -8,7 +8,7 @@ interface IProps extends ContainerProps {
 
 export const MainContainer = ({ children, maxWidth = 'xl', ...props }: IProps) => {
 	return (
-		<Container maxWidth={maxWidth} {...props}>
+		<Container maxWidth={maxWidth} {...props} sx={{ px: '16px !important' }}>
 			{children}
 		</Container>
 	);

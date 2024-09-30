@@ -1,4 +1,5 @@
 'use client';
+import { MainContainer } from '@/components/container/MainContainer';
 import { Box } from '@mui/material';
 import { useAccount } from '@orderly.network/hooks';
 import { Portfolio } from '@orderly.network/react';
@@ -31,9 +32,11 @@ const PortfolioMainContainer = () => {
 	}, []);
 
 	return (
-		<Box className="portfolio">
-			<Portfolio />
-		</Box>
+		<MainContainer maxWidth={false}>
+			<Box className="portfolio">
+				<Portfolio />
+			</Box>
+		</MainContainer>
 	);
 };
 
