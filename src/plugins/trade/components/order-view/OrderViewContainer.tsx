@@ -22,7 +22,7 @@ export const OrderViewContainer = ({ symbol }: IProps) => {
 
 	const tabs = [
 		{
-			label: `Positions ${positions.rows?.length && `(${positions.rows?.length})`}`,
+			label: `Positions ${positions.rows && positions.rows?.length > 0 ? `(${positions.rows?.length})` : ''}`,
 			value: 'positions',
 			children: (
 				<PositionContent positions={positions} symbol={symbol} isShowAll={isShowAllInstrument} refresh={refresh} />
