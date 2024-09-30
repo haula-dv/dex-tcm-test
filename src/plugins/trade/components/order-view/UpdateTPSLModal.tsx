@@ -1,4 +1,5 @@
 import { MainButton } from '@/components/button/MainButton';
+import MainCard from '@/components/card/MainCard';
 import { MainDialog } from '@/components/dialog/MainDialog';
 import CurrencyInputField from '@/components/form-control/CurrencyInputField';
 import { ItemRow } from '@/plugins/pool/components/TokenSelected';
@@ -66,19 +67,38 @@ export const UpdateTPSLModal = ({ onClose, open, orderActived, positions }: IPro
 	// Handle Submit
 	const onSubmit = async (data: Inputs) => {
 		setSubmitting(true);
-		const childOrders = [
-			{ order_id: TAKE_PROFIT.algo_order_id, trigger_price: data.tp_trigger_price },
-			{ order_id: STOP_LOSS.algo_order_id, trigger_price: data.sl_trigger_price },
-		];
-		try {
-			await updateTPSLOrder(orderActived.algo_order_id, childOrders as any);
-			toast.success('Order edited!');
-		} catch (error: any) {
-			toast.success(error.message);
-		} finally {
-			setSubmitting(true);
-			onClose();
+
+		const TAKE_PROFIT_VALUE = data.tp_trigger_price
+			? { order_id: TAKE_PROFIT.algo_order_id, trigger_price: data.tp_trigger_price }
+			: null;
+
+		const STOP_LOSS_VALUE = data.sl_trigger_price
+			? { order_id: STOP_LOSS.algo_order_id, trigger_price: data.sl_trigger_price }
+			: null;
+
+		const childOrders: any = [];
+
+		if (TAKE_PROFIT_VALUE != null) {
+			childOrders.push(TAKE_PROFIT_VALUE);
 		}
+
+		if (STOP_LOSS_VALUE != null) {
+			childOrders.push(STOP_LOSS_VALUE);
+		}
+
+		console.log(childOrders, TAKE_PROFIT_VALUE, STOP_LOSS_VALUE);
+
+		await updateTPSLOrder(orderActived.algo_order_id, childOrders as any)
+			.then((res) => {
+				toast.success('Order edited!');
+			})
+			.catch((err: any) => {
+				toast.error(err.message);
+			})
+			.finally(() => {
+				setSubmitting(true);
+				onClose();
+			});
 	};
 
 	// Watch field
@@ -96,102 +116,104 @@ export const UpdateTPSLModal = ({ onClose, open, orderActived, positions }: IPro
 	return (
 		<MainDialog open={open} maxWidth="xs" handleClose={onClose} title="Update TP/SL" isDivider>
 			<FormContainer onSuccess={onSubmit} formContext={formContext}>
-				<Stack spacing={'10px'}>
-					<CurrencyInputField
-						formContext={formContext}
-						name="tp_trigger_price"
-						decimals={quoteDecimals}
-						placeholder="0.0"
-						prefix={'TP price'}
-						suffix={'USDC'}
-						onValueChange={(val) => setValue('tp_trigger_price', String(val))}
-						rules={{
-							validate: {
-								custom: (_, data) => {
-									return errors?.tp_trigger_price != null ? errors?.tp_trigger_price.message : true;
+				<MainCard variant="outlined" backgroudColor={setColorThemeMode('white', 'transparent')}>
+					<Stack spacing={'10px'}>
+						<CurrencyInputField
+							formContext={formContext}
+							name="tp_trigger_price"
+							decimals={quoteDecimals}
+							placeholder="0.0"
+							prefix={'TP price'}
+							suffix={'USDC'}
+							onValueChange={(val) => setValue('tp_trigger_price', String(val))}
+							rules={{
+								validate: {
+									custom: (_, data) => {
+										return errors?.tp_trigger_price != null ? errors?.tp_trigger_price.message : true;
+									},
 								},
-							},
-						}}
-						label={
-							<ItemRow
-								title={<Typography fontSize={'11px'}>Take profit</Typography>}
-								value={
-									<Typography fontSize={'11px'}>
-										<span style={{ color: setColorThemeMode(theme.palette.grey[800], theme.palette.grey[300]) }}>
-											Est. PnL:
-										</span>{' '}
-										<span
-											style={{
-												color: ComputedAlgoOrder.tp_pnl?.toString().startsWith('-')
-													? theme.palette.error.main
-													: theme.palette.success.main,
-											}}
-										>
-											{formContext.watch('tp_trigger_price') ? (
-												<>
-													{ComputedAlgoOrder.tp_pnl != null
-														? `${usdFormatter.format(
-																ComputedAlgoOrder.tp_pnl.toString().replace('-', '') as any,
-														  )} ${'USDC'}`
-														: '-'}
-												</>
-											) : (
-												'-'
-											)}
-										</span>
-									</Typography>
-								}
-							/>
-						}
-					/>
-					<CurrencyInputField
-						formContext={formContext}
-						name="sl_trigger_price"
-						decimals={quoteDecimals}
-						prefix={'SL price'}
-						suffix={'USDC'}
-						placeholder="0.0"
-						onValueChange={(val) => setValue('sl_trigger_price', String(val))}
-						rules={{
-							validate: {
-								custom: (_, data) => {
-									return errors?.sl_trigger_price != null ? errors?.sl_trigger_price.message : true;
+							}}
+							label={
+								<ItemRow
+									title={<Typography fontSize={'11px'}>Take profit</Typography>}
+									value={
+										<Typography fontSize={'11px'}>
+											<span style={{ color: setColorThemeMode(theme.palette.grey[800], theme.palette.grey[300]) }}>
+												Est. PnL:
+											</span>{' '}
+											<span
+												style={{
+													color: ComputedAlgoOrder.tp_pnl?.toString().startsWith('-')
+														? theme.palette.error.main
+														: theme.palette.success.main,
+												}}
+											>
+												{formContext.watch('tp_trigger_price') ? (
+													<>
+														{ComputedAlgoOrder.tp_pnl != null
+															? `${usdFormatter.format(
+																	ComputedAlgoOrder.tp_pnl.toString().replace('-', '') as any,
+															  )} ${'USDC'}`
+															: '-'}
+													</>
+												) : (
+													'-'
+												)}
+											</span>
+										</Typography>
+									}
+								/>
+							}
+						/>
+						<CurrencyInputField
+							formContext={formContext}
+							name="sl_trigger_price"
+							decimals={quoteDecimals}
+							prefix={'SL price'}
+							suffix={'USDC'}
+							placeholder="0.0"
+							onValueChange={(val) => setValue('sl_trigger_price', String(val))}
+							rules={{
+								validate: {
+									custom: (_, data) => {
+										return errors?.sl_trigger_price != null ? errors?.sl_trigger_price.message : true;
+									},
 								},
-							},
-						}}
-						label={
-							<ItemRow
-								title={<Typography fontSize={'11px'}>Stop loss</Typography>}
-								value={
-									<Typography fontSize={'11px'}>
-										<span style={{ color: setColorThemeMode(theme.palette.grey[800], theme.palette.grey[300]) }}>
-											Est. PnL:
-										</span>{' '}
-										<span
-											style={{
-												color: ComputedAlgoOrder.sl_pnl?.toString().startsWith('-')
-													? theme.palette.error.main
-													: theme.palette.success.main,
-											}}
-										>
-											{formContext.watch('sl_trigger_price') ? (
-												<>
-													{ComputedAlgoOrder.sl_pnl != null
-														? `${usdFormatter.format(
-																ComputedAlgoOrder.sl_pnl.toString().replace('-', '') as any,
-														  )} ${'USDC'}`
-														: '-'}
-												</>
-											) : (
-												'-'
-											)}
-										</span>
-									</Typography>
-								}
-							/>
-						}
-					/>
-				</Stack>
+							}}
+							label={
+								<ItemRow
+									title={<Typography fontSize={'11px'}>Stop loss</Typography>}
+									value={
+										<Typography fontSize={'11px'}>
+											<span style={{ color: setColorThemeMode(theme.palette.grey[800], theme.palette.grey[300]) }}>
+												Est. PnL:
+											</span>{' '}
+											<span
+												style={{
+													color: ComputedAlgoOrder.sl_pnl?.toString().startsWith('-')
+														? theme.palette.error.main
+														: theme.palette.success.main,
+												}}
+											>
+												{formContext.watch('sl_trigger_price') ? (
+													<>
+														{ComputedAlgoOrder.sl_pnl != null
+															? `${usdFormatter.format(
+																	ComputedAlgoOrder.sl_pnl.toString().replace('-', '') as any,
+															  )} ${'USDC'}`
+															: '-'}
+													</>
+												) : (
+													'-'
+												)}
+											</span>
+										</Typography>
+									}
+								/>
+							}
+						/>
+					</Stack>
+				</MainCard>
 
 				<Stack direction={'row'} spacing={'10px'} mt={'10px'}>
 					<MainButton onClick={onClose} fullWidth>

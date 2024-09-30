@@ -219,6 +219,7 @@ export const SwapContainer = () => {
 	const handleEnterAmount = async () => {
 		if (!wallet) {
 			await connect();
+			location.reload();
 			return;
 		}
 

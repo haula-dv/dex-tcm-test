@@ -55,8 +55,9 @@ export default function AccountDetailPopup({ onClose, open, wallet, disconnect }
 	// Handle disconnect wallet button
 	const handleDisconnect = async () => {
 		if (wallet) {
-			disconnect(wallet);
+			await disconnect(wallet);
 			onClose();
+			location.reload();
 		}
 	};
 

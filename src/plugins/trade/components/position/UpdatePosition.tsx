@@ -98,7 +98,7 @@ const UpdatePosition = ({ position, refresh, symbol }: IProps) => {
 			</MainButton>
 
 			<MainDialog open={open} handleClose={handleToggleModal} title="Update Position" maxWidth="xs" isDivider>
-				<MainCard backgroudColor="transparent" width="100%" variant="outlined">
+				<MainCard backgroudColor={setColorThemeMode('white', 'transparent')} width="100%" variant="outlined">
 					<Grid container spacing={TSizes.margin_common}>
 						{items.map((item, index) => (
 							<Grid key={index} item md={6}>

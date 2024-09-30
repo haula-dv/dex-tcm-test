@@ -23,6 +23,7 @@ const Details = ({ totalPrice = 0, estLeverage, estLiqPrice, baseDecimals, quote
 	// Handle connect wallet button
 	const handleConnectWallet = async () => {
 		await connect();
+		location.reload();
 	};
 
 	const formatter = new Intl.NumberFormat('en-US', { maximumFractionDigits: baseDecimals });

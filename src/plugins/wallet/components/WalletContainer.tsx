@@ -50,6 +50,7 @@ export default function WalletContainer() {
 	// Handle connect wallet button
 	const handleConnectWallet = async () => {
 		await connect();
+		location.reload();
 	};
 
 	// Handle close menu account

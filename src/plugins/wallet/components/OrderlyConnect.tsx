@@ -68,6 +68,8 @@ export const OrderlyConnect = () => {
 				message: 'Key registration complete!',
 				autoDismiss: 5_000,
 			});
+
+			location.reload();
 		} catch (err) {
 			console.error(err);
 			update({

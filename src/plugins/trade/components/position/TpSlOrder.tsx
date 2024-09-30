@@ -10,7 +10,7 @@ import { Box, Divider, Stack, Typography, useTheme } from '@mui/material';
 import { useSymbolsInfo, useTPSLOrder } from '@orderly.network/hooks';
 import { API } from '@orderly.network/types';
 import { useNotifications } from '@web3-onboard/react';
-import { memo, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 
 type TpSlOrderInputs = {
@@ -225,4 +225,4 @@ const TpSlOrder = ({ symbol, position, refresh, handleCloseModal }: IProps) => {
 	);
 };
 
-export default memo(TpSlOrder);
+export default TpSlOrder;
