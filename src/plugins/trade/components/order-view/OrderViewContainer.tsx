@@ -29,14 +29,7 @@ export const OrderViewContainer = ({ symbol }: IProps) => {
 				positions.rows && positions.rows?.length > 0 ? `(${positions.rows?.length})` : ""
 			}`,
 			value: "positions",
-			children: (
-				<PositionContent
-					positions={positions}
-					symbol={symbol}
-					isShowAll={isShowAllInstrument}
-					refresh={refresh}
-				/>
-			),
+			children: <PositionContent positions={positions} refresh={refresh} />,
 		},
 		{
 			label: "Pending",

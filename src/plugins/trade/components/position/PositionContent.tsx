@@ -8,11 +8,6 @@ import { API } from "@orderly.network/types";
 import Decimal from "decimal.js-light";
 import PositionItem from "./PositionItem";
 
-interface IProps {
-	symbol: string;
-	isShowAll: boolean;
-}
-
 const headTable: IHeadCell[] = [
 	{ title: "Symbol" },
 	{ title: "Quantity" },
@@ -43,11 +38,9 @@ interface IProps {
 	refresh: any;
 }
 
-const PositionContent = ({ symbol, positions, refresh }: IProps) => {
+const PositionContent = ({ positions, refresh }: IProps) => {
 	const theme = useTheme();
 	const unrealPnL: number = positions?.aggregated?.unrealPnL ?? 0;
-
-	// console.log(positions)
 
 	return (
 		<Box px={"10px"} pt={"10px"} pb={6} height={"100%"}>
