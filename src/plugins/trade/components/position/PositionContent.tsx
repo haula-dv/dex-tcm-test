@@ -4,7 +4,8 @@ import { usdFormatter } from "@/utils/formatters/number";
 import { setColorThemeMode } from "@/utils/helpers";
 import { TSizes } from "@/utils/themes/custom-theme/sizes";
 import { Box, Stack, Typography, useTheme } from "@mui/material";
-import { API } from "@orderly.network/types";
+import { useOrderStream } from "@orderly.network/hooks";
+import { AlgoOrderRootType, API, OrderStatus } from "@orderly.network/types";
 import Decimal from "decimal.js-light";
 import PositionItem from "./PositionItem";
 
@@ -41,6 +42,11 @@ interface IProps {
 const PositionContent = ({ positions, refresh }: IProps) => {
 	const theme = useTheme();
 	const unrealPnL: number = positions?.aggregated?.unrealPnL ?? 0;
+
+	const [orders, { isLoading }] = useOrderStream({
+		status: OrderStatus.NEW,
+		includes: [AlgoOrderRootType.TP_SL, AlgoOrderRootType.POSITIONAL_TP_SL],
+	}); // All
 
 	return (
 		<Box px={"10px"} pt={"10px"} pb={6} height={"100%"}>
@@ -86,7 +92,18 @@ const PositionContent = ({ positions, refresh }: IProps) => {
 				{positions.rows &&
 					positions.rows.length > 0 &&
 					positions.rows.map((item, index) => {
-						return <PositionItem key={index} item={item} refresh={refresh} symbol={item.symbol} />;
+						const activedTPSL =
+							orders && orders?.length > 0 ? orders.find((ol) => ol.symbol === item.symbol) : null;
+
+						return (
+							<PositionItem
+								key={index}
+								item={item}
+								refresh={refresh}
+								symbol={item.symbol}
+								activedTPSL={activedTPSL}
+							/>
+						);
 					})}
 			</MainTable>
 		</Box>

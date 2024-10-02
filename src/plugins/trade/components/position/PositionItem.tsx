@@ -1,4 +1,5 @@
 import { usdFormatter } from "@/utils/formatters/number";
+import { findTPnSLOrderByType } from "@/utils/helpers";
 import { TableCell, TableRow, Typography, useTheme } from "@mui/material";
 import { API } from "@orderly.network/types";
 import dayjs from "dayjs";
@@ -8,11 +9,27 @@ interface IProps {
 	item: API.PositionTPSLExt;
 	symbol: string;
 	refresh: import("swr/_internal").KeyedMutator<API.PositionInfo>;
+	activedTPSL: any | null;
 }
 
-const PositionItem = ({ item, symbol, refresh }: IProps) => {
+const PositionItem = ({ item, symbol, refresh, activedTPSL }: IProps) => {
 	const theme = useTheme();
 	const [_, base, quote] = item.symbol.split("_");
+
+	const child_orders: any[] = activedTPSL
+		? activedTPSL.child_orders.length > 0
+			? activedTPSL.child_orders
+			: []
+		: [];
+
+	const isEntriePosition = activedTPSL.algo_type == "POSITIONAL_TP_SL";
+
+	const takeProfit = findTPnSLOrderByType("TAKE_PROFIT", child_orders);
+	const stopLoss = findTPnSLOrderByType("STOP_LOSS", child_orders);
+
+	const stopLossAndTakeProfit: any[] = takeProfit != null && stopLoss != null ? child_orders : [];
+
+	const isTPnSL = stopLossAndTakeProfit.length == 2;
 
 	return (
 		<TableRow sx={{ "&:last-child td, &:last-child th": { border: 0 } }}>
@@ -56,7 +73,26 @@ const PositionItem = ({ item, symbol, refresh }: IProps) => {
 			</TableCell>
 
 			<TableCell>
-				{item.tp_trigger_price ? usdFormatter.format(item.tp_trigger_price) : "--"}
+				{!takeProfit && !stopLoss && "--"}
+				{takeProfit && (
+					<Typography>
+						TP -{" "}
+						<span style={{ color: theme.palette.success.main }}>
+							{usdFormatter.format(takeProfit.trigger_price)}
+							{".00"}
+						</span>
+					</Typography>
+				)}
+
+				{stopLoss && (
+					<Typography>
+						SL -{" "}
+						<span style={{ color: theme.palette.error.main }}>
+							{usdFormatter.format(stopLoss.trigger_price)}
+							{".00"}
+						</span>
+					</Typography>
+				)}
 			</TableCell>
 
 			<TableCell>{usdFormatter.format(item["notional"])}</TableCell>
