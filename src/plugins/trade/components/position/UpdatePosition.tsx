@@ -1,29 +1,29 @@
-import { ITab } from '@/common/types/components/tab';
-import { MainButton } from '@/components/button/MainButton';
-import MainCard from '@/components/card/MainCard';
-import { MainDialog } from '@/components/dialog/MainDialog';
-import MainTab from '@/components/tab/MainTab';
-import { baseFormatter, usdFormatter } from '@/utils/formatters/number';
-import { setColorThemeMode } from '@/utils/helpers';
-import { TSizes } from '@/utils/themes/custom-theme/sizes';
-import TabPanel from '@mui/lab/TabPanel';
-import { Box, Grid, Stack, Typography, useTheme } from '@mui/material';
-import { API } from '@orderly.network/types';
-import { useState } from 'react';
-import ClosePositionContent from './ClosePositionContent';
-import StopOrderContent from './StopOrderContent';
-import TpSlOrder from './TpSlOrder';
+import { ITab } from "@/common/types/components/tab";
+import { MainButton } from "@/components/button/MainButton";
+import MainCard from "@/components/card/MainCard";
+import { MainDialog } from "@/components/dialog/MainDialog";
+import MainTab from "@/components/tab/MainTab";
+import { baseFormatter, usdFormatter } from "@/utils/formatters/number";
+import { setColorThemeMode } from "@/utils/helpers";
+import { TSizes } from "@/utils/themes/custom-theme/sizes";
+import TabPanel from "@mui/lab/TabPanel";
+import { Box, Grid, Stack, Typography, useTheme } from "@mui/material";
+import { API } from "@orderly.network/types";
+import { useState } from "react";
+import ClosePositionContent from "./ClosePositionContent";
+import StopOrderContent from "./StopOrderContent";
+import TpSlOrder from "./TpSlOrder";
 
 interface IProps {
 	symbol: string;
 	position: API.PositionExt;
-	refresh: import('swr/_internal').KeyedMutator<API.PositionInfo>;
+	refresh: import("swr/_internal").KeyedMutator<API.PositionInfo>;
 }
 
 const UpdatePosition = ({ position, refresh, symbol }: IProps) => {
 	const [open, setOpen] = useState(false);
 	const theme = useTheme();
-	const [_, base, quote] = position.symbol.split('_');
+	const [_, base, quote] = position.symbol.split("_");
 
 	const handleToggleModal = () => {
 		setOpen(!open);
@@ -31,35 +31,35 @@ const UpdatePosition = ({ position, refresh, symbol }: IProps) => {
 
 	const items = [
 		{
-			label: 'Symbol',
+			label: "Symbol",
 			value: `${base} / ${quote}`,
 		},
 		{
-			label: 'Quantity',
+			label: "Quantity",
 			value: baseFormatter.format(position.position_qty),
 		},
 		{
-			label: 'Avg. Open',
+			label: "Avg. Open",
 			value: usdFormatter.format(position.average_open_price),
 		},
 		{
-			label: 'Mark Price',
+			label: "Mark Price",
 			value: usdFormatter.format(position.mark_price),
 		},
 		{
-			label: 'Unreal. PnL',
+			label: "Unreal. PnL",
 			value: usdFormatter.format(position.unrealized_pnl),
 		},
 		{
-			label: 'Est.Liq Price',
-			value: position.est_liq_price ? usdFormatter.format(position.est_liq_price) : '-',
+			label: "Est.Liq Price",
+			value: position.est_liq_price ? usdFormatter.format(position.est_liq_price) : "-",
 		},
 	];
 
 	const tabs: ITab[] = [
 		{
-			label: 'Close Position',
-			value: '1',
+			label: "Close Position",
+			value: "1",
 			children: (
 				<ClosePositionContent
 					symbol={symbol}
@@ -70,17 +70,27 @@ const UpdatePosition = ({ position, refresh, symbol }: IProps) => {
 			),
 		},
 		{
-			label: 'Stop Market',
-			value: '2',
+			label: "Stop Market",
+			value: "2",
 			children: (
-				<StopOrderContent symbol={symbol} position={position} refresh={refresh} handleCloseModal={handleToggleModal} />
+				<StopOrderContent
+					symbol={symbol}
+					position={position}
+					refresh={refresh}
+					handleCloseModal={handleToggleModal}
+				/>
 			),
 		},
 		{
-			label: 'TP/SL',
-			value: '3',
+			label: "TP/SL",
+			value: "3",
 			children: (
-				<TpSlOrder symbol={symbol} position={position} refresh={refresh} handleCloseModal={handleToggleModal} />
+				<TpSlOrder
+					symbol={symbol}
+					position={position}
+					refresh={refresh}
+					handleCloseModal={handleToggleModal}
+				/>
 			),
 		},
 	];
@@ -91,22 +101,28 @@ const UpdatePosition = ({ position, refresh, symbol }: IProps) => {
 				size="xsmall"
 				variant="contained"
 				color="success"
-				sx={{ color: '#fff !important', textTransform: 'none' }}
-				onClick={handleToggleModal}
-			>
+				sx={{ color: "#fff !important", textTransform: "none" }}
+				onClick={handleToggleModal}>
 				Update
 			</MainButton>
 
-			<MainDialog open={open} handleClose={handleToggleModal} title="Update Position" maxWidth="xs" isDivider>
-				<MainCard backgroudColor={setColorThemeMode('white', 'transparent')} width="100%" variant="outlined">
+			<MainDialog
+				open={open}
+				handleClose={handleToggleModal}
+				title="Update Position"
+				maxWidth="xs"
+				isDivider>
+				<MainCard
+					backgroudColor={setColorThemeMode("white", "transparent")}
+					width="100%"
+					variant="outlined">
 					<Grid container spacing={TSizes.margin_common}>
 						{items.map((item, index) => (
 							<Grid key={index} item md={6}>
 								<Stack>
 									<Typography
-										fontSize={'12px'}
-										color={setColorThemeMode(theme.palette.grey[600], theme.palette.grey[200])}
-									>
+										fontSize={"12px"}
+										color={setColorThemeMode(theme.palette.grey[600], theme.palette.grey[200])}>
 										{item.label}
 									</Typography>
 
@@ -119,7 +135,7 @@ const UpdatePosition = ({ position, refresh, symbol }: IProps) => {
 
 				<Box pt={TSizes.margin_common} />
 
-				<MainTab tabs={tabs} defaultValue={'1'}>
+				<MainTab tabs={tabs} defaultValue={"1"}>
 					<>
 						{tabs.map((item, index) => (
 							<TabPanel key={index} value={item.value} sx={{ p: 0 }}>

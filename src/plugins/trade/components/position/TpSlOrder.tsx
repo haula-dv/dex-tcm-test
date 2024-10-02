@@ -1,17 +1,17 @@
-import { MainButton } from '@/components/button/MainButton';
-import MainCard from '@/components/card/MainCard';
-import CurrencyInputField from '@/components/form-control/CurrencyInputField';
-import BaseSlider from '@/components/sider/BaseSlider';
-import { ItemRow } from '@/plugins/pool/components/TokenSelected';
-import { getDecimalsFromTick } from '@/utils/formatters/api';
-import { usdFormatter } from '@/utils/formatters/number';
-import { setColorThemeMode } from '@/utils/helpers';
-import { Box, Divider, Stack, Typography, useTheme } from '@mui/material';
-import { useSymbolsInfo, useTPSLOrder } from '@orderly.network/hooks';
-import { API } from '@orderly.network/types';
-import { useNotifications } from '@web3-onboard/react';
-import { useEffect, useState } from 'react';
-import { SubmitHandler, useForm } from 'react-hook-form';
+import { MainButton } from "@/components/button/MainButton";
+import MainCard from "@/components/card/MainCard";
+import CurrencyInputField from "@/components/form-control/CurrencyInputField";
+import BaseSlider from "@/components/sider/BaseSlider";
+import { ItemRow } from "@/plugins/pool/components/TokenSelected";
+import { getDecimalsFromTick } from "@/utils/formatters/api";
+import { usdFormatter } from "@/utils/formatters/number";
+import { setColorThemeMode } from "@/utils/helpers";
+import { Box, Divider, Stack, Typography, useTheme } from "@mui/material";
+import { useSymbolsInfo, useTPSLOrder } from "@orderly.network/hooks";
+import { API } from "@orderly.network/types";
+import { useNotifications } from "@web3-onboard/react";
+import { useEffect, useState } from "react";
+import { SubmitHandler, useForm } from "react-hook-form";
 
 type TpSlOrderInputs = {
 	tp_trigger_price?: string;
@@ -22,7 +22,7 @@ type TpSlOrderInputs = {
 interface IProps {
 	symbol: string;
 	position: API.PositionExt;
-	refresh: import('swr/_internal').KeyedMutator<API.PositionInfo>;
+	refresh: import("swr/_internal").KeyedMutator<API.PositionInfo>;
 	handleCloseModal: () => void;
 }
 
@@ -37,7 +37,7 @@ const TpSlOrder = ({ symbol, position, refresh, handleCloseModal }: IProps) => {
 			sl_trigger_price: undefined,
 			quantity: Math.abs(position.position_qty),
 		},
-		mode: 'all',
+		mode: "all",
 	});
 
 	const [ComputedAlgoOrder, { setValue, submit, errors }] = useTPSLOrder({
@@ -52,9 +52,9 @@ const TpSlOrder = ({ symbol, position, refresh, handleCloseModal }: IProps) => {
 		setLoading(true);
 
 		const { update } = customNotification({
-			eventCode: 'createStopOrder',
-			type: 'pending',
-			message: 'Creating order...',
+			eventCode: "createStopOrder",
+			type: "pending",
+			message: "Creating order...",
 		});
 
 		try {
@@ -64,16 +64,16 @@ const TpSlOrder = ({ symbol, position, refresh, handleCloseModal }: IProps) => {
 			// updateTPSLOrder(orderId, childOrders);
 
 			update({
-				eventCode: 'createStopOrderSuccess',
-				type: 'success',
-				message: 'Order successfully created!',
+				eventCode: "createStopOrderSuccess",
+				type: "success",
+				message: "Order successfully created!",
 				autoDismiss: 5_000,
 			});
 		} catch (err) {
 			console.error(`Unhandled error in "submitForm":`, err);
 			update({
-				eventCode: 'createStopOrderError',
-				type: 'error',
+				eventCode: "createStopOrderError",
+				type: "error",
 				message: `Order creation failed! ${err}`,
 				autoDismiss: 5_000,
 			});
@@ -85,26 +85,26 @@ const TpSlOrder = ({ symbol, position, refresh, handleCloseModal }: IProps) => {
 	};
 
 	const symbolInfo = symbolsInfo[symbol]();
-	const [_, base, quote] = symbol.split('_');
+	const [_, base, quote] = symbol.split("_");
 	const [baseDecimals, quoteDecimals] = getDecimalsFromTick(symbolInfo);
 
 	useEffect(() => {
-		setValue('size', 'BUY');
+		setValue("size", "BUY");
 	}, []);
 
 	return (
 		<form onSubmit={formContext.handleSubmit(submitForm)}>
-			<MainCard variant="outlined" backgroudColor={setColorThemeMode('white', 'transparent')}>
-				<Stack spacing={'6px'}>
+			<MainCard variant="outlined" backgroudColor={setColorThemeMode("white", "transparent")}>
+				<Stack spacing={"6px"}>
 					<CurrencyInputField
 						name="quantity"
 						formContext={formContext}
 						decimals={baseDecimals}
 						suffix={base}
-						prefix={'Quantity'}
+						prefix={"Quantity"}
 						placeholder="0.0"
 						onValueChange={(newVal) => {
-							setValue('quantity', String(newVal));
+							setValue("quantity", String(newVal));
 						}}
 						rules={{
 							validate: {
@@ -119,9 +119,10 @@ const TpSlOrder = ({ symbol, position, refresh, handleCloseModal }: IProps) => {
 						min={0}
 						max={Math.abs(position.position_qty)}
 						handleChange={(newValue) => {
-							setValue('quantity', newValue.toString()), formContext.setValue('quantity', newValue.toString());
+							setValue("quantity", newValue.toString()),
+								formContext.setValue("quantity", newValue.toString());
 						}}
-						amountQty={Number(formContext.watch('quantity')) ?? 0}
+						amountQty={Number(formContext.watch("quantity")) ?? 0}
 					/>
 
 					<Box pt="2px" />
@@ -133,9 +134,9 @@ const TpSlOrder = ({ symbol, position, refresh, handleCloseModal }: IProps) => {
 						name="tp_trigger_price"
 						decimals={quoteDecimals}
 						placeholder="0.0"
-						prefix={'TP price'}
+						prefix={"TP price"}
 						suffix={quote}
-						onValueChange={(val) => setValue('tp_trigger_price', String(val))}
+						onValueChange={(val) => setValue("tp_trigger_price", String(val))}
 						rules={{
 							validate: {
 								custom: (_, data) => {
@@ -145,26 +146,28 @@ const TpSlOrder = ({ symbol, position, refresh, handleCloseModal }: IProps) => {
 						}}
 						label={
 							<ItemRow
-								title={<Typography fontSize={'11px'}>Take profit</Typography>}
+								title={<Typography fontSize={"11px"}>Take profit</Typography>}
 								value={
-									<Typography fontSize={'11px'}>
-										<span style={{ color: setColorThemeMode(theme.palette.grey[800], theme.palette.grey[300]) }}>
-											Est. PnL:
-										</span>{' '}
+									<Typography fontSize={"11px"}>
 										<span
 											style={{
-												color: ComputedAlgoOrder.tp_pnl?.toString().startsWith('-')
+												color: setColorThemeMode(theme.palette.grey[800], theme.palette.grey[300]),
+											}}>
+											Est. PnL:
+										</span>{" "}
+										<span
+											style={{
+												color: ComputedAlgoOrder.tp_pnl?.toString().startsWith("-")
 													? theme.palette.error.main
 													: theme.palette.success.main,
-											}}
-										>
-											{formContext.watch('tp_trigger_price')
+											}}>
+											{formContext.watch("tp_trigger_price")
 												? ComputedAlgoOrder.tp_pnl != null
 													? `${usdFormatter.format(
-															ComputedAlgoOrder.tp_pnl.toString().replace('-', '') as any,
+															ComputedAlgoOrder.tp_pnl.toString().replace("-", "") as any,
 													  )} ${quote}`
-													: '-'
-												: '-'}
+													: "-"
+												: "-"}
 										</span>
 									</Typography>
 								}
@@ -176,10 +179,10 @@ const TpSlOrder = ({ symbol, position, refresh, handleCloseModal }: IProps) => {
 						formContext={formContext}
 						name="sl_trigger_price"
 						decimals={quoteDecimals}
-						prefix={'SL price'}
+						prefix={"SL price"}
 						suffix={quote}
 						placeholder="0.0"
-						onValueChange={(val) => setValue('sl_trigger_price', String(val))}
+						onValueChange={(val) => setValue("sl_trigger_price", String(val))}
 						rules={{
 							validate: {
 								custom: (_, data) => {
@@ -189,26 +192,28 @@ const TpSlOrder = ({ symbol, position, refresh, handleCloseModal }: IProps) => {
 						}}
 						label={
 							<ItemRow
-								title={<Typography fontSize={'11px'}>Stop loss</Typography>}
+								title={<Typography fontSize={"11px"}>Stop loss</Typography>}
 								value={
-									<Typography fontSize={'11px'}>
-										<span style={{ color: setColorThemeMode(theme.palette.grey[800], theme.palette.grey[300]) }}>
-											Est. PnL:
-										</span>{' '}
+									<Typography fontSize={"11px"}>
 										<span
 											style={{
-												color: ComputedAlgoOrder.sl_pnl?.toString().startsWith('-')
+												color: setColorThemeMode(theme.palette.grey[800], theme.palette.grey[300]),
+											}}>
+											Est. PnL:
+										</span>{" "}
+										<span
+											style={{
+												color: ComputedAlgoOrder.sl_pnl?.toString().startsWith("-")
 													? theme.palette.error.main
 													: theme.palette.success.main,
-											}}
-										>
-											{formContext.watch('sl_trigger_price')
+											}}>
+											{formContext.watch("sl_trigger_price")
 												? ComputedAlgoOrder.sl_pnl != null
 													? `${usdFormatter.format(
-															ComputedAlgoOrder.sl_pnl.toString().replace('-', '') as any,
+															ComputedAlgoOrder.sl_pnl.toString().replace("-", "") as any,
 													  )} ${quote}`
-													: '-'
-												: '--'}
+													: "-"
+												: "--"}
 										</span>
 									</Typography>
 								}
@@ -225,8 +230,7 @@ const TpSlOrder = ({ symbol, position, refresh, handleCloseModal }: IProps) => {
 				disabled={loading || !formContext.formState.isDirty}
 				isLoading={loading}
 				variant="contained"
-				fullWidth
-			>
+				fullWidth>
 				Create TP & SL Order
 			</MainButton>
 		</form>

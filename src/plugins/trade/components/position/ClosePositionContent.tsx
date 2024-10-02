@@ -1,16 +1,16 @@
-import { MainButton } from '@/components/button/MainButton';
-import MainCard from '@/components/card/MainCard';
-import CurrencyInputField from '@/components/form-control/CurrencyInputField';
-import IconLoading from '@/components/icons/loading';
-import BaseSlider from '@/components/sider/BaseSlider';
-import { getDecimalsFromTick } from '@/utils/formatters/api';
-import { setColorThemeMode } from '@/utils/helpers';
-import { Box, Typography } from '@mui/material';
-import { useOrderEntry, useSymbolsInfo } from '@orderly.network/hooks';
-import { API, OrderEntity, OrderSide, OrderType } from '@orderly.network/types';
-import { useNotifications } from '@web3-onboard/react';
-import { memo, useState } from 'react';
-import { SubmitHandler, useForm } from 'react-hook-form';
+import { MainButton } from "@/components/button/MainButton";
+import MainCard from "@/components/card/MainCard";
+import CurrencyInputField from "@/components/form-control/CurrencyInputField";
+import IconLoading from "@/components/icons/loading";
+import BaseSlider from "@/components/sider/BaseSlider";
+import { getDecimalsFromTick } from "@/utils/formatters/api";
+import { setColorThemeMode } from "@/utils/helpers";
+import { Box, Typography } from "@mui/material";
+import { useOrderEntry, useSymbolsInfo } from "@orderly.network/hooks";
+import { API, OrderEntity, OrderSide, OrderType } from "@orderly.network/types";
+import { useNotifications } from "@web3-onboard/react";
+import { useState } from "react";
+import { SubmitHandler, useForm } from "react-hook-form";
 
 type Inputs = {
 	direction: OrderSide;
@@ -21,7 +21,7 @@ type Inputs = {
 interface IProps {
 	symbol: string;
 	position: API.PositionExt;
-	refresh: import('swr/_internal').KeyedMutator<API.PositionInfo>;
+	refresh: import("swr/_internal").KeyedMutator<API.PositionInfo>;
 	handleCloseModal: () => void;
 }
 const ClosePositionContent = ({ symbol, position, refresh, handleCloseModal }: IProps) => {
@@ -35,7 +35,7 @@ const ClosePositionContent = ({ symbol, position, refresh, handleCloseModal }: I
 			type: OrderType.MARKET,
 			quantity: Math.abs(position.position_qty),
 		},
-		mode: 'all',
+		mode: "all",
 	});
 
 	const { onSubmit, helper } = useOrderEntry(
@@ -49,29 +49,29 @@ const ClosePositionContent = ({ symbol, position, refresh, handleCloseModal }: I
 
 	const [_0, customNotification] = useNotifications();
 	const symbolInfo = symbolsInfo[symbol]();
-	const [_, base] = symbol.split('_');
+	const [_, base] = symbol.split("_");
 	const [baseDecimals] = getDecimalsFromTick(symbolInfo);
 
 	const submitForm: SubmitHandler<Inputs> = async (data) => {
 		setLoading(true);
 		const { update } = customNotification({
-			eventCode: 'closePosition',
-			type: 'pending',
-			message: 'Closing position...',
+			eventCode: "closePosition",
+			type: "pending",
+			message: "Closing position...",
 		});
 		try {
 			await onSubmit(getInput(data, symbol));
 			update({
-				eventCode: 'closePositionSuccess',
-				type: 'success',
-				message: 'Successfully closed position!',
+				eventCode: "closePositionSuccess",
+				type: "success",
+				message: "Successfully closed position!",
 				autoDismiss: 5_000,
 			});
 		} catch (err) {
 			console.error(`Unhandled error in "submitForm":`, err);
 			update({
-				eventCode: 'closePositionError',
-				type: 'error',
+				eventCode: "closePositionError",
+				type: "error",
 				message: `Closing position failed! ${err}`,
 				autoDismiss: 5_000,
 			});
@@ -92,13 +92,13 @@ const ClosePositionContent = ({ symbol, position, refresh, handleCloseModal }: I
 				<form onSubmit={formContext.handleSubmit(submitForm)}>
 					<Typography pb={2}>Partially or fully close your open position at mark price.</Typography>
 
-					<MainCard variant="outlined" backgroudColor={setColorThemeMode('white', 'transparent')}>
+					<MainCard variant="outlined" backgroudColor={setColorThemeMode("white", "transparent")}>
 						<CurrencyInputField
 							name="quantity"
 							formContext={formContext}
 							decimals={baseDecimals}
 							placeholder="0.0000"
-							prefix={'Quantity'}
+							prefix={"Quantity"}
 							suffix={base}
 							rules={{
 								validate: {
@@ -114,11 +114,11 @@ const ClosePositionContent = ({ symbol, position, refresh, handleCloseModal }: I
 							min={0}
 							max={Math.abs(position.position_qty)}
 							handleChange={(newValue) =>
-								formContext.setValue('quantity', newValue, {
+								formContext.setValue("quantity", newValue, {
 									shouldValidate: true,
 								})
 							}
-							amountQty={Number(formContext.watch('quantity')) ?? 0}
+							amountQty={Number(formContext.watch("quantity")) ?? 0}
 						/>
 					</MainCard>
 					<Box mt="10px" />
@@ -129,8 +129,7 @@ const ClosePositionContent = ({ symbol, position, refresh, handleCloseModal }: I
 						fullWidth
 						type="submit"
 						disabled={loading}
-						isLoading={loading}
-					>
+						isLoading={loading}>
 						Close position
 					</MainButton>
 				</form>
@@ -139,13 +138,13 @@ const ClosePositionContent = ({ symbol, position, refresh, handleCloseModal }: I
 	);
 };
 
-export default memo(ClosePositionContent);
+export default ClosePositionContent;
 
 async function getValidationErrors(
 	data: Inputs,
 	symbol: string,
-	validator: ReturnType<typeof useOrderEntry>['helper']['validator'],
-): Promise<ReturnType<ReturnType<typeof useOrderEntry>['helper']['validator']>> {
+	validator: ReturnType<typeof useOrderEntry>["helper"]["validator"],
+): Promise<ReturnType<ReturnType<typeof useOrderEntry>["helper"]["validator"]>> {
 	return validator(getInput(data, symbol));
 }
 

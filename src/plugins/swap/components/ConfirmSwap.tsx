@@ -1,4 +1,4 @@
-import { ITokenType } from '@/common';
+import { getImageNextwork, ITokenType } from '@/common';
 import { MainButton } from '@/components/button/MainButton';
 import MainCard from '@/components/card/MainCard';
 import { MainChip } from '@/components/chip/MainChip';
@@ -12,8 +12,10 @@ import { ButtonSwapToggle } from './SwapIconToggle';
 
 interface IProps {
 	toggleSwapType: () => void;
-	tokenSellSelected: ITokenType | null;
-	tokenBuySelected: ITokenType | null;
+	tokenSellSelected: ITokenType;
+	tokenBuySelected: ITokenType ;
+	inputAmount:number
+	outputAmount:number
 }
 
 export const ConfirmSwapContent = ({ toggleSwapType, tokenSellSelected, tokenBuySelected }: IProps) => {
@@ -56,7 +58,7 @@ export const ConfirmSwapContent = ({ toggleSwapType, tokenSellSelected, tokenBuy
 							variant="outlined"
 							color={setColorThemeMode('white', 'primary')}
 							fullRounded
-							icon={<Image src={'/images/token.png'} height={24} width={24} alt="" />}
+							icon={<Image src={getImageNextwork(tokenBuySelected?.token,'symbol_logo')} height={24} width={24} alt="" />}
 						/>
 					</Stack>
 				</MainCard>
