@@ -49,8 +49,6 @@ const PositionItem = ({ item, symbol, refresh, activedTPSL }: IProps) => {
 				</Typography>
 			</TableCell>
 
-			<TableCell>{usdFormatter.format(item.settle_price)}</TableCell>
-
 			<TableCell>{usdFormatter.format(item["average_open_price"])}</TableCell>
 
 			<TableCell>{usdFormatter.format(item.mark_price)}</TableCell>
@@ -97,15 +95,17 @@ const PositionItem = ({ item, symbol, refresh, activedTPSL }: IProps) => {
 
 			<TableCell>{usdFormatter.format(item["notional"])}</TableCell>
 
-			{/* Margin = Position size * Mark price * MMR */}
 			<TableCell>{item.cost_position ? usdFormatter.format(item["mm"]) : "-"}</TableCell>
 
 			<TableCell>{dayjs(item.timestamp).format("YYYY-MM-DD HH:mm")}</TableCell>
 
 			<TableCell>
-				<UpdatePosition position={item} symbol={symbol} refresh={refresh} 
-				takeProfit={takeProfit}
-				stopLoss={stopLoss}
+				<UpdatePosition
+					position={item}
+					symbol={symbol}
+					refresh={refresh}
+					takeProfit={takeProfit}
+					stopLoss={stopLoss}
 				/>
 			</TableCell>
 		</TableRow>

@@ -11,7 +11,6 @@ import { Box, Grid, Stack, Typography, useTheme } from "@mui/material";
 import { API } from "@orderly.network/types";
 import { useState } from "react";
 import ClosePositionContent from "./ClosePositionContent";
-import StopOrderContent from "./StopOrderContent";
 import TpSlOrder from "./TpSlOrder";
 
 interface IProps {
@@ -71,18 +70,18 @@ const UpdatePosition = ({ position, refresh, symbol, takeProfit, stopLoss }: IPr
 				/>
 			),
 		},
-		{
-			label: "Stop Market",
-			value: "2",
-			children: (
-				<StopOrderContent
-					symbol={symbol}
-					position={position}
-					refresh={refresh}
-					handleCloseModal={handleToggleModal}
-				/>
-			),
-		},
+		// {
+		// 	label: "Stop Market",
+		// 	value: "2",
+		// 	children: (
+		// 		<StopOrderContent
+		// 			symbol={symbol}
+		// 			position={position}
+		// 			refresh={refresh}
+		// 			handleCloseModal={handleToggleModal}
+		// 		/>
+		// 	),
+		// },
 		{
 			label: "TP/SL",
 			value: "3",

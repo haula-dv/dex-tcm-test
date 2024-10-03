@@ -1,7 +1,8 @@
-'use client';
-import { Header } from '@/components/layouts/Header';
-import { Box, useTheme } from '@mui/material';
-import React from 'react';
+"use client";
+import { Header } from "@/components/layouts/Header";
+import "@/styles/global.scss";
+import { Box, useTheme } from "@mui/material";
+import React from "react";
 
 export default function RootLayout({
 	children,
@@ -14,7 +15,7 @@ export default function RootLayout({
 		<div className={theme.palette.mode}>
 			<Header />
 
-			<Box position={'relative'}>{children}</Box>
+			<Box position={"relative"}>{children}</Box>
 		</div>
 	);
 }

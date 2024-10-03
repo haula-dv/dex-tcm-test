@@ -1,30 +1,36 @@
 /* eslint-disable react-hooks/rules-of-hooks */
-import MainCard from '@/components/card/MainCard';
-import IconLoading from '@/components/icons/loading';
-import { getDecimalsFromTick } from '@/utils/formatters/api';
-import { TSizes } from '@/utils/themes/custom-theme/sizes';
-import { Stack, Typography, useTheme } from '@mui/material';
-import { useCollateral, useMarkPrice, useOrderEntry, useSymbolsInfo, useWithdraw } from '@orderly.network/hooks';
-import { OrderEntity, OrderSide, OrderType } from '@orderly.network/types';
-import { useConnectWallet, useNotifications } from '@web3-onboard/react';
-import { memo, ReactNode, useMemo, useState } from 'react';
-import { useForm } from 'react-hook-form';
-import { match } from 'ts-pattern';
-import { Balance } from '../common/Balance';
-import AvailableWithdraw from './AvailableWithdraw';
-import Details from './Details';
-import InputForm from './InputForm';
-import ModalConfirmOrder from './ModalConfirmOrder';
-import OrderDirection from './OrderDirection';
-import OrderTypeTab from './OrderTypeTab';
+import MainCard from "@/components/card/MainCard";
+import IconLoading from "@/components/icons/loading";
+import { getDecimalsFromTick } from "@/utils/formatters/api";
+import { TSizes } from "@/utils/themes/custom-theme/sizes";
+import { Stack, Typography, useTheme } from "@mui/material";
+import {
+	useCollateral,
+	useMarkPrice,
+	useOrderEntry,
+	useSymbolsInfo,
+	useWithdraw,
+} from "@orderly.network/hooks";
+import { OrderEntity, OrderSide, OrderType } from "@orderly.network/types";
+import { useConnectWallet, useNotifications } from "@web3-onboard/react";
+import { memo, ReactNode, useState } from "react";
+import { useForm } from "react-hook-form";
+import { match } from "ts-pattern";
+import { Balance } from "../common/Balance";
+import AvailableWithdraw from "./AvailableWithdraw";
+import Details from "./Details";
+import InputForm from "./InputForm";
+import ModalConfirmOrder from "./ModalConfirmOrder";
+import OrderDirection from "./OrderDirection";
+import OrderTypeTab from "./OrderTypeTab";
 
 interface IProps {
 	symbol: string;
 }
 
 export type Inputs = {
-	direction: 'Buy' | 'Sell';
-	type: 'Market' | 'Limit' | 'StopLimit' | 'StopMarket';
+	direction: "Buy" | "Sell";
+	type: "Market" | "Limit" | "StopLimit" | "StopMarket";
 	triggerPrice?: string;
 	price?: string;
 	quantity?: string;
@@ -33,8 +39,8 @@ export type Inputs = {
 };
 
 const defaultValues: Inputs = {
-	direction: 'Buy',
-	type: 'Limit',
+	direction: "Buy",
+	type: "Limit",
 	triggerPrice: undefined,
 	price: undefined,
 	quantity: undefined,
@@ -52,7 +58,7 @@ const CreateOrderForm = ({ symbol }: IProps) => {
 	const { availableWithdraw } = useWithdraw();
 	const collateral = useCollateral();
 	const [_0, customNotification] = useNotifications();
-	const [_, base, quote] = symbol.split('_');
+	const [_, base, quote] = symbol.split("_");
 	const { data: markPrice } = useMarkPrice(symbol);
 
 	const symbolInfo = symbolsInfo[symbol]();
@@ -60,7 +66,7 @@ const CreateOrderForm = ({ symbol }: IProps) => {
 
 	const formContext = useForm<Inputs>({
 		defaultValues,
-		mode: 'all',
+		// mode: "all",
 	});
 
 	const { watch } = formContext;
@@ -68,34 +74,25 @@ const CreateOrderForm = ({ symbol }: IProps) => {
 	const { onSubmit, helper, maxQty, estLeverage, estLiqPrice } = useOrderEntry(
 		{
 			symbol,
-			side: match(watch('direction', 'Buy'))
-				.with('Buy', () => OrderSide.BUY)
-				.with('Sell', () => OrderSide.SELL)
+			side: match(watch("direction", "Buy"))
+				.with("Buy", () => OrderSide.BUY)
+				.with("Sell", () => OrderSide.SELL)
 				.exhaustive(),
-			order_type: match(watch('type', 'Market'))
-				.with('Market', () => OrderType.MARKET)
-				.with('Limit', () => OrderType.LIMIT)
-				.with('StopLimit', () => OrderType.STOP_LIMIT)
-				.with('StopMarket', () => OrderType.STOP_MARKET)
+			order_type: match(watch("type", "Market"))
+				.with("Market", () => OrderType.MARKET)
+				.with("Limit", () => OrderType.LIMIT)
+				.with("StopLimit", () => OrderType.STOP_LIMIT)
+				.with("StopMarket", () => OrderType.STOP_MARKET)
 				.exhaustive(),
-			order_quantity: watch('quantity', undefined),
-			order_price: watch('price', undefined),
-			total: watch('total', undefined),
+			order_quantity: watch("quantity", undefined),
+			order_price: watch("price", undefined),
+			total: watch("total", undefined),
 		},
 		{ watchOrderbook: true },
 	);
 
 	// Handle show modal confirm
 	const handleConfirmOrder = () => {
-		if (!isBalanceSufficient) {
-			customNotification({
-				eventCode: 'error',
-				type: 'error',
-				message: 'Insufficient balance to place the order.',
-				autoDismiss: 5_000,
-			});
-			return;
-		}
 		setOpenOrderConfirm(true);
 	};
 
@@ -105,29 +102,29 @@ const CreateOrderForm = ({ symbol }: IProps) => {
 		setLoading(true);
 
 		const { update } = customNotification({
-			eventCode: 'createOrder',
-			type: 'pending',
-			message: 'Creating order...',
+			eventCode: "createOrder",
+			type: "pending",
+			message: "Creating order...",
 		});
 
-		if (data.type == 'Market' || data.type == 'StopMarket') {
+		if (data.type == "Market" || data.type == "StopMarket") {
 			data.price = undefined;
 		}
 
 		try {
 			await onSubmit(getInput(data, symbol));
 			update({
-				eventCode: 'createOrderSuccess',
-				type: 'success',
-				message: 'Order successfully created!',
+				eventCode: "createOrderSuccess",
+				type: "success",
+				message: "Order successfully created!",
 				autoDismiss: 5_000,
 			});
 		} catch (err) {
 			console.error(`Unhandled error in "submitForm":`, err);
 			update({
-				eventCode: 'createOrderError',
-				type: 'error',
-				message: 'Order creation failed!',
+				eventCode: "createOrderError",
+				type: "error",
+				message: "Order creation failed!",
 				autoDismiss: 5_000,
 			});
 		} finally {
@@ -137,46 +134,19 @@ const CreateOrderForm = ({ symbol }: IProps) => {
 		}
 	};
 
-	const quantity = Number(formContext.watch('quantity')) ?? 0;
-	const price = formContext.watch('price') ?? 0;
-
-	const totalPrice = useMemo(() => {
-		if (isNaN(quantity)) {
-			return 0;
-		}
-
-		const amount = Number(quantity) ?? 0;
-		const curPrice = Number(price) ?? 0;
-
-		if (formContext.watch('type') === 'Limit' || formContext.watch('type') === 'StopLimit') {
-			const total = amount * curPrice;
-			if (isNaN(total)) {
-				return 0;
-			}
-
-			return total;
-		}
-
-		const total = amount * markPrice;
-		if (isNaN(total)) {
-			return 0;
-		}
-
-		return total;
-	}, [quantity, markPrice, price, formContext]);
-
-	// Check if the balance is sufficient
-	const isBalanceSufficient = useMemo(() => {
-		return totalPrice <= collateral.availableBalance; // Compare total price with available balance
-	}, [totalPrice, collateral]);
-
 	return (
 		<>
 			{symbolsInfo.isNil ? (
 				<IconLoading />
 			) : (
 				<MainCard backgroudColor="primary" width="100%" height="100%" heightCard="100%">
-					{wallet && <Balance availableWithdraw={collateral.availableBalance} quote={quote} wallet={wallet} />}
+					{wallet && (
+						<Balance
+							availableWithdraw={collateral.availableBalance}
+							quote={quote}
+							wallet={wallet}
+						/>
+					)}
 
 					<form onSubmit={formContext.handleSubmit(handleConfirmOrder)}>
 						<Stack spacing={TSizes.margin_common}>
@@ -196,12 +166,11 @@ const CreateOrderForm = ({ symbol }: IProps) => {
 							/>
 
 							<Details
-								totalPrice={totalPrice}
 								estLeverage={estLeverage}
 								baseDecimals={baseDecimals}
 								quote={quote}
 								symbol={symbol}
-								formContext={formContext}
+								direction={formContext.watch("direction")}
 								estLiqPrice={estLiqPrice}
 							/>
 						</Stack>
@@ -213,7 +182,7 @@ const CreateOrderForm = ({ symbol }: IProps) => {
 							symbol={symbol}
 							currentValue={formContext.getValues()}
 							loading={loading}
-							totalPrice={totalPrice}
+							totalPrice={formContext.watch("total") ?? ""}
 						/>
 					</form>
 				</MainCard>
@@ -229,12 +198,12 @@ interface IItemProps {
 
 export const Item = ({ value, label }: IItemProps) => {
 	return (
-		<Stack direction={'row'} justifyContent={'space-between'}>
-			<Typography fontSize={'12px'} color={useTheme().palette.grey[600]}>
+		<Stack direction={"row"} justifyContent={"space-between"}>
+			<Typography fontSize={"12px"} color={useTheme().palette.grey[600]}>
 				{label}
 			</Typography>
 
-			<Typography fontSize={'14px'}>{value}</Typography>
+			<Typography fontSize={"14px"}>{value}</Typography>
 		</Stack>
 	);
 };
@@ -245,14 +214,14 @@ export const getInput = (data: Inputs, symbol: string): OrderEntity => {
 	return {
 		symbol,
 		side: match(data.direction)
-			.with('Buy', () => OrderSide.BUY)
-			.with('Sell', () => OrderSide.SELL)
+			.with("Buy", () => OrderSide.BUY)
+			.with("Sell", () => OrderSide.SELL)
 			.exhaustive(),
 		order_type: match(data.type)
-			.with('Market', () => OrderType.MARKET)
-			.with('Limit', () => OrderType.LIMIT)
-			.with('StopLimit', () => OrderType.STOP_LIMIT)
-			.with('StopMarket', () => OrderType.STOP_MARKET)
+			.with("Market", () => OrderType.MARKET)
+			.with("Limit", () => OrderType.LIMIT)
+			.with("StopLimit", () => OrderType.STOP_LIMIT)
+			.with("StopMarket", () => OrderType.STOP_MARKET)
 			.exhaustive(),
 		order_price: data.price,
 		order_quantity: data.quantity,
@@ -264,7 +233,7 @@ export const getInput = (data: Inputs, symbol: string): OrderEntity => {
 export async function getValidationErrors(
 	data: Inputs,
 	symbol: string,
-	validator: ReturnType<typeof useOrderEntry>['helper']['validator'],
-): Promise<ReturnType<ReturnType<typeof useOrderEntry>['helper']['validator']>> {
+	validator: ReturnType<typeof useOrderEntry>["helper"]["validator"],
+): Promise<ReturnType<ReturnType<typeof useOrderEntry>["helper"]["validator"]>> {
 	return validator(getInput(data, symbol));
 }

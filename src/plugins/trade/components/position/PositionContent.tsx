@@ -12,7 +12,6 @@ import PositionItem from "./PositionItem";
 const headTable: IHeadCell[] = [
 	{ title: "Symbol" },
 	{ title: "Quantity" },
-	{ title: "Price" },
 	{ title: "Avg. open" },
 	{ title: "Mark price" },
 	{ title: "Liq. price" },

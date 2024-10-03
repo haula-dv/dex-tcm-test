@@ -1,9 +1,9 @@
-import { setColorThemeMode } from '@/utils/helpers';
-import { TSizes } from '@/utils/themes/custom-theme/sizes';
-import TabContext from '@mui/lab/TabContext';
-import { Button, Stack } from '@mui/material';
-import { styled } from '@mui/material/styles';
-import { memo, ReactElement, ReactNode, useState } from 'react';
+import { setColorThemeMode } from "@/utils/helpers";
+import { TSizes } from "@/utils/themes/custom-theme/sizes";
+import TabContext from "@mui/lab/TabContext";
+import { Button, Stack } from "@mui/material";
+import { styled } from "@mui/material/styles";
+import { memo, ReactElement, ReactNode, useState } from "react";
 
 interface ITab {
 	label: string;
@@ -20,7 +20,15 @@ interface IProps {
 	rightSideTab?: ReactNode;
 }
 
-const MainTab = ({ tabs, onChange, fullWidth, height, children, defaultValue, rightSideTab }: IProps) => {
+const MainTab = ({
+	tabs,
+	onChange,
+	fullWidth,
+	height,
+	children,
+	defaultValue,
+	rightSideTab,
+}: IProps) => {
 	const [value, setValue] = useState<any>(tabs[0].value);
 
 	const handleChange = (val: ITab) => {
@@ -30,8 +38,8 @@ const MainTab = ({ tabs, onChange, fullWidth, height, children, defaultValue, ri
 
 	return (
 		<TabContext value={value ?? defaultValue}>
-			<Stack direction={'row'} pb={'10px'} width={'100%'} justifyContent={'space-between'}>
-				<Stack direction={'row'} spacing={'10px'} width={'100%'}>
+			<Stack direction={"row"} pb={"10px"} width={"100%"} justifyContent={"space-between"}>
+				<Stack direction={"row"} spacing={"10px"} width={"100%"}>
 					{tabs.map((item, index) => {
 						return (
 							<TabItem
@@ -39,8 +47,7 @@ const MainTab = ({ tabs, onChange, fullWidth, height, children, defaultValue, ri
 								key={index}
 								fullWidth={fullWidth}
 								height={height}
-								onClick={(e) => handleChange(item)}
-							>
+								onClick={(e) => handleChange(item)}>
 								{item.label}
 							</TabItem>
 						);
@@ -61,25 +68,25 @@ interface IItabCustom {
 	height?: string;
 }
 
-export const TabItem = styled(Button, { shouldForwardProp: (prop) => prop !== 'actived' })<IItabCustom>(
-	({ theme, actived, height }) => ({
-		borderRadius: TSizes.borderRadius,
-		height: height ? height : TSizes.buttonHeightSmall,
-		minHeight: height ? height : TSizes.buttonHeightSmall,
-		fontSize: '13px',
-		fontWeight: 600,
-		color: theme.palette.grey[500],
-		...(actived && {
-			backgroundColor: setColorThemeMode(theme.palette.common.white, '#322B27'),
-			color: setColorThemeMode(theme.palette.grey[600], theme.palette.grey[100]),
-		}),
-
-		'&:hover': {
-			backgroundColor: setColorThemeMode(theme.palette.common.white, '#322B27'),
-		},
-
-		'& svg': {
-			color: setColorThemeMode(theme.palette.grey[600], theme.palette.grey[100]),
-		},
+export const TabItem = styled(Button, {
+	shouldForwardProp: (prop) => prop !== "actived",
+})<IItabCustom>(({ theme, actived, height }) => ({
+	borderRadius: TSizes.borderRadius,
+	height: height ? height : TSizes.buttonHeightSmall,
+	minHeight: height ? height : TSizes.buttonHeightSmall,
+	fontSize: "13px",
+	fontWeight: 600,
+	color: theme.palette.grey[500],
+	...(actived && {
+		backgroundColor: setColorThemeMode(theme.palette.common.white, "#322B27"),
+		color: setColorThemeMode(theme.palette.grey[600], theme.palette.grey[100]),
 	}),
-);
+
+	"&:hover": {
+		backgroundColor: setColorThemeMode(theme.palette.common.white, "#322B27"),
+	},
+
+	"& svg": {
+		color: setColorThemeMode(theme.palette.grey[600], theme.palette.grey[100]),
+	},
+}));

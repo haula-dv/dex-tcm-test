@@ -1,13 +1,13 @@
-'use client';
-import { MainButton } from '@/components/button/MainButton';
-import { MainCardNotch } from '@/components/card/MainCardNotch';
-import IconCheckActived from '@/components/icons/check-actived';
-import IconCheckInActived from '@/components/icons/check-inactived';
-import { TSizes } from '@/utils/themes/custom-theme/sizes';
-import { Checkbox, FormControlLabel, Stack, Typography, useTheme } from '@mui/material';
-import { useRouter } from 'next/navigation';
-import { useState } from 'react';
-import { AccountItem } from './AccountItem';
+"use client";
+import { MainButton } from "@/components/button/MainButton";
+import { MainCardNotch } from "@/components/card/MainCardNotch";
+import IconCheckActived from "@/components/icons/check-actived";
+import IconCheckInActived from "@/components/icons/check-inactived";
+import { TSizes } from "@/utils/themes/custom-theme/sizes";
+import { Checkbox, FormControlLabel, Stack, Typography, useTheme } from "@mui/material";
+import { useRouter } from "next/navigation";
+import { useState } from "react";
+import { AccountItem } from "./AccountItem";
 
 export const AccountContainer = () => {
 	const router = useRouter();
@@ -24,17 +24,17 @@ export const AccountContainer = () => {
 
 	// Handle connect wallet
 	const handleConnect = () => {
-		router.push('/swap');
+		router.push("/swap");
 	};
 
 	return (
 		<MainCardNotch borderRadius="0px" backgroudColor="primary">
-			<Stack mt={'-20px'} pb={'30px'} zIndex={99} position={'relative'}>
-				<Typography variant="h3" fontWeight={700} textAlign={'center'}>
+			<Stack mt={"-20px"} pb={"30px"} zIndex={99} position={"relative"}>
+				<Typography variant="h3" fontWeight={700} textAlign={"center"}>
 					Connect to Swaplux
 				</Typography>
 
-				<Typography textAlign={'center'} pt={'8px'} color={theme.palette.grey[500]}>
+				<Typography textAlign={"center"} pt={"8px"} color={theme.palette.grey[500]}>
 					Select the account (s)
 				</Typography>
 			</Stack>
@@ -62,12 +62,17 @@ export const AccountContainer = () => {
 				label="Allow this site View the addresses of your authorized accounts (required)"
 			/>
 
-			<Stack direction={'row'} spacing={TSizes.margin_sm} pt={'32px'}>
+			<Stack direction={"row"} spacing={TSizes.margin_sm} pt={"32px"}>
 				<MainButton color="inherit" fullWidth size="large">
 					Cancel
 				</MainButton>
 
-				<MainButton variant="contained" color="darkPrimary" fullWidth size="large" onClick={handleConnect}>
+				<MainButton
+					variant="contained"
+					color="darkPrimary"
+					fullWidth
+					size="large"
+					onClick={handleConnect}>
 					Connect
 				</MainButton>
 			</Stack>

@@ -1,23 +1,19 @@
-import { MainButton } from '@/components/button/MainButton';
-import MainCard from '@/components/card/MainCard';
-import { ItemRow } from '@/plugins/pool/components/TokenSelected';
-import { Stack, Typography } from '@mui/material';
-import { useConnectWallet } from '@web3-onboard/react';
-import { memo } from 'react';
-import { UseFormReturn } from 'react-hook-form';
-import { Inputs } from './CreateOrderForm';
+import { MainButton } from "@/components/button/MainButton";
+import MainCard from "@/components/card/MainCard";
+import { ItemRow } from "@/plugins/pool/components/TokenSelected";
+import { Stack, Typography } from "@mui/material";
+import { useConnectWallet } from "@web3-onboard/react";
 
 interface IProps {
-	totalPrice: number;
 	estLeverage: number | any | undefined;
 	estLiqPrice: number | any | undefined;
 	quote?: string;
 	symbol: string;
 	baseDecimals: number;
-	formContext: UseFormReturn<Inputs>;
+	direction: any;
 }
 
-const Details = ({ totalPrice = 0, estLeverage, estLiqPrice, baseDecimals, quote, formContext }: IProps) => {
+const Details = ({ estLeverage, estLiqPrice, baseDecimals, quote, direction }: IProps) => {
 	const [{ wallet, connecting }, connect] = useConnectWallet();
 
 	// Handle connect wallet button
@@ -26,23 +22,23 @@ const Details = ({ totalPrice = 0, estLeverage, estLiqPrice, baseDecimals, quote
 		location.reload();
 	};
 
-	const formatter = new Intl.NumberFormat('en-US', { maximumFractionDigits: baseDecimals });
+	const formatter = new Intl.NumberFormat("en-US", { maximumFractionDigits: baseDecimals });
 
 	return (
 		<MainCard width="100%" backgroudColor="primaryLight">
-			<Typography pb={'10px'}>Details</Typography>
+			<Typography pb={"10px"}>Details</Typography>
 
-			<Stack spacing={'6px'} pb={'10px'}>
+			<Stack spacing={"6px"} pb={"10px"}>
 				<ItemRow
 					title="Est. Liq. price"
 					value={
 						<>
-							{estLiqPrice ? formatter.format(estLiqPrice.toFixed(2)) : '-'} {quote}
+							{estLiqPrice ? formatter.format(estLiqPrice.toFixed(2)) : "-"} {quote}
 						</>
 					}
 				/>
 
-				<ItemRow title="Account leverage" value={estLeverage ? `${estLeverage}x` : '-'} />
+				<ItemRow title="Account leverage" value={estLeverage ? `${estLeverage}x` : "-"} />
 
 				{/* <ItemRow title="Expected Price" value={estLiqPrice ? formatter.format(estLiqPrice) : '-'} />
 
@@ -87,15 +83,14 @@ const Details = ({ totalPrice = 0, estLeverage, estLiqPrice, baseDecimals, quote
 				fullWidth
 				variant="contained"
 				color="primary"
-				type={wallet ? 'submit' : 'button'}
+				type={wallet ? "submit" : "button"}
 				onClick={() => {
 					return wallet ? null : handleConnectWallet();
-				}}
-			>
-				{connecting ? 'Connecting...' : wallet ? formContext.watch('direction') : 'Connect wallet'}
+				}}>
+				{connecting ? "Connecting..." : wallet ? direction : "Connect wallet"}
 			</MainButton>
 		</MainCard>
 	);
 };
 
-export default memo(Details);
+export default Details;

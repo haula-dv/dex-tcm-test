@@ -1,13 +1,14 @@
-'use client';
-import { HeadPage } from '@/components/HeadPage';
-import { OrderlyConfig } from '@/utils/config/orderly';
-import { TCMP_ORDERLY_SDK_TITLE_KEY } from '@/utils/constants/key_store';
-import { _orderlySymbolKey } from '@/utils/constants/orderly';
-import { Box } from '@mui/material';
-import { TradingPage } from '@orderly.network/react';
-import '@orderly.network/react/dist/styles.css';
-import { useRouter } from 'next/navigation';
-import { useCallback, useEffect, useState } from 'react';
+"use client";
+import { HeadPage } from "@/components/HeadPage";
+import "@/styles/abstracts/variables-test.scss";
+import { OrderlyConfig } from "@/utils/config/orderly";
+import { TCMP_ORDERLY_SDK_TITLE_KEY } from "@/utils/constants/key_store";
+import { _orderlySymbolKey } from "@/utils/constants/orderly";
+import { Box } from "@mui/material";
+import { TradingPage } from "@orderly.network/react";
+import "@orderly.network/react/dist/styles.css";
+import { useRouter } from "next/navigation";
+import { useCallback, useEffect, useState } from "react";
 
 export default function PerpPage({ params }: { params: { symbol: string } }) {
 	const router = useRouter();
@@ -38,10 +39,10 @@ export default function PerpPage({ params }: { params: { symbol: string } }) {
 	const { tradingViewConfig } = OrderlyConfig();
 
 	return (
-		<Box bgcolor={'#262626'}>
-			<HeadPage title={`${symbol || 'PERP_ETH_USDC'}`} />
+		<Box bgcolor={"#262626"}>
+			<HeadPage title={`${symbol || "PERP_ETH_USDC"}`} />
 			<TradingPage
-				symbol={'PERP_ETH_USDC'}
+				symbol={"PERP_ETH_USDC"}
 				tradingViewConfig={tradingViewConfig}
 				onSymbolChange={() => {
 					//

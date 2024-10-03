@@ -1,12 +1,12 @@
-import { MainButton } from '@/components/button/MainButton';
-import MainCard from '@/components/card/MainCard';
-import { MainDialog } from '@/components/dialog/MainDialog';
-import { ItemRow } from '@/plugins/pool/components/TokenSelected';
-import { usdFormatter } from '@/utils/formatters/number';
-import { setColorThemeMode } from '@/utils/helpers';
-import { TSizes } from '@/utils/themes/custom-theme/sizes';
-import { Box, Divider, Stack, Typography, useTheme } from '@mui/material';
-import { Inputs } from './CreateOrderForm';
+import { MainButton } from "@/components/button/MainButton";
+import MainCard from "@/components/card/MainCard";
+import { MainDialog } from "@/components/dialog/MainDialog";
+import { ItemRow } from "@/plugins/pool/components/TokenSelected";
+import { usdFormatter } from "@/utils/formatters/number";
+import { setColorThemeMode } from "@/utils/helpers";
+import { TSizes } from "@/utils/themes/custom-theme/sizes";
+import { Box, Divider, Stack, Typography, useTheme } from "@mui/material";
+import { Inputs } from "./CreateOrderForm";
 
 interface IProps {
 	open: boolean;
@@ -15,16 +15,24 @@ interface IProps {
 	submitForm: () => void;
 	symbol: string;
 	currentValue: Inputs;
-	totalPrice: number;
+	totalPrice: any;
 }
 
-const ModalConfirmOrder = ({ open, loading, handleClose, submitForm, symbol, currentValue, totalPrice }: IProps) => {
-	const [_, base, quote] = symbol.split('_');
+const ModalConfirmOrder = ({
+	open,
+	loading,
+	handleClose,
+	submitForm,
+	symbol,
+	currentValue,
+	totalPrice,
+}: IProps) => {
+	const [_, base, quote] = symbol.split("_");
 	const theme = useTheme();
 
 	return (
 		<MainDialog open={open} handleClose={handleClose} title="Confirm Order" maxWidth="xs" isDivider>
-			<Stack direction={'row'} justifyContent={'space-between'} alignItems={'center'} pb="10px">
+			<Stack direction={"row"} justifyContent={"space-between"} alignItems={"center"} pb="10px">
 				<Typography fontWeight={600}>{base}-PERP</Typography>
 
 				<Typography color={theme.palette.success.main} fontWeight={600}>
@@ -43,22 +51,23 @@ const ModalConfirmOrder = ({ open, loading, handleClose, submitForm, symbol, cur
 						}
 					/>
 					<ItemRow
-						title={currentValue.type === 'StopMarket' ? 'Trigger' : 'Price'}
+						title={currentValue.type === "StopMarket" ? "Trigger" : "Price"}
 						value={
-							currentValue.type === 'Market' ? (
-								'Market'
+							currentValue.type === "Market" ? (
+								"Market"
 							) : (
 								<Box fontWeight={600}>
-									{currentValue.type === 'StopMarket'
-										? usdFormatter.format(currentValue.triggerPrice ? +currentValue.triggerPrice : 0)
+									{currentValue.type === "StopMarket"
+										? usdFormatter.format(
+												currentValue.triggerPrice ? +currentValue.triggerPrice : 0,
+										  )
 										: usdFormatter.format(currentValue.price ? +currentValue.price : 0)}
 
 									<span
 										style={{
-											paddingLeft: '6px',
+											paddingLeft: "6px",
 											color: setColorThemeMode(theme.palette.grey[600], theme.palette.grey[300]),
-										}}
-									>
+										}}>
 										{quote}
 									</span>
 								</Box>
@@ -76,10 +85,9 @@ const ModalConfirmOrder = ({ open, loading, handleClose, submitForm, symbol, cur
 
 								<span
 									style={{
-										paddingLeft: '6px',
+										paddingLeft: "6px",
 										color: setColorThemeMode(theme.palette.grey[600], theme.palette.grey[300]),
-									}}
-								>
+									}}>
 									{quote}
 								</span>
 							</Box>
@@ -88,12 +96,23 @@ const ModalConfirmOrder = ({ open, loading, handleClose, submitForm, symbol, cur
 				</Stack>
 			</MainCard>
 
-			<Stack direction={'row'} pt={TSizes.margin_common} spacing={TSizes.margin_common}>
-				<MainButton fullWidth variant="contained" color="inherit" onClick={handleClose}>
+			<Stack direction={"row"} pt={TSizes.margin_common} spacing={TSizes.margin_common}>
+				<MainButton
+					fullWidth
+					variant="contained"
+					color="inherit"
+					onClick={handleClose}
+					disabled={loading}>
 					Cancel
 				</MainButton>
 
-				<MainButton fullWidth variant="contained" color="primary" onClick={submitForm} isLoading={loading}>
+				<MainButton
+					fullWidth
+					variant="contained"
+					color="primary"
+					onClick={submitForm}
+					isLoading={loading}
+					disabled={loading}>
 					Confirm
 				</MainButton>
 			</Stack>
