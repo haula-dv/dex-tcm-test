@@ -107,13 +107,19 @@ const TPSLOrderItem = ({ order, cancelTPSLOrder, onClickItem }: IProps) => {
 			<TableCell>
 				{takeProfit && (
 					<Typography>
-						TP - <span style={{ color: theme.palette.grey[500] }}>{takeProfit.type}</span>
+						TP -{" "}
+						<span style={{ color: theme.palette.grey[500] }}>
+							{takeProfit.type == "CLOSE_POSITION" ? "Market" : takeProfit.type}
+						</span>
 					</Typography>
 				)}
 
 				{stopLoss && (
 					<Typography>
-						SL - <span style={{ color: theme.palette.grey[500] }}>{stopLoss.type}</span>
+						SL -{" "}
+						<span style={{ color: theme.palette.grey[500] }}>
+							{stopLoss.type == "CLOSE_POSITION" ? "Market" : stopLoss.type}
+						</span>
 					</Typography>
 				)}
 			</TableCell>

@@ -173,9 +173,7 @@ const TpSlOrder = ({
 											}}>
 											{formContext.watch("tp_trigger_price")
 												? ComputedAlgoOrder.tp_pnl != null
-													? `${usdFormatter.format(
-															ComputedAlgoOrder.tp_pnl.toString().replace("-", "") as any,
-													  )} ${quote}`
+													? `${usdFormatter.format(ComputedAlgoOrder.tp_pnl)} ${quote}`
 													: "-"
 												: "-"}
 										</span>
@@ -219,9 +217,7 @@ const TpSlOrder = ({
 											}}>
 											{formContext.watch("sl_trigger_price")
 												? ComputedAlgoOrder.sl_pnl != null
-													? `${usdFormatter.format(
-															ComputedAlgoOrder.sl_pnl.toString().replace("-", "") as any,
-													  )} ${quote}`
+													? `${usdFormatter.format(ComputedAlgoOrder.sl_pnl)} ${quote}`
 													: "-"
 												: "--"}
 										</span>

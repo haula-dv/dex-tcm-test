@@ -7,7 +7,7 @@ import BaseSlider from "@/components/sider/BaseSlider";
 import { TabItem } from "@/components/tab/MainTab";
 import { getDecimalsFromTick } from "@/utils/formatters/api";
 import { setColorThemeMode } from "@/utils/helpers";
-import { Box, InputAdornment, Stack, Typography, useTheme } from "@mui/material";
+import { Box, Divider, InputAdornment, Stack, Typography, useTheme } from "@mui/material";
 import { useOrderEntry, useSymbolsInfo } from "@orderly.network/hooks";
 import { SelectOption } from "@orderly.network/react/esm/select/select";
 import { API, OrderEntity, OrderSide, OrderType } from "@orderly.network/types";
@@ -47,7 +47,7 @@ const ClosePositionContent = ({ symbol, position, refresh, handleCloseModal }: I
 			direction: position.position_qty > 0 ? OrderSide.SELL : OrderSide.BUY,
 			type: "Market",
 			quantity: Math.abs(position.position_qty),
-			price: position["notional"],
+			price: position.mark_price,
 		},
 		mode: "all",
 	});
@@ -126,7 +126,7 @@ const ClosePositionContent = ({ symbol, position, refresh, handleCloseModal }: I
 					<Typography pb={2}>Partially or fully close your open position at mark price.</Typography>
 
 					<MainCard variant="outlined" backgroudColor={setColorThemeMode("white", "transparent")}>
-						<Stack direction={"row"} pb={"10px"}>
+						<Stack direction={"row"} pb={"10px"} spacing={"10px"}>
 							{items.map((item, index) => {
 								const isActived = item.value === value;
 								return (
@@ -140,86 +140,97 @@ const ClosePositionContent = ({ symbol, position, refresh, handleCloseModal }: I
 								);
 							})}
 						</Stack>
+						<Divider />
 
-						{isHiddenMarket ? (
-							<>
-								<CustomTextField
-									readOnly
-									placeholder="Market"
-									startAdornment={
-										<InputAdornment position="start">
-											<Typography
-												fontWeight={600}
-												fontSize="14px"
-												color={setColorThemeMode(theme.palette.grey[600], theme.palette.grey[300])}>
-												Price
-											</Typography>
-										</InputAdornment>
-									}
-									endAdornment={
-										<InputAdornment position="end">
-											<Typography
-												px={"6px"}
-												flexShrink={0}
-												bgcolor={setColorThemeMode(
-													theme.palette.primary.main,
-													theme.palette.grey[800],
-												)}
-												fontWeight={600}
-												borderRadius={"40px"}
-												fontSize={"14px"}>
-												{"USDC"}
-											</Typography>
-										</InputAdornment>
-									}
-								/>
-								<Box pt="4px" />
-							</>
-						) : (
-							<CurrencyInputField
-								name="price"
-								formContext={formContext}
-								suffix={"USDC"}
-								decimals={quoteDecimals}
-								prefix={"Price"}
-								rules={{
-									validate: {
-										custom: async (_, data) => {
-											const errors = await getValidationErrors(data, symbol, helper.validator);
-											return errors?.order_price != null ? errors.order_price.message : true;
+						<Stack spacing={"8px"} pt="10px">
+							{isHiddenMarket ? (
+								<div>
+									<CustomTextField
+										readOnly
+										placeholder="Market"
+										startAdornment={
+											<InputAdornment position="start">
+												<Typography
+													fontWeight={600}
+													fontSize="14px"
+													color={setColorThemeMode(
+														theme.palette.grey[600],
+														theme.palette.grey[300],
+													)}>
+													Price
+												</Typography>
+											</InputAdornment>
+										}
+										endAdornment={
+											<InputAdornment position="end">
+												<Typography
+													px={"6px"}
+													flexShrink={0}
+													bgcolor={setColorThemeMode(
+														theme.palette.primary.main,
+														theme.palette.grey[800],
+													)}
+													fontWeight={600}
+													borderRadius={"40px"}
+													fontSize={"14px"}>
+													{"USDC"}
+												</Typography>
+											</InputAdornment>
+										}
+									/>
+
+									<Box pt="3.5px" />
+								</div>
+							) : (
+								<CurrencyInputField
+									name="price"
+									formContext={formContext}
+									suffix={"USDC"}
+									decimals={quoteDecimals}
+									prefix={"Price"}
+									rules={{
+										validate: {
+											custom: async (_, data) => {
+												const errors = await getValidationErrors(data, symbol, helper.validator);
+												return errors?.order_price != null ? errors.order_price.message : true;
+											},
 										},
-									},
-								}}
-							/>
-						)}
+									}}
+								/>
+							)}
 
-						<CurrencyInputField
-							name="quantity"
-							formContext={formContext}
-							decimals={baseDecimals}
-							placeholder="0.0000"
-							prefix={"Quantity"}
-							suffix={base}
-							rules={{
-								validate: {
-									custom: async (_, data) => {
-										const errors = await getValidationErrors(data, symbol, helper.validator);
-										return errors?.order_quantity != null ? errors.order_quantity.message : true;
-									},
-								},
-							}}
-						/>
+							<Stack>
+								<CurrencyInputField
+									name="quantity"
+									formContext={formContext}
+									decimals={baseDecimals}
+									placeholder="0.0000"
+									prefix={"Quantity"}
+									suffix={base}
+									rules={{
+										validate: {
+											custom: async (_, data) => {
+												const errors = await getValidationErrors(data, symbol, helper.validator);
+												return errors?.order_quantity != null
+													? errors.order_quantity.message
+													: true;
+											},
+										},
+									}}
+								/>
 
-						<BaseSlider
-							min={0}
-							max={Math.abs(position.position_qty)}
-							handleChange={(newValue) =>
-								formContext.setValue("quantity", newValue, {
-									shouldValidate: true,
-								})
-							}
-							amountQty={Number(formContext.watch("quantity")) ?? 0}
-						/>
+								<BaseSlider
+									min={0}
+									max={Math.abs(position.position_qty)}
+									handleChange={(newValue) =>
+										formContext.setValue("quantity", newValue, {
+											shouldValidate: true,
+										})
+									}
+									amountQty={Number(formContext.watch("quantity")) ?? 0}
+								/>
+							</Stack>
+						</Stack>
 					</MainCard>
 					<Box mt="10px" />
 
