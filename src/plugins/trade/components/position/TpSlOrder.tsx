@@ -7,7 +7,7 @@ import { getDecimalsFromTick } from "@/utils/formatters/api";
 import { usdFormatter } from "@/utils/formatters/number";
 import { setColorThemeMode } from "@/utils/helpers";
 import { Box, Divider, Stack, Typography, useTheme } from "@mui/material";
-import { useSymbolsInfo, useTPSLOrder } from "@orderly.network/hooks";
+import { useOrderStream, useSymbolsInfo, useTPSLOrder } from "@orderly.network/hooks";
 import { API } from "@orderly.network/types";
 import { useNotifications } from "@web3-onboard/react";
 import { useEffect, useState } from "react";
@@ -24,17 +24,26 @@ interface IProps {
 	position: API.PositionExt;
 	refresh: import("swr/_internal").KeyedMutator<API.PositionInfo>;
 	handleCloseModal: () => void;
+	stopLoss: any | null;
+	takeProfit: any | null;
 }
 
-const TpSlOrder = ({ symbol, position, refresh, handleCloseModal }: IProps) => {
+const TpSlOrder = ({
+	symbol,
+	position,
+	refresh,
+	handleCloseModal,
+	stopLoss,
+	takeProfit,
+}: IProps) => {
 	const [loading, setLoading] = useState(false);
 	const theme = useTheme();
 	const symbolsInfo = useSymbolsInfo();
 
 	const formContext = useForm<TpSlOrderInputs>({
 		defaultValues: {
-			tp_trigger_price: undefined,
-			sl_trigger_price: undefined,
+			tp_trigger_price: takeProfit?.trigger_price ?? undefined,
+			sl_trigger_price: stopLoss?.trigger_price ?? undefined,
 			quantity: Math.abs(position.position_qty),
 		},
 		mode: "all",
@@ -42,10 +51,10 @@ const TpSlOrder = ({ symbol, position, refresh, handleCloseModal }: IProps) => {
 
 	const [ComputedAlgoOrder, { setValue, submit, errors }] = useTPSLOrder({
 		...position,
-
 		symbol,
 	});
 
+	const [_1, { updateTPSLOrder }] = useOrderStream({});
 	const [_0, customNotification] = useNotifications();
 
 	const submitForm: SubmitHandler<TpSlOrderInputs> = async () => {
@@ -58,10 +67,11 @@ const TpSlOrder = ({ symbol, position, refresh, handleCloseModal }: IProps) => {
 		});
 
 		try {
-			await submit();
-
-			// const childOrders = [{}];
-			// updateTPSLOrder(orderId, childOrders);
+			if (takeProfit?.trigger_price || stopLoss?.trigger_price) {
+				updateTPSLOrder;
+			} else {
+				await submit();
+			}
 
 			update({
 				eventCode: "createStopOrderSuccess",

@@ -103,7 +103,10 @@ const PositionItem = ({ item, symbol, refresh, activedTPSL }: IProps) => {
 			<TableCell>{dayjs(item.timestamp).format("YYYY-MM-DD HH:mm")}</TableCell>
 
 			<TableCell>
-				<UpdatePosition position={item} symbol={symbol} refresh={refresh} />
+				<UpdatePosition position={item} symbol={symbol} refresh={refresh} 
+				takeProfit={takeProfit}
+				stopLoss={stopLoss}
+				/>
 			</TableCell>
 		</TableRow>
 	);

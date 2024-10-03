@@ -63,7 +63,7 @@ const TPSLOrderItem = ({ order, cancelTPSLOrder, onClickItem }: IProps) => {
 							<>
 								{takeProfit ? <MainChip size="small" label={"TP"} color="default" /> : ""}
 
-								{stopLoss ? <MainChip size="small" label={"TS"} color="default" /> : ""}
+								{stopLoss ? <MainChip size="small" label={"SL"} color="default" /> : ""}
 							</>
 						)}
 					</Stack>

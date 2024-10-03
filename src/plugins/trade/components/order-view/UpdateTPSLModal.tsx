@@ -1,19 +1,19 @@
 /* eslint-disable react-hooks/rules-of-hooks */
-import { MainButton } from '@/components/button/MainButton';
-import MainCard from '@/components/card/MainCard';
-import { MainDialog } from '@/components/dialog/MainDialog';
-import CurrencyInputField from '@/components/form-control/CurrencyInputField';
-import { ItemRow } from '@/plugins/pool/components/TokenSelected';
-import { getDecimalsFromTick } from '@/utils/formatters/api';
-import { usdFormatter } from '@/utils/formatters/number';
-import { setColorThemeMode } from '@/utils/helpers';
-import { Stack, Typography, useTheme } from '@mui/material';
-import { useOrderStream, useSymbolsInfo, useTPSLOrder } from '@orderly.network/hooks';
-import { toast } from '@orderly.network/react';
-import { API } from '@orderly.network/types';
-import { useEffect, useState } from 'react';
-import { useForm } from 'react-hook-form';
-import { FormContainer } from 'react-hook-form-mui';
+import { MainButton } from "@/components/button/MainButton";
+import MainCard from "@/components/card/MainCard";
+import { MainDialog } from "@/components/dialog/MainDialog";
+import CurrencyInputField from "@/components/form-control/CurrencyInputField";
+import { ItemRow } from "@/plugins/pool/components/TokenSelected";
+import { getDecimalsFromTick } from "@/utils/formatters/api";
+import { usdFormatter } from "@/utils/formatters/number";
+import { setColorThemeMode } from "@/utils/helpers";
+import { Stack, Typography, useTheme } from "@mui/material";
+import { useOrderStream, useSymbolsInfo, useTPSLOrder } from "@orderly.network/hooks";
+import { toast } from "@orderly.network/react";
+import { API } from "@orderly.network/types";
+import { useEffect, useState } from "react";
+import { useForm } from "react-hook-form";
+import { FormContainer } from "react-hook-form-mui";
 
 interface IProps {
 	open: boolean;
@@ -40,11 +40,12 @@ export const UpdateTPSLModal = ({ onClose, open, orderActived, positions }: IPro
 		return <></>;
 	}
 
-	const child_orders: any[] = (orderActived as any).child_orders.length > 0 ? (orderActived as any).child_orders : [];
+	const child_orders: any[] =
+		(orderActived as any).child_orders.length > 0 ? (orderActived as any).child_orders : [];
 
-	const TAKE_PROFIT = child_orders.find((item) => item.algo_type === 'TAKE_PROFIT') ?? null;
+	const TAKE_PROFIT = child_orders.find((item) => item.algo_type === "TAKE_PROFIT") ?? null;
 
-	const STOP_LOSS = child_orders.find((item) => item.algo_type === 'STOP_LOSS') ?? null;
+	const STOP_LOSS = child_orders.find((item) => item.algo_type === "STOP_LOSS") ?? null;
 
 	const defaultValues: Inputs = {
 		tp_trigger_price: TAKE_PROFIT?.trigger_price ?? undefined,
@@ -74,7 +75,7 @@ export const UpdateTPSLModal = ({ onClose, open, orderActived, positions }: IPro
 
 		await updateTPSLOrder(orderActived.algo_order_id, childOrders as any)
 			.then((res) => {
-				toast.success('Order edited!');
+				toast.success("Order edited!");
 			})
 			.catch((err: any) => {
 				toast.success(err.message);
@@ -87,61 +88,68 @@ export const UpdateTPSLModal = ({ onClose, open, orderActived, positions }: IPro
 
 	// Watch field
 	useEffect(() => {
-		setValue('size', 'BUY');
+		setValue("size", "BUY");
 		if (TAKE_PROFIT) {
-			setValue('tp_trigger_price', TAKE_PROFIT?.trigger_price ?? undefined);
+			setValue("tp_trigger_price", TAKE_PROFIT?.trigger_price ?? undefined);
 		}
 
 		if (STOP_LOSS) {
-			setValue('sl_trigger_price', STOP_LOSS?.trigger_price ?? undefined);
+			setValue("sl_trigger_price", STOP_LOSS?.trigger_price ?? undefined);
 		}
 	}, [TAKE_PROFIT, STOP_LOSS]);
 
 	return (
 		<MainDialog open={open} maxWidth="xs" handleClose={onClose} title="Update TP/SL" isDivider>
 			<FormContainer onSuccess={onSubmit} formContext={formContext}>
-				<MainCard variant="outlined" backgroudColor={setColorThemeMode('white', 'transparent')}>
-					<Stack spacing={'10px'}>
+				<MainCard variant="outlined" backgroudColor={setColorThemeMode("white", "transparent")}>
+					<Stack spacing={"10px"}>
 						<CurrencyInputField
 							formContext={formContext}
 							name="tp_trigger_price"
 							decimals={quoteDecimals}
 							placeholder="0.0"
-							prefix={'TP price'}
-							suffix={'USDC'}
-							onValueChange={(val) => setValue('tp_trigger_price', String(val))}
+							prefix={"TP price"}
+							suffix={"USDC"}
+							onValueChange={(val) => setValue("tp_trigger_price", String(val))}
 							rules={{
 								validate: {
 									custom: (_, data) => {
-										return errors?.tp_trigger_price != null ? errors?.tp_trigger_price.message : true;
+										return errors?.tp_trigger_price != null
+											? errors?.tp_trigger_price.message
+											: true;
 									},
 								},
 							}}
 							label={
 								<ItemRow
-									title={<Typography fontSize={'11px'}>Take profit</Typography>}
+									title={<Typography fontSize={"11px"}>Take profit</Typography>}
 									value={
-										<Typography fontSize={'11px'}>
-											<span style={{ color: setColorThemeMode(theme.palette.grey[800], theme.palette.grey[300]) }}>
-												Est. PnL:
-											</span>{' '}
+										<Typography fontSize={"11px"}>
 											<span
 												style={{
-													color: ComputedAlgoOrder.tp_pnl?.toString().startsWith('-')
+													color: setColorThemeMode(
+														theme.palette.grey[800],
+														theme.palette.grey[300],
+													),
+												}}>
+												Est. PnL:
+											</span>{" "}
+											<span
+												style={{
+													color: ComputedAlgoOrder.tp_pnl?.toString().startsWith("-")
 														? theme.palette.error.main
 														: theme.palette.success.main,
-												}}
-											>
-												{formContext.watch('tp_trigger_price') ? (
+												}}>
+												{formContext.watch("tp_trigger_price") ? (
 													<>
 														{ComputedAlgoOrder.tp_pnl != null
 															? `${usdFormatter.format(
-																	ComputedAlgoOrder.tp_pnl.toString().replace('-', '') as any,
-															  )} ${'USDC'}`
-															: '-'}
+																	ComputedAlgoOrder.tp_pnl.toString().replace("-", "") as any,
+															  )} ${"USDC"}`
+															: "-"}
 													</>
 												) : (
-													'-'
+													"-"
 												)}
 											</span>
 										</Typography>
@@ -153,42 +161,49 @@ export const UpdateTPSLModal = ({ onClose, open, orderActived, positions }: IPro
 							formContext={formContext}
 							name="sl_trigger_price"
 							decimals={quoteDecimals}
-							prefix={'SL price'}
-							suffix={'USDC'}
+							prefix={"SL price"}
+							suffix={"USDC"}
 							placeholder="0.0"
-							onValueChange={(val) => setValue('sl_trigger_price', String(val))}
+							onValueChange={(val) => setValue("sl_trigger_price", String(val))}
 							rules={{
 								validate: {
 									custom: (_, data) => {
-										return errors?.sl_trigger_price != null ? errors?.sl_trigger_price.message : true;
+										return errors?.sl_trigger_price != null
+											? errors?.sl_trigger_price.message
+											: true;
 									},
 								},
 							}}
 							label={
 								<ItemRow
-									title={<Typography fontSize={'11px'}>Stop loss</Typography>}
+									title={<Typography fontSize={"11px"}>Stop loss</Typography>}
 									value={
-										<Typography fontSize={'11px'}>
-											<span style={{ color: setColorThemeMode(theme.palette.grey[800], theme.palette.grey[300]) }}>
-												Est. PnL:
-											</span>{' '}
+										<Typography fontSize={"11px"}>
 											<span
 												style={{
-													color: ComputedAlgoOrder.sl_pnl?.toString().startsWith('-')
+													color: setColorThemeMode(
+														theme.palette.grey[800],
+														theme.palette.grey[300],
+													),
+												}}>
+												Est. PnL:
+											</span>{" "}
+											<span
+												style={{
+													color: ComputedAlgoOrder.sl_pnl?.toString().startsWith("-")
 														? theme.palette.error.main
 														: theme.palette.success.main,
-												}}
-											>
-												{formContext.watch('sl_trigger_price') ? (
+												}}>
+												{formContext.watch("sl_trigger_price") ? (
 													<>
 														{ComputedAlgoOrder.sl_pnl != null
 															? `${usdFormatter.format(
-																	ComputedAlgoOrder.sl_pnl.toString().replace('-', '') as any,
-															  )} ${'USDC'}`
-															: '-'}
+																	ComputedAlgoOrder.sl_pnl.toString().replace("-", "") as any,
+															  )} ${"USDC"}`
+															: "-"}
 													</>
 												) : (
-													'-'
+													"-"
 												)}
 											</span>
 										</Typography>
@@ -199,7 +214,7 @@ export const UpdateTPSLModal = ({ onClose, open, orderActived, positions }: IPro
 					</Stack>
 				</MainCard>
 
-				<Stack direction={'row'} spacing={'10px'} mt={'10px'}>
+				<Stack direction={"row"} spacing={"10px"} mt={"10px"}>
 					<MainButton onClick={onClose} fullWidth>
 						Cancel
 					</MainButton>
@@ -209,8 +224,7 @@ export const UpdateTPSLModal = ({ onClose, open, orderActived, positions }: IPro
 						variant="contained"
 						type="submit"
 						disabled={!formContext.formState.isDirty}
-						isLoading={submitting}
-					>
+						isLoading={submitting}>
 						Submit
 					</MainButton>
 				</Stack>

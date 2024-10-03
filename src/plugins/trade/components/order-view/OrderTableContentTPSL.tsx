@@ -112,8 +112,6 @@ const OrderTableContentTPSL = ({ orderBookStatus, symbol, isShowAll, positions }
 				{orders &&
 					orders.length > 0 &&
 					orders.map((item, index) => {
-						// const currentTPSL = item[]
-
 						return (
 							<TPSLOrderItem
 								key={index}

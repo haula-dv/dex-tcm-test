@@ -18,9 +18,11 @@ interface IProps {
 	symbol: string;
 	position: API.PositionExt;
 	refresh: import("swr/_internal").KeyedMutator<API.PositionInfo>;
+	stopLoss: any | null;
+	takeProfit: any | null;
 }
 
-const UpdatePosition = ({ position, refresh, symbol }: IProps) => {
+const UpdatePosition = ({ position, refresh, symbol, takeProfit, stopLoss }: IProps) => {
 	const [open, setOpen] = useState(false);
 	const theme = useTheme();
 	const [_, base, quote] = position.symbol.split("_");
@@ -90,6 +92,8 @@ const UpdatePosition = ({ position, refresh, symbol }: IProps) => {
 					position={position}
 					refresh={refresh}
 					handleCloseModal={handleToggleModal}
+					takeProfit={takeProfit}
+					stopLoss={stopLoss}
 				/>
 			),
 		},
