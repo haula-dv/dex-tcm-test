@@ -38,7 +38,7 @@ const Details = ({ estLeverage, estLiqPrice, baseDecimals, quote, direction }: I
 					}
 				/>
 
-				<ItemRow title="Account leverage" value={estLeverage ? `${estLeverage}x` : "-"} />
+				{/* <ItemRow title="Account leverage" value={estLeverage ? `${estLeverage}x` : "-"} /> */}
 
 				{/* <ItemRow title="Expected Price" value={estLiqPrice ? formatter.format(estLiqPrice) : '-'} />
 

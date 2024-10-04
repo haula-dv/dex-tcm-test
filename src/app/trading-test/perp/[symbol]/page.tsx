@@ -7,6 +7,7 @@ import { _orderlySymbolKey } from "@/utils/constants/orderly";
 import { Box } from "@mui/material";
 import { TradingPage } from "@orderly.network/react";
 import "@orderly.network/react/dist/styles.css";
+import { API } from "@orderly.network/types";
 import { useRouter } from "next/navigation";
 import { useCallback, useEffect, useState } from "react";
 
@@ -30,10 +31,11 @@ export default function PerpPage({ params }: { params: { symbol: string } }) {
 		[symbol],
 	);
 
-	const onSymbolChange = (symbol: string) => {
-		localStorage.setItem(_orderlySymbolKey, symbol);
-		router.push(`/trading/perp/${symbol}`);
-		updateTitle(symbol);
+	const onSymbolChange = (symbol: API.Symbol) => {
+		console.log(symbol);
+		localStorage.setItem(_orderlySymbolKey, symbol.symbol);
+		router.push(`/trading-test/perp/${symbol}`);
+		updateTitle(symbol.symbol);
 	};
 
 	const { tradingViewConfig } = OrderlyConfig();
@@ -42,11 +44,9 @@ export default function PerpPage({ params }: { params: { symbol: string } }) {
 		<Box bgcolor={"#262626"}>
 			<HeadPage title={`${symbol || "PERP_ETH_USDC"}`} />
 			<TradingPage
-				symbol={"PERP_ETH_USDC"}
+				symbol={symbol}
 				tradingViewConfig={tradingViewConfig}
-				onSymbolChange={() => {
-					//
-				}}
+				onSymbolChange={(sym) => onSymbolChange(sym)}
 			/>
 		</Box>
 	);

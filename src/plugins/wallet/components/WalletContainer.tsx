@@ -5,11 +5,10 @@ import IconLoading from "@/components/icons/loading";
 import { signAndSendRequest } from "@/utils/config/signer";
 import { TLocalStorage } from "@/utils/constants/key_store";
 import { getBaseUrl } from "@/utils/constants/orderly";
-import { usdFormatter } from "@/utils/formatters/number";
 import { formartAddress } from "@/utils/formatters/token";
 import { setColorThemeMode } from "@/utils/helpers";
 import { loadOrderlyKey } from "@/utils/helpers/orderlyHelper";
-import { Box, Stack, Typography, useTheme } from "@mui/material";
+import { Box, Stack, useTheme } from "@mui/material";
 import { useAccount, useChains, useDeposit } from "@orderly.network/hooks";
 import { IconMoonStars, IconSun } from "@tabler/icons-react";
 import { useConnectWallet } from "@web3-onboard/react";
@@ -129,9 +128,9 @@ export default function WalletContainer() {
 						</MainButton>
 					) : (
 						<>
-							<Typography fontSize={"24px"} px="10px">
+							{/* <Typography fontSize={"24px"} px="10px">
 								{usdFormatter.format(Number(balance))} {chain?.network_infos.currency_symbol}
-							</Typography>
+							</Typography> */}
 
 							<MainButton
 								variant="contained"

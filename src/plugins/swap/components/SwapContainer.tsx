@@ -112,7 +112,11 @@ export const SwapContainer = () => {
 	}, []);
 
 	// SELL ETH => USDC
-	const { onSubmit, helper } = useOrderEntry(
+	const {
+		onSubmit,
+		helper,
+		maxQty: sellMaxQty,
+	} = useOrderEntry(
 		{
 			symbol: `PERP_${sellTokenActived?.token}_USDC`,
 			order_type: OrderType.LIMIT,
@@ -124,7 +128,11 @@ export const SwapContainer = () => {
 	);
 
 	// BUY BTC => USDC
-	const { onSubmit: buyTokenSubmit } = useOrderEntry(
+	const {
+		onSubmit: buyTokenSubmit,
+		helper: buyHelper,
+		maxQty: buyMaxPrice,
+	} = useOrderEntry(
 		{
 			symbol: `PERP_${buyTokenActived?.token}_USDC`,
 			order_type: OrderType.LIMIT,
@@ -136,7 +144,7 @@ export const SwapContainer = () => {
 	);
 
 	const symbolsInfo = useSymbolsInfo();
-	const symbolInfo = symbolsInfo[`PERP_${sellTokenActived?.token}_USDC`]();
+	const symbolInfo = symbolsInfo[`PERP_${buyTokenActived?.token}_USDC`]();
 	const [baseDecimals, quoteDecimals] = getDecimalsFromTick(symbolInfo);
 
 	const handleSubmitSwap = async () => {
@@ -160,27 +168,23 @@ export const SwapContainer = () => {
 			side: OrderSide.SELL,
 			order_type: OrderType.MARKET,
 			order_quantity: inputAmount,
-			// order_price: outputAmount, // USDC
+			reduce_only: false,
 		};
 
 		// BUY
 		const amountOutput = parseFloat(outputAmount);
 		const priceUSDC = amountOutput * outputMarkPrice + formattedPrice;
-		const formattedPriceUSDC = parseFloat(priceUSDC.toFixed(quoteDecimals));
 
 		const buyData = {
 			symbol: `PERP_${buyTokenActived?.token}_USDC`, // Cặp token đang mua (BTC -> USDC)
 			side: OrderSide.BUY, // Mua BTC
 			order_type: OrderType.MARKET, // Lệnh thị trường
-			order_quantity: outputAmount, // EX: 0.2678 Số lượng USDC để mua BTC (cần tính toán sau khi bán ETH)
-			// order_price: 39888,
+			order_quantity: Number(outputAmount).toFixed(baseDecimals), // EX: 0.2678 Số lượng USDC để mua BTC (cần tính toán sau khi bán ETH)
 		};
-
-		console.log(sellData);
 
 		try {
 			await onSubmit(sellData);
-			// await buyTokenSubmit(buyData);
+			await buyTokenSubmit(buyData);
 
 			update({
 				eventCode: "createOrderSuccess",
@@ -225,26 +229,25 @@ export const SwapContainer = () => {
 		return result.toFixed(6);
 	}, [inputMarkPrice, outputMarkPrice]);
 
-	// const rules = async (): Promise<
-	// 	ReturnType<ReturnType<typeof useOrderEntry>["helper"]["validator"]>
-	// > => {
-	// 	return await helper.validator({
-	// 		symbol: `PERP_${sellTokenActived?.token}_USDC`,
-	// 		side: OrderSide.SELL,
-	// 		order_type: OrderType.MARKET,
-	// 		order_quantity: inputAmount,
-	// 		order_price: undefined,
-	// 		total: undefined,
-	// 	});
-	// };
+	const getValidationErrors = async () => {
+		const data = {
+			symbol: `PERP_${buyTokenActived?.token}_USDC`,
+			order_quantity: outputAmount,
+			order_type: OrderType.MARKET,
+			side: OrderSide.BUY,
+			order_price: undefined,
+		};
 
-	// const isInfluBalance = async () => {
-	// 	return await rules().then((res) => {
-	// 		return res;
-	// 	});
-	// };
+		return buyHelper.validator(data);
+	};
 
-	// console.log("isInfluBalance");
+	const checkIsInfluBalance = async () => {
+		const errors = await getValidationErrors();
+		console.log(errors);
+		return;
+	};
+
+	// console.log(checkIsInfluBalance());
 
 	return (
 		<Box
@@ -279,6 +282,7 @@ export const SwapContainer = () => {
 							loadingAmount={loadingAmount}
 							setLoadingAmount={setLoadingAmount}
 							handleChangeToken={handleChangeToken}
+							sellMaxQty={sellMaxQty}
 						/>
 
 						<ButtonSwapToggle toggleSwapType={handleToggleSide} />
@@ -292,6 +296,7 @@ export const SwapContainer = () => {
 							loadingAmount={loadingAmount}
 							setLoadingAmount={setLoadingAmount}
 							handleChangeToken={handleChangeToken}
+							buyMaxPrice={buyMaxPrice}
 						/>
 
 						{isSwapConfirm ? (

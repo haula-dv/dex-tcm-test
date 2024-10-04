@@ -1,15 +1,22 @@
-'use client';
-import { setColorThemeMode } from '@/utils/helpers';
-import { TSizes } from '@/utils/themes/custom-theme/sizes';
-import { Box, Card, CardProps, Stack } from '@mui/material';
-import { styled } from '@mui/material/styles';
-import IconNotchCard from '../icons/notch';
+"use client";
+import { setColorThemeMode } from "@/utils/helpers";
+import { TSizes } from "@/utils/themes/custom-theme/sizes";
+import { Box, Card, CardProps, Stack } from "@mui/material";
+import { styled } from "@mui/material/styles";
+import IconNotchCard from "../icons/notch";
 
 interface IProps extends CardProps {
 	children?: React.ReactNode;
 	maxWidth?: string;
 	isHover?: boolean;
-	backgroudColor?: 'primary' | 'primaryLight' | 'white' | 'grey' | 'darkgrey' | 'transparent' | 'common';
+	backgroudColor?:
+		| "primary"
+		| "primaryLight"
+		| "white"
+		| "grey"
+		| "darkgrey"
+		| "transparent"
+		| "common";
 	disablePadding?: boolean;
 	padding?: string;
 	borderRadius?: string;
@@ -23,7 +30,7 @@ interface IProps extends CardProps {
 export const MainCardNotch = ({
 	children,
 	maxWidth,
-	backgroudColor = 'white',
+	backgroudColor = "white",
 	isHover,
 	disablePadding,
 	padding,
@@ -38,14 +45,13 @@ export const MainCardNotch = ({
 	return (
 		<Box width={width} height={height} minHeight={minHeight} maxHeight={maxHeight}>
 			<Stack
-				display={'inline-flex'}
-				flexDirection={'column'}
+				display={"inline-flex"}
+				flexDirection={"column"}
 				width={width}
 				height={height}
 				minHeight={minHeight}
-				maxHeight={maxHeight}
-			>
-				<IconNotchCard />
+				maxHeight={maxHeight}>
+				<IconNotchCard width={width} />
 
 				<CustomCard
 					elevation={0}
@@ -53,17 +59,16 @@ export const MainCardNotch = ({
 					isSelected={isSelected}
 					sx={{
 						maxWidth: maxWidth,
-						cursor: isHover ? 'pointer' : '',
+						cursor: isHover ? "pointer" : "",
 						padding: padding,
 						borderRadius: borderRadius,
-						transition: '0.6s',
+						transition: "0.6s",
 						height: height,
 						minHeight: minHeight,
 						maxHeight: maxHeight,
 					}}
 					backgroudColor={backgroudColor}
-					{...props}
-				>
+					{...props}>
 					{children}
 				</CustomCard>
 			</Stack>
@@ -72,49 +77,60 @@ export const MainCardNotch = ({
 };
 
 interface ICard {
-	backgroudColor?: 'primary' | 'primaryLight' | 'white' | 'grey' | 'darkgrey' | 'transparent' | 'common';
+	backgroudColor?:
+		| "primary"
+		| "primaryLight"
+		| "white"
+		| "grey"
+		| "darkgrey"
+		| "transparent"
+		| "common";
 	disablePadding?: boolean;
 	isSelected?: boolean;
 }
 
 const CustomCard = styled(Card, {
-	shouldForwardProp: (prop) => prop !== 'backgroudColor' && prop !== 'disablePadding' && prop !== 'isSelected',
-})<ICard>(({ theme, backgroudColor = 'grey', disablePadding, isSelected }) => ({
+	shouldForwardProp: (prop) =>
+		prop !== "backgroudColor" && prop !== "disablePadding" && prop !== "isSelected",
+})<ICard>(({ theme, backgroudColor = "grey", disablePadding, isSelected }) => ({
 	borderRadius: TSizes.borderRadiusMd,
-	'&.MuiPaper-root': {
-		boxShadow: 'none',
+	"&.MuiPaper-root": {
+		boxShadow: "none",
 		borderColor: theme.palette.divider,
 
 		...(isSelected && {
-			border: `1px solid ${setColorThemeMode(theme.palette.primary.dark, theme.palette.primary.dark)}`,
+			border: `1px solid ${setColorThemeMode(
+				theme.palette.primary.dark,
+				theme.palette.primary.dark,
+			)}`,
 		}),
 	},
 
-	...(backgroudColor === 'transparent' && {
-		backgroundColor: 'transparent',
+	...(backgroudColor === "transparent" && {
+		backgroundColor: "transparent",
 	}),
 
-	...(backgroudColor === 'common' && {
+	...(backgroudColor === "common" && {
 		backgroundColor: theme.palette.background.paper,
 	}),
 
-	...(backgroudColor === 'primary' && {
+	...(backgroudColor === "primary" && {
 		backgroundColor: setColorThemeMode(theme.palette.primary.main, theme.palette.grey[800]),
 	}),
 
-	...(backgroudColor === 'primaryLight' && {
-		backgroundColor: setColorThemeMode(theme.palette.primary.light, '#322B27'),
+	...(backgroudColor === "primaryLight" && {
+		backgroundColor: setColorThemeMode(theme.palette.primary.light, "#322B27"),
 	}),
 
-	...(backgroudColor === 'white' && {
-		backgroundColor: '#fff',
+	...(backgroudColor === "white" && {
+		backgroundColor: "#fff",
 	}),
 
-	...(backgroudColor === 'grey' && {
+	...(backgroudColor === "grey" && {
 		backgroundColor: theme.palette.grey[50],
 	}),
 
-	...(backgroudColor === 'darkgrey' && {
+	...(backgroudColor === "darkgrey" && {
 		backgroundColor: theme.palette.grey[600],
 	}),
 
