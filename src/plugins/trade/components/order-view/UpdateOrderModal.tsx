@@ -1,21 +1,23 @@
-import { MainButton } from '@/components/button/MainButton';
-import MainCard from '@/components/card/MainCard';
-import { MainDialog } from '@/components/dialog/MainDialog';
-import CurrencyInputField from '@/components/form-control/CurrencyInputField';
-import { getDecimalsFromTick } from '@/utils/formatters/api';
-import { setColorThemeMode } from '@/utils/helpers';
-import { Stack, Typography, useTheme } from '@mui/material';
-import { useOrderEntry, useSymbolsInfo } from '@orderly.network/hooks';
-import { toast } from '@orderly.network/react';
-import { API, OrderEntity, OrderSide, OrderType } from '@orderly.network/types';
-import { memo, useState } from 'react';
-import { useForm } from 'react-hook-form';
-import { getInput, getValidationErrors, Inputs } from '../create-order/CreateOrderForm';
+import { MainButton } from "@/components/button/MainButton";
+import MainCard from "@/components/card/MainCard";
+import { MainDialog } from "@/components/dialog/MainDialog";
+import CurrencyInputField from "@/components/form-control/CurrencyInputField";
+import { getDecimalsFromTick } from "@/utils/formatters/api";
+import { setColorThemeMode } from "@/utils/helpers";
+import { Stack, Typography, useTheme } from "@mui/material";
+import { useOrderEntry, useSymbolsInfo } from "@orderly.network/hooks";
+import { toast } from "@orderly.network/react";
+import { API, OrderEntity, OrderSide, OrderType } from "@orderly.network/types";
+import { memo, useState } from "react";
+import { useForm } from "react-hook-form";
+import { getInput, getValidationErrors, Inputs } from "../create-order/CreateOrderForm";
 
 interface IProps {
 	open: boolean;
 	onClose: () => void;
-	orderActived: { isAlgoOrder: false; order: API.Order } | { isAlgoOrder: true; order: API.AlgoOrder };
+	orderActived:
+		| { isAlgoOrder: false; order: API.Order }
+		| { isAlgoOrder: true; order: API.AlgoOrder };
 	updateOrder: (orderId: string, order: OrderEntity) => Promise<any>;
 	updateAlgoOrder: (orderId: string, order: OrderEntity) => Promise<any>;
 	submitting: boolean;
@@ -25,9 +27,16 @@ const convertedText = (text: any) => {
 	return text.charAt(0) + text.slice(1).toLowerCase();
 };
 
-const UpdateOrderModal = ({ onClose, open, orderActived, updateOrder, updateAlgoOrder, submitting }: IProps) => {
+const UpdateOrderModal = ({
+	onClose,
+	open,
+	orderActived,
+	updateOrder,
+	updateAlgoOrder,
+	submitting,
+}: IProps) => {
 	const theme = useTheme();
-	const [_, base, quote] = orderActived.order.symbol.split('_');
+	const [_, base, quote] = orderActived.order.symbol.split("_");
 	const symbol = orderActived.order.symbol;
 	const symbolsInfo = useSymbolsInfo();
 	const symbolInfo = symbolsInfo[symbol]();
@@ -40,12 +49,14 @@ const UpdateOrderModal = ({ onClose, open, orderActived, updateOrder, updateAlgo
 		type: convertedText(orderActived.order.type),
 		quantity: orderActived.order.quantity as any,
 		price: orderActived.order.price ? String(orderActived.order.price) : undefined,
-		triggerPrice: orderActived.order.trigger_price ? String(orderActived.order.trigger_price) : undefined,
+		triggerPrice: orderActived.order.trigger_price
+			? String(orderActived.order.trigger_price)
+			: undefined,
 	};
 
 	const formContext = useForm({
 		defaultValues,
-		mode: 'all',
+		mode: "all",
 	});
 
 	const { onSubmit, helper } = useOrderEntry(
@@ -53,9 +64,9 @@ const UpdateOrderModal = ({ onClose, open, orderActived, updateOrder, updateAlgo
 			symbol,
 			side: orderActived.order.side as OrderSide,
 			order_type: orderActived.order.type as OrderType,
-			order_quantity: formContext.watch('quantity', undefined),
-			order_price: formContext.watch('price', undefined),
-			trigger_price: formContext.watch('triggerPrice', undefined),
+			order_quantity: formContext.watch("quantity", undefined),
+			order_price: formContext.watch("price", undefined),
+			trigger_price: formContext.watch("triggerPrice", undefined),
 		},
 		{ watchOrderbook: true },
 	);
@@ -68,11 +79,10 @@ const UpdateOrderModal = ({ onClose, open, orderActived, updateOrder, updateAlgo
 			} else {
 				await updateOrder((orderActived.order as any).order_id as any, {
 					...getInput(data, symbol),
-					reduce_only: true,
 				});
 			}
 
-			toast.success('Order edited');
+			toast.success("Order edited");
 		} catch (err: any) {
 			toast.error(err.message);
 		} finally {
@@ -85,7 +95,7 @@ const UpdateOrderModal = ({ onClose, open, orderActived, updateOrder, updateAlgo
 		<MainDialog maxWidth="xs" open={open} handleClose={onClose} title="Update Order" isDivider>
 			<form onSubmit={formContext.handleSubmit(() => setOpenConfrim(true))}>
 				<MainCard backgroudColor="transparent" variant="outlined">
-					<Stack spacing={'10px'}>
+					<Stack spacing={"10px"}>
 						{orderActived.isAlgoOrder ? (
 							<CurrencyInputField
 								name="triggerPrice"
@@ -142,15 +152,14 @@ const UpdateOrderModal = ({ onClose, open, orderActived, updateOrder, updateAlgo
 					</Stack>
 				</MainCard>
 
-				<Stack direction={'row'} spacing={'10px'} pt="10px" justifyContent={'flex-end'}>
+				<Stack direction={"row"} spacing={"10px"} pt="10px" justifyContent={"flex-end"}>
 					<MainButton onClick={onClose}>Cancel</MainButton>
 
 					<MainButton
 						type="submit"
 						variant="contained"
 						disabled={!formContext.formState.isDirty || submitting}
-						isLoading={submitting}
-					>
+						isLoading={submitting}>
 						OK
 					</MainButton>
 				</Stack>
@@ -161,20 +170,27 @@ const UpdateOrderModal = ({ onClose, open, orderActived, updateOrder, updateAlgo
 				open={openConfirm}
 				title="Confirm Update"
 				handleClose={() => setOpenConfrim(false)}
-				isDivider
-			>
-				<Typography fontSize={'18px'} color={setColorThemeMode(theme.palette.grey[500], theme.palette.grey[300])}>
-					You agree changing the price of ETH-PERP order to{' '}
+				isDivider>
+				<Typography
+					fontSize={"18px"}
+					color={setColorThemeMode(theme.palette.grey[500], theme.palette.grey[300])}>
+					You agree changing the price of ETH-PERP order to{" "}
 					<span style={{ color: theme.palette.success.main }}>
-						{orderActived.isAlgoOrder ? formContext.getValues('triggerPrice') : formContext.getValues('price')} ({quote}
-						) - {formContext.getValues('quantity')} ({base}).
+						{orderActived.isAlgoOrder
+							? formContext.getValues("triggerPrice")
+							: formContext.getValues("price")}{" "}
+						({quote}) - {formContext.getValues("quantity")} ({base}).
 					</span>
 				</Typography>
 
-				<Stack direction={'row'} justifyContent={'flex-end'} pt="10px" spacing={'10px'}>
+				<Stack direction={"row"} justifyContent={"flex-end"} pt="10px" spacing={"10px"}>
 					<MainButton onClick={() => setOpenConfrim(false)}>Cancel</MainButton>
 
-					<MainButton onClick={handleUpdate} variant="contained" disabled={submitting} isLoading={submitting}>
+					<MainButton
+						onClick={handleUpdate}
+						variant="contained"
+						disabled={submitting}
+						isLoading={submitting}>
 						Confirm
 					</MainButton>
 				</Stack>
