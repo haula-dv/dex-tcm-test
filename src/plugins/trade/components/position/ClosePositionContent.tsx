@@ -55,9 +55,10 @@ const ClosePositionContent = ({ symbol, position, refresh, handleCloseModal }: I
 	const { onSubmit, helper } = useOrderEntry(
 		{
 			symbol,
-			side: OrderSide.BUY,
+			side: position.position_qty > 0 ? OrderSide.SELL : OrderSide.BUY,
 			order_type: OrderType.MARKET,
 			order_price: undefined,
+			order_quantity: Math.abs(position.position_qty),
 		},
 		{ watchOrderbook: true },
 	);
@@ -101,6 +102,9 @@ const ClosePositionContent = ({ symbol, position, refresh, handleCloseModal }: I
 	const handleChange = (val: string | number, event?: React.MouseEvent<HTMLButtonElement>) => {
 		setValue(val);
 		formContext.setValue("type", val as any);
+		if (val == "Market") {
+			formContext.setValue("price", undefined as any);
+		}
 	};
 
 	useEffect(() => {
