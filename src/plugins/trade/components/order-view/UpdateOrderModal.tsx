@@ -10,6 +10,7 @@ import { toast } from "@orderly.network/react";
 import { API, OrderEntity, OrderSide, OrderType } from "@orderly.network/types";
 import { memo, useState } from "react";
 import { useForm } from "react-hook-form";
+import { match } from "ts-pattern";
 import { IPlaceOrderValues } from "../create-order/CreateOrderForm";
 
 interface IProps {
@@ -48,9 +49,9 @@ const UpdateOrderModal = ({
 		direction: convertedText(orderActived.order.side),
 		type: convertedText(orderActived.order.type),
 		quantity: orderActived.order.quantity as any,
-		price: orderActived.order.price ? String(orderActived.order.price) : undefined,
+		price: orderActived.order.price ? (orderActived.order.price as any) : undefined,
 		triggerPrice: orderActived.order.trigger_price
-			? String(orderActived.order.trigger_price)
+			? (orderActived.order.trigger_price as any)
 			: undefined,
 	};
 
@@ -62,11 +63,19 @@ const UpdateOrderModal = ({
 	const { onSubmit, helper } = useOrderEntry(
 		{
 			symbol,
-			side: orderActived.order.side as OrderSide,
-			order_type: orderActived.order.type as OrderType,
-			order_quantity: formContext.watch("quantity", undefined),
-			order_price: formContext.watch("price", undefined),
-			trigger_price: formContext.watch("triggerPrice", undefined),
+			side: match(formContext.watch("direction", "Buy"))
+				.with("Buy", () => OrderSide.BUY)
+				.with("Sell", () => OrderSide.SELL)
+				.exhaustive(),
+			order_type: match(formContext.watch("type", "Market"))
+				.with("Market", () => OrderType.MARKET)
+				.with("Limit", () => OrderType.LIMIT)
+				.with("StopLimit", () => OrderType.STOP_LIMIT)
+				.with("StopMarket", () => OrderType.STOP_MARKET)
+				.exhaustive(),
+			order_quantity: formContext.watch("quantity", orderActived.order.quantity as any),
+			order_price: formContext.watch("price", orderActived.order.price as any),
+			trigger_price: formContext.watch("triggerPrice", orderActived.order.trigger_price as any),
 		},
 		{ watchOrderbook: true },
 	);
@@ -100,22 +109,27 @@ const UpdateOrderModal = ({
 				<MainCard backgroudColor="transparent" variant="outlined">
 					<Stack spacing={"10px"}>
 						{orderActived.isAlgoOrder ? (
-							<CurrencyInputField
-								name="triggerPrice"
-								formContext={formContext}
-								suffix={quote}
-								prefix="Trigger price"
-								decimals={quoteDecimals}
-								placeholder="0.0000"
-								rules={{
-									validate: {
-										custom: async (_, data) => {
-											const errors = await getValidationErrors(data, symbol, helper.validator);
-											return errors?.trigger_price != null ? errors.trigger_price.message : true;
-										},
-									},
-								}}
-							/>
+							<>
+								<CurrencyInputField
+									name="triggerPrice"
+									formContext={formContext}
+									suffix={quote}
+									prefix="Trigger price"
+									decimals={quoteDecimals}
+									placeholder="0.0000"
+								/>
+
+								{orderActived.order.type == "LIMIT" && (
+									<CurrencyInputField
+										name="price"
+										formContext={formContext}
+										suffix={quote}
+										prefix="Price"
+										placeholder="0.0000"
+										decimals={quoteDecimals}
+									/>
+								)}
+							</>
 						) : (
 							<CurrencyInputField
 								name="price"
@@ -124,15 +138,6 @@ const UpdateOrderModal = ({
 								prefix="Price"
 								placeholder="0.0000"
 								decimals={quoteDecimals}
-								rules={{
-									validate: {
-										custom: async (_, data) => {
-											const errors = await getValidationErrors(data, symbol, helper.validator);
-											console.log(errors);
-											return errors?.order_price != null ? errors.order_price.message : true;
-										},
-									},
-								}}
 							/>
 						)}
 
@@ -179,9 +184,14 @@ const UpdateOrderModal = ({
 					color={setColorThemeMode(theme.palette.grey[500], theme.palette.grey[300])}>
 					You agree changing the price of ETH-PERP order to{" "}
 					<span style={{ color: theme.palette.success.main }}>
-						{orderActived.isAlgoOrder
-							? formContext.getValues("triggerPrice")
-							: formContext.getValues("price")}{" "}
+						{orderActived.isAlgoOrder ? (
+							<>
+								Trigger Price {formContext.getValues("triggerPrice")} - Price{" "}
+								{formContext.getValues("price")}
+							</>
+						) : (
+							formContext.getValues("price")
+						)}{" "}
 						({quote}) - {formContext.getValues("quantity")} ({base}).
 					</span>
 				</Typography>

@@ -17,7 +17,7 @@ export const setColorThemeMode = (colorLight: string, colorDark: string, themeEx
 
 // Form Create Order
 export async function getValidationErrors(
-	data: any,
+	data: IPlaceOrderValues,
 	symbol: string,
 	validator: ReturnType<typeof useOrderEntry>["helper"]["validator"],
 ): Promise<ReturnType<ReturnType<typeof useOrderEntry>["helper"]["validator"]>> {
@@ -55,8 +55,13 @@ export const findTPnSLOrderByType = (type: TPSLType, childOrders: any[]) => {
 	);
 };
 
+// Convert from 12,333.00 => 12333.00
 export const converLocalStringToNum = (newValue: string | number | undefined) => {
-	return newValue != "" ? String(newValue).replaceAll(",", "") : "";
+	return newValue != ""
+		? String(newValue).includes(",")
+			? String(newValue).replaceAll(",", "")
+			: (newValue as any)
+		: "";
 };
 
 // Just format num intergerPart
