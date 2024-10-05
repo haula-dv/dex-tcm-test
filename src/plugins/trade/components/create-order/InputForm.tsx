@@ -82,19 +82,23 @@ function InputForm({ formContext, symbolsInfo, symbol, helper, maxQty, markPrice
 	const onChangeQuanityExt = (val: any) => {
 		const newValue = converLocalStringToNum(val);
 
-		// if (formContext.watch("type") == "Market" || formContext.watch("type") == "StopMarket") {
-		// 	const newWatchValue = helper.calculate(
-		// 		getInput(formContext.getValues(), symbol),
-		// 		"order_quantity",
-		// 		newValue,
-		// 	);
+		if (formContext.watch("type") === "Market" || formContext.watch("type") === "StopMarket") {
+			const newWatchValue = helper.calculate(
+				getInputPlaceOrder(formContext.getValues(), symbol),
+				"order_quantity",
+				newValue,
+			);
 
-		// 	formContext.setValue("total", !newValue ? "" : String(newWatchValue.total), {
-		// 		shouldValidate: true,
-		// 		shouldDirty: false,
-		// 	});
-		// 	return;
-		// }
+			formContext.setValue("total", newWatchValue.total as any, {
+				shouldValidate: true,
+				shouldDirty: false,
+			});
+			return;
+		}
+
+		if (!formContext.watch("price")) {
+			return;
+		}
 
 		const newWatchValue = helper.calculate(
 			getInputPlaceOrder(formContext.getValues(), symbol),
@@ -102,7 +106,7 @@ function InputForm({ formContext, symbolsInfo, symbol, helper, maxQty, markPrice
 			newValue,
 		);
 
-		formContext.setValue("total", !newValue ? "" : String(newWatchValue.total), {
+		formContext.setValue("total", !newValue ? "" : (newWatchValue.total as any), {
 			shouldValidate: true,
 			shouldDirty: false,
 		});
@@ -240,7 +244,7 @@ function InputForm({ formContext, symbolsInfo, symbol, helper, maxQty, markPrice
 				name="total"
 				formContext={formContext}
 				suffix={quote}
-				decimals={baseDecimals}
+				decimals={quoteDecimals}
 				prefix={"Total~"}
 				placeholder="0.0000"
 				onValueChange={(val) => onTotalChange(val)}

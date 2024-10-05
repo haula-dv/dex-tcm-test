@@ -1,38 +1,38 @@
-import { MainButton } from '@/components/button/MainButton';
-import MainCard from '@/components/card/MainCard';
-import AmountSlider from '@/components/form-control/AmountSlider';
-import InputField from '@/components/form-control/InputField';
-import SwitchBase from '@/components/form-control/SwitcheBase';
-import { TColors } from '@/utils';
-import { setColorThemeMode } from '@/utils/helpers';
-import { TSizes } from '@/utils/themes/custom-theme/sizes';
-import { Box, Collapse, Stack, Typography } from '@mui/material';
-import { styled, useTheme } from '@mui/material/styles';
-import { ChangeEvent, useState } from 'react';
-import { Controller, UseFormReturn } from 'react-hook-form';
-import { Inputs } from './CreateOrderForm';
-import DividerOrder from './DividerOrder';
+import { MainButton } from "@/components/button/MainButton";
+import MainCard from "@/components/card/MainCard";
+import AmountSlider from "@/components/form-control/AmountSlider";
+import InputField from "@/components/form-control/InputField";
+import SwitchBase from "@/components/form-control/SwitcheBase";
+import { TColors } from "@/utils";
+import { setColorThemeMode } from "@/utils/helpers";
+import { TSizes } from "@/utils/themes/custom-theme/sizes";
+import { Box, Collapse, Stack, Typography } from "@mui/material";
+import { styled, useTheme } from "@mui/material/styles";
+import { ChangeEvent, useState } from "react";
+import { Controller, UseFormReturn } from "react-hook-form";
+import { IPlaceOrderValues } from "./CreateOrderForm";
+import DividerOrder from "./DividerOrder";
 
 const slippages = [
 	{
 		value: 20,
-		percentValue: '20%',
-		label: '2 x',
+		percentValue: "20%",
+		label: "2 x",
 	},
 	{
 		value: 50,
-		label: '5 x',
-		percentValue: '50%',
+		label: "5 x",
+		percentValue: "50%",
 	},
 	{
 		value: 100,
-		label: '10 x',
-		percentValue: '100%',
+		label: "10 x",
+		percentValue: "100%",
 	},
 ];
 
 interface IProps {
-	formContext: UseFormReturn<Inputs>;
+	formContext: UseFormReturn<IPlaceOrderValues>;
 	maxQty: number;
 	formatter: Intl.NumberFormat;
 }
@@ -40,9 +40,9 @@ interface IProps {
 const AmountSetOrderSide = ({ formContext, maxQty, formatter }: IProps) => {
 	const onExtChange = (val: string, onChange: any) => {
 		const filteredValue = val
-			.replace(/[^\d.,]/g, '')
-			.replace(/,/g, '.')
-			.replace(/(?<!\d)\.(?=\d+)(?=.*\.)/g, '');
+			.replace(/[^\d.,]/g, "")
+			.replace(/,/g, ".")
+			.replace(/(?<!\d)\.(?=\d+)(?=.*\.)/g, "");
 
 		if (Number(filteredValue) > 100) {
 			onChange(100);
@@ -50,7 +50,7 @@ const AmountSetOrderSide = ({ formContext, maxQty, formatter }: IProps) => {
 			const caculatedAmount = (maxQty * Number(filteredValue)) / 100;
 			const truncatedAmount = Math.floor(caculatedAmount * 10000) / 10000; // Giữ lại 4 chữ số thập phân mà không làm tròn
 
-			formContext.setValue('quantity', truncatedAmount as any, {
+			formContext.setValue("quantity", truncatedAmount as any, {
 				shouldValidate: true,
 			});
 			onChange(filteredValue);
@@ -67,13 +67,17 @@ const AmountSetOrderSide = ({ formContext, maxQty, formatter }: IProps) => {
 			<DividerOrder />
 
 			<MainCard disablePadding backgroudColor="transparent" variant="outlined">
-				<Stack direction={'row'} alignItems={'center'} justifyContent={'space-between'} px={TSizes.margin_common}>
-					<Stack direction={'row'} alignItems={'center'} spacing={1}>
-						<Typography fontWeight={600} fontSize={'13px'}>
+				<Stack
+					direction={"row"}
+					alignItems={"center"}
+					justifyContent={"space-between"}
+					px={TSizes.margin_common}>
+					<Stack direction={"row"} alignItems={"center"} spacing={1}>
+						<Typography fontWeight={600} fontSize={"13px"}>
 							Amount
 						</Typography>
 
-						<Typography color={useTheme().palette.grey[500]} fontSize={'12px'}>
+						<Typography color={useTheme().palette.grey[500]} fontSize={"12px"}>
 							Set order size
 						</Typography>
 					</Stack>
@@ -90,8 +94,12 @@ const AmountSetOrderSide = ({ formContext, maxQty, formatter }: IProps) => {
 							maxQty={`${formatter.format(maxQty)}`}
 						/>
 
-						<Stack direction={'row'} spacing={TSizes.margin_xs} pt={TSizes.margin_xs} alignItems={'center'}>
-							<Box width={'100%'}>
+						<Stack
+							direction={"row"}
+							spacing={TSizes.margin_xs}
+							pt={TSizes.margin_xs}
+							alignItems={"center"}>
+							<Box width={"100%"}>
 								<InputField
 									placeholder="0.00 x"
 									name="orderSide"
@@ -101,7 +109,7 @@ const AmountSetOrderSide = ({ formContext, maxQty, formatter }: IProps) => {
 								/>
 							</Box>
 
-							<Stack direction={'row'} spacing={'5px'} alignItems={'center'} width={'100%'}>
+							<Stack direction={"row"} spacing={"5px"} alignItems={"center"} width={"100%"}>
 								<Controller
 									control={formContext.control}
 									name="orderSide"
@@ -111,19 +119,18 @@ const AmountSetOrderSide = ({ formContext, maxQty, formatter }: IProps) => {
 												<ButtonPercent
 													name={name}
 													key={item.value}
-													variant={value == item.percentValue ? 'outlined' : 'filledTonal'}
+													variant={value == item.percentValue ? "outlined" : "filledTonal"}
 													onClick={() => {
 														const caculatedAmount = (maxQty * item.value) / 100;
 														const truncatedAmount = Math.floor(caculatedAmount * 10000) / 10000;
-														formContext.setValue('quantity', truncatedAmount as any, {
+														formContext.setValue("quantity", truncatedAmount as any, {
 															shouldValidate: true,
 														});
 														onChange(item.percentValue);
 													}}
 													size="small"
-													color={value == item.percentValue ? 'darkGrey' : 'inherit'}
-													fullWidth
-												>
+													color={value == item.percentValue ? "darkGrey" : "inherit"}
+													fullWidth>
 													{item.label}
 												</ButtonPercent>
 											))}
@@ -143,6 +150,6 @@ export default AmountSetOrderSide;
 
 const ButtonPercent = styled(MainButton)(({ theme }) => ({
 	backgroundColor: setColorThemeMode(theme.palette.primary.light, TColors.brownnDark),
-	borderRadius: '10px !important',
-	fontSize: '13px',
+	borderRadius: "10px !important",
+	fontSize: "13px",
 }));

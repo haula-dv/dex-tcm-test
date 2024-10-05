@@ -59,6 +59,24 @@ export const converLocalStringToNum = (newValue: string | number | undefined) =>
 	return newValue != "" ? String(newValue).replaceAll(",", "") : "";
 };
 
+// Just format num intergerPart
 export const converNumToLocalString = (newValue: string | number | undefined) => {
-	return newValue != "" ? String(newValue).replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,") : "";
+	if (newValue === "" || newValue === undefined) return "";
+
+	// Chuyển giá trị thành chuỗi
+	const value = String(newValue);
+
+	// Tách phần nguyên và phần thập phân
+	const [integerPart, decimalPart] = value.split(".");
+
+	// Định dạng chỉ phần nguyên
+	const formattedInteger = integerPart.replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+
+	// Nếu có dấu chấm mà không có phần thập phân, vẫn giữ lại dấu chấm
+	if (value.endsWith(".")) {
+		return `${formattedInteger}.`;
+	}
+
+	// Ghép lại phần nguyên và phần thập phân (nếu có)
+	return decimalPart ? `${formattedInteger}.${decimalPart}` : formattedInteger;
 };

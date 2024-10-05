@@ -6,7 +6,7 @@ import { usdFormatter } from "@/utils/formatters/number";
 import { setColorThemeMode } from "@/utils/helpers";
 import { TSizes } from "@/utils/themes/custom-theme/sizes";
 import { Box, Divider, Stack, Typography, useTheme } from "@mui/material";
-import { Inputs } from "./CreateOrderForm";
+import { IPlaceOrderValues } from "./CreateOrderForm";
 
 interface IProps {
 	open: boolean;
@@ -14,7 +14,7 @@ interface IProps {
 	handleClose: () => void;
 	submitForm: () => void;
 	symbol: string;
-	currentValue: Inputs;
+	currentValue: IPlaceOrderValues;
 	totalPrice: any;
 }
 

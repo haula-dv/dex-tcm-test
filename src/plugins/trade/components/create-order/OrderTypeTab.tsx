@@ -8,7 +8,7 @@ import { SelectOption } from "@orderly.network/react/esm/select/select";
 import { IconCheck, IconChevronDown } from "@tabler/icons-react";
 import { memo, useState } from "react";
 import { UseFormReturn } from "react-hook-form";
-import { Inputs } from "./CreateOrderForm";
+import { IPlaceOrderValues } from "./CreateOrderForm";
 
 const items: SelectOption[] = [
 	{ label: "Limit", value: "Limit" },
@@ -19,7 +19,7 @@ const items: SelectOption[] = [
 ];
 
 interface IProps {
-	formContext: UseFormReturn<Inputs>;
+	formContext: UseFormReturn<IPlaceOrderValues>;
 }
 
 const OrderTypeTab = ({ formContext }: IProps) => {

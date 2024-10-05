@@ -3,14 +3,14 @@ import MainCard from "@/components/card/MainCard";
 import { MainDialog } from "@/components/dialog/MainDialog";
 import CurrencyInputField from "@/components/form-control/CurrencyInputField";
 import { getDecimalsFromTick } from "@/utils/formatters/api";
-import { setColorThemeMode } from "@/utils/helpers";
+import { getInputPlaceOrder, getValidationErrors, setColorThemeMode } from "@/utils/helpers";
 import { Stack, Typography, useTheme } from "@mui/material";
 import { useOrderEntry, useSymbolsInfo } from "@orderly.network/hooks";
 import { toast } from "@orderly.network/react";
 import { API, OrderEntity, OrderSide, OrderType } from "@orderly.network/types";
 import { memo, useState } from "react";
 import { useForm } from "react-hook-form";
-import { getInput, getValidationErrors, Inputs } from "../create-order/CreateOrderForm";
+import { IPlaceOrderValues } from "../create-order/CreateOrderForm";
 
 interface IProps {
 	open: boolean;
@@ -44,7 +44,7 @@ const UpdateOrderModal = ({
 
 	const [openConfirm, setOpenConfrim] = useState(false);
 
-	const defaultValues: Inputs = {
+	const defaultValues: IPlaceOrderValues = {
 		direction: convertedText(orderActived.order.side),
 		type: convertedText(orderActived.order.type),
 		quantity: orderActived.order.quantity as any,
@@ -75,10 +75,13 @@ const UpdateOrderModal = ({
 		const data = formContext.getValues();
 		try {
 			if (orderActived.isAlgoOrder) {
-				await updateAlgoOrder(String(orderActived.order.algo_order_id), getInput(data, symbol));
+				await updateAlgoOrder(
+					String(orderActived.order.algo_order_id),
+					getInputPlaceOrder(data, symbol),
+				);
 			} else {
 				await updateOrder((orderActived.order as any).order_id as any, {
-					...getInput(data, symbol),
+					...getInputPlaceOrder(data, symbol),
 				});
 			}
 
