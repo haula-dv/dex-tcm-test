@@ -11,7 +11,7 @@ import { useAccount } from "@orderly.network/hooks";
 import { WalletState } from "@orderly.network/hooks/esm/walletConnectorContext";
 import { useNotifications, useSetChain } from "@web3-onboard/react";
 import Image from "next/image";
-import { memo, useState } from "react";
+import { useState } from "react";
 
 interface IProps {
 	availableWithdraw: number;
@@ -20,7 +20,7 @@ interface IProps {
 	isFristLoading: boolean;
 }
 
-export const Balance = memo(({ availableWithdraw, quote, wallet, isFristLoading }: IProps) => {
+export const Balance = ({ availableWithdraw, quote, wallet, isFristLoading }: IProps) => {
 	// Orderly hooks
 	const [{ connectedChain }] = useSetChain();
 	const { account } = useAccount();
@@ -160,4 +160,4 @@ export const Balance = memo(({ availableWithdraw, quote, wallet, isFristLoading 
 			</MainDialog>
 		</>
 	);
-});
+};
