@@ -2,19 +2,23 @@ import AmountSlider from "@/components/form-control/AmountSlider";
 import CurrencyInputField from "@/components/form-control/CurrencyInputField";
 import { CustomTextField } from "@/components/form-control/TokenInput";
 import { getDecimalsFromTick } from "@/utils/formatters/api";
-import { setColorThemeMode } from "@/utils/helpers";
+import {
+	converLocalStringToNum,
+	getInputPlaceOrder,
+	getValidationErrors,
+	setColorThemeMode,
+} from "@/utils/helpers";
 import { Collapse, InputAdornment, Stack, Typography, useTheme } from "@mui/material";
 import { OrderEntity } from "@orderly.network/types";
 import { useEffect, useState } from "react";
 import { UseFormReturn } from "react-hook-form";
 import { match } from "ts-pattern";
-import { getValidationErrors, Inputs } from "./CreateOrderForm";
+import { IPlaceOrderValues } from "./CreateOrderForm";
 
 interface IProps {
-	formContext: UseFormReturn<Inputs>;
+	formContext: UseFormReturn<IPlaceOrderValues>;
 	symbolsInfo: any;
 	symbol: string;
-	getInput: (data: Inputs, symbol: string) => OrderEntity;
 	helper: {
 		calculate: (
 			values: Partial<OrderEntity>,
@@ -27,15 +31,7 @@ interface IProps {
 	markPrice: number;
 }
 
-function InputForm({
-	formContext,
-	symbolsInfo,
-	symbol,
-	getInput,
-	helper,
-	maxQty,
-	markPrice,
-}: IProps) {
+function InputForm({ formContext, symbolsInfo, symbol, helper, maxQty, markPrice }: IProps) {
 	const symbolInfo = symbolsInfo[symbol]();
 	const [_, base, quote] = symbol.split("_");
 	const theme = useTheme();
@@ -46,6 +42,7 @@ function InputForm({
 
 	const [isHiddenMarket, setIsHiddenMarket] = useState(false);
 
+	// Watch Direction
 	useEffect(() => {
 		const { unsubscribe } = formContext.watch((value, { name, type }) => {
 			if (name === "type") {
@@ -61,39 +58,51 @@ function InputForm({
 	}, [formContext]);
 
 	// Handle Convert price USDC to Base
-	const onChangePriceExt = (val: any) => {
-		const newValue = helper.calculate(
-			getInput(formContext.getValues(), symbol),
+	const onChangePriceExt = (val: string) => {
+		const newValue = converLocalStringToNum(val);
+		const quantity = formContext.getValues("quantity");
+		if (!quantity) {
+			return;
+		}
+
+		const watchValue = helper.calculate(
+			getInputPlaceOrder(formContext.getValues(), symbol),
 			"order_price",
-			val,
+			Number(newValue),
 		);
 
-		formContext.setValue("total", !val ? "" : String(newValue.total));
+		if (!watchValue.total) {
+			return;
+		}
+
+		formContext.setValue("total", !watchValue ? "" : String(watchValue.total));
 	};
 
 	// EX Base to USDC
 	const onChangeQuanityExt = (val: any) => {
-		if (formContext.watch("type") == "Market" || formContext.watch("type") == "StopMarket") {
-			const newValue = helper.calculate(
-				getInput(formContext.getValues(), symbol),
-				"order_quantity",
-				val,
-			);
+		const newValue = converLocalStringToNum(val);
 
-			formContext.setValue("total", !val ? "" : String(newValue.total), {
-				shouldValidate: true,
-				shouldDirty: false,
-			});
-			return;
-		}
+		// if (formContext.watch("type") == "Market" || formContext.watch("type") == "StopMarket") {
+		// 	const newWatchValue = helper.calculate(
+		// 		getInput(formContext.getValues(), symbol),
+		// 		"order_quantity",
+		// 		newValue,
+		// 	);
 
-		const newValue = helper.calculate(
-			getInput(formContext.getValues(), symbol),
+		// 	formContext.setValue("total", !newValue ? "" : String(newWatchValue.total), {
+		// 		shouldValidate: true,
+		// 		shouldDirty: false,
+		// 	});
+		// 	return;
+		// }
+
+		const newWatchValue = helper.calculate(
+			getInputPlaceOrder(formContext.getValues(), symbol),
 			"order_quantity",
-			val,
+			newValue,
 		);
 
-		formContext.setValue("total", !val ? "" : (newValue.total as any), {
+		formContext.setValue("total", !newValue ? "" : String(newWatchValue.total), {
 			shouldValidate: true,
 			shouldDirty: false,
 		});
@@ -101,9 +110,15 @@ function InputForm({
 
 	// On total Change
 	const onTotalChange = (val: any) => {
-		const newValue = helper.calculate(getInput(formContext.getValues(), symbol), "total", val);
+		const newValue = converLocalStringToNum(val);
 
-		formContext.setValue("quantity", newValue.order_quantity as any, {
+		const newWatchValue = helper.calculate(
+			getInputPlaceOrder(formContext.getValues(), symbol),
+			"total",
+			newValue,
+		);
+
+		formContext.setValue("quantity", newWatchValue.order_quantity as any, {
 			shouldValidate: true,
 			shouldDirty: true,
 		});
@@ -190,7 +205,7 @@ function InputForm({
 								},
 							},
 						}}
-						onValueChange={(val) => onChangePriceExt(val._value)}
+						onValueChange={(val) => onChangePriceExt(val)}
 					/>
 				)}
 
@@ -201,7 +216,7 @@ function InputForm({
 					decimals={baseDecimals}
 					placeholder="0.0000"
 					prefix={"Quantity"}
-					onValueChange={(val) => onChangeQuanityExt(val._value == "0.0" ? "" : val._value)}
+					onValueChange={(val) => onChangeQuanityExt(val)}
 					rules={{
 						validate: {
 							custom: async (_, data) => {
@@ -228,7 +243,7 @@ function InputForm({
 				decimals={baseDecimals}
 				prefix={"Total~"}
 				placeholder="0.0000"
-				onValueChange={(val) => onTotalChange(val._value)}
+				onValueChange={(val) => onTotalChange(val)}
 				rules={{
 					validate: {
 						custom: async (_, data) => {

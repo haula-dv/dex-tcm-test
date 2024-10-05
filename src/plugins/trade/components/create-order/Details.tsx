@@ -82,7 +82,7 @@ const Details = ({ estLeverage, estLiqPrice, baseDecimals, quote, direction }: I
 			<MainButton
 				fullWidth
 				variant="contained"
-				color="primary"
+				color={direction == "Sell" ? "error" : "primary"}
 				type={wallet ? "submit" : "button"}
 				onClick={() => {
 					return wallet ? null : handleConnectWallet();

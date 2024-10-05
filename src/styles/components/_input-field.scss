@@ -1,7 +1,8 @@
 // FOCUS
-.Mui-focused .MuiOutlinedInput-notchedOutline {
+.Mui-focused:not(.Mui-error) .MuiOutlinedInput-notchedOutline {
 	transition: all 0.2s;
-	// border: 2px solid var(--input-border-foucused-color) !important;
+	border: 2px solid var(--badge-blue-fg) !important;
+	border-radius: 12px !important;
 }
 
 .MuiOutlinedInput-root.Mui-focused {

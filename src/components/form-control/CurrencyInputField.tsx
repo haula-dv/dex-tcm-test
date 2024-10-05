@@ -4,7 +4,7 @@ import {
 	getFormattedNumber,
 	getNumberAsUInt128,
 } from "@/utils/formatters/number";
-import { setColorThemeMode } from "@/utils/helpers";
+import { converLocalStringToNum, converNumToLocalString, setColorThemeMode } from "@/utils/helpers";
 import { Box, FormControl, InputAdornment, Stack, Typography, useTheme } from "@mui/material";
 import { FixedNumber } from "ethers";
 import { ReactNode } from "react";
@@ -25,7 +25,7 @@ interface InputFieldProps<V extends FieldValues> {
 		| Omit<RegisterOptions<V, Path<V>>, "disabled" | "valueAsNumber" | "valueAsDate" | "setValueAs">
 		| undefined;
 	hint?: string;
-	onValueChange?: (value: FixedNumber) => void | Promise<void>;
+	onValueChange?: (value: string) => void | Promise<void>;
 	label?: string | ReactNode;
 	helperText?: ReactNode;
 	hasError?: any;
@@ -41,7 +41,6 @@ const CurrencyInputField = <V extends FieldValues>({
 	suffix,
 	prefix,
 	rules,
-	hint,
 	min,
 	max,
 	onValueChange,
@@ -53,6 +52,40 @@ const CurrencyInputField = <V extends FieldValues>({
 }: InputFieldProps<V>) => {
 	const theme = useTheme();
 
+	const handleOnChange = (event: any, value: string, onChange: any) => {
+		let newValue = converLocalStringToNum(filterAllowedCharacters(event.target.value || ""));
+
+		if (converLocalStringToNum(value) !== newValue) {
+			const quantity = getFormattedNumber(newValue, decimals);
+			const [res] = getNumberAsUInt128(quantity, decimals);
+			let fixedNumber = FixedNumber.fromValue(res, decimals).toFormat(decimals);
+
+			if (min && fixedNumber.lt(min)) {
+				fixedNumber = min;
+				newValue = fixedNumber.toString();
+			}
+
+			if (max && fixedNumber.gt(max)) {
+				fixedNumber = max;
+				newValue = fixedNumber.toString();
+			}
+
+			const [first, last] = newValue.split(".");
+
+			// Kiểm tra số lượng phần thập phân
+			if (last && last.length >= 3) {
+				onChange(fixedNumber.toString());
+				return;
+			}
+
+			onChange(newValue);
+
+			if (onValueChange) {
+				onValueChange(newValue);
+			}
+		}
+	};
+
 	return (
 		<Stack width={"100%"}>
 			{typeof label == "string" ? <Typography fontSize={"12px"}>{label}</Typography> : label}
@@ -62,93 +95,58 @@ const CurrencyInputField = <V extends FieldValues>({
 					name={name}
 					control={formContext.control}
 					rules={rules}
-					render={({ field: { name, value, onBlur, onChange }, fieldState: { error } }) => (
-						<>
-							<CustomTextField
-								id={`outlined-adornment-${suffix}`}
-								value={value}
-								readOnly={readOnly}
-								name={name}
-								placeholder={placeholder ?? "0.0"}
-								onChange={(event) => {
-									let newValue = filterAllowedCharacters(event.target.value);
-									if (value !== newValue) {
-										const quantity = getFormattedNumber(newValue, decimals);
-										const [res] = getNumberAsUInt128(quantity, decimals);
-										let fixedNumber = FixedNumber.fromValue(res, decimals).toFormat(decimals);
-										if (min && fixedNumber.lt(min)) {
-											fixedNumber = min;
-											newValue = fixedNumber.toString();
-										}
-										if (max && fixedNumber.gt(max)) {
-											fixedNumber = max;
-											newValue = fixedNumber.toString();
-										}
-										if (onValueChange) {
-											onValueChange(fixedNumber);
-										}
+					render={({ field: { name, value = "", onBlur, onChange }, fieldState: { error } }) => {
+						const numFormat = converNumToLocalString(value);
 
-										onChange(newValue);
+						return (
+							<>
+								<CustomTextField
+									id={`outlined-adornment-${suffix}`}
+									value={numFormat}
+									readOnly={readOnly}
+									name={name}
+									placeholder={placeholder ?? "0.0"}
+									onChange={(event) => handleOnChange(event, numFormat, onChange)}
+									onBlur={(event) => handleOnChange(event, numFormat, onChange)}
+									startAdornment={
+										<InputAdornment position="start">
+											<Typography
+												fontWeight={600}
+												fontSize="14px"
+												color={setColorThemeMode(theme.palette.grey[600], theme.palette.grey[300])}>
+												{prefix ? prefix : name}
+											</Typography>
+										</InputAdornment>
 									}
-								}}
-								startAdornment={
-									<InputAdornment position="start">
-										<Typography
-											fontWeight={600}
-											fontSize="14px"
-											color={setColorThemeMode(theme.palette.grey[600], theme.palette.grey[300])}>
-											{prefix ? prefix : name}
-										</Typography>
-									</InputAdornment>
-								}
-								endAdornment={
-									<InputAdornment position="end">
-										<Typography
-											px={"6px"}
-											bgcolor={setColorThemeMode(
-												theme.palette.primary.main,
-												theme.palette.grey[800],
-											)}
-											fontWeight={600}
-											borderRadius={"8px"}
-											fontSize={"14px"}>
-											{suffix}
-										</Typography>
-									</InputAdornment>
-								}
-								aria-describedby="outlined-weight-helper-text"
-								inputProps={{
-									"aria-label": "weight",
-								}}
-								autoComplete="off"
-								error={hasError}
-							/>
+									endAdornment={
+										<InputAdornment position="end">
+											<Typography
+												px={"6px"}
+												bgcolor={setColorThemeMode(
+													theme.palette.primary.main,
+													theme.palette.grey[800],
+												)}
+												fontWeight={600}
+												borderRadius={"8px"}
+												fontSize={"14px"}>
+												{suffix}
+											</Typography>
+										</InputAdornment>
+									}
+									aria-describedby="outlined-weight-helper-text"
+									inputProps={{
+										"aria-label": "weight",
+									}}
+									autoComplete="off"
+									error={error?.message ? true : false}
+								/>
 
-							{helperText && <Box>{helperText}</Box>}
+								{helperText && <Box>{helperText}</Box>}
 
-							{extErrors ||
-								(error?.message && (
-									<RenderFormError error={extErrors ? extErrors?.message : error?.message ?? ""} />
-								))}
-
-							{/* <TokenInput
-								decimals={decimals}
-								placeholder={placeholder}
-								name={name}
-								value={value}
-								onBlur={onBlur}
-								onChange={onChange}
-								hasError={hasError ? hasError : error != null}
-								suffix={suffix}
-								onValueChange={onValueChange}
-								max={max}
-								min={min}
-								readOnly={readOnly}
-							/>
-
-							 */}
-						</>
-					)}
+								<RenderFormError error={extErrors ? extErrors?.message : error?.message ?? ""} />
+							</>
+						);
+					}}
 				/>
 			</FormControl>
 		</Stack>

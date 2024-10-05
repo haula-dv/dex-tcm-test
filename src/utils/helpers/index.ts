@@ -1,5 +1,8 @@
+import { IPlaceOrderValues } from "@/plugins/trade/components/create-order/CreateOrderForm";
 import { Theme, useTheme } from "@mui/material";
 import { useOrderEntry } from "@orderly.network/hooks";
+import { OrderEntity, OrderSide, OrderType } from "@orderly.network/types";
+import { match } from "ts-pattern";
 
 export const setColorThemeMode = (colorLight: string, colorDark: string, themeEx?: Theme): any => {
 	// eslint-disable-next-line react-hooks/rules-of-hooks
@@ -12,14 +15,35 @@ export const setColorThemeMode = (colorLight: string, colorDark: string, themeEx
 	}
 };
 
+// Form Create Order
 export async function getValidationErrors(
 	data: any,
 	symbol: string,
 	validator: ReturnType<typeof useOrderEntry>["helper"]["validator"],
-	getInput: any,
 ): Promise<ReturnType<ReturnType<typeof useOrderEntry>["helper"]["validator"]>> {
-	return validator(getInput(data, symbol));
+	return validator(getInputPlaceOrder(data, symbol));
 }
+
+export const getInputPlaceOrder = (data: IPlaceOrderValues, symbol: string): OrderEntity => {
+	return {
+		symbol,
+		side: match(data.direction)
+			.with("Buy", () => OrderSide.BUY)
+			.with("Sell", () => OrderSide.SELL)
+			.exhaustive(),
+		order_type: match(data.type)
+			.with("Market", () => OrderType.MARKET)
+			.with("Limit", () => OrderType.LIMIT)
+			.with("StopLimit", () => OrderType.STOP_LIMIT)
+			.with("StopMarket", () => OrderType.STOP_MARKET)
+			.exhaustive(),
+		order_price: converLocalStringToNum(data.price),
+		order_quantity: converLocalStringToNum(data.quantity),
+		trigger_price: converLocalStringToNum(data.triggerPrice),
+		total: converLocalStringToNum(data.total),
+	};
+};
+// END
 
 type TPSLType = "TAKE_PROFIT" | "STOP_LOSS";
 
@@ -29,4 +53,12 @@ export const findTPnSLOrderByType = (type: TPSLType, childOrders: any[]) => {
 			(order) => order.algo_type === type && typeof order.trigger_price === "number",
 		) ?? null
 	);
+};
+
+export const converLocalStringToNum = (newValue: string | number | undefined) => {
+	return newValue != "" ? String(newValue).replaceAll(",", "") : "";
+};
+
+export const converNumToLocalString = (newValue: string | number | undefined) => {
+	return newValue != "" ? String(newValue).replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,") : "";
 };

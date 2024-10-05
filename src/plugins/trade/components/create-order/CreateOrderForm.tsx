@@ -2,6 +2,7 @@
 import MainCard from "@/components/card/MainCard";
 import IconLoading from "@/components/icons/loading";
 import { getDecimalsFromTick } from "@/utils/formatters/api";
+import { getInputPlaceOrder } from "@/utils/helpers";
 import { TSizes } from "@/utils/themes/custom-theme/sizes";
 import { Stack, Typography, useTheme } from "@mui/material";
 import {
@@ -11,7 +12,7 @@ import {
 	useSymbolsInfo,
 	useWithdraw,
 } from "@orderly.network/hooks";
-import { OrderEntity, OrderSide, OrderType } from "@orderly.network/types";
+import { OrderSide, OrderType } from "@orderly.network/types";
 import { useConnectWallet, useNotifications } from "@web3-onboard/react";
 import { memo, ReactNode, useState } from "react";
 import { useForm } from "react-hook-form";
@@ -28,7 +29,7 @@ interface IProps {
 	symbol: string;
 }
 
-export type Inputs = {
+export type IPlaceOrderValues = {
 	direction: "Buy" | "Sell";
 	type: "Market" | "Limit" | "StopLimit" | "StopMarket";
 	triggerPrice?: string;
@@ -38,7 +39,7 @@ export type Inputs = {
 	total?: string;
 };
 
-const defaultValues: Inputs = {
+const defaultValues: IPlaceOrderValues = {
 	direction: "Buy",
 	type: "Limit",
 	triggerPrice: undefined,
@@ -64,7 +65,7 @@ const CreateOrderForm = ({ symbol }: IProps) => {
 	const symbolInfo = symbolsInfo[symbol]();
 	const [baseDecimals, quoteDecimals] = getDecimalsFromTick(symbolInfo);
 
-	const formContext = useForm<Inputs>({
+	const formContext = useForm<IPlaceOrderValues>({
 		defaultValues,
 		// mode: "all",
 	});
@@ -112,7 +113,7 @@ const CreateOrderForm = ({ symbol }: IProps) => {
 		}
 
 		try {
-			await onSubmit(getInput(data, symbol));
+			await onSubmit(getInputPlaceOrder(data, symbol));
 			update({
 				eventCode: "createOrderSuccess",
 				type: "success",
@@ -158,7 +159,6 @@ const CreateOrderForm = ({ symbol }: IProps) => {
 
 							<InputForm
 								formContext={formContext}
-								getInput={getInput}
 								helper={helper}
 								maxQty={maxQty}
 								symbol={symbol}
@@ -210,31 +210,3 @@ export const Item = ({ value, label }: IItemProps) => {
 };
 
 export default memo(CreateOrderForm);
-
-export const getInput = (data: Inputs, symbol: string): OrderEntity => {
-	return {
-		symbol,
-		side: match(data.direction)
-			.with("Buy", () => OrderSide.BUY)
-			.with("Sell", () => OrderSide.SELL)
-			.exhaustive(),
-		order_type: match(data.type)
-			.with("Market", () => OrderType.MARKET)
-			.with("Limit", () => OrderType.LIMIT)
-			.with("StopLimit", () => OrderType.STOP_LIMIT)
-			.with("StopMarket", () => OrderType.STOP_MARKET)
-			.exhaustive(),
-		order_price: data.price,
-		order_quantity: data.quantity,
-		trigger_price: data.triggerPrice,
-		total: data.total,
-	};
-};
-
-export async function getValidationErrors(
-	data: Inputs,
-	symbol: string,
-	validator: ReturnType<typeof useOrderEntry>["helper"]["validator"],
-): Promise<ReturnType<ReturnType<typeof useOrderEntry>["helper"]["validator"]>> {
-	return validator(getInput(data, symbol));
-}
