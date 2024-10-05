@@ -22,7 +22,7 @@ const PositionItem = ({ item, symbol, refresh, activedTPSL }: IProps) => {
 			: []
 		: [];
 
-	const isEntriePosition = activedTPSL.algo_type == "POSITIONAL_TP_SL";
+	const isEntriePosition = activedTPSL && activedTPSL.algo_type == "POSITIONAL_TP_SL";
 
 	const takeProfit = findTPnSLOrderByType("TAKE_PROFIT", child_orders);
 	const stopLoss = findTPnSLOrderByType("STOP_LOSS", child_orders);

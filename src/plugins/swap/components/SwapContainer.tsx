@@ -17,6 +17,7 @@ import { setZustandValue } from "nes-zustand";
 import { useCallback, useMemo, useState } from "react";
 import { useStore } from "zustand";
 import { isTransactionSubmittedState, tokenInputState, tokenOutputState } from "../store";
+import { ModalConfirmSwap } from "./modal-token/ModalConfirmSwap";
 import { ButtonSwapToggle } from "./SwapIconToggle";
 import { TransactionPopup } from "./token/TransactionSettingPopup";
 import { TransationSubmittedCard } from "./TransationSubmittedCard";
@@ -28,7 +29,7 @@ export const SwapContainer = () => {
 
 	// State
 	const isTransactionSubmitted = useStore(isTransactionSubmittedState, (state) => state.value);
-	const [isShowCost, setIsShowCost] = useState(false);
+	const [openModalConfirmSwap, setOpenModalConfirmSwap] = useState(false);
 
 	// TOKEN
 	const sellTokenActived = useStore(tokenInputState, (state) => state.value); // UP
@@ -112,11 +113,7 @@ export const SwapContainer = () => {
 	}, []);
 
 	// SELL ETH => USDC
-	const {
-		onSubmit,
-		helper,
-		maxQty: sellMaxQty,
-	} = useOrderEntry(
+	const { onSubmit, maxQty: sellMaxPrice } = useOrderEntry(
 		{
 			symbol: `PERP_${sellTokenActived?.token}_USDC`,
 			order_type: OrderType.LIMIT,
@@ -130,8 +127,8 @@ export const SwapContainer = () => {
 	// BUY BTC => USDC
 	const {
 		onSubmit: buyTokenSubmit,
-		helper: buyHelper,
 		maxQty: buyMaxPrice,
+		submitting,
 	} = useOrderEntry(
 		{
 			symbol: `PERP_${buyTokenActived?.token}_USDC`,
@@ -205,6 +202,16 @@ export const SwapContainer = () => {
 		}
 	};
 
+	// Handle confirm swap
+	const handleToggleConfirmSwap = () => {
+		if (checkIsInfluBalance()) {
+			checkIsInfluBalance();
+			return;
+		}
+
+		setOpenModalConfirmSwap(true);
+	};
+
 	// Handle Enter amount
 	const handleEnterAmount = async () => {
 		if (!wallet) {
@@ -215,7 +222,6 @@ export const SwapContainer = () => {
 
 		if (inputAmount && outputAmount) {
 			setIsSwapConfirm(true);
-
 			return;
 		}
 	};
@@ -229,25 +235,26 @@ export const SwapContainer = () => {
 		return result.toFixed(6);
 	}, [inputMarkPrice, outputMarkPrice]);
 
-	const getValidationErrors = async () => {
-		const data = {
-			symbol: `PERP_${buyTokenActived?.token}_USDC`,
-			order_quantity: outputAmount,
-			order_type: OrderType.MARKET,
-			side: OrderSide.BUY,
-			order_price: undefined,
-		};
+	// CHECK BALANE
+	const checkIsInfluBalance = useCallback(() => {
+		if (!outputAmount) {
+			return true;
+		}
 
-		return buyHelper.validator(data);
-	};
+		if (!inputAmount) {
+			return true;
+		}
 
-	const checkIsInfluBalance = async () => {
-		const errors = await getValidationErrors();
-		console.log(errors);
-		return;
-	};
+		if (outputAmount > buyMaxPrice) {
+			return true;
+		}
 
-	// console.log(checkIsInfluBalance());
+		if (inputAmount > sellMaxPrice) {
+			return true;
+		}
+
+		return false;
+	}, [buyMaxPrice, outputAmount, inputAmount, sellMaxPrice]);
 
 	return (
 		<Box
@@ -282,7 +289,7 @@ export const SwapContainer = () => {
 							loadingAmount={loadingAmount}
 							setLoadingAmount={setLoadingAmount}
 							handleChangeToken={handleChangeToken}
-							sellMaxQty={sellMaxQty}
+							sellMaxQty={sellMaxPrice}
 						/>
 
 						<ButtonSwapToggle toggleSwapType={handleToggleSide} />
@@ -304,18 +311,30 @@ export const SwapContainer = () => {
 								variant="contained"
 								color="primary"
 								size="large"
-								onClick={handleSubmitSwap}>
+								onClick={handleToggleConfirmSwap}>
 								Confirm Swap
 							</MainButton>
 						) : (
-							<MainButton
-								variant="contained"
-								color="primary"
-								size="large"
-								onClick={handleEnterAmount}
-								disabled={false}>
-								{wallet ? "Enter a amount" : connecting ? "Connecting wallet" : "Connect wallet"}
-							</MainButton>
+							<>
+								{checkIsInfluBalance() ? (
+									<MainButton variant="contained" color="primary" size="large" disabled>
+										INSUFFICIENT BALANCE
+									</MainButton>
+								) : (
+									<MainButton
+										variant="contained"
+										color="primary"
+										size="large"
+										onClick={handleEnterAmount}
+										disabled={checkIsInfluBalance() as any}>
+										{wallet
+											? "ENTER A AMOUNT"
+											: connecting
+											? "Connecting wallet"
+											: "Connect wallet"}
+									</MainButton>
+								)}
+							</>
 						)}
 					</Stack>
 
@@ -336,10 +355,6 @@ export const SwapContainer = () => {
 											(${outputMarkPrice.toLocaleString()})
 										</span>
 									</Typography>
-
-									{/* <MainIconButton size="small" edge="end">
-											<IconChevronDown size={'1rem'} />
-										</MainIconButton> */}
 								</>
 							)
 						)}
@@ -355,10 +370,6 @@ export const SwapContainer = () => {
 							</Typography>
 						</>
 					)}
-
-					{/* <Collapse in={isShowCost}>
-							<Cost slippageAmount={slippageAmount} priceImpact={priceImpact as any} />
-						</Collapse> */}
 				</>
 			</MainCardNotch>
 
@@ -368,6 +379,11 @@ export const SwapContainer = () => {
 					setIsSwapConfirm(false);
 					setZustandValue(isTransactionSubmittedState, false);
 				}}
+			/>
+
+			<ModalConfirmSwap
+				open={openModalConfirmSwap}
+				onClose={() => setOpenModalConfirmSwap(false)}
 			/>
 		</Box>
 	);

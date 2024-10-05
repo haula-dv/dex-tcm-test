@@ -339,7 +339,7 @@ export const ContentCurrencyField = styled(Stack, {
 
 		"&::-webkit-input-placeholder": {
 			color: setColorThemeMode(theme.palette.grey[500], theme.palette.common.white),
-			// opacity: "1",
+			opacity: "0.4",
 		},
 	},
 }));

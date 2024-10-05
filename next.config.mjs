@@ -1,21 +1,21 @@
 /**
  * @type {import('next').NextConfig}
  */
-import { getGlobals } from 'common-es';
-import path from 'path';
+import { getGlobals } from "common-es";
+import path from "path";
 
 const { __dirname, __filename } = getGlobals(import.meta.url);
 
-import withPWAInit from '@ducanh2912/next-pwa';
+import withPWAInit from "@ducanh2912/next-pwa";
 
 const withPWA = withPWAInit({
-	dest: 'public',
+	dest: "public",
 });
 
 export default withPWA({
 	experimental: {
-		ppr: 'incremental',
-		reactCompiler: true,
+		ppr: "incremental",
+		reactCompiler: process.env.CURRENT_ENV === "dev" ? false : true,
 	},
 
 	images: {
@@ -24,7 +24,7 @@ export default withPWA({
 	},
 
 	sassOptions: {
-		includePaths: [path.join(__dirname, 'styles')],
+		includePaths: [path.join(__dirname, "styles")],
 	},
 
 	env: {
@@ -45,20 +45,20 @@ export default withPWA({
 	async redirects() {
 		return [
 			{
-				source: '/',
-				destination: '/swap',
+				source: "/",
+				destination: "/swap",
 				permanent: false,
 			},
 
 			{
-				source: '/trading/perp',
-				destination: '/trading/perp/PERP_ETH_USDC',
+				source: "/trading/perp",
+				destination: "/trading/perp/PERP_ETH_USDC",
 				permanent: false,
 			},
 
 			{
-				source: '/trading',
-				destination: '/trading/perp/PERP_ETH_USDC',
+				source: "/trading",
+				destination: "/trading/perp/PERP_ETH_USDC",
 				permanent: false,
 			},
 		];
