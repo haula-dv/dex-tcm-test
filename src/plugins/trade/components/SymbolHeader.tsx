@@ -1,5 +1,6 @@
 import { getImageNextwork } from "@/common";
 import { MainButton } from "@/components/button/MainButton";
+import { HeadPage } from "@/components/HeadPage";
 import MainTooltip from "@/components/MainTooltip";
 import { TokenIcon } from "@/components/token/TokenIcon";
 import { usdFormatter } from "@/utils/formatters/number";
@@ -112,6 +113,10 @@ const SymbolHeader = ({ onSymbolChange, symbol }: IProps) => {
 
 	return (
 		<>
+			<HeadPage
+				title={`${usdFormatter.format(stream?.["24h_close"])} | ${base}-${perp} | DEX Trading`}
+			/>
+
 			<Stack
 				direction={"row"}
 				spacing={1.5}

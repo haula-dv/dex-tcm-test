@@ -1,11 +1,10 @@
-'use client';
-import { HeadPage } from '@/components/HeadPage';
-import { MainViewContainer } from '@/plugins/trade/components/MainViewContainer';
-import { TCMP_ORDERLY_SDK_TITLE_KEY } from '@/utils/constants/key_store';
-import { _orderlySymbolKey } from '@/utils/constants/orderly';
-import '@orderly.network/react/dist/styles.css';
-import { useRouter } from 'next/navigation';
-import { useCallback, useEffect, useState } from 'react';
+"use client";
+import { MainViewContainer } from "@/plugins/trade/components/MainViewContainer";
+import { TCMP_ORDERLY_SDK_TITLE_KEY } from "@/utils/constants/key_store";
+import { _orderlySymbolKey } from "@/utils/constants/orderly";
+import "@orderly.network/react/dist/styles.css";
+import { useRouter } from "next/navigation";
+import { useCallback, useEffect, useState } from "react";
 
 export default function PerpPage({ params }: { params: { symbol: string } }) {
 	const router = useRouter();
@@ -35,8 +34,7 @@ export default function PerpPage({ params }: { params: { symbol: string } }) {
 
 	return (
 		<>
-			<HeadPage title={`${symbol || 'PERP_ETH_USDC'}`} />
-			<MainViewContainer symbol={symbol || 'PERP_ETH_USDC'} onSymbolChange={onSymbolChange} />
+			<MainViewContainer symbol={symbol || "PERP_ETH_USDC"} onSymbolChange={onSymbolChange} />
 		</>
 	);
 }

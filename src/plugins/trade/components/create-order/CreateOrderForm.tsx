@@ -150,10 +150,11 @@ const CreateOrderForm = ({ symbol }: IProps) => {
 
 					<form onSubmit={formContext.handleSubmit(handleConfirmOrder)}>
 						<Stack spacing={TSizes.margin_common}>
-							<OrderTypeTab formContext={formContext} />
 							<OrderDirection formContext={formContext} wallet={wallet} />
 
 							<AvailableWithdraw balance={availableWithdraw} quote={quote} />
+
+							<OrderTypeTab formContext={formContext} />
 
 							<InputForm
 								formContext={formContext}

@@ -113,7 +113,12 @@ function InputForm({
 		<Stack spacing={"8px"}>
 			<Collapse
 				in={formContext.watch("type") === "StopLimit" || formContext.watch("type") === "StopMarket"}
-				sx={{ mt: "-10px !important" }}>
+				sx={{
+					mt:
+						formContext.watch("type") === "StopLimit" || formContext.watch("type") === "StopMarket"
+							? "0px"
+							: "-10px !important",
+				}}>
 				<CurrencyInputField
 					name="triggerPrice"
 					formContext={formContext}
@@ -137,6 +142,7 @@ function InputForm({
 					<CustomTextField
 						readOnly
 						placeholder="Market"
+						value={"Market"}
 						startAdornment={
 							<InputAdornment position="start">
 								<Typography

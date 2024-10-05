@@ -1,12 +1,16 @@
-'use client';
-import { filterAllowedCharacters, getFormattedNumber, getNumberAsUInt128 } from '@/utils/formatters/number';
-import { setColorThemeMode } from '@/utils/helpers';
-import { Box, FormControl, InputAdornment, Stack, Typography, useTheme } from '@mui/material';
-import { FixedNumber } from 'ethers';
-import { ReactNode } from 'react';
-import { Controller, FieldValues, Path, RegisterOptions, UseFormReturn } from 'react-hook-form';
-import { RenderFormError } from './RenderErrors';
-import { CustomTextField } from './TokenInput';
+"use client";
+import {
+	filterAllowedCharacters,
+	getFormattedNumber,
+	getNumberAsUInt128,
+} from "@/utils/formatters/number";
+import { setColorThemeMode } from "@/utils/helpers";
+import { Box, FormControl, InputAdornment, Stack, Typography, useTheme } from "@mui/material";
+import { FixedNumber } from "ethers";
+import { ReactNode } from "react";
+import { Controller, FieldValues, Path, RegisterOptions, UseFormReturn } from "react-hook-form";
+import { RenderFormError } from "./RenderErrors";
+import { CustomTextField } from "./TokenInput";
 
 interface InputFieldProps<V extends FieldValues> {
 	formContext: UseFormReturn<V>;
@@ -17,7 +21,9 @@ interface InputFieldProps<V extends FieldValues> {
 	min?: FixedNumber;
 	max?: FixedNumber;
 	placeholder?: string;
-	rules?: Omit<RegisterOptions<V, Path<V>>, 'disabled' | 'valueAsNumber' | 'valueAsDate' | 'setValueAs'> | undefined;
+	rules?:
+		| Omit<RegisterOptions<V, Path<V>>, "disabled" | "valueAsNumber" | "valueAsDate" | "setValueAs">
+		| undefined;
 	hint?: string;
 	onValueChange?: (value: FixedNumber) => void | Promise<void>;
 	label?: string | ReactNode;
@@ -48,8 +54,8 @@ const CurrencyInputField = <V extends FieldValues>({
 	const theme = useTheme();
 
 	return (
-		<Stack width={'100%'}>
-			{typeof label == 'string' ? <Typography fontSize={'12px'}>{label}</Typography> : label}
+		<Stack width={"100%"}>
+			{typeof label == "string" ? <Typography fontSize={"12px"}>{label}</Typography> : label}
 
 			<FormControl fullWidth>
 				<Controller
@@ -63,7 +69,7 @@ const CurrencyInputField = <V extends FieldValues>({
 								value={value}
 								readOnly={readOnly}
 								name={name}
-								placeholder={placeholder ?? '0.0'}
+								placeholder={placeholder ?? "0.0"}
 								onChange={(event) => {
 									let newValue = filterAllowedCharacters(event.target.value);
 									if (value !== newValue) {
@@ -90,8 +96,7 @@ const CurrencyInputField = <V extends FieldValues>({
 										<Typography
 											fontWeight={600}
 											fontSize="14px"
-											color={setColorThemeMode(theme.palette.grey[600], theme.palette.grey[300])}
-										>
+											color={setColorThemeMode(theme.palette.grey[600], theme.palette.grey[300])}>
 											{prefix ? prefix : name}
 										</Typography>
 									</InputAdornment>
@@ -99,26 +104,32 @@ const CurrencyInputField = <V extends FieldValues>({
 								endAdornment={
 									<InputAdornment position="end">
 										<Typography
-											px={'6px'}
-											bgcolor={setColorThemeMode(theme.palette.primary.main, theme.palette.grey[800])}
+											px={"6px"}
+											bgcolor={setColorThemeMode(
+												theme.palette.primary.main,
+												theme.palette.grey[800],
+											)}
 											fontWeight={600}
-											borderRadius={'8px'}
-											fontSize={'14px'}
-										>
+											borderRadius={"8px"}
+											fontSize={"14px"}>
 											{suffix}
 										</Typography>
 									</InputAdornment>
 								}
 								aria-describedby="outlined-weight-helper-text"
 								inputProps={{
-									'aria-label': 'weight',
+									"aria-label": "weight",
 								}}
 								autoComplete="off"
 								error={hasError}
 							/>
 
 							{helperText && <Box>{helperText}</Box>}
-							<RenderFormError error={extErrors ? extErrors?.message : error?.message ?? ''} />
+
+							{extErrors ||
+								(error?.message && (
+									<RenderFormError error={extErrors ? extErrors?.message : error?.message ?? ""} />
+								))}
 
 							{/* <TokenInput
 								decimals={decimals}
