@@ -186,8 +186,10 @@ const UpdateOrderModal = ({
 					<span style={{ color: theme.palette.success.main }}>
 						{orderActived.isAlgoOrder ? (
 							<>
-								Trigger Price {formContext.getValues("triggerPrice")} - Price{" "}
-								{formContext.getValues("price")}
+								Trigger Price {formContext.getValues("triggerPrice")}{" "}
+								{orderActived.order.type == "LIMIT" && (
+									<>- Price {formContext.getValues("price")}</>
+								)}
 							</>
 						) : (
 							formContext.getValues("price")
