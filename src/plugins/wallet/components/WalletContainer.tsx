@@ -76,8 +76,8 @@ export default function WalletContainer() {
 			{
 				method: "POST",
 				body: JSON.stringify({
-					maker_fee_rate: 12,
-					taker_fee_rate: 12,
+					maker_fee_rate: 0.01,
+					taker_fee_rate: 0.02,
 					account_ids: [`${orderlyAccountId}`],
 				}),
 			},
@@ -92,6 +92,7 @@ export default function WalletContainer() {
 		if (Array.isArray(wallet?.accounts) && wallet.accounts.length > 0) {
 			const item = wallet.accounts[0];
 			const chain = wallet.chains[0];
+
 			account.setAddress(item.address, {
 				provider: wallet.provider,
 				chain: {
@@ -101,12 +102,14 @@ export default function WalletContainer() {
 					name: wallet.label,
 				},
 			});
+
+			updateFee();
 		}
 	}, [account, wallet]);
 
 	return (
 		<Stack direction={"row"} spacing={1} alignItems={"center"}>
-			<MainButton onClick={updateFee}>updateFee</MainButton>
+			{/* <MainButton onClick={updateFee}>updateFee</MainButton> */}
 
 			<NetworkContent />
 
