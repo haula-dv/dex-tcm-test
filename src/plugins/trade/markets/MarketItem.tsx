@@ -1,5 +1,6 @@
 import { getImageNextwork } from "@/common";
 import { TokenIcon } from "@/components/token/TokenIcon";
+import { usdFormatter } from "@/utils/formatters/number";
 import { setColorThemeMode } from "@/utils/helpers";
 import { Box, Stack, Typography, useTheme } from "@mui/material";
 import { WSMessage } from "@orderly.network/types";
@@ -29,7 +30,7 @@ const MarketItem = ({ index, market, onChangeSymbol }: IProps) => {
 				<TokenIcon url={getImageNextwork(base, "symbol_logo")} />
 
 				<Typography fontWeight={600} fontSize={"14px"} whiteSpace={"nowrap"}>
-					{(market as any).index_price.toFixed(2)}{" "}
+					{usdFormatter.format((market as any).index_price)}{" "}
 					<span style={{ color: theme.palette.grey[400] }}>{quote}</span>
 				</Typography>
 

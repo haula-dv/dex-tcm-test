@@ -237,11 +237,7 @@ export const SwapContainer = () => {
 
 	// CHECK BALANE
 	const checkIsInfluBalance = useCallback(() => {
-		if (!outputAmount) {
-			return true;
-		}
-
-		if (!inputAmount) {
+		if (!outputAmount && !inputAmount) {
 			return true;
 		}
 
@@ -316,9 +312,14 @@ export const SwapContainer = () => {
 							</MainButton>
 						) : (
 							<>
-								{checkIsInfluBalance() ? (
-									<MainButton variant="contained" color="primary" size="large" disabled>
-										INSUFFICIENT BALANCE
+								{buyTokenActived && inputAmount && outputAmount ? (
+									<MainButton
+										variant="contained"
+										color="primary"
+										size="large"
+										onClick={() => setOpenModalConfirmSwap(true)}
+										disabled={checkIsInfluBalance()}>
+										{checkIsInfluBalance() ? "INSUFFICIENT BALANCE" : "Confirm Swap"}
 									</MainButton>
 								) : (
 									<MainButton
@@ -326,7 +327,7 @@ export const SwapContainer = () => {
 										color="primary"
 										size="large"
 										onClick={handleEnterAmount}
-										disabled={checkIsInfluBalance() as any}>
+										disabled={wallet ? true : false}>
 										{wallet
 											? "ENTER A AMOUNT"
 											: connecting

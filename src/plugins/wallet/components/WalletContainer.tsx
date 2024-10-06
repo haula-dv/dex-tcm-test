@@ -7,7 +7,6 @@ import { TLocalStorage } from "@/utils/constants/key_store";
 import { getBaseUrl } from "@/utils/constants/orderly";
 import { formartAddress } from "@/utils/formatters/token";
 import { setColorThemeMode } from "@/utils/helpers";
-import { loadOrderlyKey } from "@/utils/helpers/orderlyHelper";
 import { Box, Stack, useTheme } from "@mui/material";
 import { useAccount, useChains, useDeposit } from "@orderly.network/hooks";
 import { IconMoonStars, IconSun } from "@tabler/icons-react";
@@ -48,6 +47,7 @@ export default function WalletContainer() {
 
 	const [{ wallet, connecting }, connect, disconnect] = useConnectWallet();
 	const { account } = useAccount();
+	const orderlyKey = account.keyStore.getOrderlyKey();
 
 	// Handle connect wallet button
 	const handleConnectWallet = async () => {
@@ -67,17 +67,17 @@ export default function WalletContainer() {
 			return;
 		}
 
-		const orderlyKey: any = loadOrderlyKey(account.address ?? "");
+		// const orderlyKey: any = loadOrderlyKey(account.address ?? "");
 
 		const res = await signAndSendRequest(
 			orderlyAccountId ?? "",
-			orderlyKey,
+			(orderlyKey as any).privateKey,
 			`${getBaseUrl()}/broker/fee_rate/set`,
 			{
 				method: "POST",
 				body: JSON.stringify({
-					maker_fee_rate: 0.02,
-					taker_fee_rate: 0.01,
+					maker_fee_rate: 12,
+					taker_fee_rate: 12,
 					account_ids: [`${orderlyAccountId}`],
 				}),
 			},
@@ -106,7 +106,7 @@ export default function WalletContainer() {
 
 	return (
 		<Stack direction={"row"} spacing={1} alignItems={"center"}>
-			{/* <MainButton onClick={updateFee}>updateFee </MainButton> */}
+			<MainButton onClick={updateFee}>updateFee</MainButton>
 
 			<NetworkContent />
 

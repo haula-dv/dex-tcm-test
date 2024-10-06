@@ -1,16 +1,16 @@
-import { getImageNextwork } from '@/common';
-import { MainButton } from '@/components/button/MainButton';
-import { ItemList } from '@/components/list/ItemList';
-import { StyledMenu } from '@/components/menu/StyledMenu';
-import { TokenIcon } from '@/components/token/TokenIcon';
-import { TLocalStorage } from '@/utils/constants/key_store';
-import { idFromHexChainId } from '@/utils/formatters/token';
-import { setColorThemeMode } from '@/utils/helpers';
-import { Divider, Stack, Typography, useTheme } from '@mui/material';
-import { useChains } from '@orderly.network/hooks';
-import { IconChevronDown } from '@tabler/icons-react';
-import { useConnectWallet, useSetChain } from '@web3-onboard/react';
-import { useCallback, useEffect, useState } from 'react';
+import { getImageNextwork } from "@/common";
+import { MainButton } from "@/components/button/MainButton";
+import { ItemList } from "@/components/list/ItemList";
+import { StyledMenu } from "@/components/menu/StyledMenu";
+import { TokenIcon } from "@/components/token/TokenIcon";
+import { TLocalStorage } from "@/utils/constants/key_store";
+import { idFromHexChainId } from "@/utils/formatters/token";
+import { setColorThemeMode } from "@/utils/helpers";
+import { Divider, Stack, Typography, useTheme } from "@mui/material";
+import { useChains } from "@orderly.network/hooks";
+import { IconChevronDown } from "@tabler/icons-react";
+import { useConnectWallet, useSetChain } from "@web3-onboard/react";
+import { useCallback, useEffect, useState } from "react";
 
 export default function NetworkContent() {
 	const theme = useTheme();
@@ -29,7 +29,7 @@ export default function NetworkContent() {
 
 	// GET CURRENT CHAIN
 	const currentChain = useCallback(() => {
-		return findByChainId(connectedChain ? idFromHexChainId(connectedChain?.id ?? '') : 1);
+		return findByChainId(connectedChain ? idFromHexChainId(connectedChain?.id ?? "") : 1);
 	}, [connectedChain, findByChainId]);
 
 	// Handle change network
@@ -42,10 +42,10 @@ export default function NetworkContent() {
 
 			await setChain({
 				chainId: chainId,
-				chainNamespace: 'evm',
+				chainNamespace: "evm",
 			});
 
-			localStorage.setItem(TLocalStorage.DEX_ORDERLY_NETWORK, isTestnet ? 'testnet' : 'mainnet');
+			localStorage.setItem(TLocalStorage.DEX_ORDERLY_NETWORK, isTestnet ? "testnet" : "mainnet");
 
 			// realod page
 			setTimeout(() => {
@@ -58,56 +58,72 @@ export default function NetworkContent() {
 	useEffect(() => {
 		if (currentChain()) {
 			const isMainet = currentChain()?.network_infos.mainnet;
-			localStorage.setItem('networkId', isMainet ? 'mainnet' : 'testnet');
+			localStorage.setItem("networkId", isMainet ? "mainnet" : "testnet");
 		}
 	}, [currentChain()]);
 
+	// Check network
+	const allChains = [...chains.mainnet, ...chains.testnet];
+	const remapChainIds =
+		allChains.length > 0
+			? allChains.map((item: any) => {
+					return item.network_infos.chain_id;
+			  })
+			: [];
+
+	const isSupportChain = currentChain()
+		? remapChainIds.some((it) => it === (currentChain() as any).network_infos.chain_id)
+		: false;
+
 	return (
 		<>
-			<MainButton
-				variant={'contained'}
-				endIcon={
-					<IconChevronDown
-						size={'1rem'}
-						color={setColorThemeMode(theme.palette.common.black, theme.palette.common.white)}
-					/>
-				}
-				onClick={handleShowMenu}
-				id="network-button"
-				aria-controls={openNetworkEl ? 'network-menu' : undefined}
-				aria-haspopup="true"
-				color="inherit"
-				sx={{
-					backgroundColor: setColorThemeMode(theme.palette.grey[50], theme.palette.grey[700]),
-					color: setColorThemeMode(theme.palette.common.black, theme.palette.common.white),
-				}}
-				aria-expanded={openNetworkEl ? 'true' : undefined}
-				startIcon={
-					currentChain() ? (
-						<TokenIcon url={getImageNextwork(currentChain()?.network_infos?.chain_id, 'network_logo')} />
-					) : (
-						''
-					)
-				}
-			>
-				{currentChain() ? currentChain()?.network_infos?.name : 'Unsupport Network'}
-			</MainButton>
+			{chains ? (
+				<MainButton
+					variant={"contained"}
+					endIcon={
+						<IconChevronDown
+							size={"1rem"}
+							color={setColorThemeMode(theme.palette.common.black, theme.palette.common.white)}
+						/>
+					}
+					onClick={handleShowMenu}
+					id="network-button"
+					aria-controls={openNetworkEl ? "network-menu" : undefined}
+					aria-haspopup="true"
+					color={isSupportChain ? "inherit" : "warning"}
+					sx={{
+						backgroundColor: isSupportChain
+							? setColorThemeMode(theme.palette.grey[50], theme.palette.grey[700])
+							: "",
+						color: setColorThemeMode(theme.palette.common.black, theme.palette.common.white),
+					}}
+					aria-expanded={openNetworkEl ? "true" : undefined}
+					startIcon={
+						currentChain() ? (
+							<TokenIcon
+								url={getImageNextwork(currentChain()?.network_infos?.chain_id, "network_logo")}
+							/>
+						) : (
+							""
+						)
+					}>
+					{isSupportChain ? currentChain()?.network_infos?.name : "Unsupport Network"}{" "}
+				</MainButton>
+			) : null}
 
 			<StyledMenu
 				id="network-menu"
 				MenuListProps={{
-					'aria-labelledby': 'network-button',
+					"aria-labelledby": "network-button",
 				}}
 				anchorEl={networkAnchorEl}
 				open={openNetworkEl}
-				onClose={() => setNetworkAnchorEl(null)}
-			>
+				onClose={() => setNetworkAnchorEl(null)}>
 				<Stack pb={1}>
 					<Typography
 						px={1.6}
 						color={setColorThemeMode(useTheme().palette.grey[600], useTheme().palette.grey[200])}
-						py={0.5}
-					>
+						py={0.5}>
 						Mainnet
 					</Typography>
 
@@ -121,8 +137,12 @@ export default function NetworkContent() {
 								isHiddenEndIcon
 								size="small"
 								onClick={() => onChainChanged(chain.network_infos.chain_id, false)}
-								startIcon={<TokenIcon url={getImageNextwork(chain.network_infos.chain_id, 'network_logo')} />}
-								isSelected={currentChain()?.network_infos?.chain_id === chain.network_infos.chain_id}
+								startIcon={
+									<TokenIcon url={getImageNextwork(chain.network_infos.chain_id, "network_logo")} />
+								}
+								isSelected={
+									currentChain()?.network_infos?.chain_id === chain.network_infos.chain_id
+								}
 							/>
 						))}
 					</Stack>
@@ -133,8 +153,7 @@ export default function NetworkContent() {
 					<Typography
 						px={1.6}
 						color={setColorThemeMode(useTheme().palette.grey[600], useTheme().palette.grey[200])}
-						py={0.5}
-					>
+						py={0.5}>
 						Testnet
 					</Typography>
 
@@ -148,8 +167,12 @@ export default function NetworkContent() {
 								isHiddenEndIcon
 								size="small"
 								onClick={() => onChainChanged(chain.network_infos.chain_id, true)}
-								startIcon={<TokenIcon url={getImageNextwork(chain.network_infos.chain_id, 'network_logo')} />}
-								isSelected={currentChain()?.network_infos?.chain_id === chain.network_infos.chain_id}
+								startIcon={
+									<TokenIcon url={getImageNextwork(chain.network_infos.chain_id, "network_logo")} />
+								}
+								isSelected={
+									currentChain()?.network_infos?.chain_id === chain.network_infos.chain_id
+								}
 							/>
 						))}
 					</Stack>

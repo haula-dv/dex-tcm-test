@@ -21,6 +21,7 @@ export async function signAndSendRequest(
 	if (init?.body) {
 		message += init.body;
 	}
+
 	const orderlySignature = await sign(encoder.encode(message), privateKey);
 
 	return fetch(input, {

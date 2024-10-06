@@ -1,17 +1,17 @@
-import { getPublicKey, sign } from '@noble/ed25519';
-import bs58 from 'bs58';
-import { encodeBase58 } from 'ethers';
-import { isTestnet } from '../constants/orderly';
+import { getPublicKey, sign } from "@noble/ed25519";
+import bs58 from "bs58";
+import { encodeBase58 } from "ethers";
+import { isTestnet } from "../constants/orderly";
 
-export const usdFormatter = new Intl.NumberFormat('en-US', { maximumFractionDigits: 2 });
+export const usdFormatter = new Intl.NumberFormat("en-US", { maximumFractionDigits: 2 });
 
-export type Scope = 'read' | 'read,trading';
+export type Scope = "read" | "read,trading";
 
-const ORDERLY_KEY_LOCAL_STORAGE = 'orderly_';
-const BROKER_ID_LOCAL_STORAGE = 'broker-id';
-const CONTRACT_ADDRESS_LOCAL_STORAGE = 'contract-address';
+const ORDERLY_KEY_LOCAL_STORAGE = "orderly_";
+const BROKER_ID_LOCAL_STORAGE = "broker-id";
+const CONTRACT_ADDRESS_LOCAL_STORAGE = "contract-address";
 
-export const exampleDelegateContract = '0xa4394b62261061c629800c6d86d153a9f38f0cbb';
+export const exampleDelegateContract = "0xa4394b62261061c629800c6d86d153a9f38f0cbb";
 
 export async function signAndSendRequest(
 	accountId: string,
@@ -23,7 +23,7 @@ export async function signAndSendRequest(
 	const encoder = new TextEncoder();
 
 	const url = new URL(input);
-	let message = `${String(timestamp)}${init?.method ?? 'GET'}${url.pathname}`;
+	let message = `${String(timestamp)}${init?.method ?? "GET"}${url.pathname}`;
 	if (init?.body) {
 		message += init.body;
 	}
@@ -31,12 +31,14 @@ export async function signAndSendRequest(
 
 	return fetch(input, {
 		headers: {
-			'Content-Type':
-				init?.method !== 'GET' && init?.method !== 'DELETE' ? 'application/json' : 'application/x-www-form-urlencoded',
-			'orderly-timestamp': String(timestamp),
-			'orderly-account-id': accountId,
-			'orderly-key': `ed25519:${encodeBase58(await getPublicKey(orderlyKey))}`,
-			'orderly-signature': base64EncodeURL(orderlySignature),
+			"Content-Type":
+				init?.method !== "GET" && init?.method !== "DELETE"
+					? "application/json"
+					: "application/x-www-form-urlencoded",
+			"orderly-timestamp": String(timestamp),
+			"orderly-account-id": accountId,
+			"orderly-key": `ed25519:${encodeBase58(await getPublicKey(orderlyKey))}`,
+			"orderly-signature": base64EncodeURL(orderlySignature),
 			...(init?.headers ?? {}),
 		},
 		...(init ?? {}),
@@ -45,7 +47,7 @@ export async function signAndSendRequest(
 
 export function loadOrderlyKey(walletAddress: string): Uint8Array | undefined {
 	let key: any = localStorage.getItem(
-		`${ORDERLY_KEY_LOCAL_STORAGE}${isTestnet() ? 'testnet' : 'mainnet'}_${walletAddress}`,
+		`${ORDERLY_KEY_LOCAL_STORAGE}${isTestnet() ? "testnet" : "mainnet"}_${walletAddress}`,
 	);
 	key = JSON.parse(key);
 
@@ -54,7 +56,7 @@ export function loadOrderlyKey(walletAddress: string): Uint8Array | undefined {
 }
 
 export function loadBrokerId(chainId: string): string {
-	return window.localStorage.getItem(`${BROKER_ID_LOCAL_STORAGE}:${chainId}`) ?? '';
+	return window.localStorage.getItem(`${BROKER_ID_LOCAL_STORAGE}:${chainId}`) ?? "";
 }
 
 export function saveBrokerId(chainId: string, brokerId: string) {
@@ -62,11 +64,14 @@ export function saveBrokerId(chainId: string, brokerId: string) {
 }
 
 export function loadContractAddress(chainId: string): string {
-	return window.localStorage.getItem(`${CONTRACT_ADDRESS_LOCAL_STORAGE}:${chainId}`) ?? '';
+	return window.localStorage.getItem(`${CONTRACT_ADDRESS_LOCAL_STORAGE}:${chainId}`) ?? "";
 }
 
 export function saveContractAddress(chainId: string, contractAddress: string) {
-	return window.localStorage.setItem(`${CONTRACT_ADDRESS_LOCAL_STORAGE}:${chainId}`, contractAddress);
+	return window.localStorage.setItem(
+		`${CONTRACT_ADDRESS_LOCAL_STORAGE}:${chainId}`,
+		contractAddress,
+	);
 }
 
 function base64EncodeURL(byteArray: Uint8Array) {
@@ -75,17 +80,17 @@ function base64EncodeURL(byteArray: Uint8Array) {
 			.map((val) => {
 				return String.fromCharCode(val);
 			})
-			.join(''),
+			.join(""),
 	)
-		.replace(/\+/g, '-')
-		.replace(/\//g, '_')
-		.replace(/=/g, '');
+		.replace(/\+/g, "-")
+		.replace(/\//g, "_")
+		.replace(/=/g, "");
 }
 
 function base64DecodeURL(b64urlstring: string): Uint8Array {
 	return new Uint8Array(
-		atob(b64urlstring.replace(/-/g, '+').replace(/_/g, '/'))
-			.split('')
+		atob(b64urlstring.replace(/-/g, "+").replace(/_/g, "/"))
+			.split("")
 			.map((val) => {
 				return val.charCodeAt(0);
 			}),

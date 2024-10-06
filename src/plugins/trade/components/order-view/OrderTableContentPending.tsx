@@ -77,11 +77,10 @@ const OrderTableContentPending = ({ orderBookStatus, symbol, isShowAll }: IProps
 
 		try {
 			if (currentOrder.isAlgoOrder) {
-				await cancelAlgoOrder(currentOrder.order.algo_order_id, symbol);
+				await cancelAlgoOrder(currentOrder.order.algo_order_id, currentOrder.order.symbol);
 			} else {
-				await cancelOrder(currentOrder.order.order_id, symbol);
+				await cancelOrder(currentOrder.order.order_id, currentOrder.order.symbol);
 			}
-
 			update({
 				eventCode: "cancelOrderSuccess",
 				type: "success",
