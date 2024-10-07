@@ -170,7 +170,6 @@ export const SwapContainer = () => {
 
 		// BUY
 		const amountOutput = parseFloat(outputAmount);
-		const priceUSDC = amountOutput * outputMarkPrice + formattedPrice;
 
 		const buyData = {
 			symbol: `PERP_${buyTokenActived?.token}_USDC`, // Cặp token đang mua (BTC -> USDC)
@@ -189,6 +188,8 @@ export const SwapContainer = () => {
 				message: "Order successfully created!",
 				autoDismiss: 5_000,
 			});
+			setZustandValue(isTransactionSubmittedState, true);
+			setOpenModalConfirmSwap(false);
 		} catch (error) {
 			console.error(`Unhandled error in "submitForm":`, error);
 			update({
@@ -319,7 +320,7 @@ export const SwapContainer = () => {
 										size="large"
 										onClick={() => setOpenModalConfirmSwap(true)}
 										disabled={checkIsInfluBalance()}>
-										{checkIsInfluBalance() ? "INSUFFICIENT BALANCE" : "Confirm Swap"}
+										{checkIsInfluBalance() ? "INSUFFICIENT BALANCE" : "Swap"}
 									</MainButton>
 								) : (
 									<MainButton
@@ -390,6 +391,9 @@ export const SwapContainer = () => {
 					sellTokenActived={sellTokenActived}
 					outputAmount={outputAmount}
 					inputAmount={inputAmount}
+					sellMaxPrice={sellMaxPrice}
+					buyMaxPrice={buyMaxPrice}
+					onSubmit={handleSubmitSwap}
 				/>
 			)}
 		</Box>

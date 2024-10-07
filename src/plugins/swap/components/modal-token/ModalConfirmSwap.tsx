@@ -5,12 +5,9 @@ import MainCard from "@/components/card/MainCard";
 import { MainDialog } from "@/components/dialog/MainDialog";
 import { usdFormatter } from "@/utils/formatters/number";
 import { setColorThemeMode } from "@/utils/helpers";
-import { TSizes } from "@/utils/themes/custom-theme/sizes";
-import { Divider, Stack, Typography, useTheme } from "@mui/material";
+import { Stack, Typography, useTheme } from "@mui/material";
 import { useAccountInfo } from "@orderly.network/hooks";
-import { setZustandValue } from "nes-zustand";
 import Image from "next/image";
-import { isTransactionSubmittedState } from "../../store";
 
 interface IProps {
 	open: boolean;
@@ -19,6 +16,9 @@ interface IProps {
 	buyTokenActived: ITokenType;
 	inputAmount: number;
 	outputAmount: number;
+	sellMaxPrice: number;
+	buyMaxPrice: number;
+	onSubmit: () => void;
 }
 
 export const ModalConfirmSwap = ({
@@ -28,16 +28,14 @@ export const ModalConfirmSwap = ({
 	buyTokenActived,
 	inputAmount,
 	outputAmount,
+	sellMaxPrice,
+	buyMaxPrice,
+	onSubmit,
 }: IProps) => {
 	const tabs: ITab[] = [
 		{ label: "Details", value: 1 },
 		{ label: "Data", value: 2 },
 	];
-
-	const handleConfirm = () => {
-		setZustandValue(isTransactionSubmittedState, true);
-		onClose();
-	};
 
 	const theme = useTheme();
 
@@ -66,8 +64,9 @@ export const ModalConfirmSwap = ({
 					</Stack>
 
 					<Typography
-						color={setColorThemeMode(useTheme().palette.grey[500], useTheme().palette.grey[100])}>
-						Balance: $099998
+						color={setColorThemeMode(useTheme().palette.grey[500], useTheme().palette.grey[100])}
+						pt={"4px"}>
+						Balance: {usdFormatter.format(sellMaxPrice)}
 					</Typography>
 				</MainCard>
 
@@ -84,13 +83,14 @@ export const ModalConfirmSwap = ({
 					</Stack>
 
 					<Typography
+						pt={"4px"}
 						color={setColorThemeMode(useTheme().palette.grey[500], useTheme().palette.grey[100])}>
-						Balance: $099998
+						Balance: {usdFormatter.format(buyMaxPrice)}
 					</Typography>
 				</MainCard>
 			</Stack>
 
-			<Typography pt="10px" pb="4px">
+			{/* <Typography pt="10px" pb="4px">
 				Details
 			</Typography>
 			<MainCard disablePadding width="100%" backgroudColor={"common"}>
@@ -134,7 +134,8 @@ export const ModalConfirmSwap = ({
 						</Typography>
 					</Stack>
 				</Stack>
-			</MainCard>
+			</MainCard> */}
+
 			<Stack direction={"row"} spacing={2} pt={2}>
 				<MainButton
 					onClick={onClose}
@@ -146,12 +147,7 @@ export const ModalConfirmSwap = ({
 					Reject
 				</MainButton>
 
-				<MainButton
-					variant="contained"
-					color="darkGrey"
-					fullWidth
-					onClick={handleConfirm}
-					size="large">
+				<MainButton variant="contained" color="darkGrey" fullWidth onClick={onSubmit} size="large">
 					Confirm Swap
 				</MainButton>
 			</Stack>
