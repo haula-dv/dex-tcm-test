@@ -144,6 +144,9 @@ export const SwapContainer = () => {
 	const symbolInfo = symbolsInfo[`PERP_${buyTokenActived?.token}_USDC`]();
 	const [baseDecimals, quoteDecimals] = getDecimalsFromTick(symbolInfo);
 
+	const [buyDetail, setBuyDetail] = useState(null);
+	const [sellDetail, setSellDetail] = useState(null);
+
 	const handleSubmitSwap = async () => {
 		setLoading(true);
 		const slippageTolerance = +slippageAmount;
@@ -157,8 +160,6 @@ export const SwapContainer = () => {
 
 		// SELL
 		const amountQty = parseFloat(inputAmount);
-		const calculatedPrice = amountQty * inputMarkPrice;
-		const formattedPrice = parseFloat(calculatedPrice.toFixed(quoteDecimals));
 
 		const sellData = {
 			symbol: `PERP_${sellTokenActived?.token}_USDC`,
@@ -179,8 +180,10 @@ export const SwapContainer = () => {
 		};
 
 		try {
-			await onSubmit(sellData);
-			await buyTokenSubmit(buyData);
+			const resSell = await onSubmit(sellData);
+			const resBuy = await buyTokenSubmit(buyData);
+			setBuyDetail(resBuy);
+			setSellDetail(resSell);
 
 			update({
 				eventCode: "createOrderSuccess",
@@ -375,13 +378,19 @@ export const SwapContainer = () => {
 				</>
 			</MainCardNotch>
 
-			<TransationSubmittedCard
-				open={isTransactionSubmitted}
-				onClose={() => {
-					setIsSwapConfirm(false);
-					setZustandValue(isTransactionSubmittedState, false);
-				}}
-			/>
+			{buyTokenActived && sellTokenActived && sellDetail && buyDetail && (
+				<TransationSubmittedCard
+					open={isTransactionSubmitted}
+					buyTokenActived={buyTokenActived}
+					sellTokenActived={sellTokenActived}
+					buyDetail={buyDetail}
+					sellDetail={sellDetail}
+					onClose={() => {
+						setIsSwapConfirm(false);
+						setZustandValue(isTransactionSubmittedState, false);
+					}}
+				/>
+			)}
 
 			{buyTokenActived && sellTokenActived && (
 				<ModalConfirmSwap
