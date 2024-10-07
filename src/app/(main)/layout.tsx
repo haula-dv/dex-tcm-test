@@ -2,6 +2,7 @@
 import { Header } from "@/components/layouts/Header";
 import "@/styles/global.scss";
 import { Box, useTheme } from "@mui/material";
+import "@orderly.network/react/dist/styles.css";
 import React from "react";
 
 export default function RootLayout({

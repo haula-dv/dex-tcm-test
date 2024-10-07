@@ -382,10 +382,16 @@ export const SwapContainer = () => {
 				}}
 			/>
 
-			<ModalConfirmSwap
-				open={openModalConfirmSwap}
-				onClose={() => setOpenModalConfirmSwap(false)}
-			/>
+			{buyTokenActived && sellTokenActived && (
+				<ModalConfirmSwap
+					open={openModalConfirmSwap}
+					onClose={() => setOpenModalConfirmSwap(false)}
+					buyTokenActived={buyTokenActived}
+					sellTokenActived={sellTokenActived}
+					outputAmount={outputAmount}
+					inputAmount={inputAmount}
+				/>
+			)}
 		</Box>
 	);
 };

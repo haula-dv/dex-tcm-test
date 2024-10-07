@@ -114,7 +114,9 @@ const SymbolHeader = ({ onSymbolChange, symbol }: IProps) => {
 	return (
 		<>
 			<HeadPage
-				title={`${usdFormatter.format(stream?.["24h_close"])} | ${base}-${perp} | DEX Trading`}
+				title={`${
+					isNaN(stream?.["24h_close"]) ? "--" : usdFormatter.format(stream?.["24h_close"])
+				} | ${base}-${perp} | DEX Trading`}
 			/>
 
 			<Stack

@@ -76,8 +76,8 @@ export default function WalletContainer() {
 			{
 				method: "POST",
 				body: JSON.stringify({
-					maker_fee_rate: 0.01,
-					taker_fee_rate: 0.02,
+					maker_fee_rate: 0.001,
+					taker_fee_rate: 0.002,
 					account_ids: [`${orderlyAccountId}`],
 				}),
 			},
