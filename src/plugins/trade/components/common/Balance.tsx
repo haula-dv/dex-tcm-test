@@ -1,5 +1,6 @@
 import { MainButton } from "@/components/button/MainButton";
 import MainCard from "@/components/card/MainCard";
+import { DepositWithdrawDialog } from "@/components/deposit/DepositWithdrawDialog";
 import { MainDialog } from "@/components/dialog/MainDialog";
 import { NetworkId } from "@/provider/OrderlyConfigProviderRoot";
 import { AppInfo } from "@/utils/constants/key_store";
@@ -28,6 +29,8 @@ export const Balance = ({ availableWithdraw, quote, wallet, isFristLoading }: IP
 	const [open, setOpen] = useState(false);
 	const networkId = (localStorage.getItem("networkId") ?? "mainnet") as NetworkId;
 	const [_, customNotification] = useNotifications();
+	const [openWithDraw, setOpenWithDraw] = useState(false);
+	const [activedTab, setActivedTab] = useState("withdraw");
 
 	// Handle get test USDC
 	const handleGetTestUSDC = async () => {
@@ -89,54 +92,87 @@ export const Balance = ({ availableWithdraw, quote, wallet, isFristLoading }: IP
 		}
 	};
 
+	const handleOpenWithdraw = (type: string) => {
+		setActivedTab(type);
+		setOpenWithDraw(!openWithDraw);
+	};
+
 	const theme = useTheme();
 
 	return (
 		<>
-			<MainCard backgroudColor="primaryLight" width="100%">
-				<Stack direction={"row"} justifyContent={"space-between"}>
-					<Typography
-						fontSize={"12px"}
-						color={setColorThemeMode(useTheme().palette.grey[600], useTheme().palette.grey[200])}>
-						Total balance
-					</Typography>
-
-					{isFristLoading ? (
-						<Skeleton variant="text" width={"100px"} />
-					) : (
-						<Typography fontWeight={600} fontSize={"20px"}>
-							{usdFormatter.format(availableWithdraw)}{" "}
-							<span
-								style={{
-									color: setColorThemeMode(theme.palette.grey[700], theme.palette.grey[300]),
-								}}>
-								{quote}
-							</span>
-						</Typography>
-					)}
-				</Stack>
-
-				{networkId == "testnet" && (
+			<MainCard
+				backgroudColor="primaryLight"
+				width="100%"
+				isActionSlot={
 					<>
-						<Box mb={TSizes.margin_xs} />
+						<Stack direction={"row"} justifyContent={"space-between"}>
+							<Typography
+								fontSize={"12px"}
+								color={setColorThemeMode(
+									useTheme().palette.grey[600],
+									useTheme().palette.grey[200],
+								)}>
+								Total balance
+							</Typography>
+
+							{isFristLoading ? (
+								<Skeleton variant="text" width={"100px"} />
+							) : (
+								<Typography fontWeight={600} fontSize={"17px"}>
+									{usdFormatter.format(availableWithdraw)}{" "}
+									<span
+										style={{
+											color: setColorThemeMode(theme.palette.grey[700], theme.palette.grey[300]),
+										}}>
+										{quote}
+									</span>
+								</Typography>
+							)}
+						</Stack>
+
+						{networkId == "testnet" && (
+							<>
+								<Box mb={TSizes.margin_xs} />
+
+								<MainButton
+									size="xsmall"
+									variant="outlined"
+									color="inherit"
+									fullWidth
+									onClick={handleGetTestUSDC}>
+									<Image
+										src={"/images/USDC.png"}
+										height={18}
+										width={18}
+										alt=""
+										style={{ marginRight: "4px" }}
+									/>{" "}
+									Get 1,000 test {quote}
+								</MainButton>
+							</>
+						)}
+					</>
+				}>
+				<Stack direction={"row"} justifyContent={"space-between"} alignItems={"center"}>
+					<Typography>Account</Typography>
+
+					<Stack direction={"row"} spacing={"10px"}>
+						<MainButton
+							size="xsmall"
+							variant="outlined"
+							onClick={() => handleOpenWithdraw("withdraw")}>
+							Withdraw
+						</MainButton>
 
 						<MainButton
 							size="xsmall"
 							variant="outlined"
-							color="inherit"
-							fullWidth
-							onClick={handleGetTestUSDC}>
-							<Image
-								src={"/images/USDC.png"}
-								height={18}
-								width={18}
-								alt=""
-								style={{ marginRight: "4px" }}
-							/>{" "}
-							Get 1,000 test {quote}
+							onClick={() => handleOpenWithdraw("deposit")}>
+							Deposit
 						</MainButton>
-					</>
-				)}
+					</Stack>
+				</Stack>
 			</MainCard>
 
 			<Box mb={TSizes.margin_xs} />
@@ -158,6 +194,12 @@ export const Balance = ({ availableWithdraw, quote, wallet, isFristLoading }: IP
 					Close
 				</MainButton>
 			</MainDialog>
+
+			<DepositWithdrawDialog
+				open={openWithDraw}
+				activedTab={activedTab as any}
+				onClose={() => setOpenWithDraw(false)}
+			/>
 		</>
 	);
 };

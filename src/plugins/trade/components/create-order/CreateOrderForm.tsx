@@ -130,15 +130,11 @@ const CreateOrderForm = ({ symbol }: IProps) => {
 		} finally {
 			setLoading(false);
 			setOpenOrderConfirm(false);
-			// location.reload();
 		}
 	};
 
 	return (
 		<>
-			{/* {symbolsInfo.isNil ? (
-				<IconLoading />	
-			) : ( */}
 			<MainCard backgroudColor="primary" width="100%" height="100%" heightCard="100%">
 				<Balance
 					availableWithdraw={collateral.availableBalance}
@@ -185,7 +181,6 @@ const CreateOrderForm = ({ symbol }: IProps) => {
 					/>
 				</form>
 			</MainCard>
-			{/* )} */}
 		</>
 	);
 };

@@ -29,7 +29,7 @@ const MainTab = ({
 	defaultValue,
 	rightSideTab,
 }: IProps) => {
-	const [value, setValue] = useState<any>(tabs[0].value);
+	const [value, setValue] = useState<any>(defaultValue ? defaultValue : tabs[0].value);
 
 	const handleChange = (val: ITab) => {
 		setValue(val.value);

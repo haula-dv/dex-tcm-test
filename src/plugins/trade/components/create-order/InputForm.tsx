@@ -142,7 +142,7 @@ function InputForm({ formContext, symbolsInfo, symbol, helper, maxQty, markPrice
 					name="triggerPrice"
 					formContext={formContext}
 					suffix={quote}
-					prefix="Trigger price"
+					prefix="Trigger"
 					decimals={quoteDecimals}
 					placeholder="0.0000"
 					rules={{
@@ -166,7 +166,7 @@ function InputForm({ formContext, symbolsInfo, symbol, helper, maxQty, markPrice
 							<InputAdornment position="start">
 								<Typography
 									fontWeight={600}
-									fontSize="14px"
+									fontSize="12px"
 									color={setColorThemeMode(theme.palette.grey[600], theme.palette.grey[300])}>
 									Price
 								</Typography>
@@ -180,7 +180,7 @@ function InputForm({ formContext, symbolsInfo, symbol, helper, maxQty, markPrice
 									bgcolor={setColorThemeMode(theme.palette.primary.main, theme.palette.grey[800])}
 									fontWeight={600}
 									borderRadius={"40px"}
-									fontSize={"14px"}>
+									fontSize={"12px"}>
 									{quote}
 								</Typography>
 							</InputAdornment>
