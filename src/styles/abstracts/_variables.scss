@@ -105,9 +105,9 @@
 
 // ORDERLY
 :root:has(.light) {
-	--orderly-color-primary: #b37350;
-	--orderly-color-primary-light: #b37350;
-	--orderly-color-primary-darken: #b37350;
+	--orderly-color-primary: 182 79 255;
+	--orderly-color-primary-light: 208 140 255;
+	--orderly-color-primary-darken: 152 62 214;
 	--orderly-color-primary-contrast: 255 255 255;
 	--orderly-color-link: 182 79 255;
 	--orderly-color-secondary: 255 255 255;
@@ -127,17 +127,16 @@
 	--orderly-color-warning-contrast: 255 255 255;
 	--orderly-color-fill: 36 32 47;
 	--orderly-color-fill-active: 40 46 58;
-	--orderly-color-base-100: #f2f2f2;
-	--orderly-color-base-200: #bfbfbf;
-	--orderly-color-base-300: 68 61 89;
-	--orderly-color-base-400: 57 52 74;
-	--orderly-color-base-500: #727272;
-	--orderly-color-base-600: 43 38 56;
-	--orderly-color-base-700: #3f3f3f;
-	--orderly-color-base-800: #262626;
-	--orderly-color-base-900: #413a36;
-
-	--orderly-color-base-foreground: 255 255 255;
+	--orderly-color-base-100: 223 206 206;
+	--orderly-color-base-200: 255 255 255;
+	--orderly-color-base-300: 237 237 237;
+	--orderly-color-base-400: 207 207 207;
+	--orderly-color-base-500: 130 130 130;
+	--orderly-color-base-600: 165 165 165;
+	--orderly-color-base-700: 191 191 191;
+	--orderly-color-base-800: 216 216 216;
+	--orderly-color-base-900: 242 242 242;
+	--orderly-color-base-foreground: 38 38 38;
 	--orderly-color-trading-loss: 255 103 194;
 	--orderly-color-trading-loss-contrast: 255 103 194;
 	--orderly-color-trading-profit: 0 181 159;
@@ -160,5 +159,6 @@
 	--orderly-font-size-4xl: 36px;
 	--orderly-color-divider: 216 216 216;
 	--orderly-font-family: "Manrope", sans-serif;
+
 	--account-center-z-index: 9999;
 }

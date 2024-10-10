@@ -208,6 +208,15 @@
 				// padding: 0px !important;
 			}
 		}
+
+		.orderly-ui-table-tr {
+			cursor: pointer;
+			transition: 0.6s;
+
+			&:hover {
+				background-color: var(--grey100) !important;
+			}
+		}
 	}
 
 	// TAB
@@ -228,6 +237,77 @@
 
 	.orderly-bg-base-600 {
 		background-color: var(--grey700) !important;
+	}
+
+	.data-list-view {
+		border-bottom: 1px solid var(--grey700);
+		.orderly-grid {
+			border: 1px solid var(--grey700) !important;
+		}
+	}
+}
+
+.light {
+	.data-list-view {
+		border-bottom: 1px solid var(--grey50);
+		.orderly-grid {
+			background-color: var(--primaryLight) !important;
+			border: 1px solid var(--grey50) !important;
+		}
+	}
+
+	// TAB
+	.tabs-list {
+		[data-active="true"] {
+			background-color: var(--primaryLight) !important;
+			color: var(--grey800) !important;
+		}
+
+		[data-active="false"] {
+			color: var(--grey600) !important;
+		}
+	}
+
+	.orderly-border-b-divider {
+		border-color: var(--primaryMain) !important;
+	}
+
+	.orderly-border-divider {
+		border-color: var(--primaryMain) !important;
+	}
+
+	.orderly-ui-table-td {
+		background-color: var(--primaryLight) !important;
+
+		span {
+			color: var(--grey700);
+		}
+
+		// Warning
+		.orderly-text-warning {
+			color: rgb(var(--orderly-color-warning) / var(--tw-text-opacity)) !important;
+		}
+
+		// Green
+		.orderly-text-trade-profit {
+			color: rgb(var(--orderly-color-trading-profit) / var(--tw-text-opacity)) !important;
+		}
+
+		// INPUT
+		.orderly-input-container {
+			background-color: #2626260a !important;
+			border: 1px solid var(--grey100) !important;
+		}
+	}
+
+	.orderly-bg-base-900 {
+		background-color: var(--primaryLight) !important;
+	}
+
+	.orderly-group:hover .group-hover\:\!orderly-bg-base-800 {
+		transition: 0.6s;
+		background-color: var(--primaryMain) !important;
+		cursor: pointer;
 	}
 }
 
@@ -267,12 +347,9 @@
 }
 
 // Data list
-
 .data-list-view {
-	border-bottom: 1px solid var(--grey700);
 	.orderly-grid {
 		border-radius: 12px !important;
-		border: 1px solid var(--grey700) !important;
 		overflow: hidden;
 	}
 }
