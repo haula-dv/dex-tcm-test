@@ -1,13 +1,5 @@
 import { Box } from "@mui/material";
-import { usePositionStream } from "@orderly.network/hooks";
 import { DataListView } from "@orderly.network/react";
-import { OrderStatus } from "@orderly.network/types";
-import { useState } from "react";
-import PositionContent from "../position/PositionContent";
-import OrderTableContentFilled from "./OrderTableContentFilled";
-import OrderTableContentHistory from "./OrderTableContentHistory";
-import OrderTableContentPending from "./OrderTableContentPending";
-import OrderTableContentTPSL from "./OrderTableContentTPSL";
 // import { DataListView } from "@orderly.network/react/esm/page/trading/desktop/sections/datalist";
 
 interface IProps {
@@ -15,76 +7,77 @@ interface IProps {
 }
 
 export const OrderViewContainer = ({ symbol }: IProps) => {
-	const [isShowAllInstrument, setShowAllInstrument] = useState(true);
-	const [positions, _info, { refresh, loading }] = usePositionStream(
-		isShowAllInstrument ? "" : symbol,
-	);
+	// const [isShowAllInstrument, setShowAllInstrument] = useState(true);
+	// const theme = useTheme();
 
-	const tabs = [
-		{
-			label: `Positions ${
-				positions.rows && positions.rows?.length > 0 ? `(${positions.rows?.length})` : ""
-			}`,
-			value: "positions",
-			children: <PositionContent positions={positions} refresh={refresh} />,
-		},
-		{
-			label: "Pending",
-			value: "pending",
-			children: (
-				<OrderTableContentPending
-					orderBookStatus={OrderStatus.INCOMPLETE}
-					symbol={symbol}
-					isShowAll={isShowAllInstrument}
-				/>
-			),
-		},
-		{
-			label: "TP/SL",
-			value: "TP/SL",
-			children: (
-				<OrderTableContentTPSL
-					orderBookStatus={OrderStatus.NEW}
-					symbol={symbol}
-					isShowAll={isShowAllInstrument}
-					positions={positions}
-				/>
-			),
-		},
-		{
-			label: "Filled",
-			value: "filled",
-			children: (
-				<OrderTableContentFilled
-					orderBookStatus={OrderStatus.FILLED}
-					symbol={symbol}
-					isShowAll={isShowAllInstrument}
-				/>
-			),
-		},
-		{
-			label: "Order history",
-			value: "order_history",
-			children: (
-				<OrderTableContentHistory
-					orderBookStatus={OrderStatus.COMPLETED}
-					symbol={symbol}
-					isShowAll={isShowAllInstrument}
-				/>
-			),
-		},
-	];
+	// const [positions, _info, { refresh, loading }] = usePositionStream(
+	// 	isShowAllInstrument ? "" : symbol,
+	// );
 
-	const onShowAllInstrument = (value: boolean) => {
-		setShowAllInstrument(value);
-	};
+	// const tabs = [
+	// 	{
+	// 		label: `Positions ${
+	// 			positions.rows && positions.rows?.length > 0 ? `(${positions.rows?.length})` : ""
+	// 		}`,
+	// 		value: "positions",
+	// 		children: <PositionContent positions={positions} refresh={refresh} />,
+	// 	},
+	// 	{
+	// 		label: "Pending",
+	// 		value: "pending",
+	// 		children: (
+	// 			<OrderTableContentPending
+	// 				orderBookStatus={OrderStatus.INCOMPLETE}
+	// 				symbol={symbol}
+	// 				isShowAll={isShowAllInstrument}
+	// 			/>
+	// 		),
+	// 	},
+	// 	{
+	// 		label: "TP/SL",
+	// 		value: "TP/SL",
+	// 		children: (
+	// 			<OrderTableContentTPSL
+	// 				orderBookStatus={OrderStatus.NEW}
+	// 				symbol={symbol}
+	// 				isShowAll={isShowAllInstrument}
+	// 				positions={positions}
+	// 			/>
+	// 		),
+	// 	},
+	// 	{
+	// 		label: "Filled",
+	// 		value: "filled",
+	// 		children: (
+	// 			<OrderTableContentFilled
+	// 				orderBookStatus={OrderStatus.FILLED}
+	// 				symbol={symbol}
+	// 				isShowAll={isShowAllInstrument}
+	// 			/>
+	// 		),
+	// 	},
+	// 	{
+	// 		label: "Order history",
+	// 		value: "order_history",
+	// 		children: (
+	// 			<OrderTableContentHistory
+	// 				orderBookStatus={OrderStatus.COMPLETED}
+	// 				symbol={symbol}
+	// 				isShowAll={isShowAllInstrument}
+	// 			/>
+	// 		),
+	// 	},
+	// ];
+
+	// const onShowAllInstrument = (value: boolean) => {
+	// 	setShowAllInstrument(value);
+	// };
 
 	return (
 		<Box
 			height={"20.5617%"}
 			minHeight={"320px"}
 			overflow={"hidden"}
-			pt={"6px"}
 			borderRadius={"16px"}
 			className="data-list-view">
 			<DataListView />

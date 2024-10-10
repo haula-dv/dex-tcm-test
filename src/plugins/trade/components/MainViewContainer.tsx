@@ -2,12 +2,12 @@ import MainCard from "@/components/card/MainCard";
 import { MainContainer } from "@/components/container/MainContainer";
 import BoxConnectWallet from "@/plugins/wallet/components/BoxConnectWallet";
 import { Box, Grid, Stack } from "@mui/material";
-import MarketsContainer from "../markets/components/MarketsContainer";
 import MarketSlider from "../markets/MarketSlider";
+import MarketsContainer from "../markets/components/MarketsContainer";
 import { TradingMainView } from "../trading-view/TradingView";
+import SymbolHeader from "./SymbolHeader";
 import CreateOrderForm from "./create-order/CreateOrderForm";
 import { OrderViewContainer } from "./order-view/OrderViewContainer";
-import SymbolHeader from "./SymbolHeader";
 
 interface IProps {
 	symbol: string;

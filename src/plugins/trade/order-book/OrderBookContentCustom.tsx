@@ -1,10 +1,10 @@
-import IconLoading from '@/components/icons/loading';
-import { Grid, Stack, Typography } from '@mui/material';
-import { useOrderbookStream } from '@orderly.network/hooks';
-import { memo } from 'react';
-import MarkPrice from './MarkPrice';
-import OrderBookItem from './OrderBookItem';
-import OrderBookItemNull from './OrderBookItemNull';
+import IconLoading from "@/components/icons/loading";
+import { Grid, Stack, Typography } from "@mui/material";
+import { useOrderbookStream } from "@orderly.network/hooks";
+import { memo } from "react";
+import MarkPrice from "./MarkPrice";
+import OrderBookItem from "./OrderBookItem";
+import OrderBookItemNull from "./OrderBookItemNull";
 
 interface IProps {
 	symbol: string;
@@ -12,32 +12,32 @@ interface IProps {
 
 const OrderBookContentCustom = ({ symbol }: IProps) => {
 	const [data, { isLoading }] = useOrderbookStream(symbol, undefined, {
-		level: 14,
+		level: 9,
 	});
 
 	if (isLoading) {
 		return <IconLoading />;
 	}
 
-	const [_, base, quote] = symbol.split('_');
+	const [_, base, quote] = symbol.split("_");
 
 	return (
 		<>
-			<Grid container pb={'6px'}>
+			<Grid container pb={"6px"}>
 				<Grid item md={4}>
-					<Typography width={'100%'} fontSize={'12px'} fontWeight={700}>
+					<Typography width={"100%"} fontSize={"12px"} fontWeight={700}>
 						Price
 					</Typography>
 				</Grid>
 
 				<Grid item md={3}>
-					<Typography width={'100%'} fontSize={'12px'} textAlign="center" fontWeight={700}>
+					<Typography width={"100%"} fontSize={"12px"} textAlign="center" fontWeight={700}>
 						Qty
 					</Typography>
 				</Grid>
 
 				<Grid item md={5}>
-					<Typography width={'100%'} fontSize={'12px'} fontWeight={700} textAlign="center">
+					<Typography width={"100%"} fontSize={"12px"} fontWeight={700} textAlign="center">
 						Total
 					</Typography>
 				</Grid>

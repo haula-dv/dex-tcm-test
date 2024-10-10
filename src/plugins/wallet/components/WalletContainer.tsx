@@ -72,15 +72,15 @@ export default function WalletContainer() {
 		// const orderlyKey: any = loadOrderlyKey(account.address ?? "");
 
 		// const res = await signAndSendRequest(
-		// 	"0x333b34745d40d76ec738409073d142df1c52381ab6939b23a268625e33687783",
+		// 	"0x37ae2f894210ae201baef51edd0ce3c93a20c87a873f4747ce06d582eea69a07",
 		// 	(orderlyKey as any).privateKey,
-		// 	`${getBaseUrl()}/broker/fee_rate/default`,
+		// 	`${getBaseUrl()}/broker/fee_rate/set`,
 		// 	{
 		// 		method: "POST",
 		// 		body: JSON.stringify({
 		// 			maker_fee_rate: 0.01,
 		// 			taker_fee_rate: 0.02,
-		// 			// account_ids: [`0x333b34745d40d76ec738409073d142df1c52381ab6939b23a268625e33687783`],
+		// 			account_ids: [`0x447a19c8351818103725a75bc52fb32b38a22b286de783e0eb6ef4d9b0167ae1`],
 		// 		}),
 		// 	},
 		// );
@@ -94,6 +94,8 @@ export default function WalletContainer() {
 		if (Array.isArray(wallet?.accounts) && wallet.accounts.length > 0) {
 			const item = wallet.accounts[0];
 			const chain = wallet.chains[0];
+
+			console.log(wallet);
 
 			account.setAddress(item.address, {
 				provider: wallet.provider,
