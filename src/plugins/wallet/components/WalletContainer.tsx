@@ -2,9 +2,7 @@ import { themeSelectorState } from "@/common/stores/common";
 import { MainButton } from "@/components/button/MainButton";
 import { MainIconButton } from "@/components/button/MainIconButton";
 import IconLoading from "@/components/icons/loading";
-import { signAndSendRequest } from "@/utils/config/signer";
 import { TLocalStorage } from "@/utils/constants/key_store";
-import { getBaseUrl } from "@/utils/constants/orderly";
 import { formartAddress } from "@/utils/formatters/token";
 import { setColorThemeMode } from "@/utils/helpers";
 import { Box, Stack, useTheme } from "@mui/material";
@@ -61,6 +59,10 @@ export default function WalletContainer() {
 	};
 
 	const updateFee = async () => {
+		if (!wallet) {
+			return;
+		}
+
 		const orderlyAccountId = account.accountId;
 
 		if (!orderlyAccountId && !account.address) {
@@ -69,22 +71,22 @@ export default function WalletContainer() {
 
 		// const orderlyKey: any = loadOrderlyKey(account.address ?? "");
 
-		const res = await signAndSendRequest(
-			orderlyAccountId ?? "",
-			(orderlyKey as any).privateKey,
-			`${getBaseUrl()}/broker/fee_rate/set`,
-			{
-				method: "POST",
-				body: JSON.stringify({
-					maker_fee_rate: 0.001,
-					taker_fee_rate: 0.002,
-					account_ids: [`${orderlyAccountId}`],
-				}),
-			},
-		);
+		// const res = await signAndSendRequest(
+		// 	"0x333b34745d40d76ec738409073d142df1c52381ab6939b23a268625e33687783",
+		// 	(orderlyKey as any).privateKey,
+		// 	`${getBaseUrl()}/broker/fee_rate/default`,
+		// 	{
+		// 		method: "POST",
+		// 		body: JSON.stringify({
+		// 			maker_fee_rate: 0.01,
+		// 			taker_fee_rate: 0.02,
+		// 			// account_ids: [`0x333b34745d40d76ec738409073d142df1c52381ab6939b23a268625e33687783`],
+		// 		}),
+		// 	},
+		// );
 
-		const response = await res.json();
-		console.log(response);
+		// const response = await res.json();
+		// console.log(response);
 	};
 
 	// Watch wallet change
@@ -102,15 +104,18 @@ export default function WalletContainer() {
 					name: wallet.label,
 				},
 			});
-
-			updateFee();
 		}
 	}, [account, wallet]);
 
+	useEffect(() => {
+		if (wallet) {
+			updateFee();
+		}
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [wallet, account]);
+
 	return (
 		<Stack direction={"row"} spacing={1} alignItems={"center"}>
-			{/* <MainButton onClick={updateFee}>updateFee</MainButton> */}
-
 			<NetworkContent />
 
 			{connecting ? (
