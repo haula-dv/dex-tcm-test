@@ -11,7 +11,7 @@
 }
 
 .orderly-bg-base-600 {
-	background-color: #fff !important;
+	// background-color: #fff !important;
 }
 
 .orderly-input-container.orderly-outline-primary {
@@ -44,7 +44,7 @@
 		padding: 0px !important;
 	}
 
-	.orderly-space-y-\[16px\]> :not([hidden])~ :not([hidden]) {
+	.orderly-space-y-\[16px\] > :not([hidden]) ~ :not([hidden]) {
 		margin-top: 6px;
 		margin-bottom: 6px;
 	}

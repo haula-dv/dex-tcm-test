@@ -104,12 +104,6 @@
 	}
 }
 
-.light {
-	// .orderly-text-base-contrast {
-	// 	color: var(--grey900);
-	// }
-}
-
 .dark {
 	.portfolio {
 		.orderly-tab-item {
@@ -159,5 +153,125 @@
 		.orderly-border-b-divider {
 			border-color: var(--grey600) !important;
 		}
+	}
+}
+
+.dark {
+	.data-list-view {
+		.orderly-border-b-divider {
+			border-color: var(--grey700) !important;
+		}
+
+		.orderly-border-divider {
+			border-color: var(--grey700) !important;
+		}
+
+		.orderly-ui-table-thead {
+			thead {
+				td {
+					button {
+						span {
+							color: var(--grey200) !important;
+						}
+					}
+				}
+			}
+		}
+
+		.orderly-ui-table-td {
+			background-color: var(--grey800) !important;
+
+			span {
+				color: var(--white);
+			}
+
+			// Warning
+			.orderly-text-warning {
+				color: rgb(var(--orderly-color-warning) / var(--tw-text-opacity)) !important;
+			}
+
+			// Green
+			.orderly-text-trade-profit {
+				color: rgb(var(--orderly-color-trading-profit) / var(--tw-text-opacity)) !important;
+			}
+
+			// INPUT
+			.orderly-input-container {
+				background-color: #333333 !important;
+				border: 1px solid var(--grey700) !important;
+			}
+		}
+
+		// TABLE
+		.orderly-transition-all {
+			.orderly-px-3 {
+				// padding: 0px !important;
+			}
+		}
+	}
+
+	// TAB
+	.tabs-list {
+		[data-active="true"] {
+			background-color: var(--grey900) !important;
+		}
+	}
+
+	// BASE
+	.orderly-bg-base-900 {
+		background-color: var(--grey800) !important;
+	}
+
+	.orderly-bg-base-800 {
+		background-color: var(--grey800) !important;
+	}
+
+	.orderly-bg-base-600 {
+		background-color: var(--grey700) !important;
+	}
+}
+
+// Base orderly
+
+// Tab
+.orderly-tab-header {
+	padding: 0px !important;
+	border: 0px !important;
+
+	.orderly-h-\[48px\] {
+		height: auto !important;
+	}
+}
+
+.tabs-list {
+	gap: 2px !important;
+
+	button {
+		height: 36px !important;
+		font-size: 13px !important;
+		border-radius: 12px !important;
+		padding-left: 10px;
+		padding-right: 10px;
+		font-weight: 600 !important;
+	}
+
+	[data-active="true"] {
+		background-color: var(--grey900) !important;
+		border: 0px !important;
+	}
+
+	.after\:orderly-bg-base-contrast:after {
+		background-color: transparent !important;
+		height: 0px !important;
+	}
+}
+
+// Data list
+
+.data-list-view {
+	border-bottom: 1px solid var(--grey700);
+	.orderly-grid {
+		border-radius: 12px !important;
+		border: 1px solid var(--grey700) !important;
 	}
 }

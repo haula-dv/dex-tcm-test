@@ -1,9 +1,6 @@
-import MainCard from "@/components/card/MainCard";
-import { CheckBoxBase } from "@/components/form-control/CheckBoxBase";
-import MainTab from "@/components/tab/MainTab";
-import TabPanel from "@mui/lab/TabPanel";
 import { Box } from "@mui/material";
 import { usePositionStream } from "@orderly.network/hooks";
+import { DataListView } from "@orderly.network/react";
 import { OrderStatus } from "@orderly.network/types";
 import { useState } from "react";
 import PositionContent from "../position/PositionContent";
@@ -87,11 +84,12 @@ export const OrderViewContainer = ({ symbol }: IProps) => {
 			height={"20.5617%"}
 			minHeight={"320px"}
 			overflow={"hidden"}
-			pt="10px"
-			borderRadius={"16px"}>
-			{/* <DataListView /> */}
+			pt={"6px"}
+			borderRadius={"16px"}
+			className="data-list-view">
+			<DataListView />
 
-			<MainTab
+			{/* <MainTab
 				tabs={tabs}
 				rightSideTab={
 					<Box flexShrink={0}>
@@ -117,7 +115,7 @@ export const OrderViewContainer = ({ symbol }: IProps) => {
 						</TabPanel>
 					))}
 				</MainCard>
-			</MainTab>
+			</MainTab> */}
 		</Box>
 	);
 };
