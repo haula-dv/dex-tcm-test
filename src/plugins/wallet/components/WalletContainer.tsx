@@ -7,8 +7,9 @@ import { TLocalStorage } from "@/utils/constants/key_store";
 import { getBaseUrl } from "@/utils/constants/orderly";
 import { formartAddress } from "@/utils/formatters/token";
 import { setColorThemeMode } from "@/utils/helpers";
+import { loadAccountId, loadOrderlyKey } from "@/utils/helpers/orderlyHelper";
 import { Box, Stack, useTheme } from "@mui/material";
-import { useAccount, useChains, useDeposit } from "@orderly.network/hooks";
+import { useAccount } from "@orderly.network/hooks";
 import { IconMoonStars, IconSun } from "@tabler/icons-react";
 import { useConnectWallet } from "@web3-onboard/react";
 import { setZustandValue } from "nes-zustand";
@@ -22,9 +23,6 @@ import { OrderlyConnect } from "./OrderlyConnect";
 export default function WalletContainer() {
 	const themeSelector = useStore(themeSelectorState, (state) => state.value);
 	const theme = useTheme();
-	const { balance, dst } = useDeposit();
-	const [_, { findByChainId }] = useChains();
-	const chain = findByChainId(dst.chainId);
 
 	// Handle change theme mode
 	const handleChangeTheme = () => {
@@ -60,34 +58,30 @@ export default function WalletContainer() {
 		setAccountDetailsModal(!openAccountDetailsModal);
 	};
 
+	// Update fee
 	const updateFee = async () => {
-		if (!wallet) {
-			return;
+		try {
+			const orderlyKey: any = loadOrderlyKey(wallet?.accounts[0].address ?? "");
+			const accountId: any = loadAccountId(wallet?.accounts[0].address ?? "");
+
+			const res = await signAndSendRequest(
+				accountId ?? "",
+				orderlyKey,
+				`${getBaseUrl()}/broker/fee_rate/set`,
+				{
+					method: "POST",
+					body: JSON.stringify({
+						maker_fee_rate: 0.01,
+						taker_fee_rate: 0.02,
+						account_ids: [`0x447a19c8351818103725a75bc52fb32b38a22b286de783e0eb6ef4d9b0167ae1`],
+					}),
+				},
+			);
+
+			const response = await res.json();
+		} catch (error) {
+			console.log(error);
 		}
-
-		const orderlyAccountId = account.accountId;
-
-		if (!orderlyAccountId && !account.address) {
-			return;
-		}
-
-		// const orderlyKey: any = loadOrderlyKey(account.address ?? "");
-		const res = await signAndSendRequest(
-			orderlyAccountId ?? "",
-			(orderlyKey as any).privateKey,
-			`${getBaseUrl()}/broker/fee_rate/set`,
-			{
-				method: "POST",
-				body: JSON.stringify({
-					maker_fee_rate: 0.01,
-					taker_fee_rate: 0.02,
-					account_ids: [`0x447a19c8351818103725a75bc52fb32b38a22b286de783e0eb6ef4d9b0167ae1`],
-				}),
-			},
-		);
-
-		const response = await res.json();
-		console.log(response);
 	};
 
 	// Watch wallet change
@@ -95,8 +89,6 @@ export default function WalletContainer() {
 		if (Array.isArray(wallet?.accounts) && wallet.accounts.length > 0) {
 			const item = wallet.accounts[0];
 			const chain = wallet.chains[0];
-
-			console.log(wallet);
 
 			account.setAddress(item.address, {
 				provider: wallet.provider,
@@ -111,15 +103,15 @@ export default function WalletContainer() {
 	}, [account, wallet]);
 
 	useEffect(() => {
-		if (wallet) {
+		if (account) {
 			updateFee();
 		}
-		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [wallet, account]);
+	}, [account]);
 
 	return (
 		<Stack direction={"row"} spacing={1} alignItems={"center"}>
 			<NetworkContent />
+
 			{connecting ? (
 				<MainButton
 					startIcon={<IconLoading height="20px" width="20px" />}
@@ -138,10 +130,6 @@ export default function WalletContainer() {
 						</MainButton>
 					) : (
 						<>
-							{/* <Typography fontSize={"24px"} px="10px">
-								{usdFormatter.format(Number(balance))} {chain?.network_infos.currency_symbol}
-							</Typography> */}
-
 							<MainButton
 								variant="contained"
 								color={setColorThemeMode("darkGrey", "white")}
@@ -164,8 +152,6 @@ export default function WalletContainer() {
 				</>
 			)}
 
-			{/* <AccountMenuContainer anchorEl={accountAnchorEl} open={openAccountEl} handleClose={handleToggleAccountMenu} /> */}
-
 			{openAccountDetailsModal && wallet && (
 				<AccountDetailPopup
 					open={openAccountDetailsModal}
@@ -176,10 +162,6 @@ export default function WalletContainer() {
 			)}
 
 			<OrderlyConnect />
-
-			{/* <MainIconButton color="inherit">
-				<IconDots />
-			</MainIconButton> */}
 
 			<MainIconButton onClick={handleChangeTheme} color="inherit">
 				{themeSelector.activeMode == "light" ? <IconSun /> : <IconMoonStars />}

@@ -55,6 +55,16 @@ export function loadOrderlyKey(walletAddress: string): Uint8Array | undefined {
 	return bs58.decode(key.orderlyKey);
 }
 
+export function loadAccountId(walletAddress: string): Uint8Array | undefined {
+	let key: any = localStorage.getItem(
+		`${ORDERLY_KEY_LOCAL_STORAGE}${isTestnet() ? "testnet" : "mainnet"}_${walletAddress}`,
+	);
+	key = JSON.parse(key);
+
+	if (!key) return;
+	return key.accountId;
+}
+
 export function loadBrokerId(chainId: string): string {
 	return window.localStorage.getItem(`${BROKER_ID_LOCAL_STORAGE}:${chainId}`) ?? "";
 }

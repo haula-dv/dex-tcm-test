@@ -1,9 +1,13 @@
+import MainCard from "@/components/card/MainCard";
 import { MainContainer } from "@/components/container/MainContainer";
 import BoxConnectWallet from "@/plugins/wallet/components/BoxConnectWallet";
-import { Grid, Stack } from "@mui/material";
+import { Box, Grid, Stack } from "@mui/material";
 import MarketSlider from "../markets/MarketSlider";
 import MarketsContainer from "../markets/components/MarketsContainer";
+import { TradingMainView } from "../trading-view/TradingView";
+import SymbolHeader from "./SymbolHeader";
 import CreateOrderForm from "./create-order/CreateOrderForm";
+import { OrderViewContainer } from "./order-view/OrderViewContainer";
 
 interface IProps {
 	symbol: string;
@@ -17,7 +21,7 @@ export const MainViewContainer = ({ onSymbolChange, symbol }: IProps) => {
 
 			<MainContainer maxWidth={false}>
 				<Grid container spacing={"10px"} height={"100%"} sx={{ display: "flex" }}>
-					{/* <Grid item md={10} sx={{ display: "flex", flexDirection: "column" }}>
+					<Grid item md={10} sx={{ display: "flex", flexDirection: "column" }}>
 						<Box>
 							<SymbolHeader onSymbolChange={onSymbolChange} symbol={symbol} />
 
@@ -31,7 +35,7 @@ export const MainViewContainer = ({ onSymbolChange, symbol }: IProps) => {
 								</Box>
 							</MainCard>
 						</Box>
-					</Grid> */}
+					</Grid>
 
 					{/* <Grid item md={2} sx={{ display: "flex", flexDirection: "column", height: "auto" }}>
 						<OrderBookContainer symbol={symbol} />
