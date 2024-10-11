@@ -2,7 +2,9 @@ import { themeSelectorState } from "@/common/stores/common";
 import { MainButton } from "@/components/button/MainButton";
 import { MainIconButton } from "@/components/button/MainIconButton";
 import IconLoading from "@/components/icons/loading";
+import { signAndSendRequest } from "@/utils/config/signer";
 import { TLocalStorage } from "@/utils/constants/key_store";
+import { getBaseUrl } from "@/utils/constants/orderly";
 import { formartAddress } from "@/utils/formatters/token";
 import { setColorThemeMode } from "@/utils/helpers";
 import { Box, Stack, useTheme } from "@mui/material";
@@ -70,23 +72,22 @@ export default function WalletContainer() {
 		}
 
 		// const orderlyKey: any = loadOrderlyKey(account.address ?? "");
+		const res = await signAndSendRequest(
+			orderlyAccountId ?? "",
+			(orderlyKey as any).privateKey,
+			`${getBaseUrl()}/broker/fee_rate/set`,
+			{
+				method: "POST",
+				body: JSON.stringify({
+					maker_fee_rate: 0.01,
+					taker_fee_rate: 0.02,
+					account_ids: [`0x447a19c8351818103725a75bc52fb32b38a22b286de783e0eb6ef4d9b0167ae1`],
+				}),
+			},
+		);
 
-		// const res = await signAndSendRequest(
-		// 	"0x37ae2f894210ae201baef51edd0ce3c93a20c87a873f4747ce06d582eea69a07",
-		// 	(orderlyKey as any).privateKey,
-		// 	`${getBaseUrl()}/broker/fee_rate/set`,
-		// 	{
-		// 		method: "POST",
-		// 		body: JSON.stringify({
-		// 			maker_fee_rate: 0.01,
-		// 			taker_fee_rate: 0.02,
-		// 			account_ids: [`0x447a19c8351818103725a75bc52fb32b38a22b286de783e0eb6ef4d9b0167ae1`],
-		// 		}),
-		// 	},
-		// );
-
-		// const response = await res.json();
-		// console.log(response);
+		const response = await res.json();
+		console.log(response);
 	};
 
 	// Watch wallet change
@@ -119,7 +120,6 @@ export default function WalletContainer() {
 	return (
 		<Stack direction={"row"} spacing={1} alignItems={"center"}>
 			<NetworkContent />
-
 			{connecting ? (
 				<MainButton
 					startIcon={<IconLoading height="20px" width="20px" />}

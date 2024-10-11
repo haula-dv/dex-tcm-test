@@ -12,6 +12,7 @@ import { IconWallet } from "@tabler/icons-react";
 import { setZustandValue } from "nes-zustand";
 import React, { Dispatch, SetStateAction, useMemo, useState } from "react";
 import { useStore } from "zustand";
+import { MainButton } from "../button/MainButton";
 import { ContentCurrencyField } from "./TokenCurrencyOutputField";
 
 export type ITypeSwap = "input" | "output";
@@ -154,6 +155,16 @@ const TokenCurrencyInputField = ({
 
 	return (
 		<>
+			<Stack direction={"row"} alignItems={"center"} spacing={"10px"}>
+				<Typography fontWeight={500} fontSize={"12px"}>
+					From
+				</Typography>
+
+				<MainButton size="xsmall" variant="outlined">
+					123
+				</MainButton>
+			</Stack>
+
 			<ContentCurrencyField spacing={"4px"} isActived={sellTokenActive?.isInputting}>
 				<Stack direction={"row"} justifyContent={"space-between"} height={"18px"}>
 					<Typography

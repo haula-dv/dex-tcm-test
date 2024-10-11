@@ -128,6 +128,26 @@ function InputForm({ formContext, symbolsInfo, symbol, helper, maxQty, markPrice
 		});
 	};
 
+	// Watch field
+	useEffect(() => {
+		const watch = formContext.watch((value, { name, type }) => {
+			if (name === "type") {
+				const newWatchValue = helper.calculate(
+					getInputPlaceOrder(formContext.getValues(), symbol),
+					"order_quantity",
+					value.quantity,
+				);
+
+				formContext.setValue("total", newWatchValue.total as any, {
+					shouldValidate: true,
+					shouldDirty: false,
+				});
+			}
+		});
+
+		return () => watch.unsubscribe();
+	}, [formContext, helper, symbol]);
+
 	return (
 		<Stack spacing={"8px"}>
 			<Collapse

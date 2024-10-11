@@ -161,6 +161,7 @@ export const Balance = ({ availableWithdraw, quote, wallet, isFristLoading }: IP
 						<MainButton
 							size="xsmall"
 							variant="outlined"
+							color={setColorThemeMode("darkGrey", "greyLight")}
 							onClick={() => handleOpenWithdraw("withdraw")}>
 							Withdraw
 						</MainButton>
@@ -168,6 +169,7 @@ export const Balance = ({ availableWithdraw, quote, wallet, isFristLoading }: IP
 						<MainButton
 							size="xsmall"
 							variant="outlined"
+							color={setColorThemeMode("darkGrey", "greyLight")}
 							onClick={() => handleOpenWithdraw("deposit")}>
 							Deposit
 						</MainButton>
