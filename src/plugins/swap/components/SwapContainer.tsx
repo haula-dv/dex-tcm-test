@@ -19,7 +19,6 @@ import { useStore } from "zustand";
 import { isTransactionSubmittedState, tokenInputState, tokenOutputState } from "../store";
 import { ModalConfirmSwap } from "./modal-token/ModalConfirmSwap";
 import { ButtonSwapToggle } from "./SwapIconToggle";
-import { TransactionPopup } from "./token/TransactionSettingPopup";
 import { TransationSubmittedCard } from "./TransationSubmittedCard";
 
 export const SwapContainer = () => {
@@ -273,10 +272,10 @@ export const SwapContainer = () => {
 						Swap
 					</Typography>
 
-					<TransactionPopup
+					{/* <TransactionPopup
 						getSlippageAmount={(value) => setSlippageAmount(value)}
 						getDeadlineMinutes={(value) => setDeadlineMinutes(value)}
-					/>
+					/> */}
 				</Stack>
 
 				<>

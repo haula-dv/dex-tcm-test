@@ -1,39 +1,42 @@
-import { getImageNextwork, isTokenSearchState, tokenLoadingState, tokensSearchState, tokensState } from '@/common';
-import { MainButton } from '@/components/button/MainButton';
-import { SearchTokenField } from '@/components/form-control/SearchTokenField';
-import { TokenLoading } from '@/components/loading/TokenLoading';
-import { setColorThemeMode } from '@/utils/helpers';
-import { TSizes } from '@/utils/themes/custom-theme/sizes';
-import { Box, List, Stack, Typography } from '@mui/material';
-import { styled, useTheme } from '@mui/material/styles';
-import { MarketsType, useMarkets } from '@orderly.network/hooks';
-import { IconEdit } from '@tabler/icons-react';
-import { Dispatch, SetStateAction, useMemo, useState } from 'react';
-import InfiniteScroll from 'react-infinite-scroll-component';
-import { useStore } from 'zustand';
-import { tokenInputState, tokenOutputState } from '../../store';
-import { TokenItem } from './TokenItem';
-import { ITokenType } from './TokenListModal';
+import {
+	getImageNextwork,
+	isTokenSearchState,
+	tokenLoadingState,
+	tokensSearchState,
+	tokensState,
+} from "@/common";
+import { SearchTokenField } from "@/components/form-control/SearchTokenField";
+import { TokenLoading } from "@/components/loading/TokenLoading";
+import { setColorThemeMode } from "@/utils/helpers";
+import { TSizes } from "@/utils/themes/custom-theme/sizes";
+import { Box, List, Stack, Typography } from "@mui/material";
+import { styled, useTheme } from "@mui/material/styles";
+import { MarketsType, useMarkets } from "@orderly.network/hooks";
+import { Dispatch, SetStateAction, useMemo, useState } from "react";
+import InfiniteScroll from "react-infinite-scroll-component";
+import { useStore } from "zustand";
+import { tokenInputState, tokenOutputState } from "../../store";
+import { TokenItem } from "./TokenItem";
+import { ITokenType } from "./TokenListModal";
 
 interface IProps {
 	handleSelectToken: (token: any) => void;
 	setTokenType: Dispatch<SetStateAction<ITokenType>>;
-	type: 'input' | 'output';
+	type: "input" | "output";
 }
 
 export const Tokens = ({ handleSelectToken, setTokenType, type }: IProps) => {
-	const [data, { addToHistory, favoriteTabs, updateFavoriteTabs, updateSymbolFavoriteState }] = useMarkets(
-		MarketsType.ALL,
-	);
+	const [data, { addToHistory, favoriteTabs, updateFavoriteTabs, updateSymbolFavoriteState }] =
+		useMarkets(MarketsType.ALL);
 
 	const remapToken = useMemo(() => {
 		return data && data.length > 0
 			? data.map((item: any) => {
-					const [_, base, quote] = item.symbol.split('_');
+					const [_, base, quote] = item.symbol.split("_");
 					return {
 						token: base,
-						token_account_id: item?.mark_price.toString() ?? '',
-						logoURI: getImageNextwork(base, 'symbol_logo'),
+						token_account_id: item?.mark_price.toString() ?? "",
+						logoURI: getImageNextwork(base, "symbol_logo"),
 						decimals: 0,
 						minimum_increment: 0,
 						amount: 0,
@@ -65,34 +68,37 @@ export const Tokens = ({ handleSelectToken, setTokenType, type }: IProps) => {
 	return (
 		<>
 			<Stack px={TSizes.margin_common}>
-				{tokens.length > 0 ? <SearchTokenField tokens={tokens} /> : <SearchTokenField tokens={[]} />}
+				{tokens.length > 0 ? (
+					<SearchTokenField tokens={tokens} />
+				) : (
+					<SearchTokenField tokens={[]} />
+				)}
 			</Stack>
 
-			<Box position={'relative'} pb={5}>
+			<Box position={"relative"} pb={5}>
 				<Typography
 					fontWeight={600}
 					color={useTheme().palette.grey[600]}
 					px={TSizes.margin_common}
-					pt={TSizes.margin_common}
-				>
+					pt={TSizes.margin_common}>
 					Popular tokens
 				</Typography>
 
-				<Box height={'50vh'}>
+				<Box height={"50vh"}>
 					{tokenLoading ? (
 						<TokenLoading />
 					) : (
-						<List sx={{ height: '50vh', overflow: 'auto' }} id="scrollableDiv">
+						<List sx={{ height: "50vh", overflow: "auto" }} id="scrollableDiv">
 							<InfiniteScroll
 								dataLength={tokenSlice}
 								next={fetchMoreData}
 								hasMore={hasMore}
-								loader={''}
-								scrollableTarget="scrollableDiv"
-							>
+								loader={""}
+								scrollableTarget="scrollableDiv">
 								{(isSearchToken ? tokensSearch : tokens).length > 0 ? (
 									(isSearchToken ? tokensSearch : tokens).map((item, index) => {
-										const isSelected = tokenInputCur?.token === item.token || tokenOutputCur?.token === item.token;
+										const isSelected =
+											tokenInputCur?.token === item.token || tokenOutputCur?.token === item.token;
 										return (
 											<TokenItem
 												key={index}
@@ -104,7 +110,7 @@ export const Tokens = ({ handleSelectToken, setTokenType, type }: IProps) => {
 										);
 									})
 								) : (
-									<Typography textAlign={'center'} pt={2}>
+									<Typography textAlign={"center"} pt={2}>
 										No results found.
 									</Typography>
 								)}
@@ -114,7 +120,7 @@ export const Tokens = ({ handleSelectToken, setTokenType, type }: IProps) => {
 				</Box>
 			</Box>
 
-			<ManageButton>
+			{/* <ManageButton>
 				<MainButton
 					fullWidth
 					startIcon={<IconEdit />}
@@ -124,7 +130,7 @@ export const Tokens = ({ handleSelectToken, setTokenType, type }: IProps) => {
 				>
 					Manage
 				</MainButton>
-			</ManageButton>
+			</ManageButton> */}
 		</>
 	);
 };
@@ -134,12 +140,12 @@ interface IToken {
 }
 
 const ManageButton = styled(Box)(({ theme }) => ({
-	position: 'absolute',
+	position: "absolute",
 	bottom: 0,
 	left: 0,
-	width: '100%',
+	width: "100%",
 	backgroundColor: theme.palette.background.paper,
 	borderTop: `1px solid ${setColorThemeMode(theme.palette.common.white, theme.palette.grey[700])}`,
-	display: 'flex',
-	justifyContent: 'center',
+	display: "flex",
+	justifyContent: "center",
 }));
