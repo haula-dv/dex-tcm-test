@@ -2,12 +2,12 @@ import { themeSelectorState } from "@/common/stores/common";
 import { MainButton } from "@/components/button/MainButton";
 import { MainIconButton } from "@/components/button/MainIconButton";
 import IconLoading from "@/components/icons/loading";
-import { signAndSendRequest } from "@/utils/config/signer";
+
 import { TLocalStorage } from "@/utils/constants/key_store";
 import { getBaseUrl } from "@/utils/constants/orderly";
 import { formartAddress } from "@/utils/formatters/token";
 import { setColorThemeMode } from "@/utils/helpers";
-import { loadAccountId, loadOrderlyKey } from "@/utils/helpers/orderlyHelper";
+import { loadAccountId, loadOrderlyKey, signAndSendRequest } from "@/utils/helpers/orderlyHelper";
 import { Box, Stack, useTheme } from "@mui/material";
 import { useAccount } from "@orderly.network/hooks";
 import { IconMoonStars, IconSun } from "@tabler/icons-react";
@@ -60,28 +60,55 @@ export default function WalletContainer() {
 
 	// Update fee
 	const updateFee = async () => {
-		try {
-			const orderlyKey: any = loadOrderlyKey(wallet?.accounts[0].address ?? "");
-			const accountId: any = loadAccountId(wallet?.accounts[0].address ?? "");
+		const orderlyKey: any = loadOrderlyKey(wallet?.accounts[0].address ?? "");
+		const orderlyAccountId: any = loadAccountId(wallet?.accounts[0].address ?? "");
 
-			const res = await signAndSendRequest(
-				accountId ?? "",
-				orderlyKey,
-				`${getBaseUrl()}/broker/fee_rate/set`,
-				{
-					method: "POST",
-					body: JSON.stringify({
-						maker_fee_rate: 0.01,
-						taker_fee_rate: 0.02,
-						account_ids: [`0x447a19c8351818103725a75bc52fb32b38a22b286de783e0eb6ef4d9b0167ae1`],
-					}),
-				},
-			);
+		await signAndSendRequest(
+			orderlyAccountId,
+			orderlyKey,
+			`${getBaseUrl()}/broker/fee_rate/set`,
+			{
+				method: "POST",
+				body: JSON.stringify({
+					maker_fee_rate: 0.001,
+					taker_fee_rate: 0.002,
+					account_ids: [
+						"0x333b34745d40d76ec738409073d142df1c52381ab6939b23a268625e33687783",
+						"0x37ae2f894210ae201baef51edd0ce3c93a20c87a873f4747ce06d582eea69a07",
+					],
+				}),
+			},
 
-			const response = await res.json();
-		} catch (error) {
-			console.log(error);
-		}
+			// `${getBaseUrl()}/volume/broker/daily?=start_date=2024-10-10&end_date=2024-10-14`,
+		)
+			.then((res) => {
+				console.log(res);
+			})
+			.catch((err) => {
+				console.log(err);
+			});
+	};
+
+	const test = async () => {
+		const orderlyKey: any = loadOrderlyKey(wallet?.accounts[0].address ?? "");
+		const accountId: any = loadAccountId(wallet?.accounts[0].address ?? "");
+
+		const res = await signAndSendRequest(
+			accountId ?? "",
+			orderlyKey,
+			`${getBaseUrl()}/broker/fee_rate/set`,
+			{
+				method: "POST",
+				body: JSON.stringify({
+					maker_fee_rate: 0.01,
+					taker_fee_rate: 0.02,
+					account_ids: [`0x447a19c8351818103725a75bc52fb32b38a22b286de783e0eb6ef4d9b0167ae1`],
+				}),
+			},
+		);
+
+		const response = await res.json();
+		console.log(response);
 	};
 
 	// Watch wallet change
@@ -102,14 +129,10 @@ export default function WalletContainer() {
 		}
 	}, [account, wallet]);
 
-	useEffect(() => {
-		if (account) {
-			updateFee();
-		}
-	}, [account]);
-
 	return (
 		<Stack direction={"row"} spacing={1} alignItems={"center"}>
+			<button onClick={updateFee}> Update Fee</button>
+
 			<NetworkContent />
 
 			{connecting ? (

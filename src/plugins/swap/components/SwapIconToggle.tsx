@@ -1,7 +1,7 @@
-import { MainIconButton } from '@/components/button/MainIconButton';
-import { setColorThemeMode } from '@/utils/helpers';
-import { useTheme } from '@mui/material';
-import { IconArrowsSort, IconPlus } from '@tabler/icons-react';
+import { MainIconButton } from "@/components/button/MainIconButton";
+import { setColorThemeMode } from "@/utils/helpers";
+import { useTheme } from "@mui/material";
+import { IconArrowsSort, IconPlus } from "@tabler/icons-react";
 
 interface IProps {
 	toggleSwapType: () => void;
@@ -10,14 +10,18 @@ interface IProps {
 
 export const ButtonSwapToggle = ({ toggleSwapType, isPlus }: IProps) => {
 	return (
-		<div style={{ margin: '-18px auto -28px auto' }}>
+		<div style={{ margin: "8px auto -18px auto" }}>
 			<MainIconButton
 				isFullRounded
 				color="white"
-				sx={{ border: `5px solid ${setColorThemeMode(useTheme().palette.primary.main, useTheme().palette.grey[800])}` }}
-				onClick={toggleSwapType}
-			>
-				{isPlus ? <IconPlus color="#000" /> : <IconArrowsSort size={'1rem'} color="#000" />}
+				sx={{
+					border: `5px solid ${setColorThemeMode(
+						useTheme().palette.primary.main,
+						useTheme().palette.grey[800],
+					)}`,
+				}}
+				onClick={toggleSwapType}>
+				{isPlus ? <IconPlus color="#000" /> : <IconArrowsSort size={"1rem"} color="#000" />}
 			</MainIconButton>
 		</div>
 	);

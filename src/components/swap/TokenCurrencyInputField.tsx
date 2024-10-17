@@ -10,9 +10,9 @@ import { useTheme } from "@mui/material/styles";
 import { useMarkPrice } from "@orderly.network/hooks";
 import { IconWallet } from "@tabler/icons-react";
 import { setZustandValue } from "nes-zustand";
-import React, { Dispatch, SetStateAction, useMemo, useState } from "react";
+import React, { Dispatch, memo, SetStateAction, useMemo, useState } from "react";
 import { useStore } from "zustand";
-import { MainButton } from "../button/MainButton";
+import { ListNetwork } from "../list/ListNetwork";
 import { ContentCurrencyField } from "./TokenCurrencyOutputField";
 
 export type ITypeSwap = "input" | "output";
@@ -160,9 +160,7 @@ const TokenCurrencyInputField = ({
 					From
 				</Typography>
 
-				<MainButton size="xsmall" variant="outlined">
-					123
-				</MainButton>
+				<ListNetwork />
 			</Stack>
 
 			<ContentCurrencyField spacing={"4px"} isActived={sellTokenActive?.isInputting}>
@@ -247,4 +245,4 @@ const TokenCurrencyInputField = ({
 	);
 };
 
-export default TokenCurrencyInputField;
+export default memo(TokenCurrencyInputField);

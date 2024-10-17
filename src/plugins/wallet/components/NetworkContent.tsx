@@ -149,6 +149,7 @@ export default function NetworkContent() {
 				</Stack>
 
 				<Divider />
+
 				<Stack pt={0.5}>
 					<Typography
 						px={1.6}

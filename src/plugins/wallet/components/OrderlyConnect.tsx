@@ -1,9 +1,9 @@
-'use client';
-import { mainToast } from '@/utils/lib/toast';
-import { useAccount } from '@orderly.network/hooks';
-import { AccountStatusEnum } from '@orderly.network/types';
-import { useConnectWallet, useNotifications, useSetChain } from '@web3-onboard/react';
-import { useEffect } from 'react';
+"use client";
+import { mainToast } from "@/utils/lib/toast";
+import { useAccount } from "@orderly.network/hooks";
+import { AccountStatusEnum } from "@orderly.network/types";
+import { useConnectWallet, useNotifications, useSetChain } from "@web3-onboard/react";
+import { useEffect } from "react";
 
 let timer: number | undefined;
 
@@ -26,26 +26,26 @@ export const OrderlyConnect = () => {
 	// Handle Register Account
 	const handleRegisterAccount = async () => {
 		const { update } = customNotification({
-			eventCode: 'register',
-			type: 'pending',
-			message: 'Registering account...',
+			eventCode: "register",
+			type: "pending",
+			message: "Registering account...",
 		});
 		try {
 			await account.createAccount();
 			update({
-				eventCode: 'registerSuccess',
-				type: 'success',
-				message: 'Registration complete!',
+				eventCode: "registerSuccess",
+				type: "success",
+				message: "Registration complete!",
 				autoDismiss: 5_000,
 			});
 		} catch (err) {
 			console.error(err);
-			mainToast('registration failed', 'error');
+			mainToast("registration failed", "error");
 
 			update({
-				eventCode: 'registerError',
-				type: 'error',
-				message: 'Registration failed!',
+				eventCode: "registerError",
+				type: "error",
+				message: "Registration failed!",
 				autoDismiss: 5_000,
 			});
 			throw err;
@@ -55,27 +55,29 @@ export const OrderlyConnect = () => {
 
 	const handleOrderkyKey = async () => {
 		const { update } = customNotification({
-			eventCode: 'orderlyKey',
-			type: 'pending',
-			message: 'Registering Orderly key...',
+			eventCode: "orderlyKey",
+			type: "pending",
+			message: "Registering Orderly key...",
 		});
 		try {
-			await account.createOrderlyKey(365);
+			const res = await account.createOrderlyKey(365);
+
+			console.log(res);
 
 			update({
-				eventCode: 'orderlyKeySuccess',
-				type: 'success',
-				message: 'Key registration complete!',
+				eventCode: "orderlyKeySuccess",
+				type: "success",
+				message: "Key registration complete!",
 				autoDismiss: 5_000,
 			});
 
-			location.reload();
+			// location.reload();
 		} catch (err) {
 			console.error(err);
 			update({
-				eventCode: 'orderlyKeyError',
-				type: 'error',
-				message: 'Key registration failed!',
+				eventCode: "orderlyKeyError",
+				type: "error",
+				message: "Key registration failed!",
 				autoDismiss: 5_000,
 			});
 			throw err;
