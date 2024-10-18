@@ -72,10 +72,7 @@ export default function WalletContainer() {
 				body: JSON.stringify({
 					maker_fee_rate: 0.001,
 					taker_fee_rate: 0.002,
-					account_ids: [
-						"0x333b34745d40d76ec738409073d142df1c52381ab6939b23a268625e33687783",
-						"0x37ae2f894210ae201baef51edd0ce3c93a20c87a873f4747ce06d582eea69a07",
-					],
+					account_ids: [orderlyAccountId],
 				}),
 			},
 
