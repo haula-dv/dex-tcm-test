@@ -46,7 +46,7 @@ const Details = ({ estLeverage, estLiqPrice, quoteDecimals, quote, direction }: 
 					value={
 						<Stack direction={"row"} spacing={"6px"} alignItems={"center"}>
 							<Typography>{formatter.format(Math.abs(currentLeverage))}x</Typography>
-							{estLeverage && <IconArrowRight size={"0.7rem"} />}
+							{estLeverage ? <IconArrowRight size={"0.7rem"} /> : ""}
 							<Typography>{estLeverage ? `${estLeverage}x` : ""}</Typography>
 						</Stack>
 					}
