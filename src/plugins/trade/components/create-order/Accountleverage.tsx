@@ -64,10 +64,6 @@ export const Accountleverage = ({ symbol }: any) => {
 
 	const totalMarginRatio = useMemo(() => {
 		const t = (totalCollateral / Math.abs(positions.aggregated?.notional)) * 100;
-
-		// if (t == Infinity) {
-		// 	return 100.0;
-		// }
 		return t;
 	}, [totalCollateral, positions]);
 
@@ -121,7 +117,7 @@ export const Accountleverage = ({ symbol }: any) => {
 							alignItems={"center"}
 							justifyContent={"flex-end"}>
 							<Typography>
-								{formatter.format(currentLeverage)}x / {maxLeverage}x
+								{formatter.format(Math.abs(currentLeverage))}x / {maxLeverage}x
 							</Typography>
 
 							<Box className="pointer" onClick={handleToggle}>

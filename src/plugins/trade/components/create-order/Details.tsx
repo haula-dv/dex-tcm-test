@@ -2,6 +2,8 @@ import { MainButton } from "@/components/button/MainButton";
 import MainCard from "@/components/card/MainCard";
 import { ItemRow } from "@/plugins/pool/components/TokenSelected";
 import { Stack, Typography } from "@mui/material";
+import { useMarginRatio } from "@orderly.network/hooks";
+import { IconArrowRight } from "@tabler/icons-react";
 import { useConnectWallet } from "@web3-onboard/react";
 
 interface IProps {
@@ -9,12 +11,13 @@ interface IProps {
 	estLiqPrice: number | any | undefined;
 	quote?: string;
 	symbol: string;
-	baseDecimals: number;
+	quoteDecimals: number;
 	direction: any;
 }
 
-const Details = ({ estLeverage, estLiqPrice, baseDecimals, quote, direction }: IProps) => {
+const Details = ({ estLeverage, estLiqPrice, quoteDecimals, quote, direction }: IProps) => {
 	const [{ wallet, connecting }, connect] = useConnectWallet();
+	const { currentLeverage, mmr } = useMarginRatio();
 
 	// Handle connect wallet button
 	const handleConnectWallet = async () => {
@@ -22,7 +25,7 @@ const Details = ({ estLeverage, estLiqPrice, baseDecimals, quote, direction }: I
 		location.reload();
 	};
 
-	const formatter = new Intl.NumberFormat("en-US", { maximumFractionDigits: baseDecimals });
+	const formatter = new Intl.NumberFormat("en-US", { maximumFractionDigits: quoteDecimals });
 
 	return (
 		<MainCard width="100%" backgroudColor="primaryLight">
@@ -33,12 +36,21 @@ const Details = ({ estLeverage, estLiqPrice, baseDecimals, quote, direction }: I
 					title="Est. Liq. price"
 					value={
 						<>
-							{estLiqPrice ? formatter.format(estLiqPrice.toFixed(2)) : "-"} {quote}
+							{estLiqPrice ? formatter.format(estLiqPrice) : "-"} {quote}
 						</>
 					}
 				/>
 
-				{/* <ItemRow title="Account leverage" value={estLeverage ? `${estLeverage}x` : "-"} /> */}
+				<ItemRow
+					title="Account leverage"
+					value={
+						<Stack direction={"row"} spacing={"6px"} alignItems={"center"}>
+							<Typography>{formatter.format(Math.abs(currentLeverage))}x</Typography>
+							{estLeverage && <IconArrowRight size={"0.7rem"} />}
+							<Typography>{estLeverage ? `${estLeverage}x` : ""}</Typography>
+						</Stack>
+					}
+				/>
 
 				{/* <ItemRow title="Expected Price" value={estLiqPrice ? formatter.format(estLiqPrice) : '-'} />
 
