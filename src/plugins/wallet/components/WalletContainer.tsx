@@ -128,7 +128,7 @@ export default function WalletContainer() {
 
 	return (
 		<Stack direction={"row"} spacing={1} alignItems={"center"}>
-			<button onClick={updateFee}> Update Fee</button>
+			{/* <button onClick={updateFee}> Update Fee</button> */}
 
 			<NetworkContent />
 

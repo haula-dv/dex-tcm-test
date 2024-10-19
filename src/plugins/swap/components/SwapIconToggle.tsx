@@ -10,7 +10,7 @@ interface IProps {
 
 export const ButtonSwapToggle = ({ toggleSwapType, isPlus }: IProps) => {
 	return (
-		<div style={{ margin: "8px auto -18px auto" }}>
+		<div style={{ margin: "-24px auto -24px auto" }}>
 			<MainIconButton
 				isFullRounded
 				color="white"

@@ -17,6 +17,7 @@ import { memo, ReactNode, useState } from "react";
 import { useForm } from "react-hook-form";
 import { match } from "ts-pattern";
 import { Balance } from "../common/Balance";
+import { Accountleverage } from "./Accountleverage";
 import AvailableWithdraw from "./AvailableWithdraw";
 import Details from "./Details";
 import InputForm from "./InputForm";
@@ -142,6 +143,8 @@ const CreateOrderForm = ({ symbol }: IProps) => {
 					wallet={wallet}
 					isFristLoading={symbolsInfo.isNil}
 				/>
+
+				<Accountleverage symbol={symbol} />
 
 				<form onSubmit={formContext.handleSubmit(handleConfirmOrder)}>
 					<Stack spacing={TSizes.margin_common}>

@@ -13,7 +13,6 @@ import { IconWallet } from "@tabler/icons-react";
 import { setZustandValue } from "nes-zustand";
 import React, { Dispatch, SetStateAction, useMemo, useState } from "react";
 import { useStore } from "zustand";
-import { ListNetwork } from "../list/ListNetwork";
 
 export type ITypeSwap = "input" | "output";
 
@@ -195,13 +194,13 @@ const TokenCurrencyOutputField = ({
 
 	return (
 		<>
-			<Stack direction={"row"} alignItems={"center"} spacing={"10px"}>
+			{/* <Stack direction={"row"} alignItems={"center"} spacing={"10px"}>
 				<Typography fontWeight={500} fontSize={"12px"}>
 					To
 				</Typography>
 
 				<ListNetwork />
-			</Stack>
+			</Stack> */}
 
 			<ContentCurrencyField spacing={"4px"} isActived={buyTokenActive?.isInputting}>
 				<Stack direction={"row"} justifyContent={"space-between"} height={"18px"}>
