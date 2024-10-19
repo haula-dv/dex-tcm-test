@@ -161,7 +161,7 @@ export const Accountleverage = ({ symbol }: any) => {
 					handleToggle={handleToggle}
 					open={open}
 					leverageValue={leverageValue}
-					maxLeverage={maxLeverage}
+					currentLeverage={formatter.format(Math.abs(currentLeverage))}
 					newLeverageLevers={newLeverageLevers}
 					update={update}
 				/>
@@ -175,7 +175,7 @@ interface IFormProps {
 	handleToggle: () => void;
 	leverageValue: number;
 	newLeverageLevers: Array<any>;
-	maxLeverage: number;
+	currentLeverage: string;
 	update: any;
 }
 
@@ -183,10 +183,12 @@ const FormSlider = ({
 	open,
 	handleToggle,
 	leverageValue,
-	maxLeverage,
+	currentLeverage,
 	newLeverageLevers,
 	update,
 }: IFormProps) => {
+	const theme = useTheme();
+
 	const [isLoading, setIsLoading] = useState(false);
 	const formContent = useForm({
 		defaultValues: {
@@ -229,11 +231,17 @@ const FormSlider = ({
 		<MainDialog
 			open={open}
 			handleClose={handleToggle}
-			title="Max account leverage"
+			title="Account Leverage"
 			isDivider
 			maxWidth="xs">
+			<Stack direction={"row"} justifyContent={"space-between"} pb={1}>
+				<Typography>Max account leverage</Typography>
+
+				<Typography>CurrentCurrent: {currentLeverage}x</Typography>
+			</Stack>
+
 			<FormContainer formContext={formContent} onSuccess={handleSubmit}>
-				<Box px={1}>
+				<Box px={1} pb={1}>
 					<Controller
 						name="value"
 						control={formContent.control}
@@ -254,8 +262,12 @@ const FormSlider = ({
 						)}
 					/>
 				</Box>
+				<Divider />
+				<Stack direction={"row"} spacing={"10px"} pt="10px">
+					<MainButton disabled={isLoading} onClick={handleToggle} fullWidth>
+						Cancel
+					</MainButton>
 
-				<Box pt={2}>
 					<MainButton
 						disabled={!formContent.formState.isDirty || isLoading}
 						type="submit"
@@ -264,7 +276,7 @@ const FormSlider = ({
 						fullWidth>
 						Save changes
 					</MainButton>
-				</Box>
+				</Stack>
 			</FormContainer>
 		</MainDialog>
 	);
