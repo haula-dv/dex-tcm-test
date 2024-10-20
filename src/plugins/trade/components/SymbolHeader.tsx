@@ -123,9 +123,10 @@ const SymbolHeader = ({ onSymbolChange, symbol }: IProps) => {
 				direction={"row"}
 				spacing={1.5}
 				alignItems={"center"}
-				flex={1}
+				pl={"4px"}
 				mb="8px"
-				height={"30px"}>
+				height={"30px"}
+				width={"100%"}>
 				<MainButton
 					startIcon={
 						<TokenIcon url={getImageNextwork(symbol ? spitSymbol(symbol) : "", "symbol_logo")} />
@@ -137,7 +138,8 @@ const SymbolHeader = ({ onSymbolChange, symbol }: IProps) => {
 					aria-haspopup="true"
 					aria-expanded={openMarketEl ? "true" : undefined}
 					onClick={handleClick}
-					endIcon={<IconChevronDown size="1rem" />}>
+					endIcon={<IconChevronDown size="1rem" />}
+					sx={{ flexShrink: 0 }}>
 					{`${base}-${perp}`}
 				</MainButton>
 
@@ -147,7 +149,12 @@ const SymbolHeader = ({ onSymbolChange, symbol }: IProps) => {
 					bgcolor={setColorThemeMode(theme.palette.grey[900], "#fff")}
 				/>
 
-				<Stack direction={"row"} spacing={3} alignItems={"center"} sx={{ overflowX: "auto" }}>
+				<Stack
+					direction={"row"}
+					spacing={2}
+					alignItems={"center"}
+					sx={{ overflowX: "auto" }}
+					width={"100%"}>
 					<Typography fontWeight={600} pr={1} whiteSpace={"nowrap"}>
 						{stream ? usdFormatter.format(stream?.["24h_close"]) : "_"}
 					</Typography>

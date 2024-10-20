@@ -1,5 +1,4 @@
 import MainCard from "@/components/card/MainCard";
-import { MainContainer } from "@/components/container/MainContainer";
 import BoxConnectWallet from "@/plugins/wallet/components/BoxConnectWallet";
 import { Box, Stack } from "@mui/material";
 import MarketsContainer from "../markets/components/MarketsContainer";
@@ -19,31 +18,31 @@ export const MainViewContainer = ({ onSymbolChange, symbol }: IProps) => {
 		<>
 			<MarketSlider onChangeSymbol={onSymbolChange} />
 
-			<MainContainer maxWidth={false}>
-				<Stack direction={"row"} spacing={"10px"} height={"100%"} sx={{ display: "flex" }}>
-					<Box width={"100%"} sx={{ display: "flex", flexDirection: "column" }}>
-						<Box>
-							<SymbolHeader onSymbolChange={onSymbolChange} symbol={symbol} />
+			<Box display={"flex"} flexDirection={"row"} px="10px" gap={"10px"} height={"100%"}>
+				<Box display={"flex"} flexDirection={"column"}>
+					<SymbolHeader onSymbolChange={onSymbolChange} symbol={symbol} />
 
-							<MainCard backgroudColor="primary" width="100%">
-								<Box sx={{ height: "calc(-175px + 100vh)", minHeight: "800px" }}>
-									<Box height={"100%"} display={"flex"} flexDirection={"column"}>
-										<TradingMainView symbol={symbol} onSymbolChange={onSymbolChange} />
-
-										<OrderViewContainer symbol={symbol} />
-									</Box>
-								</Box>
-							</MainCard>
+					<MainCard backgroudColor="primary" width="100%">
+						<Box sx={{ height: "calc(-175px + 100vh)", minHeight: "800px" }}>
+							<Box height={"100%"} display={"flex"} flexDirection={"column"}>
+								<TradingMainView symbol={symbol} onSymbolChange={onSymbolChange} />
+								<OrderViewContainer symbol={symbol} />
+							</Box>
 						</Box>
-					</Box>
+					</MainCard>
+				</Box>
 
-					<Stack spacing={"10px"} height={"100%"} width={"300px"} flexShrink={0}>
-						<MarketsContainer onSymbolChange={onSymbolChange} symbol={symbol} />
-						<BoxConnectWallet />
-						<CreateOrderForm symbol={symbol} />
-					</Stack>
+				<Stack
+					spacing={"10px"}
+					minHeight={"calc(100vh - 200px)"}
+					maxWidth={"300px"}
+					width={"100%"}
+					flexShrink={0}>
+					<MarketsContainer onSymbolChange={onSymbolChange} symbol={symbol} />
+					<BoxConnectWallet />
+					<CreateOrderForm symbol={symbol} />
 				</Stack>
-			</MainContainer>
+			</Box>
 		</>
 	);
 };
