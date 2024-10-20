@@ -28,7 +28,7 @@ export const OrderBookContainer = ({ symbol }: IProps) => {
 	return (
 		<Box
 			flexShrink={0}
-			width={"280px"}
+			width={{ xs: "220px", lg: "280px" }}
 			height="100%"
 			overflow={"hidden"}
 			ml={"10px"}

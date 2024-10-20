@@ -1,7 +1,7 @@
 import MainCard from "@/components/card/MainCard";
 import { MainContainer } from "@/components/container/MainContainer";
 import BoxConnectWallet from "@/plugins/wallet/components/BoxConnectWallet";
-import { Box, Grid, Stack } from "@mui/material";
+import { Box, Stack } from "@mui/material";
 import MarketsContainer from "../markets/components/MarketsContainer";
 import MarketSlider from "../markets/MarketSlider";
 import { TradingMainView } from "../trading-view/TradingView";
@@ -20,8 +20,8 @@ export const MainViewContainer = ({ onSymbolChange, symbol }: IProps) => {
 			<MarketSlider onChangeSymbol={onSymbolChange} />
 
 			<MainContainer maxWidth={false}>
-				<Grid container spacing={"10px"} height={"100%"} sx={{ display: "flex" }}>
-					<Grid item md={10} sx={{ display: "flex", flexDirection: "column" }}>
+				<Stack direction={"row"} spacing={"10px"} height={"100%"} sx={{ display: "flex" }}>
+					<Box width={"100%"} sx={{ display: "flex", flexDirection: "column" }}>
 						<Box>
 							<SymbolHeader onSymbolChange={onSymbolChange} symbol={symbol} />
 
@@ -35,16 +35,14 @@ export const MainViewContainer = ({ onSymbolChange, symbol }: IProps) => {
 								</Box>
 							</MainCard>
 						</Box>
-					</Grid>
+					</Box>
 
-					<Grid item md={2}>
-						<Stack spacing={"10px"} height={"100%"}>
-							<MarketsContainer onSymbolChange={onSymbolChange} symbol={symbol} />
-							<BoxConnectWallet />
-							<CreateOrderForm symbol={symbol} />
-						</Stack>
-					</Grid>
-				</Grid>
+					<Stack spacing={"10px"} height={"100%"} width={"300px"} flexShrink={0}>
+						<MarketsContainer onSymbolChange={onSymbolChange} symbol={symbol} />
+						<BoxConnectWallet />
+						<CreateOrderForm symbol={symbol} />
+					</Stack>
+				</Stack>
 			</MainContainer>
 		</>
 	);

@@ -2,8 +2,10 @@
 	background-color: #e9e4de !important;
 }
 
-.orderly-border-divider {
-	border-color: var(--grey50) !important;
+.light {
+	.orderly-border-divider {
+		border-color: var(--grey50) !important;
+	}
 }
 
 .orderly-text-trade-loss {

@@ -8,14 +8,16 @@ body {
 	color: var(--grey900);
 }
 
-div p,
-span,
-h1,
-h2,
-h3,
-h4,
-h5 {
-	color: var(--grey900);
+.light {
+	div p,
+	span,
+	h1,
+	h2,
+	h3,
+	h4,
+	h5 {
+		color: var(--grey900);
+	}
 }
 
 a {
