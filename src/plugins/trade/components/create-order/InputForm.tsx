@@ -10,7 +10,7 @@ import {
 } from "@/utils/helpers";
 import { Collapse, InputAdornment, Stack, Typography, useTheme } from "@mui/material";
 import { OrderEntity } from "@orderly.network/types";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { UseFormReturn } from "react-hook-form";
 import { match } from "ts-pattern";
 import { IPlaceOrderValues } from "./CreateOrderForm";
@@ -76,6 +76,7 @@ function InputForm({ formContext, symbolsInfo, symbol, helper, maxQty, markPrice
 		}
 
 		formContext.setValue("total", !watchValue ? "" : String(watchValue.total));
+		formContext.trigger("total");
 	};
 
 	// EX Base to USDC
@@ -110,6 +111,9 @@ function InputForm({ formContext, symbolsInfo, symbol, helper, maxQty, markPrice
 			shouldValidate: true,
 			shouldDirty: false,
 		});
+
+		// Kích hoạt validation lại cho total sau khi thay đổi giá trị
+		formContext.trigger("total");
 	};
 
 	// On total Change
@@ -147,6 +151,30 @@ function InputForm({ formContext, symbolsInfo, symbol, helper, maxQty, markPrice
 
 		return () => watch.unsubscribe();
 	}, [formContext, helper, symbol]);
+
+	// Sử dụng useMemo để tạo biến validation
+	const validationRules = useMemo(
+		() => ({
+			validate: {
+				custom: (value: any) => {
+					const parsedValue = parseFloat(value);
+
+					// Kiểm tra giá trị có nhỏ hơn 10
+					if (parsedValue < 10) {
+						return "The order value should be greater or equal to 10 USDC";
+					}
+
+					// Kiểm tra giá trị có lớn hơn 100,000
+					if (parsedValue > 100000) {
+						return "The order value should be less than or equal to 100,000 USDC";
+					}
+
+					return true; // Hợp lệ nếu thỏa mãn cả hai điều kiện
+				},
+			},
+		}),
+		[],
+	); // useMemo chỉ tính toán lại khi phụ thuộc thay đổi
 
 	return (
 		<Stack spacing={"8px"}>
@@ -268,14 +296,15 @@ function InputForm({ formContext, symbolsInfo, symbol, helper, maxQty, markPrice
 				prefix={"Total~"}
 				placeholder="0.0000"
 				onValueChange={(val) => onTotalChange(val)}
-				rules={{
-					validate: {
-						custom: async (_, data) => {
-							const errors = await getValidationErrors(data, symbol, helper.validator);
-							return errors?.total != null ? errors.total.message : true;
-						},
-					},
-				}}
+				rules={validationRules}
+				// rules={{
+				// 	validate: {
+				// 		custom: async (_, data) => {
+				// 			const errors = await getValidationErrors(data, symbol, helper.validator);
+				// 			return errors?.total != null ? errors.total.message : true;
+				// 		},
+				// 	},
+				// }}
 			/>
 		</Stack>
 	);

@@ -7,9 +7,9 @@ export const RenderFormError = ({ error }: { error?: string }) => {
 		<>
 			{error && (
 				<Typography
-					fontSize={"10px"}
+					fontSize={"9px"}
 					color={theme.palette.error.main}
-					lineHeight={"14px"}
+					lineHeight={"13px"}
 					pt={"4px"}>
 					{error ? `${error.charAt(0).toUpperCase()}${error.slice(1)}` : ""}
 				</Typography>
