@@ -161,6 +161,7 @@ const CreateOrderForm = ({ symbol }: IProps) => {
 							symbol={symbol}
 							symbolsInfo={symbolsInfo}
 							markPrice={markPrice}
+							wallet={wallet}
 						/>
 
 						<Details

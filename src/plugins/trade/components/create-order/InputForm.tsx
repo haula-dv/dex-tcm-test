@@ -29,9 +29,18 @@ interface IProps {
 	};
 	maxQty: number;
 	markPrice: number;
+	wallet: any;
 }
 
-function InputForm({ formContext, symbolsInfo, symbol, helper, maxQty, markPrice }: IProps) {
+function InputForm({
+	formContext,
+	symbolsInfo,
+	symbol,
+	helper,
+	maxQty,
+	markPrice,
+	wallet,
+}: IProps) {
 	const symbolInfo = symbolsInfo[symbol]();
 	const [_, base, quote] = symbol.split("_");
 	const theme = useTheme();
@@ -190,6 +199,7 @@ function InputForm({ formContext, symbolsInfo, symbol, helper, maxQty, markPrice
 					prefix="Trigger"
 					decimals={quoteDecimals}
 					placeholder="0.0000"
+					disabled={!wallet}
 					rules={{
 						validate: {
 							custom: async (_, data) => {
@@ -246,6 +256,7 @@ function InputForm({ formContext, symbolsInfo, symbol, helper, maxQty, markPrice
 							.with("Market", () => true)
 							.with("StopMarket", () => true)
 							.otherwise(() => false)}
+						disabled={!wallet}
 						rules={{
 							validate: {
 								custom: async (_, data) => {
@@ -266,6 +277,7 @@ function InputForm({ formContext, symbolsInfo, symbol, helper, maxQty, markPrice
 					placeholder="0.0000"
 					prefix={"Quantity"}
 					onValueChange={(val) => onChangeQuanityExt(val)}
+					disabled={!wallet}
 					rules={{
 						validate: {
 							custom: async (_, data) => {
@@ -283,6 +295,7 @@ function InputForm({ formContext, symbolsInfo, symbol, helper, maxQty, markPrice
 				max={maxQty}
 				maxQty={`${formatter.format(maxQty)}`}
 				extChange={(val) => onChangeQuanityExt(val)}
+				disabled={!wallet}
 			/>
 
 			<CurrencyInputField
@@ -294,14 +307,7 @@ function InputForm({ formContext, symbolsInfo, symbol, helper, maxQty, markPrice
 				placeholder="0.0000"
 				onValueChange={(val) => onTotalChange(val)}
 				rules={validationRules}
-				// rules={{
-				// 	validate: {
-				// 		custom: async (_, data) => {
-				// 			const errors = await getValidationErrors(data, symbol, helper.validator);
-				// 			return errors?.total != null ? errors.total.message : true;
-				// 		},
-				// 	},
-				// }}
+				disabled={!wallet}
 			/>
 		</Stack>
 	);
