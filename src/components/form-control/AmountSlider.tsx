@@ -29,6 +29,7 @@ interface IProps<V extends FieldValues> {
 	max?: number;
 	maxQty?: string;
 	extChange?: (val: any) => void;
+	disabled?: boolean;
 }
 
 const AmountSlider = <V extends FieldValues>({
@@ -37,6 +38,7 @@ const AmountSlider = <V extends FieldValues>({
 	formContext,
 	maxQty,
 	extChange,
+	disabled,
 }: IProps<V>) => {
 	const theme = useTheme();
 
@@ -72,6 +74,7 @@ const AmountSlider = <V extends FieldValues>({
 							name={name}
 							marks={marks}
 							size="small"
+							disabled={disabled}
 							getAriaValueText={(value) => `${value}%`}
 							valueLabelFormat={(value) => `${value}%`}
 							value={Number(value).toFixed(0) as any}

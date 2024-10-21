@@ -31,6 +31,7 @@ interface InputFieldProps<V extends FieldValues> {
 	hasError?: any;
 	extErrors?: any;
 	readOnly?: boolean;
+	disabled?: boolean;
 }
 
 const CurrencyInputField = <V extends FieldValues>({
@@ -48,6 +49,7 @@ const CurrencyInputField = <V extends FieldValues>({
 	hasError,
 	helperText,
 	extErrors,
+	disabled,
 	readOnly,
 }: InputFieldProps<V>) => {
 	const theme = useTheme();
@@ -105,6 +107,7 @@ const CurrencyInputField = <V extends FieldValues>({
 									value={numFormat}
 									readOnly={readOnly}
 									name={name}
+									disabled={disabled}
 									placeholder={placeholder ?? "0.0"}
 									onChange={(event) => handleOnChange(event, numFormat, onChange)}
 									onBlur={(event) => handleOnChange(event, numFormat, onChange)}

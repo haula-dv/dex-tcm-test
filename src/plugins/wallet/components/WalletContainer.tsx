@@ -45,7 +45,6 @@ export default function WalletContainer() {
 
 	const [{ wallet, connecting }, connect, disconnect] = useConnectWallet();
 	const { account } = useAccount();
-	const orderlyKey = account.keyStore.getOrderlyKey();
 
 	// Handle connect wallet button
 	const handleConnectWallet = async () => {
@@ -128,8 +127,6 @@ export default function WalletContainer() {
 
 	return (
 		<Stack direction={"row"} spacing={1} alignItems={"center"}>
-			{/* <button onClick={updateFee}> Update Fee</button> */}
-
 			<NetworkContent />
 
 			{connecting ? (

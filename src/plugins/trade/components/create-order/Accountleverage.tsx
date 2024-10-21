@@ -5,7 +5,7 @@ import { MainSlider } from "@/components/form-control/AmountSlider";
 import { BarCircularProgress } from "@/components/loading/GradientCircularProgress";
 import MainTooltip from "@/components/MainTooltip";
 import { getDecimalsFromTick } from "@/utils/formatters/api";
-import { Box, Divider, Skeleton, Stack, Typography, useTheme } from "@mui/material";
+import { Box, Divider, Stack, Typography, useTheme } from "@mui/material";
 import {
 	useCollateral,
 	useLeverage,
@@ -15,6 +15,7 @@ import {
 } from "@orderly.network/hooks";
 import { toast } from "@orderly.network/react";
 import { IconPencil } from "@tabler/icons-react";
+import { useConnectWallet } from "@web3-onboard/react";
 import { useMemo, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { FormContainer } from "react-hook-form-mui";
@@ -23,6 +24,7 @@ export const Accountleverage = ({ symbol }: any) => {
 	const [open, setOpen] = useState(false);
 	const theme = useTheme();
 	const [positions, _info, { refresh, loading }] = usePositionStream();
+	const [{ wallet }] = useConnectWallet();
 
 	const { currentLeverage, mmr } = useMarginRatio();
 	const { totalCollateral, totalValue } = useCollateral();
@@ -70,43 +72,41 @@ export const Accountleverage = ({ symbol }: any) => {
 	return (
 		<>
 			<MainCard backgroudColor="primaryLight">
-				{maxLeverage ? (
-					<>
-						<BarCircularProgress
-							value={totalMarginRatio == Infinity ? 100 : totalMarginRatio}
-							background={
-								totalMarginRatio == Infinity || isNaN(totalMarginRatio)
-									? theme.palette.success.main
-									: totalMarginRatio >= 100
-									? theme.palette.success.main
-									: theme.palette.warning.main
-							}
-							variant="determinate"
-						/>
+				<BarCircularProgress
+					value={
+						totalMarginRatio == Infinity ? 100 : totalMarginRatio >= 100 ? 100 : totalMarginRatio
+					}
+					background={
+						totalMarginRatio == Infinity || isNaN(totalMarginRatio)
+							? theme.palette.success.main
+							: totalMarginRatio >= 100
+							? theme.palette.success.main
+							: theme.palette.warning.main
+					}
+					variant="determinate"
+				/>
 
-						<Stack direction={"row"} justifyContent={"space-between"} pt={"6px"}>
-							<Stack>
-								<MainTooltip
-									placement="top"
-									arrow
-									title={
-										<div>
-											Your actual Leverage of the whole account / Your max Leverage of the whole
-											account
-											<Divider />
-											Margin ratio = Total collateral / Total position notional
-										</div>
-									}>
-									<Box display={"inline-flex"}>
-										<Typography
-											fontSize={"12px"}
-											color={theme.palette.grey[400]}
-											className="pointer">
-											Margin ratio
-										</Typography>
-									</Box>
-								</MainTooltip>
+				<Stack direction={"row"} justifyContent={"space-between"} pt={"6px"}>
+					<Stack>
+						<MainTooltip
+							placement="top"
+							arrow
+							title={
+								<div>
+									Your actual Leverage of the whole account / Your max Leverage of the whole account
+									<Divider />
+									Margin ratio = Total collateral / Total position notional
+								</div>
+							}>
+							<Box display={"inline-flex"}>
+								<Typography fontSize={"12px"} color={theme.palette.grey[400]} className="pointer">
+									Margin ratio
+								</Typography>
+							</Box>
+						</MainTooltip>
 
+						{maxLeverage ? (
+							<>
 								<Typography
 									color={
 										totalMarginRatio == Infinity || isNaN(totalMarginRatio)
@@ -121,38 +121,37 @@ export const Accountleverage = ({ symbol }: any) => {
 										: formatter.format(totalMarginRatio)}
 									%
 								</Typography>
-							</Stack>
+							</>
+						) : (
+							<span>--</span>
+						)}
+					</Stack>
 
-							<Stack>
-								<Typography fontSize={"12px"} color={theme.palette.grey[400]} textAlign={"end"}>
-									Account leverage
-								</Typography>
+					<Stack>
+						<Typography fontSize={"12px"} color={theme.palette.grey[400]} textAlign={"end"}>
+							Account leverage
+						</Typography>
 
-								<Stack
-									direction={"row"}
-									spacing={0.4}
-									alignItems={"center"}
-									justifyContent={"flex-end"}>
+						<Stack
+							direction={"row"}
+							spacing={0.4}
+							alignItems={"center"}
+							justifyContent={"flex-end"}>
+							{maxLeverage ? (
+								<>
 									<Typography>
 										{formatter.format(Math.abs(currentLeverage))}x / {maxLeverage}x
 									</Typography>
-
 									<Box className="pointer" onClick={handleToggle}>
 										<IconPencil size={"1.1rem"} />
 									</Box>
-								</Stack>
-							</Stack>
+								</>
+							) : (
+								<span>- / -</span>
+							)}
 						</Stack>
-					</>
-				) : (
-					<Stack>
-						<Typography fontSize={"12px"} color={theme.palette.grey[400]} className="pointer">
-							Margin ratio
-						</Typography>
-
-						<Skeleton variant="rounded" animation="wave" height={"18px"} width={"100%"} />
 					</Stack>
-				)}
+				</Stack>
 			</MainCard>
 			<Box pb={"10px"} />
 
