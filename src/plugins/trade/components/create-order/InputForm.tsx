@@ -152,29 +152,26 @@ function InputForm({ formContext, symbolsInfo, symbol, helper, maxQty, markPrice
 		return () => watch.unsubscribe();
 	}, [formContext, helper, symbol]);
 
-	// Sử dụng useMemo để tạo biến validation
 	const validationRules = useMemo(
 		() => ({
 			validate: {
 				custom: (value: any) => {
 					const parsedValue = parseFloat(value);
 
-					// Kiểm tra giá trị có nhỏ hơn 10
 					if (parsedValue < 10) {
-						return "The order value should be greater or equal to 10 USDC";
+						return "The total value should be greater or equal to 10 USDC";
 					}
 
-					// Kiểm tra giá trị có lớn hơn 100,000
 					if (parsedValue > 100000) {
-						return "The order value should be less than or equal to 100,000 USDC";
+						return "The total value should be less than or equal to 100,000 USDC";
 					}
 
-					return true; // Hợp lệ nếu thỏa mãn cả hai điều kiện
+					return true;
 				},
 			},
 		}),
 		[],
-	); // useMemo chỉ tính toán lại khi phụ thuộc thay đổi
+	);
 
 	return (
 		<Stack spacing={"8px"}>
