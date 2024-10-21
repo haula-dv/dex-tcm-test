@@ -46,7 +46,19 @@ export default withPWA({
 		return [
 			{
 				source: "/",
-				destination: "/swap",
+				destination: "/trading/perp/PERP_ETH_USDC",
+				permanent: false,
+			},
+
+			{
+				source: "/swap",
+				destination: "/trading/perp/PERP_ETH_USDC",
+				permanent: false,
+			},
+
+			{
+				source: "/pool",
+				destination: "/trading/perp/PERP_ETH_USDC",
 				permanent: false,
 			},
 

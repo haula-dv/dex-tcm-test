@@ -33,7 +33,7 @@ const Error = () => (
         color="primary"
         variant="contained"
         component={Link}
-        href="/"
+        href="/trading/perp/PERP_ETH_USDC"
         disableElevation
       >
         Back to home
