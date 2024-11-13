@@ -1,5 +1,4 @@
 /* eslint-disable react-hooks/rules-of-hooks */
-import MainCard from "@/components/card/MainCard";
 import { getDecimalsFromTick } from "@/utils/formatters/api";
 import { getInputPlaceOrder } from "@/utils/helpers";
 import { TSizes } from "@/utils/themes/custom-theme/sizes";
@@ -16,7 +15,7 @@ import { useConnectWallet, useNotifications } from "@web3-onboard/react";
 import { memo, ReactNode, useState } from "react";
 import { useForm } from "react-hook-form";
 import { match } from "ts-pattern";
-import { Balance } from "../common/Balance";
+import Balance from "../common/Balance";
 import { Accountleverage } from "./Accountleverage";
 import AvailableWithdraw from "./AvailableWithdraw";
 import Details from "./Details";
@@ -136,55 +135,55 @@ const CreateOrderForm = ({ symbol }: IProps) => {
 
 	return (
 		<>
-			<MainCard backgroudColor="primary" width="100%" height="100%" heightCard="100%">
-				<Balance
-					availableWithdraw={collateral.availableBalance}
-					quote={quote}
-					wallet={wallet}
-					isFristLoading={symbolsInfo.isNil}
-				/>
+			{/* <MainCard backgroudColor="primary" width="100%" height="100%" heightCard="100%"> */}
+			<Balance
+				availableWithdraw={collateral.availableBalance}
+				quote={quote}
+				wallet={wallet}
+				isFristLoading={symbolsInfo.isNil}
+			/>
 
-				<Accountleverage symbol={symbol} />
+			<Accountleverage symbol={symbol} />
 
-				<form onSubmit={formContext.handleSubmit(handleConfirmOrder)}>
-					<Stack spacing={TSizes.margin_common}>
-						<OrderDirection formContext={formContext} wallet={wallet} />
+			<form onSubmit={formContext.handleSubmit(handleConfirmOrder)}>
+				<Stack spacing={TSizes.margin_common}>
+					<OrderDirection formContext={formContext} wallet={wallet} />
 
-						<AvailableWithdraw balance={availableWithdraw} quote={quote} />
+					<AvailableWithdraw balance={availableWithdraw} quote={quote} />
 
-						<OrderTypeTab formContext={formContext} />
+					<OrderTypeTab formContext={formContext} />
 
-						<InputForm
-							formContext={formContext}
-							helper={helper}
-							maxQty={maxQty}
-							symbol={symbol}
-							symbolsInfo={symbolsInfo}
-							markPrice={markPrice}
-							wallet={wallet}
-						/>
-
-						<Details
-							estLeverage={estLeverage}
-							quoteDecimals={quoteDecimals}
-							quote={quote}
-							symbol={symbol}
-							direction={formContext.watch("direction")}
-							estLiqPrice={estLiqPrice}
-						/>
-					</Stack>
-
-					<ModalConfirmOrder
-						open={openOrderConfirm}
-						handleClose={() => setOpenOrderConfirm(false)}
-						submitForm={submitForm}
+					<InputForm
+						formContext={formContext}
+						helper={helper}
+						maxQty={maxQty}
 						symbol={symbol}
-						currentValue={formContext.getValues()}
-						loading={loading}
-						totalPrice={formContext.watch("total") ?? ""}
+						symbolsInfo={symbolsInfo}
+						markPrice={markPrice}
+						wallet={wallet}
 					/>
-				</form>
-			</MainCard>
+
+					<Details
+						estLeverage={estLeverage}
+						quoteDecimals={quoteDecimals}
+						quote={quote}
+						symbol={symbol}
+						direction={formContext.watch("direction")}
+						estLiqPrice={estLiqPrice}
+					/>
+				</Stack>
+
+				<ModalConfirmOrder
+					open={openOrderConfirm}
+					handleClose={() => setOpenOrderConfirm(false)}
+					submitForm={submitForm}
+					symbol={symbol}
+					currentValue={formContext.getValues()}
+					loading={loading}
+					totalPrice={formContext.watch("total") ?? ""}
+				/>
+			</form>
+			{/* </MainCard> */}
 		</>
 	);
 };

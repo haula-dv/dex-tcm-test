@@ -39,14 +39,14 @@ const OrderLastTradeContent = ({ symbol }: IProps) => {
 				{tradeHistory.length > 0 &&
 					tradeHistory.map((item: any, index) => (
 						<Grid key={index} container>
-							<Grid item md={4}>
+							<Grid item xs={4} md={4}>
 								<Typography
 									fontSize={"12px"}
 									color={setColorThemeMode(theme.palette.grey[700], theme.palette.common.white)}>
 									{dayjs(item.ts).format("HH:mm:ss")}
 								</Typography>
 							</Grid>
-							<Grid item md={4}>
+							<Grid item xs={4} md={4}>
 								<Typography
 									fontSize={"12px"}
 									color={
@@ -56,7 +56,7 @@ const OrderLastTradeContent = ({ symbol }: IProps) => {
 									{item.price}
 								</Typography>
 							</Grid>
-							<Grid item md={4}>
+							<Grid item xs={4} md={4}>
 								<Typography
 									fontSize={"12px"}
 									textAlign={"end"}

@@ -24,19 +24,19 @@ const OrderBookContentCustom = ({ symbol }: IProps) => {
 	return (
 		<>
 			<Grid container pb={"6px"}>
-				<Grid item md={4}>
+				<Grid item xs={4} md={4}>
 					<Typography width={"100%"} fontSize={"12px"} fontWeight={700}>
 						Price
 					</Typography>
 				</Grid>
 
-				<Grid item md={3}>
+				<Grid item xs={4} md={3}>
 					<Typography width={"100%"} fontSize={"12px"} textAlign="center" fontWeight={700}>
 						Qty
 					</Typography>
 				</Grid>
 
-				<Grid item md={5}>
+				<Grid item xs={4} md={5}>
 					<Typography width={"100%"} fontSize={"12px"} fontWeight={700} textAlign="center">
 						Total
 					</Typography>

@@ -2,7 +2,7 @@ import MainTooltip from "@/components/MainTooltip";
 import { ItemRow } from "@/plugins/pool/components/TokenSelected";
 import { usdFormatter } from "@/utils/formatters/number";
 import { setColorThemeMode } from "@/utils/helpers";
-import { Box, Grid, Stack, Typography, useTheme } from "@mui/material";
+import { Box, Grid, Stack, Typography, useMediaQuery, useTheme } from "@mui/material";
 import { memo } from "react";
 
 interface IProps {
@@ -69,8 +69,10 @@ const OrderBookItem = ({
 		</Stack>
 	);
 
+	const upLg = useMediaQuery(theme.breakpoints.up("lg"));
+
 	return (
-		<MainTooltip placement="left" arrow title={TooltipValue}>
+		<MainTooltip placement={upLg ? "left" : "top"} arrow title={TooltipValue}>
 			<Box
 				borderRadius={0}
 				sx={{
@@ -80,7 +82,7 @@ const OrderBookItem = ({
 					},
 				}}>
 				<Grid container spacing={1}>
-					<Grid item md={4}>
+					<Grid item xs={4} md={4}>
 						<Typography
 							fontSize={"10px"}
 							fontWeight={600}
@@ -90,7 +92,7 @@ const OrderBookItem = ({
 						</Typography>
 					</Grid>
 
-					<Grid item md={3}>
+					<Grid item xs={4} md={3}>
 						<Typography
 							fontSize={"10px"}
 							fontWeight={600}
@@ -101,7 +103,7 @@ const OrderBookItem = ({
 						</Typography>
 					</Grid>
 
-					<Grid item md={5}>
+					<Grid item xs={4} md={5}>
 						<Box
 							py={"1px"}
 							borderRadius={"0px"}

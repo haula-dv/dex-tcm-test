@@ -100,3 +100,15 @@ input::-webkit-inner-spin-button {
 	margin-top: 6px;
 	box-shadow: none !important;
 }
+
+.MuiDialog-root {
+	z-index: 1300 !important	;
+}
+@media screen and (max-width: 992px) {
+	.MuiDialog-root {
+		z-index: 1300 !important	;
+		.MuiPaper-root {
+			width: calc(100% - 16px) !important;
+		}
+	}
+}

@@ -40,7 +40,9 @@ export const MainViewContainer = ({ onSymbolChange, symbol }: IProps) => {
 					flexShrink={0}>
 					<MarketsContainer onSymbolChange={onSymbolChange} symbol={symbol} />
 					<BoxConnectWallet />
-					<CreateOrderForm symbol={symbol} />
+					<MainCard backgroudColor="primary" width="100%" height="100%" heightCard="100%">
+						<CreateOrderForm symbol={symbol} />
+					</MainCard>
 				</Stack>
 			</Box>
 		</>

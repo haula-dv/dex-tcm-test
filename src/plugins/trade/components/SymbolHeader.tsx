@@ -154,7 +154,8 @@ const SymbolHeader = ({ onSymbolChange, symbol }: IProps) => {
 					spacing={2}
 					alignItems={"center"}
 					sx={{ overflowX: "auto" }}
-					width={"100%"}>
+					width={"100%"}
+					pr={1}>
 					<Typography fontWeight={600} pr={1} whiteSpace={"nowrap"}>
 						{stream ? usdFormatter.format(stream?.["24h_close"]) : "_"}
 					</Typography>

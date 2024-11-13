@@ -1,14 +1,17 @@
-import { Container, ContainerProps } from '@mui/material';
-import { ReactNode } from 'react';
+import { Container, ContainerProps } from "@mui/material";
+import { ReactNode } from "react";
 
 interface IProps extends ContainerProps {
-	maxWidth?: 'xs' | 'sm' | 'md' | 'lg' | 'xl' | false;
+	maxWidth?: "xs" | "sm" | "md" | "lg" | "xl" | false;
 	children?: ReactNode;
 }
 
-export const MainContainer = ({ children, maxWidth = 'xl', ...props }: IProps) => {
+export const MainContainer = ({ children, maxWidth = "xl", ...props }: IProps) => {
 	return (
-		<Container maxWidth={maxWidth} {...props} sx={{ px: '16px !important' }}>
+		<Container
+			maxWidth={maxWidth}
+			{...props}
+			sx={{ px: { xs: "6px !important", md: "16px !important" } }}>
 			{children}
 		</Container>
 	);

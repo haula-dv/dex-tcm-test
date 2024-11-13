@@ -12,7 +12,6 @@ import Logo from "../icons/Logo";
 export const Header = () => {
 	const pathName = usePathname();
 	const params = useParams();
-
 	const navItems = [
 		{ label: "Trading", to: "/trading/perp", actived: [`/trading/perp/${params.symbol}`] },
 		// { label: 'Swap', to: '/swap', actived: ['/swap'] },
@@ -74,7 +73,7 @@ export const Header = () => {
 	);
 };
 
-const MainAppBar = styled(AppBar)(({ theme }) => ({
+export const MainAppBar = styled(AppBar)(({ theme }) => ({
 	backgroundColor: setColorThemeMode("#fff", theme.palette.grey[800]),
 	zIndex: 10,
 	height: "56px",
@@ -90,7 +89,7 @@ interface INavItemProps extends BoxProps {
 	isActived: boolean;
 }
 
-const NavItem = styled(Box, {
+export const NavItem = styled(Box, {
 	shouldForwardProp: (prop) => prop !== "isActived",
 })<INavItemProps>(({ theme, isActived }) => ({
 	cursor: "pointer",

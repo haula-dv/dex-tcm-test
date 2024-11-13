@@ -10,9 +10,9 @@ import { Divider, Stack, Typography, useTheme } from "@mui/material";
 import { useChains } from "@orderly.network/hooks";
 import { IconChevronDown } from "@tabler/icons-react";
 import { useConnectWallet, useSetChain } from "@web3-onboard/react";
-import { useCallback, useEffect, useState } from "react";
+import { memo, useCallback, useEffect, useState } from "react";
 
-export default function NetworkContent() {
+function NetworkContent() {
 	const theme = useTheme();
 	const [networkAnchorEl, setNetworkAnchorEl] = useState<null | HTMLElement>(null);
 	const openNetworkEl = Boolean(networkAnchorEl);
@@ -182,3 +182,5 @@ export default function NetworkContent() {
 		</>
 	);
 }
+
+export default memo(NetworkContent);

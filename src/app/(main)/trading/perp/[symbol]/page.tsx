@@ -1,7 +1,9 @@
 "use client";
 import { MainViewContainer } from "@/plugins/trade/components/MainViewContainer";
+import MainViewMobileContainer from "@/plugins/trade/components/MainViewMobileContainer";
 import { TCMP_ORDERLY_SDK_TITLE_KEY } from "@/utils/constants/key_store";
 import { _orderlySymbolKey } from "@/utils/constants/orderly";
+import { useMediaQuery, useTheme } from "@mui/material";
 import { useRouter } from "next/navigation";
 import { useCallback, useEffect, useState } from "react";
 
@@ -31,9 +33,19 @@ export default function PerpPage({ params }: { params: { symbol: string } }) {
 		updateTitle(symbol);
 	};
 
+	const theme = useTheme();
+	const lgUp = useMediaQuery(theme.breakpoints.up("lg"));
+
 	return (
 		<>
-			<MainViewContainer symbol={symbol || "PERP_ETH_USDC"} onSymbolChange={onSymbolChange} />
+			{lgUp ? (
+				<MainViewContainer symbol={symbol || "PERP_ETH_USDC"} onSymbolChange={onSymbolChange} />
+			) : (
+				<MainViewMobileContainer
+					symbol={symbol || "PERP_ETH_USDC"}
+					onSymbolChange={onSymbolChange}
+				/>
+			)}
 		</>
 	);
 }

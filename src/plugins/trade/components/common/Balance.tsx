@@ -12,7 +12,7 @@ import { useAccount } from "@orderly.network/hooks";
 import { WalletState } from "@orderly.network/hooks/esm/walletConnectorContext";
 import { useNotifications, useSetChain } from "@web3-onboard/react";
 import Image from "next/image";
-import { useState } from "react";
+import { memo, useState } from "react";
 
 interface IProps {
 	availableWithdraw: number;
@@ -21,14 +21,15 @@ interface IProps {
 	isFristLoading: boolean;
 }
 
-export const Balance = ({ availableWithdraw, quote, wallet, isFristLoading }: IProps) => {
+const Balance = ({ availableWithdraw, quote, wallet, isFristLoading }: IProps) => {
 	// Orderly hooks
 	const [{ connectedChain }] = useSetChain();
 	const { account } = useAccount();
+	const theme = useTheme();
+	const [_, customNotification] = useNotifications();
 
 	const [open, setOpen] = useState(false);
 	const networkId = (localStorage.getItem("networkId") ?? "mainnet") as NetworkId;
-	const [_, customNotification] = useNotifications();
 	const [openWithDraw, setOpenWithDraw] = useState(false);
 	const [activedTab, setActivedTab] = useState("withdraw");
 
@@ -96,8 +97,6 @@ export const Balance = ({ availableWithdraw, quote, wallet, isFristLoading }: IP
 		setActivedTab(type);
 		setOpenWithDraw(!openWithDraw);
 	};
-
-	const theme = useTheme();
 
 	return (
 		<>
@@ -205,3 +204,5 @@ export const Balance = ({ availableWithdraw, quote, wallet, isFristLoading }: IP
 		</>
 	);
 };
+
+export default memo(Balance);
