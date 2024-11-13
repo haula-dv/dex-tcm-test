@@ -6,7 +6,7 @@ import { TokenIcon } from "@/components/token/TokenIcon";
 import { TLocalStorage } from "@/utils/constants/key_store";
 import { idFromHexChainId } from "@/utils/formatters/token";
 import { setColorThemeMode } from "@/utils/helpers";
-import { Divider, Stack, Typography, useTheme } from "@mui/material";
+import { Divider, Stack, Typography, useMediaQuery, useTheme } from "@mui/material";
 import { useChains } from "@orderly.network/hooks";
 import { IconChevronDown } from "@tabler/icons-react";
 import { useConnectWallet, useSetChain } from "@web3-onboard/react";
@@ -75,6 +75,8 @@ function NetworkContent() {
 		? remapChainIds.some((it) => it === (currentChain() as any).network_infos.chain_id)
 		: false;
 
+	const upLg = useMediaQuery(theme.breakpoints.up("lg"));
+
 	return (
 		<>
 			{chains ? (
@@ -107,7 +109,9 @@ function NetworkContent() {
 							""
 						)
 					}>
-					{isSupportChain ? currentChain()?.network_infos?.name : "Unsupport Network"}{" "}
+					{upLg && (
+						<>{isSupportChain ? currentChain()?.network_infos?.name : "Unsupport Network"} </>
+					)}
 				</MainButton>
 			) : null}
 

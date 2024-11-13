@@ -1,26 +1,56 @@
+import { themeSelectorState } from "@/common/stores/common";
+import NetworkContent from "@/plugins/wallet/components/NetworkContent";
+import { OrderlyConnect } from "@/plugins/wallet/components/OrderlyConnect";
+import { TLocalStorage } from "@/utils/constants/key_store";
 import { TSizes } from "@/utils/themes/custom-theme/sizes";
-import { Stack, Toolbar, Typography } from "@mui/material";
-import { IconMenu } from "@tabler/icons-react";
+import { Stack, Toolbar, Typography, useTheme } from "@mui/material";
+import { IconMenu, IconMoonStars, IconSun } from "@tabler/icons-react";
+import { useConnectWallet } from "@web3-onboard/react";
+import { setZustandValue } from "nes-zustand";
 import Link from "next/link";
 import { useParams, usePathname } from "next/navigation";
-import { memo } from "react";
+import { memo, useState } from "react";
+import { useStore } from "zustand";
 import { MainIconButton } from "../button/MainIconButton";
 import Logo from "../icons/Logo";
+import AccountDetailMobile from "./AccountDetailMobile";
 import { MainAppBar, NavItem } from "./Header";
 
 function HeaderMobile() {
+	const theme = useTheme();
 	const pathName = usePathname();
 	const params = useParams();
+	const [{ wallet, connecting }, connect, disconnect] = useConnectWallet();
+	const themeSelector = useStore(themeSelectorState, (state) => state.value);
+
+	// Handle change theme mode
+	const handleChangeTheme = () => {
+		localStorage.setItem(
+			TLocalStorage.DEX_THEME_MODE,
+			themeSelector.activeMode == "light" ? "dark" : "light",
+		);
+		setZustandValue(themeSelectorState, (prev: any) => {
+			return {
+				...prev,
+				activeMode: prev.activeMode == "light" ? "dark" : "light",
+			};
+		});
+
+		location.reload();
+	};
+
 	const navItems = [
 		{ label: "Trading", to: "/trading/perp", actived: [`/trading/perp/${params.symbol}`] },
-		// { label: 'Swap', to: '/swap', actived: ['/swap'] },
-		// { label: 'Pool', to: '/pool', actived: ['/pool', '/pool/add', '/pool/create-a-pair'] },
 		{ label: "Portfolio", to: "/portfolio", actived: ["/portfolio"] },
 	];
 
+	const [openAccountDetailsModal, setAccountDetailsModal] = useState(false);
+
 	return (
 		<MainAppBar elevation={0} position="sticky">
-			<Toolbar>
+			<OrderlyConnect />
+
+			<Toolbar sx={{ px: "10px !important" }}>
 				<Stack direction={"row"} width={"100%"} spacing={TSizes.margin_sm} alignItems={"center"}>
 					<Logo width="80px" height="40px" />
 
@@ -33,9 +63,28 @@ function HeaderMobile() {
 					))}
 				</Stack>
 
-				<MainIconButton edge="end">
-					<IconMenu />
-				</MainIconButton>
+				<Stack direction={"row"} spacing={"10px"}>
+					<NetworkContent />
+
+					{wallet ? (
+						<MainIconButton
+							edge="end"
+							onClick={() => setAccountDetailsModal(!openAccountDetailsModal)}>
+							<IconMenu />
+						</MainIconButton>
+					) : (
+						<MainIconButton onClick={handleChangeTheme} color="inherit">
+							{themeSelector.activeMode == "light" ? <IconSun /> : <IconMoonStars />}
+						</MainIconButton>
+					)}
+
+					{openAccountDetailsModal && (
+						<AccountDetailMobile
+							open={openAccountDetailsModal}
+							handleClose={() => setAccountDetailsModal(false)}
+						/>
+					)}
+				</Stack>
 			</Toolbar>
 		</MainAppBar>
 	);
