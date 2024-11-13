@@ -1,4 +1,5 @@
 import { MainButton } from "@/components/button/MainButton";
+import { setColorThemeMode } from "@/utils/helpers";
 import { Box, Drawer, Stack, useTheme } from "@mui/material";
 import { useConnectWallet } from "@web3-onboard/react";
 import { memo, useState } from "react";
@@ -11,7 +12,17 @@ const ActionPlaceOrderMobile = ({ symbol }: any) => {
 	const [open, setOpen] = useState(false);
 
 	const handleOpen = () => {
+		if (!wallet) {
+			return;
+		}
+
 		setOpen(!open);
+	};
+
+	// Handle connect wallet button
+	const handleConnectWallet = async () => {
+		await connect();
+		location.reload();
 	};
 
 	return (
@@ -24,31 +35,35 @@ const ActionPlaceOrderMobile = ({ symbol }: any) => {
 					p={1}
 					width={"100%"}
 					mt={1}
-					zIndex={100}
-					bgcolor={theme.palette.primary.main}
+					zIndex={20}
+					bgcolor={setColorThemeMode(theme.palette.primary.main, theme.palette.grey[800])}
 					borderTop={1}
-					borderColor={theme.palette.primary.light}
+					borderColor={setColorThemeMode(theme.palette.primary.light, theme.palette.grey[800])}
 					sx={{ borderRadius: "12px 12px 0px 0px" }}>
 					<Box
 						height={"10px"}
 						width={"36px"}
 						borderRadius={"24px"}
-						bgcolor={theme.palette.primary.light}
+						bgcolor={setColorThemeMode(theme.palette.primary.light, theme.palette.grey[600])}
 						mx="auto"
 						onClick={handleOpen}
 						mb={1}></Box>
-					<Stack direction={"row"} spacing={"10px"} onClick={handleOpen}>
+					<Stack direction={"row"} spacing={"10px"}>
 						{!wallet ? (
-							<MainButton variant="contained" fullWidth>
+							<MainButton
+								variant="contained"
+								fullWidth
+								onClick={handleConnectWallet}
+								isLoading={connecting}>
 								Connect Wallet
 							</MainButton>
 						) : (
 							<>
-								<MainButton variant="contained" color="success" fullWidth>
+								<MainButton variant="contained" color="success" fullWidth onClick={handleOpen}>
 									BUY
 								</MainButton>
 
-								<MainButton variant="contained" fullWidth color="error">
+								<MainButton variant="contained" fullWidth color="error" onClick={handleOpen}>
 									SELL
 								</MainButton>
 							</>
@@ -58,12 +73,15 @@ const ActionPlaceOrderMobile = ({ symbol }: any) => {
 			)}
 
 			<Drawer anchor={"bottom"} open={open} onClose={handleOpen}>
-				<Box p={"10px"} pt="10px" bgcolor={theme.palette.primary.main}>
+				<Box
+					p={"10px"}
+					pt="10px"
+					bgcolor={setColorThemeMode(theme.palette.primary.main, theme.palette.grey[800])}>
 					<Box
 						height={"10px"}
 						width={"36px"}
 						borderRadius={"24px"}
-						bgcolor={theme.palette.primary.light}
+						bgcolor={setColorThemeMode(theme.palette.primary.light, theme.palette.grey[600])}
 						mx="auto"
 						mb={"10px"}
 						onClick={handleOpen}></Box>

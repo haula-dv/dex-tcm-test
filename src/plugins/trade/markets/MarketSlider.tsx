@@ -98,7 +98,7 @@ const Wrapper = styled(Box, {
 			"#322D2B",
 		)}, transparent)`,
 		pointerEvents: "none",
-		zIndex: 99,
+		zIndex: 2,
 	},
 
 	"&::before": {
@@ -116,7 +116,7 @@ const Wrapper = styled(Box, {
 			: "transparent",
 		pointerEvents: "none",
 		transition: "0.6s",
-		zIndex: 99,
+		zIndex: 2,
 	},
 }));
 

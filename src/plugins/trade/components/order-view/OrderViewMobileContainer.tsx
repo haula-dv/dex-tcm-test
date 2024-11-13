@@ -3,6 +3,7 @@ import TabPanel from "@mui/lab/TabPanel";
 import { Box } from "@mui/material";
 import { usePositionStream } from "@orderly.network/hooks";
 import { PositionsView } from "@orderly.network/react";
+import { useConnectWallet } from "@web3-onboard/react";
 import { memo, useState } from "react";
 
 interface IProps {
@@ -12,6 +13,7 @@ interface IProps {
 const OrderViewMobileContainer = ({ symbol }: IProps) => {
 	const [open, setOpen] = useState(true);
 	const [positions, _info, { refresh, loading }] = usePositionStream(open ? "" : symbol);
+	const [{ wallet, connecting }, connect, disconnect] = useConnectWallet();
 
 	const [position, setPosition] = useState<any>(null);
 
@@ -31,12 +33,16 @@ const OrderViewMobileContainer = ({ symbol }: IProps) => {
 			}`,
 			value: "positions",
 			children: (
-				<PositionsView
-					dataSource={positions.rows}
-					aggregated={positions.aggregated}
-					showAllSymbol={open}
-					onShowAllSymbolChange={onShowAllSymbolChange}
-				/>
+				<>
+					{wallet && (
+						<PositionsView
+							dataSource={positions.rows}
+							aggregated={positions.aggregated}
+							showAllSymbol={open}
+							onShowAllSymbolChange={onShowAllSymbolChange}
+						/>
+					)}
+				</>
 			),
 		},
 		{
