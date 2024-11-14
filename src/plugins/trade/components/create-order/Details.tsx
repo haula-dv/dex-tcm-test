@@ -13,9 +13,17 @@ interface IProps {
 	symbol: string;
 	quoteDecimals: number;
 	direction: any;
+	openOrderConfirm?: boolean;
 }
 
-const Details = ({ estLeverage, estLiqPrice, quoteDecimals, quote, direction }: IProps) => {
+const Details = ({
+	estLeverage,
+	estLiqPrice,
+	quoteDecimals,
+	quote,
+	direction,
+	openOrderConfirm,
+}: IProps) => {
 	const [{ wallet, connecting }, connect] = useConnectWallet();
 	const { currentLeverage, mmr } = useMarginRatio();
 
@@ -96,6 +104,7 @@ const Details = ({ estLeverage, estLiqPrice, quoteDecimals, quote, direction }: 
 				variant="contained"
 				color={direction == "Sell" ? "error" : "primary"}
 				type={wallet ? "submit" : "button"}
+				disabled={openOrderConfirm}
 				onClick={() => {
 					return wallet ? null : handleConnectWallet();
 				}}>

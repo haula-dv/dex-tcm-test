@@ -169,6 +169,7 @@ const CreateOrderForm = ({ symbol }: IProps) => {
 						symbol={symbol}
 						direction={formContext.watch("direction")}
 						estLiqPrice={estLiqPrice}
+						openOrderConfirm={openOrderConfirm}
 					/>
 				</Stack>
 
