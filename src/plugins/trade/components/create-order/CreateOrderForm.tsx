@@ -135,7 +135,6 @@ const CreateOrderForm = ({ symbol }: IProps) => {
 
 	return (
 		<>
-			{/* <MainCard backgroudColor="primary" width="100%" height="100%" heightCard="100%"> */}
 			<Balance
 				availableWithdraw={collateral.availableBalance}
 				quote={quote}
@@ -183,7 +182,6 @@ const CreateOrderForm = ({ symbol }: IProps) => {
 					totalPrice={formContext.watch("total") ?? ""}
 				/>
 			</form>
-			{/* </MainCard> */}
 		</>
 	);
 };

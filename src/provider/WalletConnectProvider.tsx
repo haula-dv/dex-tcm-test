@@ -24,7 +24,7 @@ export default function Web3OnboardProviderRoot({
 					theme: themeSelect.activeMode,
 					appMetadata: {
 						...web3Onboard.appMetadata,
-						icon: uplg ? "/Orderly.svg" : "/OrderlyMobile.svg",
+						icon: "/Orderly.svg",
 					},
 				} as any
 			}>

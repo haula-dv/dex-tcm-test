@@ -295,7 +295,8 @@ function InputForm({
 				max={maxQty}
 				maxQty={`${formatter.format(maxQty)}`}
 				extChange={(val) => onChangeQuanityExt(val)}
-				disabled={!wallet}
+				disabled={!wallet || Number(maxQty) <= 0}
+				decimals={baseDecimals}
 			/>
 
 			<CurrencyInputField

@@ -30,6 +30,7 @@ interface IProps<V extends FieldValues> {
 	maxQty?: string;
 	extChange?: (val: any) => void;
 	disabled?: boolean;
+	decimals: number;
 }
 
 const AmountSlider = <V extends FieldValues>({
@@ -39,11 +40,16 @@ const AmountSlider = <V extends FieldValues>({
 	maxQty,
 	extChange,
 	disabled,
+	decimals,
 }: IProps<V>) => {
 	const theme = useTheme();
 
 	// Watch quantity
 	useEffect(() => {
+		if (Number(maxQty) <= 0) {
+			return;
+		}
+
 		const watch = formContext.watch((value, { name }) => {
 			if (name === "quantity") {
 				const qty = Number(converLocalStringToNum(value.quantity));
@@ -51,7 +57,6 @@ const AmountSlider = <V extends FieldValues>({
 				if (maxQty <= 0 && qty <= 0) {
 					return;
 				}
-
 				const percentage = (qty / maxQty) * 100;
 				formContext.setValue(
 					"orderSide" as any,
@@ -61,7 +66,7 @@ const AmountSlider = <V extends FieldValues>({
 		});
 
 		return () => watch.unsubscribe();
-	}, [formContext, max]);
+	}, [formContext, max, maxQty]);
 
 	return (
 		<Controller
@@ -80,29 +85,33 @@ const AmountSlider = <V extends FieldValues>({
 							value={Number(value).toFixed(0) as any}
 							valueLabelDisplay="auto"
 							onChange={(event, newValue: any) => {
-								onChange(Number(newValue).toFixed(0));
+								// Format the new value based on decimals
+								const formattedValue = parseFloat(newValue).toFixed(decimals);
+								onChange(formattedValue);
 
 								if (newValue === 0) {
 									formContext.setValue("quantity" as any, 0 as any, {
 										shouldValidate: false,
 									});
-
 									return;
 								}
 
 								const caculatedAmount = (max * newValue) / 100;
-								const truncatedAmount = Math.floor(caculatedAmount * 10000) / 10000;
-								if (caculatedAmount >= 100) {
-									formContext.setValue("quantity" as any, max as any, {
-										shouldValidate: true,
-									});
-									return;
-								}
+								const truncatedAmount = parseFloat(caculatedAmount.toFixed(decimals)); // Truncate to decimals
+
+								// // Apply calculated amount or set max value
+								// if (caculatedAmount >= 100) {
+								// 	formContext.setValue("quantity" as any, max as any, {
+								// 		shouldValidate: true,
+								// 	});
+								// 	return;
+								// }
 
 								formContext.setValue("quantity" as any, truncatedAmount as any, {
 									shouldValidate: true,
 								});
 
+								// Call external change handler if provided
 								extChange && extChange(truncatedAmount);
 							}}
 						/>
@@ -120,6 +129,7 @@ const AmountSlider = <V extends FieldValues>({
 									.with("Buy" as any, () => "Buy")
 									.otherwise(() => "Sell")}
 							</Typography>
+
 							<Typography
 								fontSize={"12px"}
 								color={match(formContext.watch("direction" as any) as any)
