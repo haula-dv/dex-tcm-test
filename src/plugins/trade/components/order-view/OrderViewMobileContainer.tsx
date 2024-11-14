@@ -1,8 +1,7 @@
-import MainTab from "@/components/tab/MainTab";
-import TabPanel from "@mui/lab/TabPanel";
 import { Box } from "@mui/material";
 import { usePositionStream } from "@orderly.network/hooks";
 import { PositionsView } from "@orderly.network/react";
+import { DataListView } from "@orderly.network/react/esm/page/trading/desktop/sections/datalist";
 import { useConnectWallet } from "@web3-onboard/react";
 import { memo, useState } from "react";
 
@@ -64,8 +63,9 @@ const OrderViewMobileContainer = ({ symbol }: IProps) => {
 	];
 
 	return (
-		<Box className="data-list-view mobile">
-			<MainTab tabs={tabs}>
+		<Box className="data-list-view mobile" maxHeight={"400px"}>
+			<DataListView />
+			{/* <MainTab tabs={tabs}>
 				<>
 					{tabs.map((item) => (
 						<TabPanel key={item.value} value={item.value} sx={{ p: 0 }}>
@@ -73,7 +73,7 @@ const OrderViewMobileContainer = ({ symbol }: IProps) => {
 						</TabPanel>
 					))}
 				</>
-			</MainTab>
+			</MainTab> */}
 
 			{/* <Drawer anchor={"bottom"} open={open} onClose={() => setOpen(false)}>
 				{position && open && (

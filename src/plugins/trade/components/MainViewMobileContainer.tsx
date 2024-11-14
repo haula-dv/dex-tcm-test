@@ -62,7 +62,7 @@ const MainViewMobileContainer = ({ onSymbolChange, symbol }: IProps) => {
 				</MainTab>
 				<Box pt={TSizes.margin_base} />
 
-				<MainCard backgroudColor="primary" width="100%" minHeight="200px" disablePadding>
+				<MainCard backgroudColor="primary" width="100%" minHeight="auto" disablePadding>
 					<OrderViewMobileContainer symbol={symbol} />
 				</MainCard>
 			</MainContainer>
