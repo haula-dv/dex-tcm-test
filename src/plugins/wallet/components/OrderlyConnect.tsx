@@ -1,5 +1,4 @@
 "use client";
-import { mainToast } from "@/utils/lib/toast";
 import { useAccount } from "@orderly.network/hooks";
 import { AccountStatusEnum } from "@orderly.network/types";
 import { useConnectWallet, useNotifications, useSetChain } from "@web3-onboard/react";
@@ -40,8 +39,6 @@ export const OrderlyConnect = () => {
 			});
 		} catch (err) {
 			console.error(err);
-			mainToast("registration failed", "error");
-
 			update({
 				eventCode: "registerError",
 				type: "error",
@@ -49,7 +46,6 @@ export const OrderlyConnect = () => {
 				autoDismiss: 5_000,
 			});
 			throw err;
-		} finally {
 		}
 	};
 
@@ -60,18 +56,13 @@ export const OrderlyConnect = () => {
 			message: "Registering Orderly key...",
 		});
 		try {
-			const res = await account.createOrderlyKey(365);
-
-			console.log(res);
-
+			await account.createOrderlyKey(365);
 			update({
 				eventCode: "orderlyKeySuccess",
 				type: "success",
 				message: "Key registration complete!",
 				autoDismiss: 5_000,
 			});
-
-			// location.reload();
 		} catch (err) {
 			console.error(err);
 			update({
@@ -103,7 +94,7 @@ export const OrderlyConnect = () => {
 			}
 		}, 3_000) as unknown as number;
 		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [state, wallet]);
+	}, [state]);
 
 	return <></>;
 };
