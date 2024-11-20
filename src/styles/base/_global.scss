@@ -1,118 +1,118 @@
 html {
-	font-family: var(--orderly-font-family) !important;
-	color: var(--grey900);
+  font-family: var(--orderly-font-family) !important;
+  color: var(--grey900);
 }
 
 body {
-	font-family: var(--orderly-font-family) !important;
-	color: var(--grey900);
+  font-family: var(--orderly-font-family) !important;
+  color: var(--grey900);
 }
 
 .light {
-	div p,
-	span,
-	h1,
-	h2,
-	h3,
-	h4,
-	h5 {
-		color: var(--grey900);
-	}
+  div p,
+  span,
+  h1,
+  h2,
+  h3,
+  h4,
+  h5 {
+    // color: var(--grey900);
+  }
 }
 
 a {
-	color: inherit !important;
+  color: inherit !important;
 }
 
 // remove arrow
 /* Chrome, Safari, Edge, Opera */
 input[type="number"] {
-	-moz-appearance: textfield;
+  -moz-appearance: textfield;
 }
 
 ::-webkit-scrollbar {
-	display: none;
+  display: none;
 }
 
 /* Firefox */
 input::-webkit-outer-spin-button,
 input::-webkit-inner-spin-button {
-	-webkit-appearance: none;
-	margin: 0;
+  -webkit-appearance: none;
+  margin: 0;
 }
 
 .toast-success {
-	color: var(--white);
-	background-color: var(--success);
+  color: var(--white);
+  background-color: var(--success);
 }
 
 .toast-error {
-	background-color: var(--danger);
-	color: var(--white);
+  background-color: var(--danger);
+  color: var(--white);
 }
 
 .toast-warning {
-	background-color: var(--warning);
-	color: var(--white);
+  background-color: var(--warning);
+  color: var(--white);
 }
 
 .apply-common-tooltip {
-	div {
-		color: #20222b !important;
-	}
+  div {
+    color: #20222b !important;
+  }
 }
 
 .tradingview-widget-copyright {
-	display: none !important;
+  display: none !important;
 }
 
 .tcmp-orderbook {
-	#orderly-order-book-depth {
-		display: none !important;
-	}
+  #orderly-order-book-depth {
+    display: none !important;
+  }
 }
 
 .orderly-select {
-	.orderly-select-btn {
-		height: 28px !important;
-	}
+  .orderly-select-btn {
+    height: 28px !important;
+  }
 
-	.orderly-select-none {
-		height: 28px !important;
-	}
+  .orderly-select-none {
+    height: 28px !important;
+  }
 }
 
 .pointer {
-	cursor: pointer;
+  cursor: pointer;
 }
 
 .table-header-custom {
-	padding-left: 16px !important;
-	padding-top: 12px !important;
-	padding-bottom: 12px !important;
+  padding-left: 16px !important;
+  padding-top: 12px !important;
+  padding-bottom: 12px !important;
 }
 
 .z-indexed.svelte-w5zexe {
-	z-index: 99999 !important;
+  z-index: 99999 !important;
 }
 
 .menu-form-control {
-	margin-top: 6px;
-	box-shadow: none !important;
+  margin-top: 6px;
+  box-shadow: none !important;
 }
 
 .MuiDialog-root {
-	z-index: 1300 !important	;
+  z-index: 1300 !important	;
 }
 @media screen and (max-width: 992px) {
-	.MuiDialog-root {
-		z-index: 1300 !important	;
-		.MuiPaper-root {
-			width: calc(100% - 16px) !important;
-		}
-	}
+  .MuiDialog-root {
+    z-index: 1300 !important	;
+    .MuiPaper-root {
+      width: calc(100% - 16px) !important;
+    }
+  }
 }
 
 .svelte-obaru3 {
-	display: none !important;
+  display: none !important;
 }
