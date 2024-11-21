@@ -1,5 +1,4 @@
 import { ITab } from "@/common/types/components/tab";
-import MainCard from "@/components/card/MainCard";
 import { MainContainer } from "@/components/container/MainContainer";
 import MainTab from "@/components/tab/MainTab";
 import { TSizes } from "@/utils/themes/custom-theme/sizes";
@@ -46,7 +45,7 @@ const MainViewMobileContainer = ({ onSymbolChange, symbol }: IProps) => {
 
       <Divider />
 
-      <Box pl={TSizes.margin_base} pt={TSizes.margin_xs}>
+      <Box pl={TSizes.margin_common} pt={TSizes.margin_xs}>
         <SymbolHeader onSymbolChange={onSymbolChange} symbol={symbol} />
       </Box>
 
@@ -60,19 +59,12 @@ const MainViewMobileContainer = ({ onSymbolChange, symbol }: IProps) => {
             ))}
           </>
         </MainTab>
-        <Box pt={TSizes.margin_base} />
+        <Box pt={TSizes.margin_common} />
 
-        <MainCard
-          backgroudColor="primary"
-          width="100%"
-          minHeight="auto"
-          disablePadding
-        >
-          <OrderViewMobileContainer symbol={symbol} />
-        </MainCard>
+        <OrderViewMobileContainer symbol={symbol} />
       </MainContainer>
 
-      <Box py={6} />
+      <Box py={5.2} />
       <ActionPlaceOrderMobile symbol={symbol} />
     </>
   );
