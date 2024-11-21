@@ -1,7 +1,7 @@
 import MainTab from "@/components/tab/MainTab";
 import { setColorThemeMode } from "@/utils/helpers";
 import TabPanel from "@mui/lab/TabPanel";
-import { Card, Divider } from "@mui/material";
+import { Box, Divider } from "@mui/material";
 import { styled } from "@mui/material/styles";
 import { usePositionStream } from "@orderly.network/hooks";
 import { PositionsView } from "@orderly.network/react";
@@ -70,7 +70,6 @@ const OrderViewMobileContainer = ({ symbol }: IProps) => {
         <OrderTableMobileContainer
           orderBookStatus={OrderStatus.COMPLETED}
           symbol={symbol}
-          isShowAll={false}
         />
       ),
     },
@@ -88,7 +87,7 @@ const OrderViewMobileContainer = ({ symbol }: IProps) => {
   ];
 
   return (
-    <CardMobileOrderView className="data-list-view mobile" elevation={0}>
+    <CardMobileOrderView className="data-list-view mobile">
       <MainTab tabs={tabs}>
         <>
           <Divider />
@@ -117,12 +116,43 @@ const OrderViewMobileContainer = ({ symbol }: IProps) => {
 
 export default memo(OrderViewMobileContainer);
 
-const CardMobileOrderView = styled(Card)(({ theme }) => ({
-  padding: "10px",
+const CardMobileOrderView = styled(Box)(({ theme }) => ({
   height: "400px",
   overflowY: "auto",
-  backgroundColor: setColorThemeMode(
-    theme.palette.primary.light,
-    theme.palette.grey[800]
-  ),
+  "& .MuiTabPanel-root": {
+    "& .orderly-border-divider": {
+      display: "none",
+    },
+  },
+  "& .orderly-data-list-filter": {
+    backgroundColor: setColorThemeMode(
+      theme.palette.primary.light,
+      theme.palette.grey[800]
+    ),
+    marginBottom: "10px",
+    borderRadius: "0px 0px 10px 10px",
+  },
+  "& .tab-header": {
+    padding: "10px",
+    borderRadius: "10px 10px 0px 0px",
+    backgroundColor: setColorThemeMode(
+      theme.palette.primary.light,
+      theme.palette.grey[800]
+    ),
+  },
+
+  "& .orderly-list-view-inner ": {
+    "& .orderly-px-4": {
+      padding: "10px",
+      borderRadius: "10px",
+      backgroundColor: setColorThemeMode(
+        theme.palette.primary.light,
+        theme.palette.grey[800]
+      ),
+    },
+
+    "& .orderly-border-divider": {
+      display: "none",
+    },
+  },
 }));

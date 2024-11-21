@@ -6,13 +6,8 @@ import { memo } from "react";
 interface IProps {
   orderBookStatus: OrderStatus;
   symbol: string;
-  isShowAll: boolean;
 }
-const OrderTableMobileContainer = ({
-  orderBookStatus,
-  symbol,
-  isShowAll,
-}: IProps) => {
+const OrderTableMobileContainer = ({ orderBookStatus, symbol }: IProps) => {
   const [ordersUntyped, { isLoading }] = useOrderStream({
     status: orderBookStatus,
   });

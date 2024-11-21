@@ -17,7 +17,13 @@ body {
   h4,
   h5 {
     // color: var(--grey900);
+    font-family: var(--orderly-font-family) !important;
   }
+}
+
+label {
+  // color: var(--grey900);
+  font-family: var(--orderly-font-family) !important;
 }
 
 a {
