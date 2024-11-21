@@ -8,6 +8,7 @@ import { PositionsView } from "@orderly.network/react";
 import { OrderEntity, OrderStatus } from "@orderly.network/types";
 import { useConnectWallet } from "@web3-onboard/react";
 import { memo, useState } from "react";
+import OrderTableHistoryMobile from "./mobile/OrderTableHistoryMobile";
 import OrderTableMobileContainer from "./mobile/OrderTableMobileContainer";
 
 interface IProps {
@@ -68,7 +69,7 @@ const OrderViewMobileContainer = ({ symbol }: IProps) => {
       value: "pending",
       children: (
         <OrderTableMobileContainer
-          orderBookStatus={OrderStatus.COMPLETED}
+          orderBookStatus={OrderStatus.INCOMPLETE}
           symbol={symbol}
         />
       ),
@@ -82,7 +83,7 @@ const OrderViewMobileContainer = ({ symbol }: IProps) => {
     {
       label: "Order history",
       value: "order_history",
-      children: <></>,
+      children: <OrderTableHistoryMobile symbol={symbol} />,
     },
   ];
 

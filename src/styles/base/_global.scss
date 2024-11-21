@@ -122,3 +122,20 @@ input::-webkit-inner-spin-button {
 .svelte-obaru3 {
   display: none !important;
 }
+
+.menu-form-control {
+  .MuiPaper-root {
+    box-shadow: none;
+    margin-top: 6px;
+  }
+
+  .MuiList-root {
+    max-height: 200px;
+    margin-top: 0px !important;
+    .MuiButtonBase-root {
+      min-width: 100px !important;
+      height: 32px !important;
+      min-height: 32px;
+    }
+  }
+}

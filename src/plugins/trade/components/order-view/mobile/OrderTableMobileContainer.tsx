@@ -26,17 +26,21 @@ const OrderTableMobileContainer = ({ orderBookStatus, symbol }: IProps) => {
 
   return (
     <>
-      <OrdersView
-        cancelAlgoOrder={cancelAlgoOrder}
-        cancelOrder={cancelOrder}
-        cancelTPSLOrder={cancelTPSLOrder}
-        dataSource={orders}
-        editAlgoOrder={editAlgoOrder}
-        editOrder={editOrder}
-        isLoading={false}
-        symbol={symbol}
-        loadMore={loadMore}
-      />
+      {orderBookStatus == "COMPLETED" ? (
+        <>12</>
+      ) : (
+        <OrdersView
+          cancelAlgoOrder={cancelAlgoOrder}
+          cancelOrder={cancelOrder}
+          cancelTPSLOrder={cancelTPSLOrder}
+          dataSource={orders}
+          editAlgoOrder={editAlgoOrder}
+          editOrder={editOrder}
+          isLoading={false}
+          symbol={symbol}
+          loadMore={loadMore}
+        />
+      )}
     </>
   );
 };
