@@ -3,86 +3,87 @@ import { DataListView } from "@orderly.network/react";
 // import { DataListView } from "@orderly.network/react/esm/page/trading/desktop/sections/datalist";
 
 interface IProps {
-	symbol: string;
+  symbol: string;
 }
 
 export const OrderViewContainer = ({ symbol }: IProps) => {
-	// const [isShowAllInstrument, setShowAllInstrument] = useState(true);
-	// const theme = useTheme();
+  // const [isShowAllInstrument, setShowAllInstrument] = useState(true);
+  // const theme = useTheme();
 
-	// const [positions, _info, { refresh, loading }] = usePositionStream(
-	// 	isShowAllInstrument ? "" : symbol,
-	// );
+  // const [positions, _info, { refresh, loading }] = usePositionStream(
+  // 	isShowAllInstrument ? "" : symbol,
+  // );
 
-	// const tabs = [
-	// 	{
-	// 		label: `Positions ${
-	// 			positions.rows && positions.rows?.length > 0 ? `(${positions.rows?.length})` : ""
-	// 		}`,
-	// 		value: "positions",
-	// 		children: <PositionContent positions={positions} refresh={refresh} />,
-	// 	},
-	// 	{
-	// 		label: "Pending",
-	// 		value: "pending",
-	// 		children: (
-	// 			<OrderTableContentPending
-	// 				orderBookStatus={OrderStatus.INCOMPLETE}
-	// 				symbol={symbol}
-	// 				isShowAll={isShowAllInstrument}
-	// 			/>
-	// 		),
-	// 	},
-	// 	{
-	// 		label: "TP/SL",
-	// 		value: "TP/SL",
-	// 		children: (
-	// 			<OrderTableContentTPSL
-	// 				orderBookStatus={OrderStatus.NEW}
-	// 				symbol={symbol}
-	// 				isShowAll={isShowAllInstrument}
-	// 				positions={positions}
-	// 			/>
-	// 		),
-	// 	},
-	// 	{
-	// 		label: "Filled",
-	// 		value: "filled",
-	// 		children: (
-	// 			<OrderTableContentFilled
-	// 				orderBookStatus={OrderStatus.FILLED}
-	// 				symbol={symbol}
-	// 				isShowAll={isShowAllInstrument}
-	// 			/>
-	// 		),
-	// 	},
-	// 	{
-	// 		label: "Order history",
-	// 		value: "order_history",
-	// 		children: (
-	// 			<OrderTableContentHistory
-	// 				orderBookStatus={OrderStatus.COMPLETED}
-	// 				symbol={symbol}
-	// 				isShowAll={isShowAllInstrument}
-	// 			/>
-	// 		),
-	// 	},
-	// ];
+  // const tabs = [
+  // 	{
+  // 		label: `Positions ${
+  // 			positions.rows && positions.rows?.length > 0 ? `(${positions.rows?.length})` : ""
+  // 		}`,
+  // 		value: "positions",
+  // 		children: <PositionContent positions={positions} refresh={refresh} />,
+  // 	},
+  // 	{
+  // 		label: "Pending",
+  // 		value: "pending",
+  // 		children: (
+  // 			<OrderTableContentPending
+  // 				orderBookStatus={OrderStatus.INCOMPLETE}
+  // 				symbol={symbol}
+  // 				isShowAll={isShowAllInstrument}
+  // 			/>
+  // 		),
+  // 	},
+  // 	{
+  // 		label: "TP/SL",
+  // 		value: "TP/SL",
+  // 		children: (
+  // 			<OrderTableContentTPSL
+  // 				orderBookStatus={OrderStatus.NEW}
+  // 				symbol={symbol}
+  // 				isShowAll={isShowAllInstrument}
+  // 				positions={positions}
+  // 			/>
+  // 		),
+  // 	},
+  // 	{
+  // 		label: "Filled",
+  // 		value: "filled",
+  // 		children: (
+  // 			<OrderTableContentFilled
+  // 				orderBookStatus={OrderStatus.FILLED}
+  // 				symbol={symbol}
+  // 				isShowAll={isShowAllInstrument}
+  // 			/>
+  // 		),
+  // 	},
+  // 	{
+  // 		label: "Order history",
+  // 		value: "order_history",
+  // 		children: (
+  // 			<OrderTableContentHistory
+  // 				orderBookStatus={OrderStatus.COMPLETED}
+  // 				symbol={symbol}
+  // 				isShowAll={isShowAllInstrument}
+  // 			/>
+  // 		),
+  // 	},
+  // ];
 
-	// const onShowAllInstrument = (value: boolean) => {
-	// 	setShowAllInstrument(value);
-	// };
+  // const onShowAllInstrument = (value: boolean) => {
+  // 	setShowAllInstrument(value);
+  // };
 
-	return (
-		<Box
-			height={"20.5617%"}
-			minHeight={"320px"}
-			overflow={"hidden"}
-			borderRadius={"16px"}
-			className="data-list-view">
-			<DataListView />
+  return (
+    <Box
+      height={"20.5617%"}
+      minHeight={"320px"}
+      overflow={"hidden"}
+      borderRadius={"16px"}
+      className="data-list-view"
+    >
+      <DataListView />
 
-			{/* <MainTab
+      {/* <MainTab
 				tabs={tabs}
 				rightSideTab={
 					<Box flexShrink={0}>
@@ -109,6 +110,6 @@ export const OrderViewContainer = ({ symbol }: IProps) => {
 					))}
 				</MainCard>
 			</MainTab> */}
-		</Box>
-	);
+    </Box>
+  );
 };

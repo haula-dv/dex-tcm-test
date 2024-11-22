@@ -1,13 +1,15 @@
 import { ITab } from "@/common/types/components/tab";
 import { MainContainer } from "@/components/container/MainContainer";
+import MainTab from "@/components/tab/MainTab";
 import { TSizes } from "@/utils/themes/custom-theme/sizes";
+import TabPanel from "@mui/lab/TabPanel";
 import { Box, Divider } from "@mui/material";
 import { memo, useState } from "react";
 import MarketSlider from "../markets/MarketSlider";
 import ActionPlaceOrderMobile from "../order-book/ActionPlaceOrderMobile";
 import OrderBookMobileContainer from "../order-book/OrderBookMobileContainer";
 import TradingViewMobile from "../trading-view/TradingViewMobile";
-import OrderViewMobileContainer from "./order-view/OrderViewMobileContainer";
+import DataListMobile from "./order-view/DataListMobile";
 import SymbolHeader from "./SymbolHeader";
 
 interface IProps {
@@ -48,7 +50,7 @@ const MainViewMobileContainer = ({ onSymbolChange, symbol }: IProps) => {
       </Box>
 
       <MainContainer>
-        {/* <MainTab tabs={tabs}>
+        <MainTab tabs={tabs}>
           <>
             {tabs.map((item, index) => (
               <TabPanel key={index} value={item.value} sx={{ p: 0 }}>
@@ -56,10 +58,12 @@ const MainViewMobileContainer = ({ onSymbolChange, symbol }: IProps) => {
               </TabPanel>
             ))}
           </>
-        </MainTab> */}
+        </MainTab>
         <Box pt={TSizes.margin_common} />
 
-        <OrderViewMobileContainer symbol={symbol} />
+        {/* <OrderViewMobileContainer symbol={symbol} /> */}
+
+        <DataListMobile symbol={symbol} />
       </MainContainer>
 
       <Box py={5.2} />

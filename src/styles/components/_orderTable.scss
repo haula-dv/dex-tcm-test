@@ -9,3 +9,30 @@
     }
   }
 }
+
+.orderly-space-y-3 > :not([hidden]) ~ :not([hidden]) {
+  --tw-space-y-reverse: 0;
+  margin-bottom: 0 !important;
+  margin-top: 0 !important;
+}
+
+.orderly-data-list-mobile {
+  #orderly-data-list-positions-header {
+    // background-color: var(--grey800);
+  }
+}
+
+///////////////////////////////// Edit content ////////////////////
+.light {
+  .orderly-sheet-content {
+    background-color: #fff !important;
+  }
+  .orderly-tp_sl-order-edit-content {
+    svg {
+      fill: var(--grey800) !important;
+    }
+  }
+  .orderly-input-container {
+    background-color: var(--grey50) !important;
+  }
+}

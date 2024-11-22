@@ -1,6 +1,5 @@
-import { getDecimalsFromTick } from "@/utils/formatters/api";
-import { ORDER_STATUS, setColorThemeMode } from "@/utils/helpers";
-import { formatQty } from "@/utils/helpers/orderlyHelper";
+import { ORDER_STATUS, ORDER_TYPE, setColorThemeMode } from "@/utils/helpers";
+import { formatQty, getDecimals } from "@/utils/helpers/orderlyHelper";
 import { TSizes } from "@/utils/themes/custom-theme/sizes";
 import {
   Box,
@@ -25,13 +24,11 @@ const OrderHistoryItemMobile = ({ order }: IProps) => {
   const theme = useTheme();
   const orderDetail = order.order;
 
-  const [_, base, quote] = (orderDetail as any).symbol.split("_");
+  const [base, quote, _] = (orderDetail as any).symbol.split("_");
 
-  const [baseDecimals, quoteDecimals] = getDecimalsFromTick(
-    (order as any).symbol
+  const { baseDecimals, quoteDecimals } = getDecimals(
+    order.order.symbol as any
   );
-
-  // console.log(order);
 
   const renderStatus = useMemo(() => {
     let status;
@@ -42,6 +39,17 @@ const OrderHistoryItemMobile = ({ order }: IProps) => {
     }
 
     return ORDER_STATUS.find((item) => item.value === status)?.label;
+  }, [order]);
+
+  const renderType = useMemo(() => {
+    let type;
+    if (order.isAlgoOrder) {
+      type = order.order.algo_type;
+    } else {
+      type = order.order.type;
+    }
+
+    return ORDER_TYPE.find((item) => item.value === type)?.label;
   }, [order]);
 
   return (
@@ -61,7 +69,7 @@ const OrderHistoryItemMobile = ({ order }: IProps) => {
             label={orderDetail.side}
             size="small"
           />
-          <Typography fontSize={"12px"}>{base}-PERP</Typography>
+          <Typography fontSize={"12px"}>{quote}-PERP</Typography>
         </Stack>
 
         <Typography fontSize={"12px"}>{renderStatus}</Typography>
@@ -76,7 +84,12 @@ const OrderHistoryItemMobile = ({ order }: IProps) => {
         pt="6px"
         pb={"10px"}
       >
-        <Chip variant="filledTonal" size="small" label="Limit" color="info" />
+        <Chip
+          variant="filledTonal"
+          size="small"
+          label={renderType}
+          color="info"
+        />
 
         <Typography fontSize={"12px"} sx={{ opacity: "0.4" }}>
           2024-11-21 07:21:11
@@ -101,7 +114,15 @@ const OrderHistoryItemMobile = ({ order }: IProps) => {
         </Grid>
 
         <Grid item xs={4}>
-          <ItemCol label="Trigger price" value="1" />
+          <ItemCol
+            label="Trigger price"
+            value={
+              (orderDetail as any).trigger_price > 0
+                ? formatQty((orderDetail as any).trigger_price, baseDecimals)
+                : "--"
+            }
+            align="right"
+          />
         </Grid>
 
         <Grid item xs={4}>
@@ -143,13 +164,14 @@ const Item = styled(ListItem)(({ theme }) => ({
 interface IItem {
   label: string;
   value: string | ReactElement;
+  align?: "left" | "right";
 }
 
-const ItemCol = ({ label, value }: IItem) => {
+const ItemCol = ({ label, value, align }: IItem) => {
   const theme = useTheme();
 
   return (
-    <Stack>
+    <Stack textAlign={align}>
       <Typography
         fontSize={"12px"}
         color={setColorThemeMode(

@@ -2,6 +2,7 @@ import { IPlaceOrderValues } from "@/plugins/trade/components/create-order/Creat
 import { Theme, useTheme } from "@mui/material";
 import { useOrderEntry } from "@orderly.network/hooks";
 import {
+  AlgoOrderType,
   OrderEntity,
   OrderSide,
   OrderStatus,
@@ -143,3 +144,43 @@ export const ORDER_STATUS: { value: OrderStatus; label: string }[] = [
     value: OrderStatus.REJECTED,
   },
 ];
+
+export const ORDER_TYPE: { value: OrderType | AlgoOrderType; label: string }[] =
+  [
+    {
+      label: "Limit",
+      value: OrderType.LIMIT,
+    },
+    {
+      label: "Market",
+      value: OrderType.MARKET,
+    },
+    {
+      label: "Ioc",
+      value: OrderType.IOC,
+    },
+    {
+      label: "Fok",
+      value: OrderType.FOK,
+    },
+    {
+      label: "PO",
+      value: OrderType.POST_ONLY,
+    },
+    {
+      label: "Stop limit",
+      value: OrderType.STOP_LIMIT,
+    },
+    {
+      label: "Stop market",
+      value: OrderType.STOP_MARKET,
+    },
+    {
+      label: "SP",
+      value: AlgoOrderType.TAKE_PROFIT,
+    },
+    {
+      label: "SL",
+      value: AlgoOrderType.STOP_LOSS,
+    },
+  ];

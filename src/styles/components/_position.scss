@@ -295,7 +295,7 @@
   }
 
   .orderly-border-b-divider {
-    border-color: var(--primaryMain) !important;
+    border-color: var(--primaryMain);
   }
 
   .orderly-border-divider {
@@ -331,7 +331,7 @@
   }
 
   .orderly-bg-base-900 {
-    background-color: var(--primaryLight) !important;
+    background-color: var(--primaryLight);
   }
 
   .orderly-group:hover .group-hover\:\!orderly-bg-base-800 {
@@ -344,12 +344,14 @@
 // Base orderly
 
 // Tab
-.orderly-tab-header {
-  padding: 0px !important;
-  border: 0px !important;
+.data-list-view {
+  .orderly-tab-header {
+    padding: 0px !important;
+    border: 0px !important;
 
-  .orderly-h-\[48px\] {
-    height: auto !important;
+    .orderly-h-\[48px\] {
+      height: auto !important;
+    }
   }
 }
 
@@ -357,12 +359,12 @@
   gap: 2px !important;
 
   button {
-    height: 36px !important;
-    font-size: 13px !important;
-    border-radius: 12px !important;
+    height: 34px !important;
+    font-size: 12px !important;
+    border-radius: 8px !important;
     padding-left: 10px;
     padding-right: 10px;
-    font-weight: 600 !important;
+    font-weight: 500 !important;
     white-space: nowrap !important;
     flex-shrink: 0 !important;
   }
@@ -400,7 +402,7 @@
 #orderly-positions-mobile {
   #orderly-data-list-positions-header {
     padding-top: 6px !important;
-    background-color: transparent !important;
+    // background-color: transparent !important;
     padding-bottom: 6px !important;
   }
 
@@ -422,10 +424,10 @@
 .light {
   #orderly-positions-mobile {
     #orderly-data-list-positions-header {
-      background-color: var(--primaryLight) !important;
+      background-color: var(--primaryLight);
     }
     .orderly-border-divider {
-      border-color: var(--primaryLight) !important	;
+      border-color: var(--primaryLight);
     }
   }
 }

@@ -89,7 +89,7 @@ const OrderViewMobileContainer = ({ symbol }: IProps) => {
 
   return (
     <CardMobileOrderView className="data-list-view mobile">
-      <MainTab tabs={tabs} fullWidth>
+      <MainTab tabs={tabs}>
         <>
           <Divider />
           {wallet

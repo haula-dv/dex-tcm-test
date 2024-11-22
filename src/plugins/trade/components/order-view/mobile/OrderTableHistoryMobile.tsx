@@ -21,7 +21,7 @@ const OrderTableHistoryMobile = ({ symbol }: IProps) => {
   const [status, setStatus] = useState<any>("all");
   const [loading, setLoading] = useState(false);
   const [_0, customNotification] = useNotifications();
-  const [isShowAll, setIsShowAll] = useState(false);
+  const [isShowAll, setIsShowAll] = useState(true);
   const theme = useTheme();
 
   const [
@@ -119,7 +119,7 @@ const OrderTableHistoryMobile = ({ symbol }: IProps) => {
     { label: "InComplete", value: "INCOMPLETE" },
     { label: "Rejcted", value: "REJECTED" },
   ];
-
+  console.log(orders);
   return (
     <>
       <Stack
