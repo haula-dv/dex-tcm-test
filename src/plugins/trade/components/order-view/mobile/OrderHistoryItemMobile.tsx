@@ -1,23 +1,52 @@
-import { setColorThemeMode } from "@/utils/helpers";
+import { getDecimalsFromTick } from "@/utils/formatters/api";
+import { ORDER_STATUS, setColorThemeMode } from "@/utils/helpers";
+import { formatQty } from "@/utils/helpers/orderlyHelper";
 import { TSizes } from "@/utils/themes/custom-theme/sizes";
-import { Box, ListItem, Stack, Typography, useTheme } from "@mui/material";
+import {
+  Box,
+  Chip,
+  Grid,
+  ListItem,
+  Stack,
+  Typography,
+  useTheme,
+} from "@mui/material";
 import { styled } from "@mui/material/styles";
-import { memo, ReactElement } from "react";
+import { API } from "@orderly.network/types";
+import { memo, ReactElement, useMemo } from "react";
 
 interface IProps {
-  order: any;
+  order:
+    | { isAlgoOrder: false; order: API.Order }
+    | { isAlgoOrder: true; order: API.AlgoOrder };
 }
 
 const OrderHistoryItemMobile = ({ order }: IProps) => {
-  //   const theme = useTheme();
+  const theme = useTheme();
+  const orderDetail = order.order;
 
-  //   const [_, base, quote] = (order as any).symbol.split("_");
+  const [_, base, quote] = (orderDetail as any).symbol.split("_");
 
-  //   const { baseDecimals, quoteDecimals } = getDecimals((order as any).symbol);
-  console.log(order);
+  const [baseDecimals, quoteDecimals] = getDecimalsFromTick(
+    (order as any).symbol
+  );
+
+  // console.log(order);
+
+  const renderStatus = useMemo(() => {
+    let status;
+    if (order.isAlgoOrder) {
+      status = order.order.algo_status;
+    } else {
+      status = order.order.status;
+    }
+
+    return ORDER_STATUS.find((item) => item.value === status)?.label;
+  }, [order]);
+
   return (
     <Item disablePadding>
-      {/* <Stack
+      <Stack
         direction={"row"}
         alignItems={"center"}
         justifyContent={"space-between"}
@@ -29,15 +58,13 @@ const OrderHistoryItemMobile = ({ order }: IProps) => {
           <Chip
             color="success"
             variant="filledTonal"
-            label={(order as any).side}
+            label={orderDetail.side}
             size="small"
           />
           <Typography fontSize={"12px"}>{base}-PERP</Typography>
         </Stack>
 
-        <Typography fontSize={"12px"}>
-          {(order as any).status == "NEW" ? "Pending" : (order as any).status}
-        </Typography>
+        <Typography fontSize={"12px"}>{renderStatus}</Typography>
       </Stack>
 
       <Stack
@@ -64,7 +91,7 @@ const OrderHistoryItemMobile = ({ order }: IProps) => {
             label="Qty"
             value={
               <Typography fontSize={"12px"} color={theme.palette.success.main}>
-                {formatQty((order as any).quantity, baseDecimals)}
+                {formatQty(orderDetail.quantity, baseDecimals)}
               </Typography>
             }
           />
@@ -89,13 +116,13 @@ const OrderHistoryItemMobile = ({ order }: IProps) => {
           <ItemCol
             label="Realized Pnl (USDC)"
             value={
-              (order as any).realized_pnl > 0
-                ? formatQty((order as any).realized_pnl, baseDecimals)
+              (orderDetail as any).realized_pnl > 0
+                ? formatQty((orderDetail as any).realized_pnl, baseDecimals)
                 : "--"
             }
           />
         </Grid>
-      </Grid> */}
+      </Grid>
     </Item>
   );
 };
