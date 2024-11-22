@@ -4,22 +4,13 @@ import {
 } from "@/components/form-control/BaseSelectField";
 import { setColorThemeMode } from "@/utils/helpers";
 import { TSizes } from "@/utils/themes/custom-theme/sizes";
-import {
-  Box,
-  Chip,
-  List,
-  ListItem,
-  SelectChangeEvent,
-  Stack,
-  Typography,
-  useTheme,
-} from "@mui/material";
-import { styled } from "@mui/material/styles";
+import { List, SelectChangeEvent, Stack, useTheme } from "@mui/material";
 import { useOrderEntry, useOrderStream } from "@orderly.network/hooks";
 import { toast } from "@orderly.network/react";
 import { API, OrderSide, OrderType } from "@orderly.network/types";
 import { useNotifications } from "@web3-onboard/react";
 import { memo, useState } from "react";
+import OrderHistoryItemMobile from "./OrderHistoryItemMobile";
 
 interface IProps {
   symbol: string;
@@ -156,59 +147,24 @@ const OrderTableHistoryMobile = ({ symbol }: IProps) => {
       </Stack>
       {orders && orders.length > 0 ? (
         <List>
-          {orders.map((order, index) => (
-            <Item key={index} disablePadding>
-              <Stack
-                direction={"row"}
-                alignItems={"center"}
-                justifyContent={"space-between"}
-                width={"100%"}
-                pt={"10px"}
-                px={"10px"}
-              >
-                <Stack direction={"row"} spacing={"6px"}>
-                  <Chip color="success" label="Buy" size="small" />
-                  <Typography>ETH-PERP</Typography>
-                </Stack>
+          {orders.map((item, index) => {
+            let order:
+              | { isAlgoOrder: false; order: API.Order }
+              | { isAlgoOrder: true; order: API.AlgoOrder };
+            if ((item as API.Order).algo_order_id) {
+              order = { isAlgoOrder: true, order: item as API.AlgoOrder };
+            } else {
+              order = { isAlgoOrder: false, order: item as API.Order };
+            }
 
-                <Typography>Pending</Typography>
-              </Stack>
-
-              <Stack
-                direction={"row"}
-                alignItems={"center"}
-                justifyContent={"space-between"}
-                width={"100%"}
-                px={"10px"}
-                pt="6px"
-                pb={"10px"}
-              >
-                <Chip size="small" label="Limit" color="success" />
-
-                <Typography>2024-11-21 07:21:11</Typography>
-              </Stack>
-
-              <Box border={1} width={"100%"} />
-
-              <Box>122</Box>
-            </Item>
-          ))}
+            return <OrderHistoryItemMobile order={order} key={index} />;
+          })}
         </List>
       ) : (
-        "NONE"
+        "..."
       )}
     </>
   );
 };
 
 export default memo(OrderTableHistoryMobile);
-
-const Item = styled(ListItem)(({ theme }) => ({
-  width: "100%",
-  borderRadius: TSizes.borderRadius,
-  flexDirection: "column",
-  backgroundColor: setColorThemeMode(
-    theme.palette.primary.light,
-    theme.palette.grey[800]
-  ),
-}));

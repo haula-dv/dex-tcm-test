@@ -1,13 +1,13 @@
 // FOCUS
 .Mui-focused:not(.Mui-error) .MuiOutlinedInput-notchedOutline {
-	transition: all 0.2s;
-	border: 2px solid var(--badge-blue-fg) !important;
-	border-radius: 12px !important;
+  transition: all 0.2s;
+  border: 2px solid var(--badge-blue-fg) !important;
+  border-radius: 12px !important;
 }
 
 .MuiOutlinedInput-root.Mui-focused {
-	// border-radius: var(--border-radius) !important;
-	// outline: 4px solid var(--input-focused-color); /* Outside border effect */
+  // border-radius: var(--border-radius) !important;
+  // outline: 4px solid var(--input-focused-color); /* Outside border effect */
 }
 
 /* Change the white to any color */
@@ -15,41 +15,52 @@ input:-webkit-autofill,
 input:-webkit-autofill:hover,
 input:-webkit-autofill:focus,
 input:-webkit-autofill:active {
-	-webkit-box-shadow: 0 0 0 30px transparent inset !important;
+  -webkit-box-shadow: 0 0 0 30px transparent inset !important;
 }
 
 /*Change text in autofill textbox*/
 input:-webkit-autofill {
-	-webkit-text-fill-color: transparent !important;
+  -webkit-text-fill-color: transparent !important;
 }
 
 .MuiInputAdornment-positionEnd {
-	button {
-		margin-right: -8px !important;
+  button {
+    margin-right: -8px !important;
 
-		svg {
-			width: 0.8em;
-			height: 0.8em;
-		}
-	}
+    svg {
+      width: 0.8em;
+      height: 0.8em;
+    }
+  }
 }
 
 .MuiFilledInput-underline {
-	background-color: #fff !important;
-	&:hover {
-		&::before {
-			border-bottom: 0px !important;
-		}
-	}
+  background-color: #fff !important;
+  &:hover {
+    &::before {
+      border-bottom: 0px !important;
+    }
+  }
 }
 
 .dark {
-	.MuiOutlinedInput-root {
-		background-color: var(--darkBrown) !important;
-		color: #fff !important;
-	}
+  .MuiOutlinedInput-root {
+    background-color: var(--darkBrown) !important;
+    color: #fff !important;
+  }
 
-	.MuiOutlinedInput-notchedOutline {
-		border-color: var(--grey900) !important;
-	}
+  .MuiOutlinedInput-notchedOutline {
+    border-color: var(--grey900) !important;
+  }
+}
+
+.MuiChip-filledTonalSuccess {
+  background-color: color-mix(
+    in srgb,
+    var(--success),
+    transparent 80%
+  ) !important;
+  span {
+    color: var(--success) !important;
+  }
 }

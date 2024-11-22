@@ -98,4 +98,9 @@ export const TabItem = styled(Button, {
   "& svg": {
     color: setColorThemeMode(theme.palette.grey[600], theme.palette.grey[100]),
   },
+
+  [theme.breakpoints.down("md")]: {
+    fontSize: "12px",
+    fontWeight: 500,
+  },
 }));
