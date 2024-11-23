@@ -1,45 +1,38 @@
-import { MainIconButton } from "@/components/button/MainIconButton";
+import { getImageNextwork } from "@/common";
 import IconLoading from "@/components/icons/loading";
 import IconNotFound from "@/components/icons/NotFound";
+import { ItemRow } from "@/components/ItemRow";
 import { apiClientFetch } from "@/utils/apiClient";
-import { formartAddress } from "@/utils/formatters/token";
 import { setColorThemeMode } from "@/utils/helpers";
-import { formatQty } from "@/utils/helpers/orderlyHelper";
 import { TSizes } from "@/utils/themes/custom-theme/sizes";
 import {
   Box,
-  Divider,
   List,
   Pagination,
   Stack,
   Typography,
   useTheme,
 } from "@mui/material";
-import { Select, toast } from "@orderly.network/react";
-import { IconCopy } from "@tabler/icons-react";
+import { Select } from "@orderly.network/react";
 import { useConnectWallet } from "@web3-onboard/react";
 import dayjs from "dayjs";
 import Image from "next/image";
 import { memo, useEffect, useMemo, useState } from "react";
-import { ItemRow } from "../pool/components/TokenSelected";
 
-const DepositsWithdrawalsContainer = () => {
+const FundingContainer = () => {
   const theme = useTheme();
+  const [rows, setRows] = useState<any[]>([]);
+  const [isLoading, setIsLoading] = useState(false);
   const [{ wallet, connecting }, connect, disconnect] = useConnectWallet();
   const [currentSide, setCurrentSide] = useState("all");
   const [currentSize, setCurrentSize] = useState(10);
-  const [rowsDeposite, setRowsDeposite] = useState([]);
-  const [rowsDepositeLoading, setRowsDepositeLoading] = useState(true);
   const [total, setTotal] = useState(0);
+
   const [filter, setFilter] = useState<any>({
     page: 1,
     size: 10,
+    // symbol: "PERP_BTC_USDC",
   });
-
-  const handleCopy = (text: string) => {
-    navigator.clipboard.writeText(text);
-    toast.success("Copy address");
-  };
 
   const onFetchAssetHistory = async () => {
     const queryString = new URLSearchParams(
@@ -48,30 +41,16 @@ const DepositsWithdrawalsContainer = () => {
       )
     ).toString();
 
-    setRowsDepositeLoading(true);
+    setIsLoading(true);
     await apiClientFetch
-      .GET(wallet, `/asset/history?${queryString}`)
+      .GET(wallet, `/funding_fee/history?${queryString}`)
       .then((res: any) => {
-        setRowsDeposite(res.data.rows);
+        setRows(res.data.rows);
+        setTotal(res.data.meta.total);
       })
       .finally(() => {
-        setRowsDepositeLoading(false);
+        setIsLoading(false);
       });
-  };
-
-  const onChangeSide = (side: string) => {
-    const query = {
-      ...filter,
-      side: side,
-      page: 1,
-    };
-
-    if (side === "all" && query.side) {
-      delete query.side;
-    }
-
-    setFilter(query);
-    setCurrentSide(side);
   };
 
   const onChangeSize = (size: string) => {
@@ -101,43 +80,15 @@ const DepositsWithdrawalsContainer = () => {
 
   return (
     <>
-      <Divider />
-      <Stack
-        direction={"row"}
-        justifyContent={"space-between"}
-        p={"6px"}
-        borderRadius={"0px 0px 10px 10px"}
-        bgcolor={setColorThemeMode(
-          theme.palette.grey[100],
-          theme.palette.grey[800]
-        )}
-      >
-        <Select
-          value={currentSide}
-          onChange={onChangeSide}
-          className="main-select"
-          options={type}
-        />
-
-        <Stack direction={"row"} spacing={"6px"}>
-          <Typography fontSize={"12px"}>Rows per page</Typography>
-          <Select
-            value={currentSize}
-            onChange={onChangeSize}
-            className="main-select"
-            options={size}
-          />
-        </Stack>
-      </Stack>
-
       <List>
-        {rowsDepositeLoading ? (
+        {isLoading ? (
           <IconLoading />
         ) : (
           <>
-            {rowsDeposite.length > 0 ? (
+            {rows.length > 0 ? (
               <>
-                {rowsDeposite.map((item: any, index) => {
+                {rows.map((item, index) => {
+                  const [a, b, c] = item.symbol.split("_");
                   return (
                     <Box
                       bgcolor={setColorThemeMode(
@@ -155,7 +106,7 @@ const DepositsWithdrawalsContainer = () => {
                           <Stack direction={"row"} spacing={"2px"}>
                             <Box flexShrink={0}>
                               <Image
-                                src={"/images/USDC.png"}
+                                src={getImageNextwork(b, "symbol_logo")}
                                 height={18}
                                 width={18}
                                 alt=""
@@ -163,11 +114,12 @@ const DepositsWithdrawalsContainer = () => {
                               />
                             </Box>
                             <Typography fontSize={"12px"}>
-                              {item.token}
+                              {b}-{a}
                             </Typography>
                           </Stack>
                         }
                       />
+
                       <ItemRow
                         title="Time"
                         value={dayjs(item.created_time).format(
@@ -176,59 +128,24 @@ const DepositsWithdrawalsContainer = () => {
                       />
 
                       <ItemRow
-                        title="TxID"
+                        title="Funding rate"
                         value={
-                          <Stack direction={"row"} alignItems={"center"}>
-                            <a
-                              href={`https://sepolia.arbiscan.io/tx/${item.tx_id}`}
-                              target="_blank"
-                              rel="noopener noreferrer"
-                            >
-                              <Typography fontSize={"12px"}>
-                                {formartAddress(item.tx_id)}
-                              </Typography>
-                            </a>
-
-                            <MainIconButton
-                              size="small"
-                              edge="end"
-                              onClick={() => handleCopy(item.tx_id)}
-                            >
-                              <IconCopy size={"1rem"} />
-                            </MainIconButton>
-                          </Stack>
-                        }
-                      />
-
-                      <ItemRow title="Status" value={item.trans_status} />
-                      <ItemRow
-                        title="Type"
-                        value={
-                          <Typography
-                            fontSize={"12px"}
-                            color={
-                              item.side == "WITHDRAW"
-                                ? theme.palette.error.main
-                                : theme.palette.success.main
-                            }
-                          >
-                            {item.side == "WITHDRAW" ? "Withdraw" : "Deposite"}
+                          <Typography fontSize={"12px"}>
+                            {`${(item.funding_rate * 100).toFixed(6)}%`}
                           </Typography>
                         }
                       />
+
+                      <ItemRow title="Payment type" value={item.payment_type} />
+
                       <ItemRow
-                        title="Amount"
+                        title="Funding fee (USDC)"
                         value={
                           <Typography
                             fontSize={"12px"}
-                            color={
-                              item.side == "WITHDRAW"
-                                ? theme.palette.error.main
-                                : theme.palette.success.main
-                            }
+                            color={theme.palette.success.main}
                           >
-                            {item.side == "WITHDRAW" ? "-" : "+"}{" "}
-                            {formatQty(item.amount, 2)}
+                            {item.funding_fee}
                           </Typography>
                         }
                       />
@@ -236,7 +153,17 @@ const DepositsWithdrawalsContainer = () => {
                   );
                 })}
 
-                <Box display={"flex"} justifyContent={"center"}>
+                <Box display={"flex"} justifyContent={"space-between"}>
+                  <Stack direction={"row"} spacing={"6px"}>
+                    <Typography fontSize={"12px"}>Rows per page</Typography>
+                    <Select
+                      value={currentSize}
+                      onChange={onChangeSize}
+                      className="main-select"
+                      options={size}
+                    />
+                  </Stack>
+
                   <Pagination
                     size="small"
                     page={filter.page}
@@ -251,8 +178,10 @@ const DepositsWithdrawalsContainer = () => {
                 display={"flex"}
                 justifyContent={"center"}
                 alignItems={"center"}
+                flexDirection={"column"}
               >
                 <IconNotFound />
+                <Typography fontSize={"12px"}>No results found.</Typography>
               </Box>
             )}
           </>
@@ -262,7 +191,7 @@ const DepositsWithdrawalsContainer = () => {
   );
 };
 
-export default memo(DepositsWithdrawalsContainer);
+export default memo(FundingContainer);
 const type = [
   { label: "All", value: "all" },
   { label: "Deposite", value: "DEPOSIT" },
@@ -270,6 +199,7 @@ const type = [
 ];
 
 const size = [
+  { label: "5", value: 5 },
   { label: "10", value: 10 },
   { label: "20", value: 20 },
   { label: "50", value: 50 },
