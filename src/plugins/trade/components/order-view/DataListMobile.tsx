@@ -37,7 +37,6 @@ const DataListMobile = ({ symbol }: IProps) => {
 
       setTimeout(() => {
         if (parentDivDataList && parentDiv) {
-          console.log("parentDivDataList", parentDivDataList);
           Array.from(parentDiv.children).forEach((child) => {
             if (child.id !== "orderly-data-list") {
               child.remove();

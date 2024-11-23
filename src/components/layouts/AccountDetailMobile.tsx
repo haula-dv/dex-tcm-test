@@ -9,223 +9,302 @@ import { setColorThemeMode } from "@/utils/helpers";
 import { TSizes } from "@/utils/themes/custom-theme/sizes";
 import { Box, Drawer, Stack, Typography, useTheme } from "@mui/material";
 import {
-	useAccountInstance,
-	useChains,
-	useCollateral,
-	useDeposit,
-	useWithdraw,
+  useAccountInstance,
+  useChains,
+  useCollateral,
+  useDeposit,
+  useWithdraw,
 } from "@orderly.network/hooks";
 import { toast } from "@orderly.network/react";
-import { IconCopy, IconLogout, IconMoonStars, IconSun } from "@tabler/icons-react";
-import { useConnectWallet, useNotifications, useSetChain } from "@web3-onboard/react";
+import {
+  IconCopy,
+  IconLogout,
+  IconMoonStars,
+  IconSun,
+} from "@tabler/icons-react";
+import {
+  useConnectWallet,
+  useNotifications,
+  useSetChain,
+} from "@web3-onboard/react";
 import { setZustandValue } from "nes-zustand";
+import Link from "next/link";
+import { useParams, usePathname } from "next/navigation";
 import { memo, useMemo, useState } from "react";
 import { useStore } from "zustand";
 import { MainButton } from "../button/MainButton";
 import MainCard from "../card/MainCard";
 import { DepositWithdrawDialog } from "../deposit/DepositWithdrawDialog";
+import { NavItem } from "./Header";
 
 const AccountDetailMobile = ({ handleClose, open }: any) => {
-	const [{ wallet, connecting }, connect, disconnect] = useConnectWallet();
-	const theme = useTheme();
-	const themeSelector = useStore(themeSelectorState, (state) => state.value);
+  const [{ wallet, connecting }, connect, disconnect] = useConnectWallet();
+  const theme = useTheme();
+  const themeSelector = useStore(themeSelectorState, (state) => state.value);
 
-	// Handle change theme mode
-	const handleChangeTheme = () => {
-		localStorage.setItem(
-			TLocalStorage.DEX_THEME_MODE,
-			themeSelector.activeMode == "light" ? "dark" : "light",
-		);
-		setZustandValue(themeSelectorState, (prev: any) => {
-			return {
-				...prev,
-				activeMode: prev.activeMode == "light" ? "dark" : "light",
-			};
-		});
+  // Handle change theme mode
+  const handleChangeTheme = () => {
+    localStorage.setItem(
+      TLocalStorage.DEX_THEME_MODE,
+      themeSelector.activeMode == "light" ? "dark" : "light"
+    );
+    setZustandValue(themeSelectorState, (prev: any) => {
+      return {
+        ...prev,
+        activeMode: prev.activeMode == "light" ? "dark" : "light",
+      };
+    });
 
-		location.reload();
-	};
+    location.reload();
+  };
 
-	const [_, { findByChainId }] = useChains();
-	const [{ connectedChain }, setChain] = useSetChain();
-	const [{}, customNotification] = useNotifications();
-	const account = useAccountInstance();
-	const collateral = useCollateral();
-	const [loadingSettle, setLoadingSettle] = useState(false);
-	const [isOpenDeposit, setIsOpenDesposit] = useState(false);
+  const [_, { findByChainId }] = useChains();
+  const [{ connectedChain }, setChain] = useSetChain();
+  const [{}, customNotification] = useNotifications();
+  const account = useAccountInstance();
+  const collateral = useCollateral();
+  const [loadingSettle, setLoadingSettle] = useState(false);
+  const [isOpenDeposit, setIsOpenDesposit] = useState(false);
+  const params = useParams();
+  const pathName = usePathname();
 
-	// GET CURRENT CHAIN
-	const currentChain = useMemo(() => {
-		return findByChainId(connectedChain ? idFromHexChainId(connectedChain?.id ?? "") : 1);
-	}, [connectedChain, findByChainId]);
+  // GET CURRENT CHAIN
+  const currentChain = useMemo(() => {
+    return findByChainId(
+      connectedChain ? idFromHexChainId(connectedChain?.id ?? "") : 1
+    );
+  }, [connectedChain, findByChainId]);
 
-	const token = useMemo(() => {
-		return currentChain?.token_infos[0] ?? undefined;
-	}, [currentChain]);
+  const token = useMemo(() => {
+    return currentChain?.token_infos[0] ?? undefined;
+  }, [currentChain]);
 
-	const deposit = useDeposit({
-		address: token?.address,
-		decimals: token?.decimals,
-		srcToken: token?.symbol,
-		srcChainId: Number(connectedChain?.id),
-	});
+  const deposit = useDeposit({
+    address: token?.address,
+    decimals: token?.decimals,
+    srcToken: token?.symbol,
+    srcChainId: Number(connectedChain?.id),
+  });
 
-	const { unsettledPnL, availableWithdraw } = useWithdraw();
+  const { unsettledPnL, availableWithdraw } = useWithdraw();
 
-	// Handle disconnect wallet button
-	const handleDisconnect = async () => {
-		if (wallet) {
-			await disconnect(wallet);
-			location.reload();
-		}
-	};
+  // Handle disconnect wallet button
+  const handleDisconnect = async () => {
+    if (wallet) {
+      await disconnect(wallet);
+      location.reload();
+    }
+  };
 
-	const handleCopy = () => {
-		if (!wallet) return;
+  const handleCopy = () => {
+    if (!wallet) return;
 
-		navigator.clipboard
-			.writeText(wallet.accounts[0].address)
-			.then(() => {
-				toast.success("Address copied!");
-			})
-			.catch((err) => {
-				console.error("Failed to copy text: ", err);
-			});
-	};
+    navigator.clipboard
+      .writeText(wallet.accounts[0].address)
+      .then(() => {
+        toast.success("Address copied!");
+      })
+      .catch((err) => {
+        console.error("Failed to copy text: ", err);
+      });
+  };
 
-	const handleSettle = async () => {
-		setLoadingSettle(true);
-		const { update } = customNotification({
-			eventCode: "settle",
-			type: "pending",
-			message: "Settling PnL...",
-		});
+  const handleSettle = async () => {
+    setLoadingSettle(true);
+    const { update } = customNotification({
+      eventCode: "settle",
+      type: "pending",
+      message: "Settling PnL...",
+    });
 
-		try {
-			await account.settle();
-			update({
-				eventCode: "settleSuccess",
-				type: "success",
-				message: "Successfully settled PnL!",
-				autoDismiss: 5_000,
-			});
-		} catch (err) {
-			console.error(err);
+    try {
+      await account.settle();
+      update({
+        eventCode: "settleSuccess",
+        type: "success",
+        message: "Successfully settled PnL!",
+        autoDismiss: 5_000,
+      });
+    } catch (err) {
+      console.error(err);
 
-			update({
-				eventCode: "settleError",
-				type: "error",
-				message: (err as any).message ?? "Something went wrong",
-				autoDismiss: 15_000,
-			});
-		} finally {
-			setLoadingSettle(false);
-		}
-	};
+      update({
+        eventCode: "settleError",
+        type: "error",
+        message: (err as any).message ?? "Something went wrong",
+        autoDismiss: 15_000,
+      });
+    } finally {
+      setLoadingSettle(false);
+    }
+  };
 
-	const handleToggleDesposit = () => {
-		setIsOpenDesposit(!isOpenDeposit);
-	};
+  const handleToggleDesposit = () => {
+    setIsOpenDesposit(!isOpenDeposit);
+  };
 
-	return (
-		<>
-			<Drawer open={open} onClose={handleClose} anchor="bottom">
-				<MainCard height="calc(100vh - 100px)" backgroudColor="primary">
-					<Box
-						height={"10px"}
-						width={"36px"}
-						borderRadius={"24px"}
-						bgcolor={theme.palette.primary.light}
-						mx="auto"
-						mb={"10px"}
-						onClick={handleClose}></Box>
+  const navItems = [
+    {
+      label: "Trading",
+      to: "/trading/perp",
+      actived: [`/trading/perp/${params.symbol}`],
+    },
+    { label: "Portfolio", to: "/portfolio", actived: ["/portfolio"] },
+  ];
 
-					<MainCard
-						variant="outlined"
-						width="100%"
-						backgroudColor="transparent"
-						isActionSlot={
-							<Stack direction={"row"} spacing={TSizes.margin_common}>
-								<MainButton
-									fullWidth
-									onClick={handleSettle}
-									disabled={loadingSettle}
-									isLoading={loadingSettle}>
-									Settle PnL
-								</MainButton>
+  return (
+    <>
+      <Drawer open={open} onClose={handleClose} anchor="bottom">
+        <Box
+          padding={TSizes.margin_mobile}
+          pb={"70px"}
+          bgcolor={setColorThemeMode(
+            theme.palette.primary.main,
+            theme.palette.grey[800]
+          )}
+        >
+          <Box
+            height={"10px"}
+            width={"36px"}
+            borderRadius={"24px"}
+            bgcolor={setColorThemeMode(
+              theme.palette.grey[200],
+              theme.palette.grey[700]
+            )}
+            mx="auto"
+            mb={"10px"}
+            onClick={handleClose}
+          ></Box>
 
-								<MainButton fullWidth variant="contained" onClick={handleToggleDesposit}>
-									Deposit / Withdraw
-								</MainButton>
-							</Stack>
-						}>
-						<Stack
-							direction={"row"}
-							alignItems={"center"}
-							justifyContent={"space-between"}
-							bgcolor={setColorThemeMode(
-								useTheme().palette.grey[200],
-								useTheme().palette.grey[700],
-							)}
-							borderRadius={TSizes.borderRadius}
-							py={"4px"}
-							pl={TSizes.margin_common}>
-							<AccountAvatar
-								fontSize="18px"
-								avatarSize={26}
-								textColor={setColorThemeMode(
-									useTheme().palette.common.black,
-									useTheme().palette.common.white,
-								)}
-							/>
+          <Stack
+            borderRadius={"10px"}
+            p={TSizes.margin_mobile}
+            bgcolor={setColorThemeMode(
+              theme.palette.grey[200],
+              theme.palette.grey[700]
+            )}
+          >
+            {navItems.map((navItem) => (
+              <Link key={navItem.label} href={navItem.to} onClick={handleClose}>
+                <NavItem isActived={navItem.actived.includes(pathName)}>
+                  <Typography>{navItem.label}</Typography>
+                </NavItem>
+              </Link>
+            ))}
+          </Stack>
 
-							<MainIconButton size="small" onClick={handleCopy}>
-								<IconCopy size={"1rem"} />
-							</MainIconButton>
-						</Stack>
+          <Box pt={TSizes.margin_mobile} />
 
-						<Stack spacing={TSizes.margin_common} pt={TSizes.margin_common}>
-							<ItemRow
-								title="Wallet Balance:"
-								value={`${usdFormatter.format(Number(deposit.balance))} $`}
-							/>
-							<ItemRow
-								title="Orderly Balance:"
-								value={`${usdFormatter.format(collateral.availableBalance)} $`}
-							/>
-							<ItemRow title="Unsettled PnL:" value={`${usdFormatter.format(unsettledPnL)} $`} />
-							<ItemRow
-								title="Withdrawable Balance"
-								value={`${usdFormatter.format(availableWithdraw)} $`}
-							/>
-						</Stack>
-					</MainCard>
+          <MainCard
+            variant="outlined"
+            width="100%"
+            backgroudColor="transparent"
+            isActionSlot={
+              wallet && (
+                <Stack direction={"row"} spacing={TSizes.margin_common}>
+                  <MainButton
+                    fullWidth
+                    onClick={handleSettle}
+                    disabled={loadingSettle}
+                    isLoading={loadingSettle}
+                  >
+                    Settle PnL
+                  </MainButton>
 
-					<Box mt={TSizes.margin_common} />
+                  <MainButton
+                    fullWidth
+                    variant="contained"
+                    onClick={handleToggleDesposit}
+                  >
+                    Deposit / Withdraw
+                  </MainButton>
+                </Stack>
+              )
+            }
+          >
+            <Stack
+              direction={"row"}
+              alignItems={"center"}
+              justifyContent={"space-between"}
+              bgcolor={setColorThemeMode(
+                useTheme().palette.grey[200],
+                useTheme().palette.grey[700]
+              )}
+              borderRadius={TSizes.borderRadius}
+              py={"4px"}
+              pl={TSizes.margin_common}
+            >
+              <AccountAvatar
+                fontSize="18px"
+                avatarSize={26}
+                textColor={setColorThemeMode(
+                  useTheme().palette.common.black,
+                  useTheme().palette.common.white
+                )}
+              />
 
-					<MainButton
-						variant="contained"
-						color="darkGrey"
-						fullWidth
-						startIcon={<IconLogout size={"1.2rem"} />}
-						onClick={handleDisconnect}>
-						Disconnect
-					</MainButton>
+              <MainIconButton size="small" onClick={handleCopy}>
+                <IconCopy size={"1rem"} />
+              </MainIconButton>
+            </Stack>
 
-					<DepositWithdrawDialog open={isOpenDeposit} onClose={handleToggleDesposit} />
+            <Stack spacing={TSizes.margin_common} pt={TSizes.margin_common}>
+              <ItemRow
+                title="Wallet Balance:"
+                value={`${usdFormatter.format(Number(deposit.balance))} $`}
+              />
+              <ItemRow
+                title="Orderly Balance:"
+                value={`${usdFormatter.format(collateral.availableBalance)} $`}
+              />
+              <ItemRow
+                title="Unsettled PnL:"
+                value={`${usdFormatter.format(unsettledPnL)} $`}
+              />
+              <ItemRow
+                title="Withdrawable Balance"
+                value={`${usdFormatter.format(availableWithdraw)} $`}
+              />
+            </Stack>
+          </MainCard>
 
-					<Box position={"absolute"} bottom={0} right={0} p="10px">
-						<Stack direction={"row"} spacing={1} alignItems={"center"}>
-							<Typography>Theme</Typography>
-							<MainIconButton onClick={handleChangeTheme} color="inherit">
-								{themeSelector.activeMode == "light" ? <IconSun /> : <IconMoonStars />}
-							</MainIconButton>
-						</Stack>
-					</Box>
-				</MainCard>
-			</Drawer>
-		</>
-	);
+          <Box mt={TSizes.margin_common} />
+
+          {wallet && (
+            <MainButton
+              variant="contained"
+              color="darkGrey"
+              fullWidth
+              startIcon={<IconLogout size={"1.2rem"} />}
+              onClick={handleDisconnect}
+            >
+              Disconnect
+            </MainButton>
+          )}
+
+          {wallet && (
+            <DepositWithdrawDialog
+              open={isOpenDeposit}
+              onClose={handleToggleDesposit}
+            />
+          )}
+
+          <Box position={"absolute"} bottom={0} right={0} p="10px">
+            <Stack direction={"row"} spacing={1} alignItems={"center"}>
+              <Typography>Theme</Typography>
+              <MainIconButton onClick={handleChangeTheme} color="inherit">
+                {themeSelector.activeMode == "light" ? (
+                  <IconSun />
+                ) : (
+                  <IconMoonStars />
+                )}
+              </MainIconButton>
+            </Stack>
+          </Box>
+        </Box>
+      </Drawer>
+    </>
+  );
 };
 
 export default memo(AccountDetailMobile);

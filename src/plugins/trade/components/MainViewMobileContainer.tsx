@@ -14,6 +14,7 @@ import ActionPlaceOrderMobile from "../order-book/ActionPlaceOrderMobile";
 import OrderBookMobileContainer from "../order-book/OrderBookMobileContainer";
 import TradingViewMobile from "../trading-view/TradingViewMobile";
 import DataListMobile from "./order-view/DataListMobile";
+import DataListMobileEmpty from "./order-view/mobile/DataListMobileEmpty";
 import { OrderViewContainer } from "./order-view/OrderViewContainer";
 import SymbolHeader from "./SymbolHeader";
 
@@ -88,10 +89,10 @@ const MainViewMobileContainer = ({ onSymbolChange, symbol }: IProps) => {
           >
             <OrderViewContainer symbol={symbol} />
           </Box>
+        ) : wallet && isRegistered && hasOrderlyKey ? (
+          <DataListMobile symbol={symbol} />
         ) : (
-          wallet &&
-          isRegistered &&
-          hasOrderlyKey && <DataListMobile symbol={symbol} />
+          <DataListMobileEmpty />
         )}
       </MainContainer>
 

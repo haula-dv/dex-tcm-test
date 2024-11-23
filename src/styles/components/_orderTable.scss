@@ -52,3 +52,27 @@
     }
   }
 }
+
+//////////////////// HEADER //////////////////////
+.mobile-header-wrapper {
+  #network-button {
+    padding: 4px !important;
+    height: 34px !important;
+    min-width: 34px !important;
+    flex-shrink: 0;
+    .MuiButton-startIcon {
+      margin: 0px !important;
+    }
+
+    .MuiButton-endIcon {
+      display: none;
+    }
+  }
+
+  #connect-wallet {
+    padding: 4px 10px !important;
+    font-size: 12px !important;
+    height: 34px !important;
+    font-weight: 500 !important;
+  }
+}

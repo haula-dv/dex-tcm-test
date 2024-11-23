@@ -119,7 +119,7 @@ const OrderTableHistoryMobile = ({ symbol }: IProps) => {
     { label: "InComplete", value: "INCOMPLETE" },
     { label: "Rejcted", value: "REJECTED" },
   ];
-  console.log(orders);
+
   return (
     <>
       <Stack
