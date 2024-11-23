@@ -43,7 +43,7 @@ const MainTab = ({
       <Stack
         className="tab-header"
         direction={"row"}
-        pb={"10px"}
+        pb={{ xs: "6px", md: "10px" }}
         width={"100%"}
         justifyContent={"space-between"}
       >

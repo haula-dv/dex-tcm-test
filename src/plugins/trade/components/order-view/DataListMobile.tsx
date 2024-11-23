@@ -2,10 +2,11 @@
 
 import { OrderlyConfig } from "@/utils/config/orderly";
 import { setColorThemeMode } from "@/utils/helpers";
+import { TSizes } from "@/utils/themes/custom-theme/sizes";
 import { Box } from "@mui/material";
 import { styled } from "@mui/material/styles";
 import dynamic from "next/dynamic";
-import { memo, useEffect, useState } from "react";
+import { memo, useEffect, useRef, useState } from "react";
 
 interface IProps {
   symbol: string;
@@ -22,36 +23,50 @@ const TradingPage = dynamic(
 const DataListMobile = ({ symbol }: IProps) => {
   const { tradingViewConfig } = OrderlyConfig();
   const [loading, setLoading] = useState(true);
+  const trandingRef = useRef(null);
 
   useEffect(() => {
+    if (!trandingRef.current) return;
+
     const observer = new MutationObserver(() => {
       const parentDivDataList = document.querySelector(
         ".orderly-data-list-mobile-2"
       );
+
       const parentDiv = document.querySelector(".orderly-pb-\\[70px\\]");
 
-      if (parentDivDataList && parentDiv) {
-        // Iterate through the child nodes
-        Array.from(parentDiv.children).forEach((child) => {
-          if (child.id !== "orderly-data-list") {
-            child.remove();
-          }
-        });
-        observer.disconnect(); // Stop observing once the element is found
-      }
+      setTimeout(() => {
+        if (parentDivDataList && parentDiv) {
+          console.log("parentDivDataList", parentDivDataList);
+          Array.from(parentDiv.children).forEach((child) => {
+            if (child.id !== "orderly-data-list") {
+              child.remove();
+            }
+          });
+
+          observer.disconnect(); // Stop observing once the element is found
+        }
+      }, 200);
     });
 
     observer.observe(document.body, { childList: true, subtree: true });
 
+    return () => observer.disconnect(); // Cleanup observer on unmount
+  }, [tradingViewConfig, trandingRef]);
+
+  useEffect(() => {
     setTimeout(() => {
       setLoading(false);
-    }, 1400);
-
-    return () => observer.disconnect(); // Cleanup observer on unmount
-  }, [tradingViewConfig]);
+    }, 1500);
+  }, []);
 
   return (
-    <MainOrder className="orderly-data-list-mobile-2">
+    <MainOrder
+      className="orderly-data-list-mobile-2"
+      ref={trandingRef}
+      height={loading ? "10px" : "auto"}
+      overflow={loading ? "hidden" : "auto"}
+    >
       <TradingPage symbol={symbol} tradingViewConfig={tradingViewConfig} />
     </MainOrder>
   );
@@ -60,12 +75,28 @@ const DataListMobile = ({ symbol }: IProps) => {
 export default memo(DataListMobile);
 
 const MainOrder = styled(Box)(({ theme }) => ({
+  position: "relative",
+
   "& .orderly-pb-\\[70px\\]": {
     paddingBottom: "0px",
   },
 
   "& .orderly-border-b-divider": {
     borderColor: theme.palette.divider,
+  },
+
+  "& .loading-first": {
+    borderRadius: "10px",
+    position: "absolute",
+    top: 0,
+    left: 0,
+    width: "100%",
+    height: "100%",
+    zIndex: 1,
+    backgroundColor: `${setColorThemeMode(
+      theme.palette.primary.main,
+      theme.palette.grey[800]
+    )} !important`,
   },
 
   "& .orderly-tab-header": {
@@ -103,7 +134,7 @@ const MainOrder = styled(Box)(({ theme }) => ({
       theme.palette.primary.main,
       theme.palette.grey[800]
     ),
-    marginBottom: "10px",
+    marginBottom: TSizes.margin_mobile,
     borderRadius: "0px 0px 10px 10px",
   },
 

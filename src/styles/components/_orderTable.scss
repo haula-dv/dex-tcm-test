@@ -36,3 +36,19 @@
     background-color: var(--grey50) !important;
   }
 }
+
+.dark {
+  .orderly-sheet-content {
+    background-color: var(--grey800) !important;
+
+    .orderly-input-container {
+      background-color: var(--grey700) !important;
+    }
+
+    .orderly-select-none {
+      .orderly-bg-base-200 {
+        background-color: rgb(216 216 216 / 13%) !important;
+      }
+    }
+  }
+}

@@ -1,9 +1,10 @@
 import { ITab } from "@/common/types/components/tab";
 import { MainContainer } from "@/components/container/MainContainer";
 import MainTab from "@/components/tab/MainTab";
+import { setColorThemeMode } from "@/utils/helpers";
 import { TSizes } from "@/utils/themes/custom-theme/sizes";
 import TabPanel from "@mui/lab/TabPanel";
-import { Box, Divider } from "@mui/material";
+import { Box, Divider, useTheme } from "@mui/material";
 import { memo, useState } from "react";
 import MarketSlider from "../markets/MarketSlider";
 import ActionPlaceOrderMobile from "../order-book/ActionPlaceOrderMobile";
@@ -38,6 +39,7 @@ const MainViewMobileContainer = ({ onSymbolChange, symbol }: IProps) => {
       children: <OrderBookMobileContainer symbol={symbol} />,
     },
   ];
+  const theme = useTheme();
 
   return (
     <>
@@ -50,19 +52,27 @@ const MainViewMobileContainer = ({ onSymbolChange, symbol }: IProps) => {
       </Box>
 
       <MainContainer>
-        <MainTab tabs={tabs}>
-          <>
-            {tabs.map((item, index) => (
-              <TabPanel key={index} value={item.value} sx={{ p: 0 }}>
-                {item.children}
-              </TabPanel>
-            ))}
-          </>
-        </MainTab>
+        <Box
+          p={TSizes.margin_xs}
+          borderRadius={TSizes.borderRadius}
+          bgcolor={setColorThemeMode(
+            theme.palette.primary.main,
+            theme.palette.grey[800]
+          )}
+        >
+          <MainTab tabs={tabs}>
+            <>
+              {tabs.map((item, index) => (
+                <TabPanel key={index} value={item.value} sx={{ p: 0 }}>
+                  {item.children}
+                </TabPanel>
+              ))}
+            </>
+          </MainTab>
+        </Box>
         <Box pt={TSizes.margin_common} />
 
         {/* <OrderViewMobileContainer symbol={symbol} /> */}
-
         <DataListMobile symbol={symbol} />
       </MainContainer>
 
