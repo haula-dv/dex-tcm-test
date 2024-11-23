@@ -24,8 +24,22 @@
 
 ///////////////////////////////// Edit content ////////////////////
 .light {
+  #orderly-tp_sl-slider {
+    .orderly-bg-base-200 {
+      background-color: var(--grey50);
+    }
+  }
+
   .orderly-sheet-content {
     background-color: #fff !important;
+  }
+
+  .orderly-sheet-header {
+    button {
+      svg {
+        fill: var(--grey800) !important;
+      }
+    }
   }
   .orderly-tp_sl-order-edit-content {
     svg {

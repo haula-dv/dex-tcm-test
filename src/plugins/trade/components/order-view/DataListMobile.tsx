@@ -6,7 +6,7 @@ import { TSizes } from "@/utils/themes/custom-theme/sizes";
 import { Box } from "@mui/material";
 import { styled } from "@mui/material/styles";
 import dynamic from "next/dynamic";
-import { memo, useEffect, useRef, useState } from "react";
+import { memo, useEffect, useLayoutEffect, useRef, useState } from "react";
 
 interface IProps {
   symbol: string;
@@ -25,17 +25,17 @@ const DataListMobile = ({ symbol }: IProps) => {
   const [loading, setLoading] = useState(true);
   const trandingRef = useRef(null);
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     if (!trandingRef.current) return;
 
     const observer = new MutationObserver(() => {
-      const parentDivDataList = document.querySelector(
-        ".orderly-data-list-mobile-2"
-      );
-
-      const parentDiv = document.querySelector(".orderly-pb-\\[70px\\]");
-
       setTimeout(() => {
+        const parentDivDataList = document.querySelector(
+          ".orderly-data-list-mobile-2"
+        );
+
+        const parentDiv = document.querySelector(".orderly-pb-\\[70px\\]");
+
         if (parentDivDataList && parentDiv) {
           Array.from(parentDiv.children).forEach((child) => {
             if (child.id !== "orderly-data-list") {
@@ -45,7 +45,7 @@ const DataListMobile = ({ symbol }: IProps) => {
 
           observer.disconnect(); // Stop observing once the element is found
         }
-      }, 200);
+      }, 1000);
     });
 
     observer.observe(document.body, { childList: true, subtree: true });
@@ -63,7 +63,7 @@ const DataListMobile = ({ symbol }: IProps) => {
     <MainOrder
       className="orderly-data-list-mobile-2"
       ref={trandingRef}
-      height={loading ? "1px" : "auto"}
+      height={loading ? "10px" : "auto"}
       overflow={loading ? "hidden" : "auto"}
     >
       <TradingPage symbol={symbol} tradingViewConfig={tradingViewConfig} />

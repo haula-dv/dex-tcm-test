@@ -140,3 +140,26 @@ input::-webkit-inner-spin-button {
     }
   }
 }
+
+//////////////////// MODAL ///////////////
+.light {
+  .orderly-dialog-content {
+    background-color: var(--white) !important;
+    .orderly-px-5 {
+      padding-left: 10px;
+      padding-right: 10px;
+    }
+    .orderly-dialog-header {
+      padding-left: 10px;
+      padding-right: 10px;
+      h2 {
+        color: var(--grey800) !important;
+      }
+    }
+    .orderly-dialog-close {
+      svg {
+        fill: var(--grey800);
+      }
+    }
+  }
+}

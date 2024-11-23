@@ -36,7 +36,7 @@ const ActionPlaceOrderMobile = ({ symbol }: any) => {
           p={1}
           width={"100%"}
           mt={1}
-          zIndex={20}
+          zIndex={49}
           bgcolor={setColorThemeMode(
             theme.palette.primary.main,
             theme.palette.grey[800]

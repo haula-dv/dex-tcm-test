@@ -42,6 +42,18 @@
   --orderly-font-family: "Inter", sans-serif;
 }
 
+.orderly-bg-primary {
+  background-color: var(--primaryDark) !important;
+}
+
+.orderly-text-primary {
+  color: var(--primaryDark) !important;
+}
+
+.orderly-border-primary {
+  border-color: var(--primaryDark) !important;
+}
+
 // ORDERLY
 :root:has(.dark) {
   --orderly-color-primary: 179 115 80;

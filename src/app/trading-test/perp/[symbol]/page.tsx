@@ -39,25 +39,25 @@ export default function PerpPage({ params }: { params: { symbol: string } }) {
 
   const { tradingViewConfig } = OrderlyConfig();
 
-  useEffect(() => {
-    const parentDivDataList = document.querySelector(
-      ".orderly-data-list-mobile"
-    );
+  // useEffect(() => {
+  //   const parentDivDataList = document.querySelector(
+  //     ".orderly-data-list-mobile"
+  //   );
 
-    const parentDiv = document.querySelector(".orderly-pb-\\[70px\\]");
+  //   const parentDiv = document.querySelector(".orderly-pb-\\[70px\\]");
 
-    if (parentDivDataList && parentDiv) {
-      setTimeout(() => {
-        // Iterate through the child nodes
-        Array.from(parentDiv.children).forEach((child) => {
-          // Keep the div with id 'orderly-data-list' and remove others
-          if (child.id !== "orderly-data-list") {
-            child.remove();
-          }
-        });
-      }, 10);
-    }
-  }, []);
+  //   if (parentDivDataList && parentDiv) {
+  //     setTimeout(() => {
+  //       // Iterate through the child nodes
+  //       Array.from(parentDiv.children).forEach((child) => {
+  //         // Keep the div with id 'orderly-data-list' and remove others
+  //         if (child.id !== "orderly-data-list") {
+  //           child.remove();
+  //         }
+  //       });
+  //     }, 10);
+  //   }
+  // }, []);
 
   return (
     <Box className="orderly-data-list-mobile">
