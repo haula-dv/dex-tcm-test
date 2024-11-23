@@ -64,7 +64,7 @@ const DataListMobile = ({ symbol }: IProps) => {
     <MainOrder
       className="orderly-data-list-mobile-2"
       ref={trandingRef}
-      height={loading ? "10px" : "auto"}
+      height={loading ? "1px" : "auto"}
       overflow={loading ? "hidden" : "auto"}
     >
       <TradingPage symbol={symbol} tradingViewConfig={tradingViewConfig} />

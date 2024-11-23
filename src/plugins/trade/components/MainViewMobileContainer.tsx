@@ -4,13 +4,17 @@ import MainTab from "@/components/tab/MainTab";
 import { setColorThemeMode } from "@/utils/helpers";
 import { TSizes } from "@/utils/themes/custom-theme/sizes";
 import TabPanel from "@mui/lab/TabPanel";
-import { Box, Divider, useTheme } from "@mui/material";
-import { memo, useState } from "react";
+import { Box, Divider, useMediaQuery, useTheme } from "@mui/material";
+import { useAccount } from "@orderly.network/hooks";
+import { AccountStatusEnum } from "@orderly.network/types";
+import { useConnectWallet } from "@web3-onboard/react";
+import { memo } from "react";
 import MarketSlider from "../markets/MarketSlider";
 import ActionPlaceOrderMobile from "../order-book/ActionPlaceOrderMobile";
 import OrderBookMobileContainer from "../order-book/OrderBookMobileContainer";
 import TradingViewMobile from "../trading-view/TradingViewMobile";
 import DataListMobile from "./order-view/DataListMobile";
+import { OrderViewContainer } from "./order-view/OrderViewContainer";
 import SymbolHeader from "./SymbolHeader";
 
 interface IProps {
@@ -19,11 +23,10 @@ interface IProps {
 }
 
 const MainViewMobileContainer = ({ onSymbolChange, symbol }: IProps) => {
-  const [value, setValue] = useState(0);
-
-  const handleChange = (event: React.SyntheticEvent, newValue: number) => {
-    setValue(newValue);
-  };
+  const [{ wallet, connecting }, connect, disconnect] = useConnectWallet();
+  const { account, state } = useAccount();
+  const isRegistered = state.status >= AccountStatusEnum.SignedIn;
+  const hasOrderlyKey = state.status >= AccountStatusEnum.EnableTrading;
 
   const tabs: ITab[] = [
     {
@@ -40,6 +43,8 @@ const MainViewMobileContainer = ({ onSymbolChange, symbol }: IProps) => {
     },
   ];
   const theme = useTheme();
+
+  const mdUp = useMediaQuery(theme.breakpoints.up("sm"));
 
   return (
     <>
@@ -70,10 +75,24 @@ const MainViewMobileContainer = ({ onSymbolChange, symbol }: IProps) => {
             </>
           </MainTab>
         </Box>
-        <Box pt={TSizes.margin_common} />
-
-        {/* <OrderViewMobileContainer symbol={symbol} /> */}
-        <DataListMobile symbol={symbol} />
+        <Box pt={TSizes.margin_mobile} />
+        {mdUp ? (
+          <Box
+            height={"333px"}
+            p={TSizes.margin_xs}
+            borderRadius={TSizes.borderRadius}
+            bgcolor={setColorThemeMode(
+              theme.palette.primary.main,
+              theme.palette.grey[800]
+            )}
+          >
+            <OrderViewContainer symbol={symbol} />
+          </Box>
+        ) : (
+          wallet &&
+          isRegistered &&
+          hasOrderlyKey && <DataListMobile symbol={symbol} />
+        )}
       </MainContainer>
 
       <Box py={5.2} />
