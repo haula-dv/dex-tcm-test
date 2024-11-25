@@ -1,10 +1,8 @@
 "use client";
 import { MainContainer } from "@/components/container/MainContainer";
 import { HeadPage } from "@/components/HeadPage";
-import { Box, useMediaQuery, useTheme } from "@mui/material";
-import { Portfolio } from "@orderly.network/react";
+import { useMediaQuery, useTheme } from "@mui/material";
 import { useEffect } from "react";
-import PortfolioMobileContainer from "./PortfolioMobileContainer";
 
 const PortfolioMainContainer = () => {
   useEffect(() => {
@@ -36,9 +34,9 @@ const PortfolioMainContainer = () => {
   return (
     <MainContainer maxWidth={false}>
       <HeadPage title="Portfolio - Dex Tcmp" />
-      <Box className="portfolio" pt={"10px"}>
+      {/* <Box className="portfolio" pt={"10px"}>
         {!mdUp ? <Portfolio /> : <PortfolioMobileContainer />}
-      </Box>
+      </Box> */}
     </MainContainer>
   );
 };

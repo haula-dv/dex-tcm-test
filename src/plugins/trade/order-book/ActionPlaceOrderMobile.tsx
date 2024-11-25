@@ -12,9 +12,23 @@ const ActionPlaceOrderMobile = ({ symbol }: any) => {
 
   const [open, setOpen] = useState(false);
 
+  const [isTabActived, setIsTabActived] = useState("Buy");
+
   const handleOpen = () => {
     if (!wallet) {
       return;
+    }
+
+    setOpen(!open);
+  };
+
+  const handleOpenTab = (type?: string) => {
+    if (!wallet) {
+      return;
+    }
+
+    if (type) {
+      setIsTabActived(type);
     }
 
     setOpen(!open);
@@ -76,7 +90,7 @@ const ActionPlaceOrderMobile = ({ symbol }: any) => {
                   variant="contained"
                   color="success"
                   fullWidth
-                  onClick={handleOpen}
+                  onClick={(e) => handleOpenTab("Buy")}
                 >
                   BUY
                 </MainButton>
@@ -85,7 +99,7 @@ const ActionPlaceOrderMobile = ({ symbol }: any) => {
                   variant="contained"
                   fullWidth
                   color="error"
-                  onClick={handleOpen}
+                  onClick={(e) => handleOpenTab("Sell")}
                 >
                   SELL
                 </MainButton>
@@ -122,7 +136,7 @@ const ActionPlaceOrderMobile = ({ symbol }: any) => {
             height={"calc(100vh - 60px)"}
             borderRadius={"10px"}
           >
-            <CreateOrderForm symbol={symbol} />
+            <CreateOrderForm symbol={symbol} isActiveTab={isTabActived} />
           </Box>
         </Box>
       </Drawer>
