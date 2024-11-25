@@ -8,6 +8,8 @@ interface IItemRow {
 }
 
 export const ItemRow = ({ title, value }: IItemRow) => {
+  const theme = useTheme();
+
   return (
     <Stack
       direction={"row"}
@@ -18,8 +20,8 @@ export const ItemRow = ({ title, value }: IItemRow) => {
         <Typography
           fontSize={{ xs: "12px", md: "14px" }}
           color={setColorThemeMode(
-            useTheme().palette.grey[500],
-            useTheme().palette.grey[200]
+            theme.palette.grey[500],
+            theme.palette.grey[200]
           )}
         >
           {title}
@@ -27,8 +29,8 @@ export const ItemRow = ({ title, value }: IItemRow) => {
       ) : (
         <Box
           color={setColorThemeMode(
-            useTheme().palette.grey[500],
-            useTheme().palette.grey[200]
+            theme.palette.grey[500],
+            theme.palette.grey[200]
           )}
         >
           {title}

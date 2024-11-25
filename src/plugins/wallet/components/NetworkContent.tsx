@@ -74,6 +74,7 @@ function NetworkContent() {
       const isMainet = currentChain()?.network_infos.mainnet;
       localStorage.setItem("networkId", isMainet ? "mainnet" : "testnet");
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [currentChain()]);
 
   // Check network
