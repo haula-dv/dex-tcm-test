@@ -1,4 +1,5 @@
 import { getImageNextwork } from "@/common";
+import MainCard from "@/components/card/MainCard";
 import IconLoading from "@/components/icons/loading";
 import IconNotFound from "@/components/icons/NotFound";
 import { ItemRow } from "@/components/ItemRow";
@@ -7,13 +8,22 @@ import { setColorThemeMode } from "@/utils/helpers";
 import { TSizes } from "@/utils/themes/custom-theme/sizes";
 import {
   Box,
+  Button,
   List,
   Pagination,
   Stack,
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableRow,
   Typography,
+  useMediaQuery,
   useTheme,
 } from "@mui/material";
 import { Select } from "@orderly.network/react";
+import { IconCalendar, IconChevronDown } from "@tabler/icons-react";
 import { useConnectWallet } from "@web3-onboard/react";
 import dayjs from "dayjs";
 import Image from "next/image";
@@ -78,115 +88,242 @@ const FundingContainer = () => {
     return Math.ceil(total / currentSize);
   }, [total, currentSize]);
 
+  const mdDown = useMediaQuery(theme.breakpoints.down("md"));
+
   return (
     <>
-      <List>
-        {isLoading ? (
-          <IconLoading />
-        ) : (
-          <>
-            {rows.length > 0 ? (
-              <>
-                {rows.map((item, index) => {
-                  const [a, b, c] = item.symbol.split("_");
-                  return (
-                    <Box
-                      bgcolor={setColorThemeMode(
-                        theme.palette.grey[100],
-                        theme.palette.grey[800]
-                      )}
-                      key={index}
-                      mb={TSizes.margin_mobile}
-                      p={TSizes.margin_mobile}
-                      borderRadius={"10px"}
-                    >
-                      <ItemRow
-                        title="Token"
-                        value={
-                          <Stack direction={"row"} spacing={"2px"}>
-                            <Box flexShrink={0}>
-                              <Image
-                                src={getImageNextwork(b, "symbol_logo")}
-                                height={18}
-                                width={18}
-                                alt=""
-                                style={{ flexShrink: 0 }}
-                              />
-                            </Box>
-                            <Typography fontSize={"12px"}>
-                              {b}-{a}
-                            </Typography>
-                          </Stack>
-                        }
-                      />
+      <Stack direction={"row"} spacing={1} pb={"6px"}>
+        <Select value={currentSide} className="main-select" options={type} />
 
-                      <ItemRow
-                        title="Time"
-                        value={dayjs(item.created_time).format(
-                          "YYYY-MM-DD HH:mm:ss"
+        <Button
+          size="small"
+          variant="outlined"
+          sx={{ height: "30px !important" }}
+          startIcon={<IconCalendar size={"1rem"} />}
+          endIcon={<IconChevronDown size={"1rem"} />}
+        >
+          2024/11/12 - 2024/11/26
+        </Button>
+      </Stack>
+
+      {!mdDown ? (
+        <>
+          <MainCard variant="outlined" backgroudColor="primary" disablePadding>
+            <TableContainer>
+              <Table aria-labelledby="tableTitle" size={"small"} stickyHeader>
+                <TableHead>
+                  <TableRow>
+                    <TableCell>Instrument</TableCell>
+                    <TableCell>Time</TableCell>
+                    <TableCell>Funding rate / Annual rate </TableCell>
+                    <TableCell>Payment type </TableCell>
+                    <TableCell>Funding fee (USDC)</TableCell>
+                  </TableRow>
+                </TableHead>
+
+                <TableBody>
+                  {rows.length > 0 ? (
+                    <>
+                      {rows.map((item: any, index) => {
+                        const [a, b, c] = item.symbol.split("_");
+
+                        return (
+                          <TableRow key={index}>
+                            <TableCell>
+                              <Stack direction={"row"} spacing={"2px"}>
+                                <Box flexShrink={0}>
+                                  <Image
+                                    src={getImageNextwork(b, "symbol_logo")}
+                                    height={18}
+                                    width={18}
+                                    alt=""
+                                    style={{ flexShrink: 0 }}
+                                  />
+                                </Box>
+                                <Typography fontSize={"12px"}>
+                                  {b}-{a}
+                                </Typography>
+                              </Stack>
+                            </TableCell>
+
+                            <TableCell>
+                              <Typography>
+                                {dayjs(item.created_time).format(
+                                  "YYYY-MM-DD HH:mm:ss"
+                                )}
+                              </Typography>
+                            </TableCell>
+
+                            <TableCell>
+                              <Typography fontSize={"12px"}>
+                                {`${(item.funding_rate * 100).toFixed(6)}%`}
+                              </Typography>
+                            </TableCell>
+
+                            <TableCell>{item.payment_type}</TableCell>
+
+                            <TableCell>
+                              <Typography
+                                fontSize={"12px"}
+                                color={theme.palette.success.main}
+                              >
+                                {item.funding_fee}
+                              </Typography>
+                            </TableCell>
+                          </TableRow>
+                        );
+                      })}
+                    </>
+                  ) : (
+                    <TableRow>
+                      <TableCell colSpan={6} align="center">
+                        <Box
+                          display={"flex"}
+                          justifyContent={"center"}
+                          alignItems={"center"}
+                        >
+                          <IconNotFound />
+                        </Box>
+                      </TableCell>
+                    </TableRow>
+                  )}
+                </TableBody>
+              </Table>
+            </TableContainer>
+          </MainCard>
+
+          <Stack direction={"row"} justifyContent={"space-between"} pt={1}>
+            <Stack direction={"row"} spacing={"6px"}>
+              <Typography fontSize={"12px"}>Rows per page</Typography>
+              <Select
+                value={currentSize}
+                onChange={onChangeSize}
+                className="main-select"
+                options={size}
+              />
+            </Stack>
+
+            <Pagination
+              size="small"
+              page={filter.page}
+              count={totalCount}
+              shape="rounded"
+              onChange={onChangePage}
+            />
+          </Stack>
+        </>
+      ) : (
+        <List>
+          {isLoading ? (
+            <IconLoading />
+          ) : (
+            <>
+              {rows.length > 0 ? (
+                <>
+                  {rows.map((item, index) => {
+                    const [a, b, c] = item.symbol.split("_");
+                    return (
+                      <Box
+                        bgcolor={setColorThemeMode(
+                          theme.palette.grey[100],
+                          theme.palette.grey[800]
                         )}
+                        key={index}
+                        mb={TSizes.margin_mobile}
+                        p={TSizes.margin_mobile}
+                        borderRadius={"10px"}
+                      >
+                        <ItemRow
+                          title="Token"
+                          value={
+                            <Stack direction={"row"} spacing={"2px"}>
+                              <Box flexShrink={0}>
+                                <Image
+                                  src={getImageNextwork(b, "symbol_logo")}
+                                  height={18}
+                                  width={18}
+                                  alt=""
+                                  style={{ flexShrink: 0 }}
+                                />
+                              </Box>
+                              <Typography fontSize={"12px"}>
+                                {b}-{a}
+                              </Typography>
+                            </Stack>
+                          }
+                        />
+
+                        <ItemRow
+                          title="Time"
+                          value={dayjs(item.created_time).format(
+                            "YYYY-MM-DD HH:mm:ss"
+                          )}
+                        />
+
+                        <ItemRow
+                          title="Funding rate"
+                          value={
+                            <Typography fontSize={"12px"}>
+                              {`${(item.funding_rate * 100).toFixed(6)}%`}
+                            </Typography>
+                          }
+                        />
+
+                        <ItemRow
+                          title="Payment type"
+                          value={item.payment_type}
+                        />
+
+                        <ItemRow
+                          title="Funding fee (USDC)"
+                          value={
+                            <Typography
+                              fontSize={"12px"}
+                              color={theme.palette.success.main}
+                            >
+                              {item.funding_fee}
+                            </Typography>
+                          }
+                        />
+                      </Box>
+                    );
+                  })}
+
+                  <Box display={"flex"} justifyContent={"space-between"}>
+                    <Stack direction={"row"} spacing={"6px"}>
+                      <Typography fontSize={"12px"}>Rows per page</Typography>
+                      <Select
+                        value={currentSize}
+                        onChange={onChangeSize}
+                        className="main-select"
+                        options={size}
                       />
+                    </Stack>
 
-                      <ItemRow
-                        title="Funding rate"
-                        value={
-                          <Typography fontSize={"12px"}>
-                            {`${(item.funding_rate * 100).toFixed(6)}%`}
-                          </Typography>
-                        }
-                      />
-
-                      <ItemRow title="Payment type" value={item.payment_type} />
-
-                      <ItemRow
-                        title="Funding fee (USDC)"
-                        value={
-                          <Typography
-                            fontSize={"12px"}
-                            color={theme.palette.success.main}
-                          >
-                            {item.funding_fee}
-                          </Typography>
-                        }
-                      />
-                    </Box>
-                  );
-                })}
-
-                <Box display={"flex"} justifyContent={"space-between"}>
-                  <Stack direction={"row"} spacing={"6px"}>
-                    <Typography fontSize={"12px"}>Rows per page</Typography>
-                    <Select
-                      value={currentSize}
-                      onChange={onChangeSize}
-                      className="main-select"
-                      options={size}
+                    <Pagination
+                      size="small"
+                      page={filter.page}
+                      count={totalCount}
+                      shape="rounded"
+                      onChange={onChangePage}
                     />
-                  </Stack>
-
-                  <Pagination
-                    size="small"
-                    page={filter.page}
-                    count={totalCount}
-                    shape="rounded"
-                    onChange={onChangePage}
-                  />
+                  </Box>
+                </>
+              ) : (
+                <Box
+                  display={"flex"}
+                  justifyContent={"center"}
+                  alignItems={"center"}
+                  flexDirection={"column"}
+                >
+                  <IconNotFound />
+                  <Typography fontSize={"12px"}>No results found.</Typography>
                 </Box>
-              </>
-            ) : (
-              <Box
-                display={"flex"}
-                justifyContent={"center"}
-                alignItems={"center"}
-                flexDirection={"column"}
-              >
-                <IconNotFound />
-                <Typography fontSize={"12px"}>No results found.</Typography>
-              </Box>
-            )}
-          </>
-        )}
-      </List>
+              )}
+            </>
+          )}
+        </List>
+      )}
     </>
   );
 };

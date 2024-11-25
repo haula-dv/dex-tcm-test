@@ -1,6 +1,8 @@
 import { ITab } from "@/common/types/components/tab";
 import MainCard from "@/components/card/MainCard";
 import { setColorThemeMode } from "@/utils/helpers";
+import TabContext from "@mui/lab/TabContext";
+import TabPanel from "@mui/lab/TabPanel";
 import { Button, Stack, useTheme } from "@mui/material";
 import {
   IconArrowsLeftRight,
@@ -9,6 +11,7 @@ import {
 } from "@tabler/icons-react";
 import { memo, useState } from "react";
 import DepositsWithdrawalsContainer from "./DepositsWithdrawalsContainer";
+import FundingContainer from "./FundingContainer";
 
 const PortfolioMobileContainer = () => {
   const tabs: ITab[] = [
@@ -24,8 +27,8 @@ const PortfolioMobileContainer = () => {
   const theme = useTheme();
 
   const [currentTab, setCurrentTab] = useState("deposite");
-  const handleOnChange = (tab: ITab) => {
-    setCurrentTab(tab.value);
+  const handleOnChange = (tab: string) => {
+    setCurrentTab(tab);
   };
 
   return (
@@ -39,12 +42,14 @@ const PortfolioMobileContainer = () => {
         >
           <Button
             startIcon={<IconArrowsLeftRight size={"1.2rem"} />}
+            onClick={() => handleOnChange("deposite")}
             variant="contained"
             sx={{
               backgroundColor: setColorThemeMode(
                 theme.palette.grey[50],
                 theme.palette.grey[700]
               ),
+              opacity: currentTab == "deposite" ? 1 : ".5",
             }}
           >
             Deposits & Withdrawals
@@ -52,12 +57,13 @@ const PortfolioMobileContainer = () => {
           <Button
             startIcon={<IconCalculatorFilled size={"1.2rem"} />}
             variant="filledTonal"
+            onClick={() => handleOnChange("funding")}
             sx={{
               backgroundColor: setColorThemeMode(
                 theme.palette.grey[50],
                 theme.palette.grey[700]
               ),
-              opacity: ".5",
+              opacity: currentTab == "funding" ? 1 : ".5",
             }}
           >
             Funding
@@ -95,7 +101,15 @@ const PortfolioMobileContainer = () => {
   </Stack>
 </Stack> */}
 
-        <DepositsWithdrawalsContainer />
+        <TabContext value={currentTab}>
+          <TabPanel value={"deposite"} sx={{ p: 0 }}>
+            <DepositsWithdrawalsContainer />
+          </TabPanel>
+
+          <TabPanel value={"funding"} sx={{ p: 0 }}>
+            <FundingContainer />
+          </TabPanel>
+        </TabContext>
       </MainCard>
 
       {/* <TabContext value={currentTab}>
