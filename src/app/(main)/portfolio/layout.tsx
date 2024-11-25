@@ -54,7 +54,9 @@ export default function RootLayout({
       p={{ xs: "6px", md: "16px" }}
     >
       <Box
-        // minHeight={"calc(100vh - 90px)"}
+        height={"calc(100vh - 90px)"}
+        position={"sticky"}
+        top={70}
         border={1}
         width={{ xs: "100%", md: "180px" }}
         flexShrink={0}
@@ -93,6 +95,7 @@ export default function RootLayout({
           ))}
         </List>
       </Box>
+
       <Box pl={{ xs: "0px", md: "16px" }} width={"100%"}>
         {children}
       </Box>
