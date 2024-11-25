@@ -1,20 +1,20 @@
 import MainCard from "@/components/card/MainCard";
 import { setColorThemeMode } from "@/utils/helpers";
-import { Box, Typography, useTheme } from "@mui/material";
+import { Box, Stack, Typography, useTheme } from "@mui/material";
+import { Select } from "@orderly.network/react";
 import {
   CartesianGrid,
   Line,
   LineChart,
   ResponsiveContainer,
   Tooltip,
-  XAxis,
   YAxis,
 } from "recharts";
 
 const data = [
   {
     name: "Page A",
-    uv: 5000,
+    uv: 4000,
   },
   {
     name: "Page B",
@@ -46,19 +46,37 @@ const AssetsContent = () => {
 
   return (
     <MainCard backgroudColor="primary">
-      <Typography fontSize={"18px"} fontWeight={500} pb={"10px"}>
-        Assets
-      </Typography>
+      <Stack direction={"row"} justifyContent={"space-between"} pb={1}>
+        <Typography fontSize={"18px"} fontWeight={500}>
+          Assets
+        </Typography>
+        <Select
+          className="main-select"
+          value={"7D"}
+          options={[
+            { label: "7D", value: "7D" },
+            { label: "30D", value: "30D" },
+            { label: "90D", value: "90D" },
+          ]}
+        />
+      </Stack>
 
-      <Box height="170px">
+      <Box height="142px">
         <ResponsiveContainer width="100%" height="100%">
-          <LineChart width={772} height={300} data={data}>
+          <LineChart
+            width={772}
+            height={300}
+            data={data}
+            margin={{
+              left: -16,
+            }}
+          >
             <CartesianGrid
               horizontal={true} // Hiển thị lưới ngang
               vertical={false} // Tắt lưới dọc nếu không cần
               stroke={theme.palette.grey[700]}
             />
-            <XAxis dataKey="" />
+            {/* <XAxis dataKey=""  /> */}
             <YAxis />
             <Tooltip
               content={() => {
@@ -90,6 +108,16 @@ const AssetsContent = () => {
           </LineChart>
         </ResponsiveContainer>
       </Box>
+
+      <Stack direction={"row"} justifyContent={"space-between"} pl={4.5}>
+        <Typography fontSize={"10px"} sx={{ opacity: ".5" }}>
+          2024-11-19
+        </Typography>
+
+        <Typography fontSize={"10px"} sx={{ opacity: ".5" }}>
+          Now
+        </Typography>
+      </Stack>
 
       {/* <LineChart
         xAxis={[{ data: [1, 2, 3, 4, 5, 6] }]}

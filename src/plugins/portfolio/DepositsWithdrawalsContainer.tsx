@@ -1,6 +1,8 @@
 import { MainIconButton } from "@/components/button/MainIconButton";
+import MainCard from "@/components/card/MainCard";
 import IconLoading from "@/components/icons/loading";
 import IconNotFound from "@/components/icons/NotFound";
+import MainTooltip from "@/components/MainTooltip";
 import { apiClientFetch } from "@/utils/apiClient";
 import { formartAddress } from "@/utils/formatters/token";
 import { setColorThemeMode } from "@/utils/helpers";
@@ -8,15 +10,22 @@ import { formatQty } from "@/utils/helpers/orderlyHelper";
 import { TSizes } from "@/utils/themes/custom-theme/sizes";
 import {
   Box,
-  Divider,
+  Button,
   List,
   Pagination,
   Stack,
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableRow,
   Typography,
+  useMediaQuery,
   useTheme,
 } from "@mui/material";
 import { Select, toast } from "@orderly.network/react";
-import { IconCopy } from "@tabler/icons-react";
+import { IconCalendar, IconChevronDown, IconCopy } from "@tabler/icons-react";
 import { useConnectWallet } from "@web3-onboard/react";
 import dayjs from "dayjs";
 import Image from "next/image";
@@ -99,19 +108,11 @@ const DepositsWithdrawalsContainer = () => {
     return Math.ceil(total / currentSize);
   }, [total, currentSize]);
 
+  const mdDown = useMediaQuery(theme.breakpoints.down("md"));
+
   return (
     <>
-      <Divider />
-      <Stack
-        direction={"row"}
-        justifyContent={"space-between"}
-        p={"6px"}
-        borderRadius={"0px 0px 10px 10px"}
-        bgcolor={setColorThemeMode(
-          theme.palette.grey[100],
-          theme.palette.grey[800]
-        )}
-      >
+      <Stack direction={"row"} spacing={1} pb={"6px"}>
         <Select
           value={currentSide}
           onChange={onChangeSide}
@@ -119,145 +120,298 @@ const DepositsWithdrawalsContainer = () => {
           options={type}
         />
 
-        <Stack direction={"row"} spacing={"6px"}>
-          <Typography fontSize={"12px"}>Rows per page</Typography>
-          <Select
-            value={currentSize}
-            onChange={onChangeSize}
-            className="main-select"
-            options={size}
-          />
-        </Stack>
+        <Button
+          size="small"
+          variant="outlined"
+          sx={{ height: "30px !important" }}
+          startIcon={<IconCalendar size={"1rem"} />}
+          endIcon={<IconChevronDown size={"1rem"} />}
+        >
+          2024/11/12 - 2024/11/26
+        </Button>
       </Stack>
 
-      <List>
-        {rowsDepositeLoading ? (
-          <IconLoading />
-        ) : (
-          <>
-            {rowsDeposite.length > 0 ? (
-              <>
-                {rowsDeposite.map((item: any, index) => {
-                  return (
-                    <Box
-                      bgcolor={setColorThemeMode(
-                        theme.palette.grey[100],
-                        theme.palette.grey[800]
-                      )}
-                      key={index}
-                      mb={TSizes.margin_mobile}
-                      p={TSizes.margin_mobile}
-                      borderRadius={"10px"}
-                    >
-                      <ItemRow
-                        title="Token"
-                        value={
-                          <Stack direction={"row"} spacing={"2px"}>
-                            <Box flexShrink={0}>
-                              <Image
-                                src={"/images/USDC.png"}
-                                height={18}
-                                width={18}
-                                alt=""
-                                style={{ flexShrink: 0 }}
-                              />
-                            </Box>
-                            <Typography fontSize={"12px"}>
-                              {item.token}
-                            </Typography>
-                          </Stack>
-                        }
-                      />
-                      <ItemRow
-                        title="Time"
-                        value={dayjs(item.created_time).format(
-                          "YYYY-MM-DD HH:mm:ss"
-                        )}
-                      />
-
-                      <ItemRow
-                        title="TxID"
-                        value={
-                          <Stack direction={"row"} alignItems={"center"}>
-                            <a
-                              href={`https://sepolia.arbiscan.io/tx/${item.tx_id}`}
-                              target="_blank"
-                              rel="noopener noreferrer"
-                            >
-                              <Typography fontSize={"12px"}>
-                                {formartAddress(item.tx_id)}
-                              </Typography>
-                            </a>
-
-                            <MainIconButton
-                              size="small"
-                              edge="end"
-                              onClick={() => handleCopy(item.tx_id)}
-                            >
-                              <IconCopy size={"1rem"} />
-                            </MainIconButton>
-                          </Stack>
-                        }
-                      />
-
-                      <ItemRow title="Status" value={item.trans_status} />
-                      <ItemRow
-                        title="Type"
-                        value={
-                          <Typography
-                            fontSize={"12px"}
-                            color={
-                              item.side == "WITHDRAW"
-                                ? theme.palette.error.main
-                                : theme.palette.success.main
-                            }
-                          >
-                            {item.side == "WITHDRAW" ? "Withdraw" : "Deposite"}
-                          </Typography>
-                        }
-                      />
-                      <ItemRow
-                        title="Amount"
-                        value={
-                          <Typography
-                            fontSize={"12px"}
-                            color={
-                              item.side == "WITHDRAW"
-                                ? theme.palette.error.main
-                                : theme.palette.success.main
-                            }
-                          >
-                            {item.side == "WITHDRAW" ? "-" : "+"}{" "}
-                            {formatQty(item.amount, 2)}
-                          </Typography>
-                        }
-                      />
-                    </Box>
-                  );
-                })}
-
-                <Box display={"flex"} justifyContent={"center"}>
-                  <Pagination
-                    size="small"
-                    page={filter.page}
-                    count={totalCount}
-                    shape="rounded"
-                    onChange={onChangePage}
-                  />
-                </Box>
-              </>
-            ) : (
-              <Box
-                display={"flex"}
-                justifyContent={"center"}
-                alignItems={"center"}
+      {!mdDown ? (
+        <>
+          <MainCard variant="outlined" backgroudColor="primary" disablePadding>
+            <TableContainer>
+              <Table
+                aria-labelledby="tableTitle"
+                size={"small"}
+                stickyHeader
+                sx={{ maxHeight: "200px" }}
               >
-                <IconNotFound />
-              </Box>
-            )}
-          </>
-        )}
-      </List>
+                <TableHead>
+                  <TableRow>
+                    <TableCell>Token</TableCell>
+                    <TableCell>Time</TableCell>
+                    <TableCell>TxID</TableCell>
+                    <TableCell>Status</TableCell>
+                    <TableCell>Type</TableCell>
+                    <TableCell>Amount</TableCell>
+                  </TableRow>
+                </TableHead>
+
+                <TableBody>
+                  {rowsDeposite.length > 0 ? (
+                    <>
+                      {rowsDeposite.map((item: any, index) => (
+                        <TableRow key={index}>
+                          <TableCell>
+                            <Stack direction={"row"} spacing={"2px"}>
+                              <Box flexShrink={0}>
+                                <Image
+                                  src={"/images/USDC.png"}
+                                  height={18}
+                                  width={18}
+                                  alt=""
+                                  style={{ flexShrink: 0 }}
+                                />
+                              </Box>
+                              <Typography fontSize={"12px"}>
+                                {item.token}
+                              </Typography>
+                            </Stack>
+                          </TableCell>
+
+                          <TableCell>
+                            <Typography>
+                              {dayjs(item.created_time).format(
+                                "YYYY-MM-DD HH:mm:ss"
+                              )}
+                            </Typography>
+                          </TableCell>
+
+                          <TableCell>
+                            <Stack direction={"row"} alignItems={"center"}>
+                              <MainTooltip
+                                arrow
+                                title={formartAddress(item.tx_id)}
+                              >
+                                <a
+                                  href={`https://sepolia.arbiscan.io/tx/${item.tx_id}`}
+                                  target="_blank"
+                                  rel="noopener noreferrer"
+                                >
+                                  <Typography fontSize={"12px"}>
+                                    {formartAddress(item.tx_id)}
+                                  </Typography>
+                                </a>
+                              </MainTooltip>
+
+                              <MainIconButton
+                                size="small"
+                                edge="end"
+                                onClick={() => handleCopy(item.tx_id)}
+                              >
+                                <IconCopy size={"1rem"} />
+                              </MainIconButton>
+                            </Stack>
+                          </TableCell>
+
+                          <TableCell>{item.trans_status}</TableCell>
+
+                          <TableCell>
+                            <Typography
+                              fontSize={"12px"}
+                              color={
+                                item.side == "WITHDRAW"
+                                  ? theme.palette.error.main
+                                  : theme.palette.success.main
+                              }
+                            >
+                              {item.side == "WITHDRAW"
+                                ? "Withdraw"
+                                : "Deposite"}
+                            </Typography>
+                          </TableCell>
+
+                          <TableCell>
+                            <Typography
+                              fontSize={"12px"}
+                              color={
+                                item.side == "WITHDRAW"
+                                  ? theme.palette.error.main
+                                  : theme.palette.success.main
+                              }
+                            >
+                              {item.side == "WITHDRAW" ? "-" : "+"}{" "}
+                              {formatQty(item.amount, 2)}
+                            </Typography>
+                          </TableCell>
+                        </TableRow>
+                      ))}
+                    </>
+                  ) : (
+                    <TableRow>
+                      <TableCell colSpan={6} align="center">
+                        <Box
+                          display={"flex"}
+                          justifyContent={"center"}
+                          alignItems={"center"}
+                        >
+                          <IconNotFound />
+                        </Box>
+                      </TableCell>
+                    </TableRow>
+                  )}
+                </TableBody>
+              </Table>
+            </TableContainer>
+          </MainCard>
+
+          <Stack direction={"row"} justifyContent={"space-between"} pt={1}>
+            <Stack direction={"row"} spacing={"6px"}>
+              <Typography fontSize={"12px"}>Rows per page</Typography>
+              <Select
+                value={currentSize}
+                onChange={onChangeSize}
+                className="main-select"
+                options={size}
+              />
+            </Stack>
+
+            <Pagination
+              size="small"
+              page={filter.page}
+              count={totalCount}
+              shape="rounded"
+              onChange={onChangePage}
+            />
+          </Stack>
+        </>
+      ) : (
+        <List>
+          {rowsDepositeLoading ? (
+            <IconLoading />
+          ) : (
+            <>
+              {rowsDeposite.length > 0 ? (
+                <>
+                  {rowsDeposite.map((item: any, index) => {
+                    return (
+                      <Box
+                        bgcolor={setColorThemeMode(
+                          theme.palette.grey[100],
+                          theme.palette.grey[800]
+                        )}
+                        key={index}
+                        mb={TSizes.margin_mobile}
+                        p={TSizes.margin_mobile}
+                        borderRadius={"10px"}
+                      >
+                        <ItemRow
+                          title="Token"
+                          value={
+                            <Stack direction={"row"} spacing={"2px"}>
+                              <Box flexShrink={0}>
+                                <Image
+                                  src={"/images/USDC.png"}
+                                  height={18}
+                                  width={18}
+                                  alt=""
+                                  style={{ flexShrink: 0 }}
+                                />
+                              </Box>
+                              <Typography fontSize={"12px"}>
+                                {item.token}
+                              </Typography>
+                            </Stack>
+                          }
+                        />
+                        <ItemRow
+                          title="Time"
+                          value={dayjs(item.created_time).format(
+                            "YYYY-MM-DD HH:mm:ss"
+                          )}
+                        />
+
+                        <ItemRow
+                          title="TxID"
+                          value={
+                            <Stack direction={"row"} alignItems={"center"}>
+                              <a
+                                href={`https://sepolia.arbiscan.io/tx/${item.tx_id}`}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                              >
+                                <Typography fontSize={"12px"}>
+                                  {formartAddress(item.tx_id)}
+                                </Typography>
+                              </a>
+
+                              <MainIconButton
+                                size="small"
+                                edge="end"
+                                onClick={() => handleCopy(item.tx_id)}
+                              >
+                                <IconCopy size={"1rem"} />
+                              </MainIconButton>
+                            </Stack>
+                          }
+                        />
+
+                        <ItemRow title="Status" value={item.trans_status} />
+                        <ItemRow
+                          title="Type"
+                          value={
+                            <Typography
+                              fontSize={"12px"}
+                              color={
+                                item.side == "WITHDRAW"
+                                  ? theme.palette.error.main
+                                  : theme.palette.success.main
+                              }
+                            >
+                              {item.side == "WITHDRAW"
+                                ? "Withdraw"
+                                : "Deposite"}
+                            </Typography>
+                          }
+                        />
+                        <ItemRow
+                          title="Amount"
+                          value={
+                            <Typography
+                              fontSize={"12px"}
+                              color={
+                                item.side == "WITHDRAW"
+                                  ? theme.palette.error.main
+                                  : theme.palette.success.main
+                              }
+                            >
+                              {item.side == "WITHDRAW" ? "-" : "+"}{" "}
+                              {formatQty(item.amount, 2)}
+                            </Typography>
+                          }
+                        />
+                      </Box>
+                    );
+                  })}
+
+                  <Box display={"flex"} justifyContent={"center"}>
+                    <Pagination
+                      size="small"
+                      page={filter.page}
+                      count={totalCount}
+                      shape="rounded"
+                      onChange={onChangePage}
+                    />
+                  </Box>
+                </>
+              ) : (
+                <Box
+                  display={"flex"}
+                  justifyContent={"center"}
+                  alignItems={"center"}
+                >
+                  <IconNotFound />
+                </Box>
+              )}
+            </>
+          )}
+        </List>
+      )}
     </>
   );
 };

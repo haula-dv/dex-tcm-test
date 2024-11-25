@@ -11,7 +11,6 @@ import {
   LineChart,
   ResponsiveContainer,
   Tooltip,
-  XAxis,
   YAxis,
 } from "recharts";
 
@@ -126,14 +125,20 @@ const PerformanceContent = () => {
           <MainCard variant="outlined" backgroudColor="common">
             <Box height={"200px"}>
               <ResponsiveContainer width="100%" height="100%">
-                <BarChart width={500} height={300} data={data}>
+                <BarChart
+                  width={500}
+                  height={300}
+                  data={data}
+                  margin={{
+                    left: -16,
+                  }}
+                >
                   <CartesianGrid
                     horizontal={true} // Hiển thị lưới ngang
                     vertical={false} // Tắt lưới dọc nếu không cần
                     stroke={theme.palette.grey[700]}
                   />
 
-                  <XAxis dataKey="name" />
                   <YAxis />
 
                   <Tooltip
@@ -171,6 +176,16 @@ const PerformanceContent = () => {
                 </BarChart>
               </ResponsiveContainer>
             </Box>
+
+            <Stack direction={"row"} justifyContent={"space-between"} pl={5}>
+              <Typography fontSize={"10px"} sx={{ opacity: ".5" }}>
+                2024-11-19
+              </Typography>
+
+              <Typography fontSize={"10px"} sx={{ opacity: ".5" }}>
+                Now
+              </Typography>
+            </Stack>
           </MainCard>
         </Grid>
 
@@ -181,7 +196,14 @@ const PerformanceContent = () => {
           <MainCard variant="outlined" backgroudColor="common">
             <Box height={"200px"}>
               <ResponsiveContainer width="100%" height="100%">
-                <LineChart width={772} height={300} data={data2}>
+                <LineChart
+                  width={772}
+                  height={300}
+                  data={data2}
+                  margin={{
+                    left: -16,
+                  }}
+                >
                   <CartesianGrid
                     horizontal={true} // Hiển thị lưới ngang
                     vertical={false} // Tắt lưới dọc nếu không cần
@@ -218,6 +240,16 @@ const PerformanceContent = () => {
                 </LineChart>
               </ResponsiveContainer>
             </Box>
+
+            <Stack direction={"row"} justifyContent={"space-between"} pl={5}>
+              <Typography fontSize={"10px"} sx={{ opacity: ".5" }}>
+                2024-11-19
+              </Typography>
+
+              <Typography fontSize={"10px"} sx={{ opacity: ".5" }}>
+                Now
+              </Typography>
+            </Stack>
           </MainCard>
         </Grid>
       </Grid>
