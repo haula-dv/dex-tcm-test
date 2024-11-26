@@ -1,6 +1,7 @@
 "use client";
 import IconExplane from "@/components/icons/explane";
 import IconSetting from "@/components/icons/setting";
+import "@/styles/global.scss";
 import { setColorThemeMode } from "@/utils/helpers";
 import { TSizes } from "@/utils/themes/custom-theme/sizes";
 import {
