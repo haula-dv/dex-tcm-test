@@ -19,6 +19,7 @@ import {
   IconReservedLine,
   IconUserSquare,
 } from "@tabler/icons-react";
+import { useState } from "react";
 
 export default function RootLayout({
   children,
@@ -47,6 +48,7 @@ export default function RootLayout({
 
   const mdDown = useMediaQuery(theme.breakpoints.down("md"));
 
+  const [isCollapse, setIsCollapse] = useState(false);
   return (
     <Box
       display={"flex"}
@@ -54,13 +56,14 @@ export default function RootLayout({
       p={{ xs: "6px", md: "16px" }}
     >
       <Box
-        height={"calc(100vh - 90px)"}
+        height={mdDown ? "" : "calc(100vh - 90px)"}
         position={"sticky"}
         top={70}
         border={1}
-        width={{ xs: "100%", md: "180px" }}
+        width={{ xs: "100%", md: !isCollapse ? "180px" : "auto" }}
         flexShrink={0}
-        p={TSizes.margin_mobile}
+        py={TSizes.margin_mobile}
+        px={1}
         borderRadius={TSizes.borderRadius}
         bgcolor={setColorThemeMode(
           theme.palette.primary.light,
@@ -75,9 +78,14 @@ export default function RootLayout({
           width={"100%"}
           justifyContent={"space-between"}
         >
-          <Typography>Portfolio</Typography>
+          {!isCollapse && <Typography>Portfolio</Typography>}
 
-          <IconButton edge="end">
+          <IconButton
+            edge="end"
+            onClick={() => {
+              setIsCollapse(!isCollapse);
+            }}
+          >
             <IconExplane />
           </IconButton>
         </Stack>
@@ -90,7 +98,9 @@ export default function RootLayout({
               className="portfolio-item"
             >
               <ListItemIcon>{ite.icon}</ListItemIcon>
-              <ListItemText>{ite.label}</ListItemText>
+              {!isCollapse && (
+                <ListItemText sx={{ ml: 1 }}>{ite.label}</ListItemText>
+              )}
             </ListItemButton>
           ))}
         </List>

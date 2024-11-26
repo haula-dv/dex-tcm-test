@@ -177,9 +177,9 @@ const OverviewContent = () => {
           <Stack direction={"row"} spacing={0.4} alignItems={"center"}>
             {maxLeverage ? (
               <>
-                <Typography>
-                  {formatter.format(Math.abs(currentLeverage))}x / {maxLeverage}
-                  x
+                <Typography fontSize={"18px"}>
+                  {maxLeverage}
+                  <span style={{ fontSize: "12px" }}>x</span>
                 </Typography>
                 <Box className="pointer" onClick={handleToggle}>
                   <IconPencil size={"1.1rem"} />
