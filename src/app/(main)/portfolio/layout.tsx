@@ -15,6 +15,7 @@ import {
   useMediaQuery,
   useTheme,
 } from "@mui/material";
+import "@orderly.network/react/dist/styles.css";
 import {
   IconCalculatorFilled,
   IconReservedLine,
