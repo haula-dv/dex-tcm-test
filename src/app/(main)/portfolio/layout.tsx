@@ -1,5 +1,6 @@
 "use client";
 import IconExplane from "@/components/icons/explane";
+import IconSetting from "@/components/icons/setting";
 import { setColorThemeMode } from "@/utils/helpers";
 import { TSizes } from "@/utils/themes/custom-theme/sizes";
 import {
@@ -19,6 +20,8 @@ import {
   IconReservedLine,
   IconUserSquare,
 } from "@tabler/icons-react";
+import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { useState } from "react";
 
 export default function RootLayout({
@@ -36,17 +39,23 @@ export default function RootLayout({
     },
     {
       label: "Fee tier",
-      path: "/fee-tier",
+      path: "/portfolio/fee-tier",
       icon: <IconCalculatorFilled size={"1.2rem"} />,
     },
     {
       label: "Api key",
-      path: "/api-key",
+      path: "/portfolio/api-key",
       icon: <IconReservedLine />,
+    },
+    {
+      label: "Setting",
+      path: "/portfolio/setting",
+      icon: <IconSetting />,
     },
   ];
 
   const mdDown = useMediaQuery(theme.breakpoints.down("md"));
+  const route = usePathname();
 
   const [isCollapse, setIsCollapse] = useState(false);
   return (
@@ -56,9 +65,9 @@ export default function RootLayout({
       p={{ xs: "6px", md: "16px" }}
     >
       <Box
-        height={mdDown ? "" : "calc(100vh - 90px)"}
-        position={"sticky"}
-        top={70}
+        height={mdDown ? "" : "calc(100vh - 100px)"}
+        position={mdDown ? "relative" : "sticky"}
+        top={{ xs: 0, md: 70 }}
         border={1}
         width={{ xs: "100%", md: !isCollapse ? "180px" : "auto" }}
         flexShrink={0}
@@ -70,6 +79,7 @@ export default function RootLayout({
           theme.palette.grey[800]
         )}
         borderColor={theme.palette.divider}
+        mb={"10px"}
       >
         <Stack
           direction={"row"}
@@ -80,28 +90,31 @@ export default function RootLayout({
         >
           {!isCollapse && <Typography>Portfolio</Typography>}
 
-          <IconButton
-            edge="end"
-            onClick={() => {
-              setIsCollapse(!isCollapse);
-            }}
-          >
-            <IconExplane />
-          </IconButton>
+          {!mdDown && (
+            <IconButton
+              edge="end"
+              onClick={() => {
+                setIsCollapse(!isCollapse);
+              }}
+            >
+              <IconExplane />
+            </IconButton>
+          )}
         </Stack>
 
         <List>
           {tabs.map((ite, index) => (
-            <ListItemButton
-              selected={index == 0}
-              key={index}
-              className="portfolio-item"
-            >
-              <ListItemIcon>{ite.icon}</ListItemIcon>
-              {!isCollapse && (
-                <ListItemText sx={{ ml: 1 }}>{ite.label}</ListItemText>
-              )}
-            </ListItemButton>
+            <Link href={ite.path} key={index}>
+              <ListItemButton
+                selected={route == ite.path}
+                className="portfolio-item"
+              >
+                <ListItemIcon>{ite.icon}</ListItemIcon>
+                {!isCollapse && (
+                  <ListItemText sx={{ ml: 1 }}>{ite.label}</ListItemText>
+                )}
+              </ListItemButton>
+            </Link>
           ))}
         </List>
       </Box>
