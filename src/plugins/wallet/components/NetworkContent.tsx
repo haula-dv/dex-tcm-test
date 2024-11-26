@@ -16,7 +16,7 @@ import {
 import { useChains } from "@orderly.network/hooks";
 import { IconChevronDown } from "@tabler/icons-react";
 import { useConnectWallet, useSetChain } from "@web3-onboard/react";
-import { memo, useCallback, useEffect, useState } from "react";
+import { memo, useCallback, useEffect, useMemo, useState } from "react";
 
 function NetworkContent() {
   const theme = useTheme();
@@ -24,12 +24,12 @@ function NetworkContent() {
     null
   );
   const openNetworkEl = Boolean(networkAnchorEl);
+  const upLg = useMediaQuery(theme.breakpoints.up("lg"));
 
   // Hooks
   const [chains, { findByChainId }] = useChains();
   const [{ connectedChain }, setChain] = useSetChain();
   const [{ wallet, connecting }, connect, disconnect] = useConnectWallet();
-  const upLg = useMediaQuery(theme.breakpoints.up("lg"));
 
   // Handle show menu account button
   const handleShowMenu = (event: React.MouseEvent<HTMLElement>) => {
@@ -80,18 +80,21 @@ function NetworkContent() {
   // Check network
   const allChains = [...chains.mainnet, ...chains.testnet];
 
-  const remapChainIds =
-    allChains.length > 0
+  const remapChainIds = useMemo(() => {
+    return allChains.length > 0
       ? allChains.map((item: any) => {
           return item.network_infos.chain_id;
         })
       : [];
+  }, []);
 
-  const isSupportChain = currentChain()
-    ? remapChainIds.some(
-        (it) => it === (currentChain() as any).network_infos.chain_id
-      )
-    : false;
+  const isSupportChain = useMemo(() => {
+    return currentChain()
+      ? remapChainIds.some(
+          (it) => it === (currentChain() as any).network_infos.chain_id
+        )
+      : false;
+  }, []);
 
   return (
     <>

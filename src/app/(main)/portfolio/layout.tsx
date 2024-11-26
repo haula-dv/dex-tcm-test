@@ -40,14 +40,14 @@ export default function RootLayout({
       icon: <IconUserSquare size={"1.2rem"} />,
     },
     {
+      label: "Positions",
+      path: "/portfolio/positions",
+      icon: <IconReservedLine />,
+    },
+    {
       label: "Fee tier",
       path: "/portfolio/fee-tier",
       icon: <IconCalculatorFilled size={"1.2rem"} />,
-    },
-    {
-      label: "Api key",
-      path: "/portfolio/api-key",
-      icon: <IconReservedLine />,
     },
     {
       label: "Setting",
