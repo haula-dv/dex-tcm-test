@@ -18,6 +18,7 @@ import {
   useDeposit,
   useLeverage,
   useMarginRatio,
+  usePositionStream,
   useWithdraw,
 } from "@orderly.network/hooks";
 import {
@@ -38,6 +39,7 @@ const OverviewContent = () => {
   const collateral = useCollateral();
   const [isOpenDeposit, setIsOpenDesposit] = useState(false);
   const [activedTab, setActivedTab] = useState<any>("withdraw");
+  const [positions, _info, { refresh, loading }] = usePositionStream();
 
   // GET CURRENT CHAIN
   const currentChain = useMemo(() => {
@@ -103,6 +105,11 @@ const OverviewContent = () => {
     return index.value;
   }, [maxLeverage, newLeverageLevers]);
 
+  const unrealPnL: number = positions?.aggregated?.unrealPnL ?? 0;
+  const totalValue: number = positions?.aggregated?.notional; // Tránh chia 0
+
+  const unrealPnLPercentage: number = (unrealPnL / totalValue) * 100;
+
   return (
     <MainCard backgroudColor="primary" height="220px">
       <Stack
@@ -164,8 +171,22 @@ const OverviewContent = () => {
           <Typography fontSize={"13px"} sx={{ opacity: ".4" }}>
             Unrealized PnL
           </Typography>
-          <Typography fontSize={"18px"} color={theme.palette.success.main}>
-            1,528.03 (38.59%)
+
+          <Typography
+            fontWeight={600}
+            fontSize={"18px"}
+            color={
+              unrealPnL.toString().startsWith("-")
+                ? theme.palette.error.main
+                : theme.palette.success.main
+            }
+          >
+            {positions.aggregated?.unrealPnL
+              ? usdFormatter.format(positions.aggregated?.unrealPnL)
+              : "0.00"}{" "}
+            <span style={{ fontSize: "12px" }}>
+              {`${unrealPnLPercentage.toFixed(2)}%`}
+            </span>
           </Typography>
         </Stack>
 

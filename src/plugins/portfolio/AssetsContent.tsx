@@ -118,25 +118,6 @@ const AssetsContent = () => {
           Now
         </Typography>
       </Stack>
-
-      {/* <LineChart
-        xAxis={[{ data: [1, 2, 3, 4, 5, 6] }]}
-        series={[
-          {
-            data: [3100, 3121, 3200, 3323, 4322, 5000],
-            showMark: false,
-          },
-        ]}
-        tooltip={{
-          slots: {
-            itemContent: () => {
-              return <>1212121212121</>;
-            },
-          },
-        }}
-        grid={{ horizontal: true }}
-        height={200}
-      /> */}
     </MainCard>
   );
 };
