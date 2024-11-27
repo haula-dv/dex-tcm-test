@@ -2,6 +2,7 @@ import MainCard from "@/components/card/MainCard";
 import { setColorThemeMode } from "@/utils/helpers";
 import { Box, Grid, Stack, Typography, useTheme } from "@mui/material";
 import { Select } from "@orderly.network/react";
+import dayjs from "dayjs";
 import { memo } from "react";
 import {
   Bar,
@@ -13,76 +14,36 @@ import {
   Tooltip,
   YAxis,
 } from "recharts";
+import { IDialy } from "./AssetsContent";
+import { dateRange } from "./MainContainer";
 
-const data2 = [
-  {
-    name: "Page A",
-    uv: -1000,
-  },
-  {
-    name: "Page B",
-    uv: -3000,
-  },
-  {
-    name: "Page C",
-    uv: 3300,
-  },
-  {
-    name: "Page D",
-    uv: 3780,
-  },
-  {
-    name: "Page E",
-    uv: 3890,
-  },
-  {
-    name: "Page F",
-    uv: 3390,
-  },
-  {
-    name: "Page G",
-    uv: 3490,
-  },
-];
-const data = [
-  {
-    name: "Page A",
-    uv: -4000,
-    pv: 2400,
-  },
-  {
-    name: "Page B",
-    uv: -3000,
-    pv: 1398,
-  },
-  {
-    name: "Page C",
-    uv: -2000,
-    pv: 9800,
-  },
-  {
-    name: "Page D",
-    uv: -2780,
-    pv: 3908,
-  },
-  {
-    name: "Page E",
-    uv: -1890,
-    pv: 4800,
-  },
-  {
-    name: "Page F",
-    uv: 2390,
-    pv: 3800,
-  },
-  {
-    name: "Page G",
-    uv: -3490,
-    pv: 4300,
-  },
-];
-const PerformanceContent = () => {
+interface IProps {
+  dailys: IDialy[];
+  handleChangeRange: (date: any) => void;
+  currentDate: any;
+}
+const PerformanceContent = ({
+  dailys,
+  handleChangeRange,
+  currentDate,
+}: IProps) => {
   const theme = useTheme();
+
+  // Process the dailys data to create the chart data
+  const chartDataDailyPnL = dailys.map((daily) => ({
+    date: daily.date,
+    pnlVolume: daily.pnl, // Use this for the Y-axis
+  }));
+
+  // Process the dailys data to create the chart data 1
+  const chartDataCumulativePnL = dailys.map((daily) => ({
+    date: daily.date,
+    perpVolume: daily.perp_volume, // Use this for the Y-axis
+  }));
+
+  const onChange = (val: string) => {
+    handleChangeRange(val);
+  };
 
   return (
     <MainCard backgroudColor="primary">
@@ -92,12 +53,9 @@ const PerformanceContent = () => {
         </Typography>
         <Select
           className="main-select"
-          value={"7D"}
-          options={[
-            { label: "7D", value: "7D" },
-            { label: "30D", value: "30D" },
-            { label: "90D", value: "90D" },
-          ]}
+          value={currentDate}
+          onChange={onChange}
+          options={dateRange}
         />
       </Stack>
 
@@ -128,9 +86,9 @@ const PerformanceContent = () => {
                 <BarChart
                   width={500}
                   height={300}
-                  data={data}
+                  data={chartDataDailyPnL}
                   margin={{
-                    left: -16,
+                    left: -24,
                   }}
                 >
                   <CartesianGrid
@@ -139,10 +97,14 @@ const PerformanceContent = () => {
                     stroke={theme.palette.grey[700]}
                   />
 
-                  <YAxis />
+                  <YAxis tick={{ fontSize: 10 }} />
 
                   <Tooltip
-                    content={() => {
+                    content={({ payload }) => {
+                      if (!payload || payload.length === 0) return null;
+
+                      const { date, pnlVolume } = payload[0].payload;
+
                       return (
                         <Box
                           p={"10px"}
@@ -152,10 +114,26 @@ const PerformanceContent = () => {
                             theme.palette.grey[700]
                           )}
                         >
-                          <Typography>1,0900 USDC</Typography>
-
+                          <Typography
+                            color={
+                              pnlVolume <= 0
+                                ? theme.palette.error.main
+                                : theme.palette.success.main
+                            }
+                          >
+                            {pnlVolume <= 0 ? "-" : "+"}{" "}
+                            {`${pnlVolume.toFixed(2)}`}
+                            <span
+                              style={{
+                                color: theme.palette.text.primary,
+                                opacity: ".5",
+                              }}
+                            >
+                              USDC
+                            </span>
+                          </Typography>
                           <Typography fontSize={"12px"} sx={{ opacity: ".5" }}>
-                            22/11/2024
+                            {date}
                           </Typography>
                         </Box>
                       );
@@ -163,23 +141,18 @@ const PerformanceContent = () => {
                   />
 
                   <Bar
-                    dataKey="pv"
+                    dataKey={"pnlVolume"}
                     fill={theme.palette.success.main}
                     radius={6}
-                  />
-
-                  <Bar
-                    dataKey="uv"
-                    fill={theme.palette.error.main}
-                    radius={6}
+                    isAnimationActive={false}
                   />
                 </BarChart>
               </ResponsiveContainer>
             </Box>
 
-            <Stack direction={"row"} justifyContent={"space-between"} pl={5}>
+            <Stack direction={"row"} justifyContent={"space-between"} pl={4}>
               <Typography fontSize={"10px"} sx={{ opacity: ".5" }}>
-                2024-11-19
+                {dayjs().subtract(currentDate, "day").format("YYYY-MM-DD")}
               </Typography>
 
               <Typography fontSize={"10px"} sx={{ opacity: ".5" }}>
@@ -199,9 +172,9 @@ const PerformanceContent = () => {
                 <LineChart
                   width={772}
                   height={300}
-                  data={data2}
+                  data={chartDataCumulativePnL}
                   margin={{
-                    left: -16,
+                    left: -36,
                   }}
                 >
                   <CartesianGrid
@@ -209,9 +182,17 @@ const PerformanceContent = () => {
                     vertical={false} // Tắt lưới dọc nếu không cần
                     stroke={theme.palette.grey[700]}
                   />
-                  <YAxis />
+                  <YAxis
+                    tick={{ fontSize: 10 }}
+                    tickFormatter={(value) => `${Math.floor(value / 1000)}k`}
+                  />
+
                   <Tooltip
-                    content={() => {
+                    content={({ payload }) => {
+                      if (!payload || payload.length === 0) return null;
+
+                      const { date, perpVolume } = payload[0].payload;
+
                       return (
                         <Box
                           p={"10px"}
@@ -221,29 +202,47 @@ const PerformanceContent = () => {
                             theme.palette.grey[700]
                           )}
                         >
-                          <Typography>1,0900 USDC</Typography>
+                          <Typography
+                            color={
+                              perpVolume <= 0
+                                ? theme.palette.error.main
+                                : theme.palette.success.main
+                            }
+                          >
+                            {perpVolume <= 0 ? "-" : "+"}{" "}
+                            {`${perpVolume.toFixed(2)} `}
+                            <span
+                              style={{
+                                color: theme.palette.text.primary,
+                                opacity: ".5",
+                              }}
+                            >
+                              USDC
+                            </span>
+                          </Typography>
 
                           <Typography fontSize={"12px"} sx={{ opacity: ".5" }}>
-                            22/11/2024
+                            {date}
                           </Typography>
                         </Box>
                       );
                     }}
                   />
+
                   <Line
                     strokeWidth={2}
                     type="monotone"
                     dot={false}
-                    dataKey="uv"
+                    dataKey="perpVolume"
                     stroke={theme.palette.success.main}
                   />
                 </LineChart>
               </ResponsiveContainer>
             </Box>
 
-            <Stack direction={"row"} justifyContent={"space-between"} pl={5}>
+            <Stack direction={"row"} justifyContent={"space-between"} pl={3}>
               <Typography fontSize={"10px"} sx={{ opacity: ".5" }}>
-                2024-11-19
+                {dayjs().subtract(currentDate, "day").format("YYYY-MM-DD")}
               </Typography>
 
               <Typography fontSize={"10px"} sx={{ opacity: ".5" }}>

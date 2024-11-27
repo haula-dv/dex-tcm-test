@@ -2,23 +2,48 @@
 import { HeadPage } from "@/components/HeadPage";
 import { apiClientFetch } from "@/utils/apiClient";
 import { Grid, useMediaQuery, useTheme } from "@mui/material";
+import { useDaily } from "@orderly.network/hooks";
 import { useConnectWallet } from "@web3-onboard/react";
+import dayjs from "dayjs";
 import { useEffect, useState } from "react";
 import AssetsContent from "./AssetsContent";
 import HistoryContainer from "./HistoryContainer";
 import OverviewContent from "./OverviewContent";
 import PerformanceContent from "./PerformanceContent";
 
+export const dateRange = [
+  { label: "7D", value: 7, size: 11 },
+  { label: "30D", value: 30, size: 36 },
+  { label: "90D", value: 90, size: 96 },
+];
+
 const PortfolioMainContainer = () => {
   const theme = useTheme();
   const mdUp = useMediaQuery(theme.breakpoints.down("md"));
   const [{ wallet, connecting }, connect, disconnect] = useConnectWallet();
+  const cheat = "2024-08-22";
   const [filter, setFilter] = useState<any>({
     page: 1,
-    size: 10,
-    start_date: "2024-08-22",
-    end_date: "2024-11-27",
+    size: 11,
+    start_date: dayjs().subtract(7, "day").format("YYYY-MM-DD"),
+    end_date: dayjs().format("YYYY-MM-DD"), // Sau 7 ngày
   });
+
+  const [dailys, setDailys] = useState([]);
+  const [isloading, setIsLoading] = useState(true);
+  const { mutate, data } = useDaily();
+  const [currentDate, setCurrentDate] = useState(7);
+
+  const handleChangeRange = (dateNum: number) => {
+    setCurrentDate(Number(dateNum));
+    const findSize = dateRange.find((ite) => ite.value == dateNum)?.size;
+
+    setFilter({
+      ...filter,
+      size: findSize,
+      start_date: dayjs(cheat).subtract(dateNum, "day").format("YYYY-MM-DD"),
+    });
+  };
 
   const fetchDailyStatistic = async () => {
     const queryString = new URLSearchParams(
@@ -27,19 +52,21 @@ const PortfolioMainContainer = () => {
       )
     ).toString();
 
+    console.log(queryString);
+
     await apiClientFetch
       .GET(wallet, `/client/statistics/daily?${queryString}`)
       .then((res: any) => {
-        console.log(res);
-        // setRowsDeposite(res.data.rows);
+        setDailys(res.data.rows);
       })
       .finally(() => {
-        // setRowsDepositeLoading(false);
+        setIsLoading(false);
       });
   };
 
   useEffect(() => {
     fetchDailyStatistic();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [filter]);
 
   return (
@@ -52,11 +79,19 @@ const PortfolioMainContainer = () => {
         </Grid>
 
         <Grid item xs={12} md={6}>
-          <AssetsContent />
+          <AssetsContent
+            dailys={dailys}
+            handleChangeRange={handleChangeRange}
+            currentDate={currentDate}
+          />
         </Grid>
 
         <Grid item xs={12} md={12}>
-          <PerformanceContent />
+          <PerformanceContent
+            dailys={dailys}
+            handleChangeRange={handleChangeRange}
+            currentDate={currentDate}
+          />
         </Grid>
         <Grid item xs={12} md={12}>
           <HistoryContainer />

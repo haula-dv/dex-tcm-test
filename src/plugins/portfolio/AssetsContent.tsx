@@ -2,6 +2,8 @@ import MainCard from "@/components/card/MainCard";
 import { setColorThemeMode } from "@/utils/helpers";
 import { Box, Stack, Typography, useTheme } from "@mui/material";
 import { Select } from "@orderly.network/react";
+import dayjs from "dayjs";
+import { useMemo } from "react";
 import {
   CartesianGrid,
   Line,
@@ -10,39 +12,32 @@ import {
   Tooltip,
   YAxis,
 } from "recharts";
+import { dateRange } from "./MainContainer";
 
-const data = [
-  {
-    name: "Page A",
-    uv: 4000,
-  },
-  {
-    name: "Page B",
-    uv: 3000,
-  },
-  {
-    name: "Page C",
-    uv: 3300,
-  },
-  {
-    name: "Page D",
-    uv: 3780,
-  },
-  {
-    name: "Page E",
-    uv: 3890,
-  },
-  {
-    name: "Page F",
-    uv: 3390,
-  },
-  {
-    name: "Page G",
-    uv: 3490,
-  },
-];
-const AssetsContent = () => {
+export interface IDialy {
+  broker_id: string;
+  date: string;
+  perp_volume: number;
+  pnl: number;
+  account_value: number;
+  snapshot_time: number;
+}
+
+interface IProps {
+  dailys: IDialy[];
+  handleChangeRange: (date: any) => void;
+  currentDate: any;
+}
+
+const AssetsContent = ({ dailys, handleChangeRange, currentDate }: IProps) => {
   const theme = useTheme();
+  // Process the dailys data to create the chart data
+  const chartData = useMemo(() => {
+    return dailys.map((daily) => ({
+      date: daily.date,
+      accountValue: daily.account_value, // Use this for the Y-axis
+    }));
+  }, [dailys]);
 
   return (
     <MainCard backgroudColor="primary">
@@ -52,12 +47,9 @@ const AssetsContent = () => {
         </Typography>
         <Select
           className="main-select"
-          value={"7D"}
-          options={[
-            { label: "7D", value: "7D" },
-            { label: "30D", value: "30D" },
-            { label: "90D", value: "90D" },
-          ]}
+          onChange={handleChangeRange}
+          value={currentDate}
+          options={dateRange}
         />
       </Stack>
 
@@ -66,9 +58,9 @@ const AssetsContent = () => {
           <LineChart
             width={772}
             height={300}
-            data={data}
+            data={chartData}
             margin={{
-              left: -16,
+              left: -34,
             }}
           >
             <CartesianGrid
@@ -76,10 +68,17 @@ const AssetsContent = () => {
               vertical={false} // Tắt lưới dọc nếu không cần
               stroke={theme.palette.grey[700]}
             />
-            {/* <XAxis dataKey=""  /> */}
-            <YAxis />
+            <YAxis
+              tick={{ fontSize: 10 }}
+              tickFormatter={(value) => `${Math.floor(value / 1000)}k`}
+            />
+
             <Tooltip
-              content={() => {
+              content={({ payload }) => {
+                if (!payload || payload.length === 0) return null;
+
+                const { date, accountValue } = payload[0].payload;
+
                 return (
                   <Box
                     p={"10px"}
@@ -89,29 +88,40 @@ const AssetsContent = () => {
                       theme.palette.grey[700]
                     )}
                   >
-                    <Typography>1,0900 USDC</Typography>
+                    <Typography>
+                      {`${Number(accountValue.toFixed(2)).toLocaleString()}`}
 
+                      <span
+                        style={{
+                          color: theme.palette.text.primary,
+                          opacity: ".5",
+                        }}
+                      >
+                        USDC
+                      </span>
+                    </Typography>
                     <Typography fontSize={"12px"} sx={{ opacity: ".5" }}>
-                      22/11/2024
+                      {date}
                     </Typography>
                   </Box>
                 );
               }}
             />
+
             <Line
+              dataKey="accountValue"
               strokeWidth={2}
               type="monotone"
               dot={false}
-              dataKey="uv"
               stroke={theme.palette.success.main}
             />
           </LineChart>
         </ResponsiveContainer>
       </Box>
 
-      <Stack direction={"row"} justifyContent={"space-between"} pl={4.5}>
+      <Stack direction={"row"} justifyContent={"space-between"} pl={3}>
         <Typography fontSize={"10px"} sx={{ opacity: ".5" }}>
-          2024-11-19
+          {dayjs().subtract(currentDate, "day").format("YYYY-MM-DD")}
         </Typography>
 
         <Typography fontSize={"10px"} sx={{ opacity: ".5" }}>
