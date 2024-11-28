@@ -3,7 +3,7 @@ import { setColorThemeMode } from "@/utils/helpers";
 import { Box, Grid, Stack, Typography, useTheme } from "@mui/material";
 import { Select } from "@orderly.network/react";
 import dayjs from "dayjs";
-import { memo } from "react";
+import { memo, useMemo } from "react";
 import {
   Bar,
   BarChart,
@@ -30,20 +30,43 @@ const PerformanceContent = ({
   const theme = useTheme();
 
   // Process the dailys data to create the chart data
-  const chartDataDailyPnL = dailys.map((daily) => ({
-    date: daily.date,
-    pnlVolume: daily.pnl, // Use this for the Y-axis
-  }));
+  const chartDataDailyPnL = useMemo(() => {
+    return dailys.map((daily) => ({
+      date: daily.date,
+      pnlVolume: daily.pnl, // Use this for the Y-axis
+    }));
+  }, [dailys]);
 
   // Process the dailys data to create the chart data 1
-  const chartDataCumulativePnL = dailys.map((daily) => ({
-    date: daily.date,
-    perpVolume: daily.perp_volume, // Use this for the Y-axis
-  }));
+  const chartDataCumulativePnL = useMemo(() => {
+    return dailys.map((daily) => ({
+      date: daily.date,
+      perpVolume: daily.perp_volume, // Use this for the Y-axis
+    }));
+  }, [dailys]);
 
   const onChange = (val: string) => {
     handleChangeRange(val);
   };
+
+  const totalVolume = useMemo(() => {
+    return dailys.reduce((sum, daily) => sum + daily.perp_volume, 0);
+  }, [dailys]);
+
+  const valuesDaily = [
+    {
+      label: `${currentDate}D ROI`,
+      value: 100,
+    },
+    {
+      label: `${currentDate}D PnL`,
+      value: 100,
+    },
+    {
+      label: `${currentDate}D Volume (USDC)`,
+      value: totalVolume.toLocaleString(),
+    },
+  ];
 
   return (
     <MainCard backgroudColor="primary">
@@ -60,14 +83,14 @@ const PerformanceContent = ({
       </Stack>
 
       <Grid container spacing={1}>
-        {["7D ROI", "7D PnL", "7D Volume (USDC)"].map((item, index) => (
+        {valuesDaily.map((item, index) => (
           <Grid key={index} item xs={12} md={4}>
             <MainCard backgroudColor="common" variant="outlined">
               <Typography fontSize={"12px"} sx={{ opacity: ".5" }}>
-                {item}
+                {item.label}
               </Typography>
               <Typography fontSize={"18px"} color={theme.palette.success.main}>
-                +10.35%{" "}
+                {item.value}
               </Typography>
             </MainCard>
           </Grid>
@@ -121,7 +144,7 @@ const PerformanceContent = ({
                                 : theme.palette.success.main
                             }
                           >
-                            {pnlVolume <= 0 ? "-" : "+"}{" "}
+                            {pnlVolume <= 0 ? "" : "+"}{" "}
                             {`${pnlVolume.toFixed(2)}`}
                             <span
                               style={{
@@ -142,7 +165,7 @@ const PerformanceContent = ({
 
                   <Bar
                     dataKey={"pnlVolume"}
-                    fill={theme.palette.success.main}
+                    shape={<CustomBar />}
                     radius={6}
                     isAnimationActive={false}
                   />
@@ -210,7 +233,9 @@ const PerformanceContent = ({
                             }
                           >
                             {perpVolume <= 0 ? "-" : "+"}{" "}
-                            {`${perpVolume.toFixed(2)} `}
+                            {`${Number(
+                              perpVolume.toFixed(2)
+                            ).toLocaleString()} `}
                             <span
                               style={{
                                 color: theme.palette.text.primary,
@@ -257,3 +282,24 @@ const PerformanceContent = ({
 };
 
 export default memo(PerformanceContent);
+
+const CustomBar = (props: any) => {
+  const { x, y, width, height } = props;
+
+  // Thay đổi màu sắc dựa trên giá trị height
+  const fillColor = height < 0 ? "#f44336" : "#00b59f";
+  const borderRadius = 4; // Thiết lập border-radius
+
+  return (
+    <rect
+      x={x}
+      y={height < 0 ? y + height : y} // Điều chỉnh tọa độ Y nếu giá trị âm
+      width={width}
+      height={Math.abs(height)} // Sử dụng giá trị tuyệt đối cho chiều cao
+      fill={fillColor} // Áp dụng màu sắc
+      className="recharts-rectangle"
+      rx={borderRadius} // Bo góc ngang
+      ry={borderRadius} // Bo góc dọc
+    />
+  );
+};

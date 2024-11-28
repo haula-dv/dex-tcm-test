@@ -2,7 +2,6 @@
 import { HeadPage } from "@/components/HeadPage";
 import { apiClientFetch } from "@/utils/apiClient";
 import { Grid, useMediaQuery, useTheme } from "@mui/material";
-import { useDaily } from "@orderly.network/hooks";
 import { useConnectWallet } from "@web3-onboard/react";
 import dayjs from "dayjs";
 import { useEffect, useState } from "react";
@@ -31,7 +30,6 @@ const PortfolioMainContainer = () => {
 
   const [dailys, setDailys] = useState([]);
   const [isloading, setIsLoading] = useState(true);
-  const { mutate, data } = useDaily();
   const [currentDate, setCurrentDate] = useState(7);
 
   const handleChangeRange = (dateNum: number) => {
@@ -51,8 +49,6 @@ const PortfolioMainContainer = () => {
         Object.entries(filter).map(([key, value]) => [key, String(value)])
       )
     ).toString();
-
-    console.log(queryString);
 
     await apiClientFetch
       .GET(wallet, `/client/statistics/daily?${queryString}`)

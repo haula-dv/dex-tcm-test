@@ -13,3 +13,13 @@
 .recharts-cartesian-axis-tick-value {
   font-size: 11px !important;
 }
+
+#orderly-desktop-positions-content {
+  min-height: calc(100vh - 155px) !important;
+}
+
+.recharts-tooltip-wrapper {
+  &:hover {
+    background-color: red !important;
+  }
+}
