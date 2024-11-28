@@ -65,7 +65,7 @@ const PortfolioMobileContainer = () => {
           </Button>
           <Button
             startIcon={<IconCalculatorFilled size={"1.2rem"} />}
-            variant="filledTonal"
+            variant="contained"
             onClick={() => handleOnChange("funding")}
             sx={{
               backgroundColor: setColorThemeMode(

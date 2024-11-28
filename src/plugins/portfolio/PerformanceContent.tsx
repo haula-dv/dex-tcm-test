@@ -1,6 +1,7 @@
 import MainCard from "@/components/card/MainCard";
 import { setColorThemeMode } from "@/utils/helpers";
 import { Box, Grid, Stack, Typography, useTheme } from "@mui/material";
+import { usePositionStream } from "@orderly.network/hooks";
 import { Select } from "@orderly.network/react";
 import dayjs from "dayjs";
 import { memo, useMemo } from "react";
@@ -15,6 +16,7 @@ import {
   YAxis,
 } from "recharts";
 import { IDialy } from "./AssetsContent";
+import LineChartNoData from "./LineChartNoData";
 import { dateRange } from "./MainContainer";
 
 interface IProps {
@@ -59,10 +61,25 @@ const PerformanceContent = ({
     return dailys.reduce((sum, daily) => sum + daily.pnl, 0);
   }, [dailys]);
 
+  // Sử dụng hook để lấy dữ liệu vị thế giao dịch
+  const [positions, _info, { refresh, loading }] = usePositionStream();
+
+  const roi = useMemo(() => {
+    return 0;
+  }, [positions]);
+
   const valuesDaily = [
     {
       label: `${currentDate}D ROI`,
-      value: isHideValue ? "*****" : 100,
+      value: (
+        <Typography
+          color={
+            roi <= 0 ? theme.palette.error.main : theme.palette.success.main
+          }
+        >
+          {isHideValue ? "*****" : `${roi.toFixed(2)}%`}
+        </Typography>
+      ),
     },
     {
       label: `${currentDate}D PnL`,
@@ -131,76 +148,85 @@ const PerformanceContent = ({
             backgroudColor={setColorThemeMode("primaryLight", "common")}
           >
             <Box height={"200px"}>
-              <ResponsiveContainer width="100%" height="100%">
-                <BarChart
-                  width={500}
-                  height={300}
-                  data={chartDataDailyPnL}
-                  margin={{
-                    left: -24,
-                  }}
-                >
-                  <CartesianGrid
-                    horizontal={true} // Hiển thị lưới ngang
-                    vertical={false} // Tắt lưới dọc nếu không cần
-                    stroke={setColorThemeMode(
-                      theme.palette.grey[100],
-                      theme.palette.grey[700]
-                    )}
-                    strokeWidth={1}
-                  />
-
-                  <YAxis tick={{ fontSize: 10 }} />
-
-                  <Tooltip
-                    content={({ payload }) => {
-                      if (!payload || payload.length === 0) return null;
-
-                      const { date, pnlVolume } = payload[0].payload;
-
-                      return (
-                        <Box
-                          p={"10px"}
-                          borderRadius={"6px"}
-                          bgcolor={setColorThemeMode(
-                            theme.palette.primary.light,
-                            theme.palette.grey[700]
-                          )}
-                        >
-                          <Typography
-                            color={
-                              pnlVolume <= 0
-                                ? theme.palette.error.main
-                                : theme.palette.success.main
-                            }
-                          >
-                            {pnlVolume <= 0 ? "" : "+"}{" "}
-                            {`${Number(pnlVolume.toFixed(2)).toLocaleString()}`}
-                            <span
-                              style={{
-                                color: theme.palette.text.primary,
-                                opacity: ".5",
-                              }}
-                            >
-                              USDC
-                            </span>
-                          </Typography>
-                          <Typography fontSize={"12px"} sx={{ opacity: ".5" }}>
-                            {date}
-                          </Typography>
-                        </Box>
-                      );
+              {dailys.length > 0 ? (
+                <ResponsiveContainer width="100%" height="100%">
+                  <BarChart
+                    width={500}
+                    height={300}
+                    data={chartDataDailyPnL}
+                    margin={{
+                      left: -24,
                     }}
-                  />
+                  >
+                    <CartesianGrid
+                      horizontal={true} // Hiển thị lưới ngang
+                      vertical={false} // Tắt lưới dọc nếu không cần
+                      stroke={setColorThemeMode(
+                        theme.palette.grey[100],
+                        theme.palette.grey[700]
+                      )}
+                      strokeWidth={1}
+                    />
 
-                  <Bar
-                    dataKey={"pnlVolume"}
-                    shape={<CustomBar />}
-                    radius={6}
-                    isAnimationActive={false}
-                  />
-                </BarChart>
-              </ResponsiveContainer>
+                    <YAxis tick={{ fontSize: 10 }} />
+
+                    <Tooltip
+                      content={({ payload }) => {
+                        if (!payload || payload.length === 0) return null;
+
+                        const { date, pnlVolume } = payload[0].payload;
+
+                        return (
+                          <Box
+                            p={"10px"}
+                            borderRadius={"6px"}
+                            bgcolor={setColorThemeMode(
+                              theme.palette.primary.light,
+                              theme.palette.grey[700]
+                            )}
+                          >
+                            <Typography
+                              color={
+                                pnlVolume <= 0
+                                  ? theme.palette.error.main
+                                  : theme.palette.success.main
+                              }
+                            >
+                              {pnlVolume <= 0 ? "" : "+"}{" "}
+                              {`${Number(
+                                pnlVolume.toFixed(2)
+                              ).toLocaleString()}`}
+                              <span
+                                style={{
+                                  color: theme.palette.text.primary,
+                                  opacity: ".5",
+                                }}
+                              >
+                                USDC
+                              </span>
+                            </Typography>
+                            <Typography
+                              fontSize={"12px"}
+                              sx={{ opacity: ".5" }}
+                            >
+                              {date}
+                            </Typography>
+                          </Box>
+                        );
+                      }}
+                    />
+
+                    <Bar
+                      dataKey={"pnlVolume"}
+                      shape={<CustomBar />}
+                      radius={6}
+                      isAnimationActive={false}
+                    />
+                  </BarChart>
+                </ResponsiveContainer>
+              ) : (
+                <LineChartNoData />
+              )}
             </Box>
 
             <Stack direction={"row"} justifyContent={"space-between"} pl={4}>
@@ -224,82 +250,89 @@ const PerformanceContent = ({
             backgroudColor={setColorThemeMode("primaryLight", "common")}
           >
             <Box height={"200px"}>
-              <ResponsiveContainer width="100%" height="100%">
-                <LineChart
-                  width={772}
-                  height={300}
-                  data={chartDataCumulativePnL}
-                  margin={{
-                    left: -24,
-                  }}
-                >
-                  <CartesianGrid
-                    horizontal={true} // Hiển thị lưới ngang
-                    vertical={false} // Tắt lưới dọc nếu không cần
-                    strokeWidth={1}
-                    stroke={setColorThemeMode(
-                      theme.palette.grey[100],
-                      theme.palette.grey[700]
-                    )}
-                  />
-                  <YAxis
-                    tick={{ fontSize: 10 }}
-                    tickFormatter={(value) => `${Math.floor(value / 1000)}k`}
-                  />
-
-                  <Tooltip
-                    content={({ payload }) => {
-                      if (!payload || payload.length === 0) return null;
-
-                      const { date, perpVolume } = payload[0].payload;
-
-                      return (
-                        <Box
-                          p={"10px"}
-                          borderRadius={"6px"}
-                          bgcolor={setColorThemeMode(
-                            theme.palette.primary.light,
-                            theme.palette.grey[700]
-                          )}
-                        >
-                          <Typography
-                            color={
-                              perpVolume <= 0
-                                ? theme.palette.error.main
-                                : theme.palette.success.main
-                            }
-                          >
-                            {perpVolume <= 0 ? "-" : "+"}{" "}
-                            {`${Number(
-                              perpVolume.toFixed(2)
-                            ).toLocaleString()} `}
-                            <span
-                              style={{
-                                color: theme.palette.text.primary,
-                                opacity: ".5",
-                              }}
-                            >
-                              USDC
-                            </span>
-                          </Typography>
-
-                          <Typography fontSize={"12px"} sx={{ opacity: ".5" }}>
-                            {date}
-                          </Typography>
-                        </Box>
-                      );
+              {dailys.length > 0 ? (
+                <ResponsiveContainer width="100%" height="100%">
+                  <LineChart
+                    width={772}
+                    height={300}
+                    data={chartDataCumulativePnL}
+                    margin={{
+                      left: -24,
                     }}
-                  />
+                  >
+                    <CartesianGrid
+                      horizontal={true} // Hiển thị lưới ngang
+                      vertical={false} // Tắt lưới dọc nếu không cần
+                      strokeWidth={1}
+                      stroke={setColorThemeMode(
+                        theme.palette.grey[100],
+                        theme.palette.grey[700]
+                      )}
+                    />
+                    <YAxis
+                      tick={{ fontSize: 10 }}
+                      tickFormatter={(value) => `${Math.floor(value / 1000)}k`}
+                    />
 
-                  <Line
-                    strokeWidth={2}
-                    type="monotone"
-                    dot={false}
-                    dataKey="perpVolume"
-                    stroke={theme.palette.success.main}
-                  />
-                </LineChart>
-              </ResponsiveContainer>
+                    <Tooltip
+                      content={({ payload }) => {
+                        if (!payload || payload.length === 0) return null;
+
+                        const { date, perpVolume } = payload[0].payload;
+
+                        return (
+                          <Box
+                            p={"10px"}
+                            borderRadius={"6px"}
+                            bgcolor={setColorThemeMode(
+                              theme.palette.primary.light,
+                              theme.palette.grey[700]
+                            )}
+                          >
+                            <Typography
+                              color={
+                                perpVolume <= 0
+                                  ? theme.palette.error.main
+                                  : theme.palette.success.main
+                              }
+                            >
+                              {perpVolume <= 0 ? "-" : "+"}{" "}
+                              {`${Number(
+                                perpVolume.toFixed(2)
+                              ).toLocaleString()} `}
+                              <span
+                                style={{
+                                  color: theme.palette.text.primary,
+                                  opacity: ".5",
+                                }}
+                              >
+                                USDC
+                              </span>
+                            </Typography>
+
+                            <Typography
+                              fontSize={"12px"}
+                              sx={{ opacity: ".5" }}
+                            >
+                              {date}
+                            </Typography>
+                          </Box>
+                        );
+                      }}
+                    />
+
+                    <Line
+                      strokeWidth={2}
+                      type="monotone"
+                      dot={false}
+                      dataKey="perpVolume"
+                      stroke={theme.palette.success.main}
+                    />
+                  </LineChart>
+                </ResponsiveContainer>
+              ) : (
+                <LineChartNoData />
+              )}
             </Box>
 
             <Stack direction={"row"} justifyContent={"space-between"} pl={3}>

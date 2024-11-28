@@ -5,9 +5,7 @@ import IconNotFound from "@/components/icons/NotFound";
 import MainTooltip from "@/components/MainTooltip";
 import { apiClientFetch } from "@/utils/apiClient";
 import { formartAddress } from "@/utils/formatters/token";
-import { setColorThemeMode } from "@/utils/helpers";
 import { formatQty } from "@/utils/helpers/orderlyHelper";
-import { TSizes } from "@/utils/themes/custom-theme/sizes";
 import {
   Box,
   List,
@@ -298,18 +296,13 @@ const DepositsWithdrawalsContainer = () => {
           ) : (
             <>
               {rowsDeposite.length > 0 ? (
-                <>
+                <Stack spacing={1}>
                   {rowsDeposite.map((item: any, index) => {
                     return (
-                      <Box
-                        bgcolor={setColorThemeMode(
-                          theme.palette.grey[100],
-                          theme.palette.grey[800]
-                        )}
+                      <MainCard
                         key={index}
-                        mb={TSizes.margin_mobile}
-                        p={TSizes.margin_mobile}
-                        borderRadius={"10px"}
+                        backgroudColor="common"
+                        variant="outlined"
                       >
                         <ItemRow
                           title="Token"
@@ -396,7 +389,7 @@ const DepositsWithdrawalsContainer = () => {
                             </Typography>
                           }
                         />
-                      </Box>
+                      </MainCard>
                     );
                   })}
 
@@ -409,7 +402,7 @@ const DepositsWithdrawalsContainer = () => {
                       onChange={onChangePage}
                     />
                   </Box>
-                </>
+                </Stack>
               ) : (
                 <Box
                   display={"flex"}

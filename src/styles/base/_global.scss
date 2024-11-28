@@ -163,3 +163,10 @@ input::-webkit-inner-spin-button {
     }
   }
 }
+
+/////////////////////
+.line-no-data {
+  .recharts-line {
+    display: none !important;
+  }
+}

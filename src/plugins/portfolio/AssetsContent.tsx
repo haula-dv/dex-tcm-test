@@ -12,6 +12,7 @@ import {
   Tooltip,
   YAxis,
 } from "recharts";
+import LineChartNoData from "./LineChartNoData";
 import { dateRange } from "./MainContainer";
 
 export interface IDialy {
@@ -54,73 +55,77 @@ const AssetsContent = ({ dailys, handleChangeRange, currentDate }: IProps) => {
       </Stack>
 
       <Box height="142px">
-        <ResponsiveContainer width="100%" height="100%">
-          <LineChart
-            width={772}
-            height={300}
-            data={chartData}
-            margin={{
-              left: -34,
-            }}
-          >
-            <CartesianGrid
-              horizontal={true} // Hiển thị lưới ngang
-              vertical={false} // Tắt lưới dọc nếu không cần
-              stroke={setColorThemeMode(
-                theme.palette.grey[200],
-                theme.palette.grey[700]
-              )}
-              strokeWidth={1}
-            />
-            <YAxis
-              tick={{ fontSize: 10 }}
-              tickFormatter={(value) => `${Math.floor(value / 1000)}k`}
-            />
-
-            <Tooltip
-              content={({ payload }) => {
-                if (!payload || payload.length === 0) return null;
-
-                const { date, accountValue } = payload[0].payload;
-
-                return (
-                  <Box
-                    p={"10px"}
-                    borderRadius={"6px"}
-                    bgcolor={setColorThemeMode(
-                      theme.palette.primary.light,
-                      theme.palette.grey[700]
-                    )}
-                  >
-                    <Typography>
-                      {`${Number(accountValue.toFixed(2)).toLocaleString()}`}
-
-                      <span
-                        style={{
-                          color: theme.palette.text.primary,
-                          opacity: ".5",
-                        }}
-                      >
-                        USDC
-                      </span>
-                    </Typography>
-                    <Typography fontSize={"12px"} sx={{ opacity: ".5" }}>
-                      {date}
-                    </Typography>
-                  </Box>
-                );
+        {dailys.length > 0 ? (
+          <ResponsiveContainer width="100%" height="100%">
+            <LineChart
+              width={772}
+              height={300}
+              data={chartData}
+              margin={{
+                left: -34,
               }}
-            />
+            >
+              <CartesianGrid
+                horizontal={true} // Hiển thị lưới ngang
+                vertical={false} // Tắt lưới dọc nếu không cần
+                stroke={setColorThemeMode(
+                  theme.palette.grey[200],
+                  theme.palette.grey[700]
+                )}
+                strokeWidth={1}
+              />
+              <YAxis
+                tick={{ fontSize: 10 }}
+                tickFormatter={(value) => `${Math.floor(value / 1000)}k`}
+              />
 
-            <Line
-              dataKey="accountValue"
-              strokeWidth={2}
-              type="monotone"
-              dot={false}
-              stroke={theme.palette.success.main}
-            />
-          </LineChart>
-        </ResponsiveContainer>
+              <Tooltip
+                content={({ payload }) => {
+                  if (!payload || payload.length === 0) return null;
+
+                  const { date, accountValue } = payload[0].payload;
+
+                  return (
+                    <Box
+                      p={"10px"}
+                      borderRadius={"6px"}
+                      bgcolor={setColorThemeMode(
+                        theme.palette.primary.light,
+                        theme.palette.grey[700]
+                      )}
+                    >
+                      <Typography>
+                        {`${Number(accountValue.toFixed(2)).toLocaleString()}`}
+
+                        <span
+                          style={{
+                            color: theme.palette.text.primary,
+                            opacity: ".5",
+                          }}
+                        >
+                          USDC
+                        </span>
+                      </Typography>
+                      <Typography fontSize={"12px"} sx={{ opacity: ".5" }}>
+                        {date}
+                      </Typography>
+                    </Box>
+                  );
+                }}
+              />
+
+              <Line
+                dataKey="accountValue"
+                strokeWidth={2}
+                type="monotone"
+                dot={false}
+                stroke={theme.palette.success.main}
+              />
+            </LineChart>
+          </ResponsiveContainer>
+        ) : (
+          <LineChartNoData />
+        )}
       </Box>
 
       <Stack direction={"row"} justifyContent={"space-between"} pl={3}>

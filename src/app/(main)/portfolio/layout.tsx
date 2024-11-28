@@ -93,35 +93,55 @@ export default function RootLayout({
           width={"100%"}
           justifyContent={"space-between"}
         >
-          {!isCollapse && <Typography>Portfolio</Typography>}
-
-          {!mdDown && (
-            <IconButton
-              edge="end"
-              onClick={() => {
-                setIsCollapse(!isCollapse);
-              }}
-            >
-              <IconCollapes />
-            </IconButton>
+          {mdDown ? (
+            <Typography>Portfolio</Typography>
+          ) : (
+            <>{!isCollapse && <Typography>Portfolio</Typography>}</>
           )}
+
+          <IconButton
+            edge="end"
+            onClick={() => {
+              setIsCollapse(!isCollapse);
+            }}
+          >
+            <IconCollapes />
+          </IconButton>
         </Stack>
 
-        <List>
-          {tabs.map((ite, index) => (
-            <Link href={ite.path} key={index}>
-              <ListItemButton
-                selected={route == ite.path}
-                className="portfolio-item"
-              >
-                <ListItemIcon>{ite.icon}</ListItemIcon>
-                {!isCollapse && (
-                  <ListItemText sx={{ ml: 1 }}>{ite.label}</ListItemText>
-                )}
-              </ListItemButton>
-            </Link>
-          ))}
-        </List>
+        {mdDown ? (
+          <List sx={{ display: "flex", flexWrap: "wrap", gap: "6px" }}>
+            {tabs.map((ite, index) => (
+              <Link href={ite.path} key={index}>
+                <ListItemButton
+                  selected={route == ite.path}
+                  className="portfolio-item"
+                >
+                  <ListItemIcon>{ite.icon}</ListItemIcon>
+                  {!isCollapse && (
+                    <ListItemText sx={{ ml: 1 }}>{ite.label}</ListItemText>
+                  )}
+                </ListItemButton>
+              </Link>
+            ))}
+          </List>
+        ) : (
+          <List>
+            {tabs.map((ite, index) => (
+              <Link href={ite.path} key={index}>
+                <ListItemButton
+                  selected={route == ite.path}
+                  className="portfolio-item"
+                >
+                  <ListItemIcon>{ite.icon}</ListItemIcon>
+                  {!isCollapse && (
+                    <ListItemText sx={{ ml: 1 }}>{ite.label}</ListItemText>
+                  )}
+                </ListItemButton>
+              </Link>
+            ))}
+          </List>
+        )}
       </Box>
 
       <Box pl={{ xs: "0px", md: "16px" }} width={"100%"}>

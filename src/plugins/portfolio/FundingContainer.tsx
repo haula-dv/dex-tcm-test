@@ -4,8 +4,6 @@ import IconLoading from "@/components/icons/loading";
 import IconNotFound from "@/components/icons/NotFound";
 import { ItemRow } from "@/components/ItemRow";
 import { apiClientFetch } from "@/utils/apiClient";
-import { setColorThemeMode } from "@/utils/helpers";
-import { TSizes } from "@/utils/themes/custom-theme/sizes";
 import {
   Box,
   List,
@@ -217,19 +215,14 @@ const FundingContainer = () => {
           ) : (
             <>
               {rows.length > 0 ? (
-                <>
+                <Stack spacing={1}>
                   {rows.map((item, index) => {
                     const [a, b, c] = item.symbol.split("_");
                     return (
-                      <Box
-                        bgcolor={setColorThemeMode(
-                          theme.palette.grey[100],
-                          theme.palette.grey[800]
-                        )}
+                      <MainCard
                         key={index}
-                        mb={TSizes.margin_mobile}
-                        p={TSizes.margin_mobile}
-                        borderRadius={"10px"}
+                        backgroudColor="common"
+                        variant="outlined"
                       >
                         <ItemRow
                           title="Token"
@@ -283,7 +276,7 @@ const FundingContainer = () => {
                             </Typography>
                           }
                         />
-                      </Box>
+                      </MainCard>
                     );
                   })}
 
@@ -306,7 +299,7 @@ const FundingContainer = () => {
                       onChange={onChangePage}
                     />
                   </Box>
-                </>
+                </Stack>
               ) : (
                 <Box
                   display={"flex"}
