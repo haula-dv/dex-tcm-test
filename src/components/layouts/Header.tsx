@@ -54,7 +54,9 @@ export const Header = () => {
               alignItems={"center"}
               spacing={TSizes.margin_md}
             >
-              <Logo width="80px" height="40px" />
+              <Link href={"/trading/"}>
+                <Logo width="80px" height="40px" />
+              </Link>
 
               {navItems.map((navItem) => (
                 <Link key={navItem.label} href={navItem.to}>

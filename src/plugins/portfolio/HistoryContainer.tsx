@@ -55,7 +55,7 @@ const PortfolioMobileContainer = () => {
             variant="contained"
             sx={{
               backgroundColor: setColorThemeMode(
-                theme.palette.grey[50],
+                theme.palette.grey[300],
                 theme.palette.grey[700]
               ),
               opacity: currentTab == "deposite" ? 1 : ".5",
@@ -69,7 +69,7 @@ const PortfolioMobileContainer = () => {
             onClick={() => handleOnChange("funding")}
             sx={{
               backgroundColor: setColorThemeMode(
-                theme.palette.grey[50],
+                theme.palette.grey[300],
                 theme.palette.grey[700]
               ),
               opacity: currentTab == "funding" ? 1 : ".5",

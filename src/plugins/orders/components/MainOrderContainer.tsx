@@ -8,10 +8,16 @@ const MainOrderContainer = () => {
     const parentEl = document.querySelector(".data-list-view");
 
     if (parentEl) {
-      const buttonOrder = document.getElementById("tab-orders");
+      const buttonShowAll = document.querySelector(
+        ".orderly-flex .orderly-items-center .orderly-gap-2"
+      );
       const buttonToRemove = document.getElementById("tab-positions");
       const buttonTabHistory = document.getElementById("tab-history");
       const buttonContainer = document.querySelector(".tabs-list"); // Thay thế bằng class hoặc selector chính xác
+
+      if (buttonShowAll) {
+        buttonShowAll.remove();
+      }
 
       if (buttonToRemove) {
         buttonToRemove.remove();

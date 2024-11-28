@@ -6,6 +6,7 @@ import { TSizes } from "@/utils/themes/custom-theme/sizes";
 import { IconButton, Stack, Toolbar } from "@mui/material";
 import { IconMenu } from "@tabler/icons-react";
 import { useConnectWallet } from "@web3-onboard/react";
+import Link from "next/link";
 import { memo, useState } from "react";
 import { MainButton } from "../button/MainButton";
 import Logo from "../icons/Logo";
@@ -33,7 +34,9 @@ function HeaderMobile() {
           alignItems={"center"}
           justifyContent={"space-between"}
         >
-          <Logo width="80px" height="40px" />
+          <Link href={"/trading"}>
+            <Logo width="80px" height="40px" />
+          </Link>
 
           <Stack
             direction={"row"}

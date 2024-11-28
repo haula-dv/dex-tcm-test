@@ -40,12 +40,12 @@ export default function RootLayout({
     {
       label: "Positions",
       path: "/portfolio/positions",
-      icon: <IconCertificate size={"1.2rem"} style={{ opacity: ".5" }} />,
+      icon: <IconCertificate size={"1.2rem"} style={{ opacity: ".7" }} />,
     },
     {
       label: "Orders",
       path: "/portfolio/orders",
-      icon: <IconChecklist size={"1.2rem"} style={{ opacity: ".5" }} />,
+      icon: <IconChecklist size={"1.2rem"} style={{ opacity: ".7" }} />,
     },
     {
       label: "Fee tier",
