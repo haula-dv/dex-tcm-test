@@ -53,6 +53,10 @@ const PerformanceContent = ({
     return dailys.reduce((sum, daily) => sum + daily.perp_volume, 0);
   }, [dailys]);
 
+  const totalPnl = useMemo(() => {
+    return dailys.reduce((sum, daily) => sum + daily.pnl, 0);
+  }, [dailys]);
+
   const valuesDaily = [
     {
       label: `${currentDate}D ROI`,
@@ -60,7 +64,7 @@ const PerformanceContent = ({
     },
     {
       label: `${currentDate}D PnL`,
-      value: 100,
+      value: `+${totalPnl.toLocaleString()}`,
     },
     {
       label: `${currentDate}D Volume (USDC)`,
@@ -89,7 +93,10 @@ const PerformanceContent = ({
               <Typography fontSize={"12px"} sx={{ opacity: ".5" }}>
                 {item.label}
               </Typography>
-              <Typography fontSize={"18px"} color={theme.palette.success.main}>
+              <Typography
+                fontSize={"18px"}
+                color={index == 2 ? "" : theme.palette.success.main}
+              >
                 {item.value}
               </Typography>
             </MainCard>
@@ -145,7 +152,7 @@ const PerformanceContent = ({
                             }
                           >
                             {pnlVolume <= 0 ? "" : "+"}{" "}
-                            {`${pnlVolume.toFixed(2)}`}
+                            {`${Number(pnlVolume.toFixed(2)).toLocaleString()}`}
                             <span
                               style={{
                                 color: theme.palette.text.primary,
@@ -197,7 +204,7 @@ const PerformanceContent = ({
                   height={300}
                   data={chartDataCumulativePnL}
                   margin={{
-                    left: -36,
+                    left: -24,
                   }}
                 >
                   <CartesianGrid
