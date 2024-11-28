@@ -66,7 +66,7 @@ const PerformanceContent = ({
 
   const roi = useMemo(() => {
     return positions.totalUnrealizedROI;
-  }, [positions]);
+  }, [positions, dailys, currentDate]);
 
   const valuesDaily = [
     {
@@ -91,7 +91,9 @@ const PerformanceContent = ({
               : theme.palette.success.main
           }
         >
-          {isHideValue ? "*****" : totalPnl.toLocaleString()}
+          {isHideValue
+            ? "*****"
+            : `${totalPnl > 0 ? "+" : ""} ${totalPnl.toLocaleString()}`}
         </Typography>
       ),
     },
