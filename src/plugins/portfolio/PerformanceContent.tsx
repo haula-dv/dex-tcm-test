@@ -65,7 +65,7 @@ const PerformanceContent = ({
   const [positions, _info, { refresh, loading }] = usePositionStream();
 
   const roi = useMemo(() => {
-    return 0;
+    return positions.totalUnrealizedROI;
   }, [positions]);
 
   const valuesDaily = [
