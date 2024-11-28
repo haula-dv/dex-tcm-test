@@ -19,7 +19,7 @@ import {
   useTheme,
 } from "@mui/material";
 import "@orderly.network/react/dist/styles.css";
-import { IconReservedLine } from "@tabler/icons-react";
+import { IconCertificate, IconChecklist } from "@tabler/icons-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useState } from "react";
@@ -40,12 +40,12 @@ export default function RootLayout({
     {
       label: "Positions",
       path: "/portfolio/positions",
-      icon: <IconReservedLine />,
+      icon: <IconCertificate size={"1.2rem"} style={{ opacity: ".5" }} />,
     },
     {
       label: "Orders",
       path: "/portfolio/orders",
-      icon: <IconReservedLine />,
+      icon: <IconChecklist size={"1.2rem"} style={{ opacity: ".5" }} />,
     },
     {
       label: "Fee tier",
