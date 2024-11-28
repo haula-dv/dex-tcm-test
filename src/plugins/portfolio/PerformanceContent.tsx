@@ -21,11 +21,13 @@ interface IProps {
   dailys: IDialy[];
   handleChangeRange: (date: any) => void;
   currentDate: any;
+  isHideValue: boolean;
 }
 const PerformanceContent = ({
   dailys,
   handleChangeRange,
   currentDate,
+  isHideValue,
 }: IProps) => {
   const theme = useTheme();
 
@@ -60,11 +62,11 @@ const PerformanceContent = ({
   const valuesDaily = [
     {
       label: `${currentDate}D ROI`,
-      value: 100,
+      value: isHideValue ? "*****" : 100,
     },
     {
       label: `${currentDate}D PnL`,
-      value: `+${totalPnl.toLocaleString()}`,
+      value: isHideValue ? "*****" : `${totalPnl.toLocaleString()}`,
     },
     {
       label: `${currentDate}D Volume (USDC)`,
@@ -93,9 +95,10 @@ const PerformanceContent = ({
               backgroudColor={setColorThemeMode("primaryLight", "common")}
               variant="outlined"
             >
-              <Typography fontSize={"12px"} sx={{ opacity: ".5" }}>
+              <Typography fontSize={"12px"} sx={{ opacity: ".5" }} pb={1}>
                 {item.label}
               </Typography>
+
               <Typography
                 fontSize={"18px"}
                 color={index == 2 ? "" : theme.palette.success.main}

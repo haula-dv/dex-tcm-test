@@ -7,15 +7,14 @@ import {
   Box,
   Button,
   Divider,
+  IconButton,
   Stack,
   Typography,
-  useMediaQuery,
   useTheme,
 } from "@mui/material";
 import {
   useChains,
   useCollateral,
-  useDeposit,
   useLeverage,
   useMarginRatio,
   usePositionStream,
@@ -27,19 +26,19 @@ import {
   IconSquareRoundedArrowDownFilled,
   IconSquareRoundedArrowUpFilled,
 } from "@tabler/icons-react";
-import { useSetChain } from "@web3-onboard/react";
+import { useConnectWallet, useSetChain } from "@web3-onboard/react";
 import { useMemo, useState } from "react";
 import { FormSlider } from "../trade/components/create-order/Accountleverage";
 
-const OverviewContent = () => {
+const OverviewContent = ({ isHideValue, setIsHideValue }: any) => {
   const theme = useTheme();
-  const mdUp = useMediaQuery(theme.breakpoints.down("md"));
   const [_, { findByChainId }] = useChains();
   const [{ connectedChain }, setChain] = useSetChain();
   const collateral = useCollateral();
   const [isOpenDeposit, setIsOpenDesposit] = useState(false);
   const [activedTab, setActivedTab] = useState<any>("withdraw");
   const [positions, _info, { refresh, loading }] = usePositionStream();
+  const [{ wallet, connecting }, connect, disconnect] = useConnectWallet();
 
   // GET CURRENT CHAIN
   const currentChain = useMemo(() => {
@@ -52,13 +51,6 @@ const OverviewContent = () => {
     return currentChain?.token_infos[0] ?? undefined;
   }, [currentChain]);
 
-  const deposit = useDeposit({
-    address: token?.address,
-    decimals: token?.decimals,
-    srcToken: token?.symbol,
-    srcChainId: Number(connectedChain?.id),
-  });
-
   const { unsettledPnL, availableWithdraw } = useWithdraw();
   const [maxLeverage, { update, config: leverageLevers, isMutating }] =
     useLeverage();
@@ -66,6 +58,7 @@ const OverviewContent = () => {
   const formatter = new Intl.NumberFormat("en-US", {
     maximumFractionDigits: 2,
   });
+
   const { currentLeverage, mmr } = useMarginRatio();
   const [open, setOpen] = useState(false);
 
@@ -129,6 +122,7 @@ const OverviewContent = () => {
             size="small"
             startIcon={<IconSquareRoundedArrowUpFilled size={"1rem"} />}
             onClick={() => handleToggleDesposit("withdraw")}
+            disabled={!wallet}
           >
             Withdraw
           </Button>
@@ -138,6 +132,7 @@ const OverviewContent = () => {
             color="inherit"
             startIcon={<IconSquareRoundedArrowDownFilled size={"1rem"} />}
             onClick={() => handleToggleDesposit("deposit")}
+            disabled={!wallet}
           >
             Deposit
           </Button>
@@ -149,12 +144,16 @@ const OverviewContent = () => {
           Total value
         </Typography>
 
-        <IconEyeFilled size={"1rem"} />
+        <IconButton size="small" onClick={() => setIsHideValue(!isHideValue)}>
+          <IconEyeFilled size={"1rem"} />
+        </IconButton>
       </Stack>
 
       <Typography fontWeight={500} pt={1}>
         <span style={{ fontSize: "22px", color: theme.palette.success.main }}>
-          {usdFormatter.format(Number(collateral.availableBalance))}
+          {isHideValue
+            ? "*********"
+            : usdFormatter.format(Number(collateral.availableBalance))}
         </span>{" "}
         USDC
       </Typography>
@@ -162,65 +161,74 @@ const OverviewContent = () => {
       <Box pt={2} />
       <Divider />
       <Box pt={1} />
-      {/* <Button variant="contained" fullWidth>
-        Connect wallet
-      </Button> */}
 
-      <Stack direction={"row"} justifyContent={"space-between"}>
-        <Stack flex={1}>
-          <Typography fontSize={"13px"} sx={{ opacity: ".4" }}>
-            Unrealized PnL
-          </Typography>
+      {!wallet ? (
+        <Button variant="contained" fullWidth>
+          Connect wallet
+        </Button>
+      ) : (
+        <Stack direction={"row"} justifyContent={"space-between"}>
+          <Stack flex={1}>
+            <Typography fontSize={"13px"} sx={{ opacity: ".4" }}>
+              Unrealized PnL
+            </Typography>
 
-          <Typography
-            fontWeight={600}
-            fontSize={"18px"}
-            color={
-              unrealPnL.toString().startsWith("-")
-                ? theme.palette.error.main
-                : theme.palette.success.main
-            }
-          >
-            {positions.aggregated?.unrealPnL
-              ? usdFormatter.format(positions.aggregated?.unrealPnL)
-              : "0.00"}{" "}
-            <span style={{ fontSize: "12px" }}>
-              {`${unrealPnLPercentage.toFixed(2)}%`}
-            </span>
-          </Typography>
-        </Stack>
+            <Typography
+              fontWeight={600}
+              fontSize={"18px"}
+              color={
+                unrealPnL.toString().startsWith("-")
+                  ? theme.palette.error.main
+                  : theme.palette.success.main
+              }
+            >
+              {isHideValue ? (
+                "*****"
+              ) : (
+                <>
+                  {positions.aggregated?.unrealPnL
+                    ? usdFormatter.format(positions.aggregated?.unrealPnL)
+                    : "0.00"}{" "}
+                  <span style={{ fontSize: "12px" }}>
+                    {`${unrealPnLPercentage.toFixed(2)}%`}
+                  </span>
+                </>
+              )}
+            </Typography>
+          </Stack>
 
-        <Stack flex={1}>
-          <Typography fontSize={"13px"} sx={{ opacity: ".4" }}>
-            Max account leverage
-          </Typography>
+          <Stack flex={1}>
+            <Typography fontSize={"13px"} sx={{ opacity: ".4" }}>
+              Max account leverage
+            </Typography>
 
-          <Stack direction={"row"} spacing={0.4} alignItems={"center"}>
-            {maxLeverage ? (
-              <>
-                <Typography fontSize={"18px"}>
-                  {maxLeverage}
-                  <span style={{ fontSize: "12px" }}>x</span>
-                </Typography>
-                <Box className="pointer" onClick={handleToggle}>
-                  <IconPencil size={"1.1rem"} />
-                </Box>
-              </>
-            ) : (
-              <span>--</span>
-            )}
+            <Stack direction={"row"} spacing={0.4} alignItems={"center"}>
+              {maxLeverage ? (
+                <>
+                  <Typography fontSize={"18px"}>
+                    {maxLeverage}
+                    <span style={{ fontSize: "12px" }}>x</span>
+                  </Typography>
+                  <Box className="pointer" onClick={handleToggle}>
+                    <IconPencil size={"1.1rem"} />
+                  </Box>
+                </>
+              ) : (
+                <span>--</span>
+              )}
+            </Stack>
+          </Stack>
+
+          <Stack flex={1}>
+            <Typography fontSize={"13px"} sx={{ opacity: ".4" }}>
+              Available to withdraw
+            </Typography>
+            <Typography fontSize={"18px"}>
+              {isHideValue ? "******" : usdFormatter.format(availableWithdraw)}
+            </Typography>
           </Stack>
         </Stack>
-
-        <Stack flex={1}>
-          <Typography fontSize={"13px"} sx={{ opacity: ".4" }}>
-            Available to withdraw
-          </Typography>
-          <Typography fontSize={"18px"}>
-            {usdFormatter.format(availableWithdraw)}
-          </Typography>
-        </Stack>
-      </Stack>
+      )}
 
       <DepositWithdrawDialog
         open={isOpenDeposit}

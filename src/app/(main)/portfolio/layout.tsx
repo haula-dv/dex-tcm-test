@@ -1,6 +1,8 @@
 "use client";
-import IconExplane from "@/components/icons/explane";
-import IconSetting from "@/components/icons/setting";
+import IconCollapes from "@/components/icons/collapse";
+import IconFeetier from "@/components/icons/feetier";
+import IconSettings from "@/components/icons/settings";
+import IconUser from "@/components/icons/user";
 import "@/styles/global.scss";
 import { setColorThemeMode } from "@/utils/helpers";
 import { TSizes } from "@/utils/themes/custom-theme/sizes";
@@ -17,11 +19,7 @@ import {
   useTheme,
 } from "@mui/material";
 import "@orderly.network/react/dist/styles.css";
-import {
-  IconCalculatorFilled,
-  IconReservedLine,
-  IconUserSquare,
-} from "@tabler/icons-react";
+import { IconReservedLine } from "@tabler/icons-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useState } from "react";
@@ -37,7 +35,7 @@ export default function RootLayout({
     {
       label: "Overview",
       path: "/portfolio",
-      icon: <IconUserSquare size={"1.2rem"} />,
+      icon: <IconUser />,
     },
     {
       label: "Positions",
@@ -47,12 +45,12 @@ export default function RootLayout({
     {
       label: "Fee tier",
       path: "/portfolio/fee-tier",
-      icon: <IconCalculatorFilled size={"1.2rem"} />,
+      icon: <IconFeetier />,
     },
     {
       label: "Setting",
       path: "/portfolio/setting",
-      icon: <IconSetting />,
+      icon: <IconSettings />,
     },
   ];
 
@@ -99,7 +97,7 @@ export default function RootLayout({
                 setIsCollapse(!isCollapse);
               }}
             >
-              <IconExplane />
+              <IconCollapes />
             </IconButton>
           )}
         </Stack>

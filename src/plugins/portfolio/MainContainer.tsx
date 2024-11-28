@@ -31,6 +31,7 @@ const PortfolioMainContainer = () => {
   const [dailys, setDailys] = useState([]);
   const [isloading, setIsLoading] = useState(true);
   const [currentDate, setCurrentDate] = useState(7);
+  const [isHideValue, setIsHideValue] = useState(false);
 
   const handleChangeRange = (dateNum: number) => {
     setCurrentDate(Number(dateNum));
@@ -71,7 +72,10 @@ const PortfolioMainContainer = () => {
 
       <Grid container spacing={1}>
         <Grid item xs={12} md={6}>
-          <OverviewContent />
+          <OverviewContent
+            isHideValue={isHideValue}
+            setIsHideValue={setIsHideValue}
+          />
         </Grid>
 
         <Grid item xs={12} md={6}>
@@ -87,6 +91,7 @@ const PortfolioMainContainer = () => {
             dailys={dailys}
             handleChangeRange={handleChangeRange}
             currentDate={currentDate}
+            isHideValue={isHideValue}
           />
         </Grid>
         <Grid item xs={12} md={12}>
