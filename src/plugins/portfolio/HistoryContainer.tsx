@@ -3,8 +3,16 @@ import MainCard from "@/components/card/MainCard";
 import { setColorThemeMode } from "@/utils/helpers";
 import TabContext from "@mui/lab/TabContext";
 import TabPanel from "@mui/lab/TabPanel";
-import { Button, Stack, useTheme } from "@mui/material";
+import {
+  Box,
+  Button,
+  Divider,
+  Stack,
+  Typography,
+  useTheme,
+} from "@mui/material";
 import { IconArrowsLeftRight, IconCalculatorFilled } from "@tabler/icons-react";
+import { useConnectWallet } from "@web3-onboard/react";
 import { memo, useState } from "react";
 import DepositsWithdrawalsContainer from "./DepositsWithdrawalsContainer";
 import FundingContainer from "./FundingContainer";
@@ -21,12 +29,17 @@ const PortfolioMobileContainer = () => {
     },
   ];
   const theme = useTheme();
+  const [{ wallet, connecting }, connect, disconnect] = useConnectWallet();
 
   const [currentTab, setCurrentTab] = useState("deposite");
   const handleOnChange = (tab: string) => {
     setCurrentTab(tab);
   };
-
+  // Handle connect wallet button
+  const handleConnectWallet = async () => {
+    await connect();
+    location.reload();
+  };
   return (
     <>
       <MainCard backgroudColor="primary">
@@ -97,15 +110,38 @@ const PortfolioMobileContainer = () => {
   </Stack>
 </Stack> */}
 
-        <TabContext value={currentTab}>
-          <TabPanel value={"deposite"} sx={{ p: 0 }}>
-            <DepositsWithdrawalsContainer />
-          </TabPanel>
+        {wallet ? (
+          <TabContext value={currentTab}>
+            <TabPanel value={"deposite"} sx={{ p: 0 }}>
+              <DepositsWithdrawalsContainer />
+            </TabPanel>
 
-          <TabPanel value={"funding"} sx={{ p: 0 }}>
-            <FundingContainer />
-          </TabPanel>
-        </TabContext>
+            <TabPanel value={"funding"} sx={{ p: 0 }}>
+              <FundingContainer />
+            </TabPanel>
+          </TabContext>
+        ) : (
+          <>
+            <Divider />
+            <Box
+              flexDirection={"column"}
+              display={"flex"}
+              justifyContent={"center"}
+              alignItems={"center"}
+              height={"180px"}
+              pt={2}
+            >
+              <Box>
+                <Button onClick={handleConnectWallet} variant="contained">
+                  Connect wallet
+                </Button>
+              </Box>
+              <Typography fontSize={"12px"} sx={{ opacity: ".5" }}>
+                Please Connect wallet before starting to trade
+              </Typography>
+            </Box>
+          </>
+        )}
       </MainCard>
 
       {/* <TabContext value={currentTab}>

@@ -45,6 +45,9 @@ const PortfolioMainContainer = () => {
   };
 
   const fetchDailyStatistic = async () => {
+    if (!wallet) {
+      return;
+    }
     const queryString = new URLSearchParams(
       Object.fromEntries(
         Object.entries(filter).map(([key, value]) => [key, String(value)])
@@ -64,7 +67,7 @@ const PortfolioMainContainer = () => {
   useEffect(() => {
     fetchDailyStatistic();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [filter]);
+  }, [filter, wallet]);
 
   return (
     <>

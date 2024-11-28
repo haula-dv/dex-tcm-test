@@ -103,6 +103,12 @@ const OverviewContent = ({ isHideValue, setIsHideValue }: any) => {
 
   const unrealPnLPercentage: number = (unrealPnL / totalValue) * 100;
 
+  // Handle connect wallet button
+  const handleConnectWallet = async () => {
+    await connect();
+    location.reload();
+  };
+
   return (
     <MainCard backgroudColor="primary" height="220px">
       <Stack
@@ -163,7 +169,7 @@ const OverviewContent = ({ isHideValue, setIsHideValue }: any) => {
       <Box pt={1} />
 
       {!wallet ? (
-        <Button variant="contained" fullWidth>
+        <Button variant="contained" fullWidth onClick={handleConnectWallet}>
           Connect wallet
         </Button>
       ) : (

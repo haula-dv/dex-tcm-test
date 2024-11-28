@@ -109,12 +109,12 @@ const PerformanceContent = ({
                 {item.label}
               </Typography>
 
-              <Typography
+              <Box
                 fontSize={"18px"}
                 color={index == 2 ? "" : theme.palette.success.main}
               >
                 {item.value}
-              </Typography>
+              </Box>
             </MainCard>
           </Grid>
         ))}
