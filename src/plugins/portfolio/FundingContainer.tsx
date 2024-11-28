@@ -8,7 +8,6 @@ import { setColorThemeMode } from "@/utils/helpers";
 import { TSizes } from "@/utils/themes/custom-theme/sizes";
 import {
   Box,
-  Button,
   List,
   Pagination,
   Stack,
@@ -23,7 +22,6 @@ import {
   useTheme,
 } from "@mui/material";
 import { Select } from "@orderly.network/react";
-import { IconCalendar, IconChevronDown } from "@tabler/icons-react";
 import { useConnectWallet } from "@web3-onboard/react";
 import dayjs from "dayjs";
 import Image from "next/image";
@@ -95,7 +93,7 @@ const FundingContainer = () => {
       <Stack direction={"row"} spacing={1} pb={"6px"}>
         <Select value={currentSide} className="main-select" options={type} />
 
-        <Button
+        {/* <Button
           size="small"
           variant="outlined"
           sx={{ height: "30px !important" }}
@@ -103,7 +101,7 @@ const FundingContainer = () => {
           endIcon={<IconChevronDown size={"1rem"} />}
         >
           2024/11/12 - 2024/11/26
-        </Button>
+        </Button> */}
       </Stack>
 
       {!mdDown ? (

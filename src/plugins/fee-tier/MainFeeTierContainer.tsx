@@ -1,6 +1,7 @@
 "use client";
 import { MainButton } from "@/components/button/MainButton";
 import MainCard from "@/components/card/MainCard";
+import IconCollapes from "@/components/icons/collapse";
 import {
   Box,
   Grid,
@@ -104,7 +105,7 @@ const MainFeeTierContainer = () => {
   ];
 
   return (
-    <MainCard backgroudColor="common">
+    <MainCard backgroudColor="common" height="100%">
       <Stack direction={"row"} justifyContent={"space-between"} pb={2}>
         <Typography fontSize={"18px"}>Fee tier</Typography>
         <Typography sx={{ opacity: ".5" }}>
@@ -134,7 +135,7 @@ const MainFeeTierContainer = () => {
                 <TableCell>Tier</TableCell>
                 <TableCell align="center">30 day volume (USDC) </TableCell>
                 <TableCell align="center">or</TableCell>
-                <TableCell align="center">WOO staking level </TableCell>
+                <TableCell align="center">TCMP staking level </TableCell>
                 <TableCell align="right">Maker</TableCell>
                 <TableCell align="right">Taker</TableCell>
               </TableRow>
@@ -185,6 +186,7 @@ const MainFeeTierContainer = () => {
                       size="small"
                       variant="contained"
                       href="/trading/"
+                      startIcon={<IconCollapes />}
                     >
                       Trading
                     </MainButton>
@@ -192,17 +194,7 @@ const MainFeeTierContainer = () => {
                 </TableCell>
 
                 <TableCell align="center"></TableCell>
-                <TableCell align="center">
-                  <Box display={"flex"} justifyContent={"center"}>
-                    <MainButton
-                      size="small"
-                      variant="contained"
-                      href="/trading/"
-                    >
-                      Stake TCMP
-                    </MainButton>
-                  </Box>
-                </TableCell>
+                <TableCell align="center"></TableCell>
                 <TableCell align="right"></TableCell>
                 <TableCell align="right"></TableCell>
               </TableRow>

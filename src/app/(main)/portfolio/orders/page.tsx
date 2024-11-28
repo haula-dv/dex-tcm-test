@@ -1,10 +1,14 @@
 "use client";
-import MainPositionContainer from "@/plugins/positions/components/MainPositionContainer";
+import MainOrderContainer from "@/plugins/orders/components/MainOrderContainer";
+import Head from "next/head";
 
 const FeeTierPage = () => {
   return (
     <>
-      <MainPositionContainer />
+      <Head>
+        <title>Orders</title>
+      </Head>
+      <MainOrderContainer />
     </>
   );
 };

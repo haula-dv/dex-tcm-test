@@ -10,7 +10,6 @@ import { formatQty } from "@/utils/helpers/orderlyHelper";
 import { TSizes } from "@/utils/themes/custom-theme/sizes";
 import {
   Box,
-  Button,
   List,
   Pagination,
   Stack,
@@ -25,7 +24,7 @@ import {
   useTheme,
 } from "@mui/material";
 import { Select, toast } from "@orderly.network/react";
-import { IconCalendar, IconChevronDown, IconCopy } from "@tabler/icons-react";
+import { IconCopy } from "@tabler/icons-react";
 import { useConnectWallet } from "@web3-onboard/react";
 import dayjs from "dayjs";
 import Image from "next/image";
@@ -40,6 +39,7 @@ const DepositsWithdrawalsContainer = () => {
   const [rowsDeposite, setRowsDeposite] = useState([]);
   const [rowsDepositeLoading, setRowsDepositeLoading] = useState(true);
   const [total, setTotal] = useState(0);
+
   const [filter, setFilter] = useState<any>({
     page: 1,
     size: 10,
@@ -104,6 +104,15 @@ const DepositsWithdrawalsContainer = () => {
     });
   };
 
+  const handleChangeDate = (dateInfo: any) => {
+    console.log("dateInfo");
+    // setFilter({
+    //   ...filter,
+    //   start_t: dayjs(dateInfo.from).valueOf(),
+    //   end_t: dayjs(dateInfo.to).valueOf(),
+    // });
+  };
+
   const totalCount = useMemo(() => {
     return Math.ceil(total / currentSize);
   }, [total, currentSize]);
@@ -120,20 +129,22 @@ const DepositsWithdrawalsContainer = () => {
           options={type}
         />
 
-        <Button
-          size="small"
-          variant="outlined"
-          sx={{ height: "30px !important" }}
-          startIcon={<IconCalendar size={"1rem"} />}
-          endIcon={<IconChevronDown size={"1rem"} />}
-        >
-          2024/11/12 - 2024/11/26
-        </Button>
+        {/* <LocalizationProvider dateAdapter={AdapterDayjs}>
+          <DatePicker
+            onNextClick={handleChangeDate}
+            className="custom-date-range"
+          />
+        </LocalizationProvider> */}
       </Stack>
 
       {!mdDown ? (
         <>
-          <MainCard variant="outlined" backgroudColor="primary" disablePadding>
+          <MainCard
+            variant="outlined"
+            backgroudColor="primary"
+            disablePadding
+            minHeight="300px"
+          >
             <TableContainer>
               <Table
                 aria-labelledby="tableTitle"

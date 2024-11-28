@@ -43,6 +43,11 @@ export default function RootLayout({
       icon: <IconReservedLine />,
     },
     {
+      label: "Orders",
+      path: "/portfolio/orders",
+      icon: <IconReservedLine />,
+    },
+    {
       label: "Fee tier",
       path: "/portfolio/fee-tier",
       icon: <IconFeetier />,

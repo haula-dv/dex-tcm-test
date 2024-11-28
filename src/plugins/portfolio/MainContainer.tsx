@@ -68,7 +68,7 @@ const PortfolioMainContainer = () => {
 
   return (
     <>
-      <HeadPage title="Portfolio - Dex Tcmp" />
+      <HeadPage title="Portfolio" />
 
       <Grid container spacing={1}>
         <Grid item xs={12} md={6}>
