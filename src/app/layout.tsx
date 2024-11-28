@@ -5,11 +5,6 @@ import React from "react";
 import "react-toastify/dist/ReactToastify.css";
 import { Toaster } from "sonner";
 
-// export const metadata: Metadata = {
-//   title: "Dex",
-//   description: "Dex",
-// };
-
 export default function RootLayout({
   children,
 }: Readonly<{

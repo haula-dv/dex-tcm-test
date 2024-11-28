@@ -4,11 +4,7 @@ import { setColorThemeMode } from "@/utils/helpers";
 import TabContext from "@mui/lab/TabContext";
 import TabPanel from "@mui/lab/TabPanel";
 import { Button, Stack, useTheme } from "@mui/material";
-import {
-  IconArrowsLeftRight,
-  IconCalculatorFilled,
-  IconDatabase,
-} from "@tabler/icons-react";
+import { IconArrowsLeftRight, IconCalculatorFilled } from "@tabler/icons-react";
 import { memo, useState } from "react";
 import DepositsWithdrawalsContainer from "./DepositsWithdrawalsContainer";
 import FundingContainer from "./FundingContainer";
@@ -68,7 +64,7 @@ const PortfolioMobileContainer = () => {
           >
             Funding
           </Button>
-          <Button
+          {/* <Button
             variant="filledTonal"
             startIcon={<IconDatabase size={"1.2rem"} />}
             sx={{
@@ -80,7 +76,7 @@ const PortfolioMobileContainer = () => {
             }}
           >
             Distribution
-          </Button>
+          </Button> */}
         </Stack>
         {/* 
 <Stack

@@ -149,7 +149,18 @@ const AccountDetailMobile = ({ handleClose, open }: any) => {
       to: "/trading/perp",
       actived: [`/trading/perp/${params.symbol}`],
     },
-    { label: "Portfolio", to: "/portfolio", actived: ["/portfolio"] },
+    {
+      label: "Portfolio",
+      to: "/portfolio",
+      actived: [
+        "/portfolio",
+        "/portfolio/api-key",
+        "/portfolio/fee-tier",
+        "/portfolio/orders",
+        "/portfolio/positions",
+        "/portfolio/setting",
+      ],
+    },
   ];
 
   return (

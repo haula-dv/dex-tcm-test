@@ -25,7 +25,18 @@ export const Header = () => {
       to: "/trading/perp",
       actived: [`/trading/perp/${params.symbol}`],
     },
-    { label: "Portfolio", to: "/portfolio", actived: ["/portfolio"] },
+    {
+      label: "Portfolio",
+      to: "/portfolio",
+      actived: [
+        "/portfolio",
+        "/portfolio/api-key",
+        "/portfolio/fee-tier",
+        "/portfolio/orders",
+        "/portfolio/positions",
+        "/portfolio/setting",
+      ],
+    },
   ];
 
   return (
@@ -44,31 +55,6 @@ export const Header = () => {
               spacing={TSizes.margin_md}
             >
               <Logo width="80px" height="40px" />
-
-              {/* <Stack
-								direction={'row'}
-								border={2}
-								borderColor={setColorThemeMode(useTheme().palette.grey[600], '#fff')}
-								borderRadius={TSizes.borderRadius}
-								overflow={'hidden'}
-							>
-								{navItems.slice(0, 2).map((item, index) => (
-									<Link key={item.label} href={item.to}>
-										<MainButton
-											variant={item.actived.includes(pathName) ? 'contained' : 'text'}
-											color={
-												item.actived.includes(pathName)
-													? setColorThemeMode('darkGrey', 'white')
-													: setColorThemeMode('darkGrey', 'inherit')
-											}
-											size="small"
-											sx={{ fontSize: '14px', fontWeight: 700 }}
-										>
-											{item.label}
-										</MainButton>
-									</Link>
-								))}
-							</Stack> */}
 
               {navItems.map((navItem) => (
                 <Link key={navItem.label} href={navItem.to}>

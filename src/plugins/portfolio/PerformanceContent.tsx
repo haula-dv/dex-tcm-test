@@ -66,7 +66,17 @@ const PerformanceContent = ({
     },
     {
       label: `${currentDate}D PnL`,
-      value: isHideValue ? "*****" : `${totalPnl.toLocaleString()}`,
+      value: (
+        <Typography
+          color={
+            totalPnl <= 0
+              ? theme.palette.error.main
+              : theme.palette.success.main
+          }
+        >
+          {isHideValue ? "*****" : totalPnl.toLocaleString()}
+        </Typography>
+      ),
     },
     {
       label: `${currentDate}D Volume (USDC)`,

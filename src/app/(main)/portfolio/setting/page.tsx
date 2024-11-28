@@ -1,11 +1,13 @@
 "use client";
 import MainCard from "@/components/card/MainCard";
+import SwitchBase from "@/components/form-control/SwitcheBase";
+import { HeadPage } from "@/components/HeadPage";
 import { Divider, FormControl, Stack, Typography } from "@mui/material";
-import { Switch } from "@orderly.network/react";
 
 const FeeTierPage = () => {
   return (
     <MainCard backgroudColor="common">
+      <HeadPage title="Settings" />
       <Typography fontSize={"18px"} pb={2}>
         System upgrade
       </Typography>
@@ -27,7 +29,7 @@ const FeeTierPage = () => {
         </Stack>
 
         <FormControl>
-          <Switch checked />
+          <SwitchBase />
         </FormControl>
       </Stack>
     </MainCard>

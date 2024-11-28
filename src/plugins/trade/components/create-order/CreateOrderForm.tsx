@@ -2,7 +2,7 @@
 import { getDecimalsFromTick } from "@/utils/formatters/api";
 import { getInputPlaceOrder } from "@/utils/helpers";
 import { TSizes } from "@/utils/themes/custom-theme/sizes";
-import { Stack, Typography, useTheme } from "@mui/material";
+import { Stack, Typography, useMediaQuery, useTheme } from "@mui/material";
 import {
   useCollateral,
   useMarkPrice,
@@ -10,6 +10,7 @@ import {
   useSymbolsInfo,
   useWithdraw,
 } from "@orderly.network/hooks";
+import { toast } from "@orderly.network/react";
 import { OrderSide, OrderType } from "@orderly.network/types";
 import { useConnectWallet, useNotifications } from "@web3-onboard/react";
 import { memo, ReactNode, useState } from "react";
@@ -51,9 +52,11 @@ const CreateOrderForm = ({ symbol, isActiveTab = "Buy" }: IProps) => {
   const [_0, customNotification] = useNotifications();
   const [_, base, quote] = symbol.split("_");
   const { data: markPrice } = useMarkPrice(symbol);
+  const theme = useTheme();
 
   const symbolInfo = symbolsInfo[symbol]();
   const [baseDecimals, quoteDecimals] = getDecimalsFromTick(symbolInfo);
+  const mdUP = useMediaQuery(theme.breakpoints.up("md"));
 
   const defaultValues: IPlaceOrderValues = {
     direction: isActiveTab,
@@ -102,32 +105,18 @@ const CreateOrderForm = ({ symbol, isActiveTab = "Buy" }: IProps) => {
     const data = formContext.getValues();
     setLoading(true);
 
-    const { update } = customNotification({
-      eventCode: "createOrder",
-      type: "pending",
-      message: "Creating order...",
-    });
-
     if (data.type == "Market" || data.type == "StopMarket") {
       data.price = undefined;
     }
 
     try {
       await onSubmit(getInputPlaceOrder(data, symbol));
-      update({
-        eventCode: "createOrderSuccess",
-        type: "success",
-        message: "Order successfully created!",
-        autoDismiss: 5_000,
-      });
+
+      if (mdUP) {
+        toast.success("Order successfully created!");
+      }
     } catch (err) {
       console.error(`Unhandled error in "submitForm":`, err);
-      update({
-        eventCode: "createOrderError",
-        type: "error",
-        message: "Order creation failed!",
-        autoDismiss: 5_000,
-      });
     } finally {
       setLoading(false);
       setOpenOrderConfirm(false);

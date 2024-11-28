@@ -165,7 +165,11 @@ const MainFeeTierContainer = () => {
                         <Typography fontSize={"12px"}>
                           {item.staking.level}
                         </Typography>
-                        <Typography fontSize={"12px"} sx={{ opacity: ".5" }}>
+                        <Typography
+                          fontSize={"12px"}
+                          sx={{ opacity: ".5" }}
+                          whiteSpace={"nowrap"}
+                        >
                           {item.staking.des}
                         </Typography>
                       </>
