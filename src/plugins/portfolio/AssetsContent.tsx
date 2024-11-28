@@ -66,7 +66,11 @@ const AssetsContent = ({ dailys, handleChangeRange, currentDate }: IProps) => {
             <CartesianGrid
               horizontal={true} // Hiển thị lưới ngang
               vertical={false} // Tắt lưới dọc nếu không cần
-              stroke={theme.palette.grey[700]}
+              stroke={setColorThemeMode(
+                theme.palette.grey[200],
+                theme.palette.grey[700]
+              )}
+              strokeWidth={1}
             />
             <YAxis
               tick={{ fontSize: 10 }}

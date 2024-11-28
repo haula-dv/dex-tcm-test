@@ -77,7 +77,7 @@ export default function RootLayout({
         px={1}
         borderRadius={TSizes.borderRadius}
         bgcolor={setColorThemeMode(
-          theme.palette.primary.light,
+          theme.palette.primary.main,
           theme.palette.grey[800]
         )}
         borderColor={theme.palette.divider}

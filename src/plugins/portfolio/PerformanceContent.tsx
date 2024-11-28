@@ -89,7 +89,10 @@ const PerformanceContent = ({
       <Grid container spacing={1}>
         {valuesDaily.map((item, index) => (
           <Grid key={index} item xs={12} md={4}>
-            <MainCard backgroudColor="common" variant="outlined">
+            <MainCard
+              backgroudColor={setColorThemeMode("primaryLight", "common")}
+              variant="outlined"
+            >
               <Typography fontSize={"12px"} sx={{ opacity: ".5" }}>
                 {item.label}
               </Typography>
@@ -110,7 +113,10 @@ const PerformanceContent = ({
             Daily PnL
           </Typography>
 
-          <MainCard variant="outlined" backgroudColor="common">
+          <MainCard
+            variant="outlined"
+            backgroudColor={setColorThemeMode("primaryLight", "common")}
+          >
             <Box height={"200px"}>
               <ResponsiveContainer width="100%" height="100%">
                 <BarChart
@@ -124,7 +130,11 @@ const PerformanceContent = ({
                   <CartesianGrid
                     horizontal={true} // Hiển thị lưới ngang
                     vertical={false} // Tắt lưới dọc nếu không cần
-                    stroke={theme.palette.grey[700]}
+                    stroke={setColorThemeMode(
+                      theme.palette.grey[100],
+                      theme.palette.grey[700]
+                    )}
+                    strokeWidth={1}
                   />
 
                   <YAxis tick={{ fontSize: 10 }} />
@@ -196,7 +206,10 @@ const PerformanceContent = ({
           <Typography pb={1} pt={2}>
             Cumulative PnL
           </Typography>
-          <MainCard variant="outlined" backgroudColor="common">
+          <MainCard
+            variant="outlined"
+            backgroudColor={setColorThemeMode("primaryLight", "common")}
+          >
             <Box height={"200px"}>
               <ResponsiveContainer width="100%" height="100%">
                 <LineChart
@@ -210,7 +223,11 @@ const PerformanceContent = ({
                   <CartesianGrid
                     horizontal={true} // Hiển thị lưới ngang
                     vertical={false} // Tắt lưới dọc nếu không cần
-                    stroke={theme.palette.grey[700]}
+                    strokeWidth={1}
+                    stroke={setColorThemeMode(
+                      theme.palette.grey[100],
+                      theme.palette.grey[700]
+                    )}
                   />
                   <YAxis
                     tick={{ fontSize: 10 }}
