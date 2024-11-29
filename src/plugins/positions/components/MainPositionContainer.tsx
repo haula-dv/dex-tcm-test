@@ -1,14 +1,16 @@
 import MainCard from "@/components/card/MainCard";
+import { OrderlyConfig } from "@/utils/config/orderly";
 import { Box, Typography, useMediaQuery, useTheme } from "@mui/material";
 import { usePositionStream } from "@orderly.network/hooks";
-import { PositionsView } from "@orderly.network/react";
 import { DataListView } from "@orderly.network/react/esm/page/trading/desktop/sections/datalist";
-import { memo, useEffect } from "react";
+import { MobileTradingPage } from "@orderly.network/react/esm/page/trading/mobile/trading";
+import { memo, useEffect, useState } from "react";
 
 const MainPositionContainer = () => {
   const [positions, _info, { refresh, loading }] = usePositionStream();
   const theme = useTheme();
   const mdDown = useMediaQuery(theme.breakpoints.down("md"));
+  const { tradingViewConfig } = OrderlyConfig();
 
   useEffect(() => {
     const dataListEl = document.querySelector(".data-list-view");
@@ -60,16 +62,71 @@ const MainPositionContainer = () => {
     }
   }, [mdDown]);
 
+  const [loading2, setLoading2] = useState(true);
+
+  useEffect(() => {
+    if (!mdDown) {
+      return;
+    }
+
+    const observer = new MutationObserver(() => {
+      setTimeout(() => {
+        const parentDivDataList = document.querySelector(
+          ".orderly-data-list-mobile-2"
+        );
+        const parentDivDataList2 = document.querySelector(
+          ".orderly-data-list-tab-bar"
+        );
+
+        const parentDiv = document.querySelector(".orderly-pb-\\[70px\\]");
+
+        if (parentDivDataList && parentDiv) {
+          if (parentDivDataList2) {
+            parentDivDataList2.remove();
+          }
+          Array.from(parentDiv.children).forEach((child) => {
+            if (child.id !== "orderly-data-list") {
+              child.remove();
+            }
+          });
+
+          observer.disconnect(); // Stop observing once the element is found
+        }
+      }, 1000);
+    });
+
+    observer.observe(document.body, { childList: true, subtree: true });
+
+    return () => observer.disconnect(); // Cleanup observer on unmount
+  }, [tradingViewConfig, mdDown]);
+
+  useEffect(() => {
+    setTimeout(() => {
+      setLoading2(false);
+    }, 1500);
+  }, []);
+
   return (
     <MainCard backgroudColor="primary" height="calc(100vh - 100px)">
       <Typography pb={{ xs: 2, md: 1 }}>Position</Typography>
 
       {mdDown ? (
-        <Box className="data-list-view-mobile">
-          <PositionsView
+        <Box className="data-list-view-mobile" sx={{ overflowY: "auto" }}>
+          {/* <PositionsView
             aggregated={positions.aggregated}
             dataSource={positions.rows}
-          />
+          /> */}
+
+          <Box
+            className="orderly-data-list-mobile-2"
+            height={loading2 ? "10px" : "auto"}
+            overflow={loading2 ? "hidden" : "auto"}
+          >
+            <MobileTradingPage
+              symbol={"PERP_ETH_USDC"}
+              tradingViewConfig={tradingViewConfig}
+            />
+          </Box>
         </Box>
       ) : (
         <Box className="data-list-view" height={"calc(100vh - 200px)"}>
