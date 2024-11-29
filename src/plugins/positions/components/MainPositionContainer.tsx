@@ -1,9 +1,15 @@
 import MainCard from "@/components/card/MainCard";
-import { Box, Typography } from "@mui/material";
+import { Box, Typography, useMediaQuery, useTheme } from "@mui/material";
+import { usePositionStream } from "@orderly.network/hooks";
+import { PositionsView } from "@orderly.network/react";
 import { DataListView } from "@orderly.network/react/esm/page/trading/desktop/sections/datalist";
 import { memo, useEffect } from "react";
 
 const MainPositionContainer = () => {
+  const [positions, _info, { refresh, loading }] = usePositionStream();
+  const theme = useTheme();
+  const mdDown = useMediaQuery(theme.breakpoints.down("md"));
+
   useEffect(() => {
     const dataListEl = document.querySelector(".data-list-view");
 
@@ -41,13 +47,35 @@ const MainPositionContainer = () => {
     }
   }, []);
 
+  useEffect(() => {
+    if (mdDown) {
+      const el = document.getElementById("orderly-data-list-positions-header");
+      const elf = document.querySelector(".orderly-data-list-filter");
+      if (el) {
+        el.remove();
+      }
+      if (elf) {
+        elf.remove();
+      }
+    }
+  }, [mdDown]);
+
   return (
     <MainCard backgroudColor="primary" height="calc(100vh - 100px)">
-      <Typography pb={1}>Position</Typography>
+      <Typography pb={{ xs: 2, md: 1 }}>Position</Typography>
 
-      <Box className="data-list-view" height={"calc(100vh - 200px)"}>
-        <DataListView />
-      </Box>
+      {mdDown ? (
+        <Box className="data-list-view-mobile">
+          <PositionsView
+            aggregated={positions.aggregated}
+            dataSource={positions.rows}
+          />
+        </Box>
+      ) : (
+        <Box className="data-list-view" height={"calc(100vh - 200px)"}>
+          <DataListView />
+        </Box>
+      )}
     </MainCard>
   );
 };
