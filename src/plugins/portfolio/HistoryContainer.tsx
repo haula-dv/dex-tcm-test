@@ -40,6 +40,7 @@ const PortfolioMobileContainer = () => {
     await connect();
     location.reload();
   };
+
   return (
     <>
       <MainCard backgroudColor="primary">

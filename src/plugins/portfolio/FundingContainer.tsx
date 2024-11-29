@@ -19,6 +19,7 @@ import {
   useMediaQuery,
   useTheme,
 } from "@mui/material";
+import { MarketsType, useMarkets } from "@orderly.network/hooks";
 import { Select } from "@orderly.network/react";
 import { useConnectWallet } from "@web3-onboard/react";
 import dayjs from "dayjs";
@@ -30,7 +31,7 @@ const FundingContainer = () => {
   const [rows, setRows] = useState<any[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const [{ wallet, connecting }, connect, disconnect] = useConnectWallet();
-  const [currentSide, setCurrentSide] = useState("all");
+  const [currentMarket, setCurrentSide] = useState("all");
   const [currentSize, setCurrentSize] = useState(10);
   const [total, setTotal] = useState(0);
 
@@ -68,6 +69,26 @@ const FundingContainer = () => {
     setCurrentSize(Number(size));
   };
 
+  const onChangeMarket = (symbol: string) => {
+    if (symbol == "all") {
+      setFilter({
+        page: 1,
+        size: 10,
+      });
+
+      setCurrentSide(symbol);
+
+      return;
+    }
+
+    setFilter({
+      ...filter,
+      symbol: symbol,
+    });
+
+    setCurrentSide(symbol);
+  };
+
   useEffect(() => {
     onFetchAssetHistory();
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -86,10 +107,31 @@ const FundingContainer = () => {
 
   const mdDown = useMediaQuery(theme.breakpoints.down("md"));
 
+  const [markets] = useMarkets(MarketsType.ALL);
+
+  const newMarkets = useMemo(() => {
+    if (markets.length > 0) {
+      return markets.map((market) => {
+        const [a, b, c] = market.symbol.split("_");
+        return {
+          label: b,
+          value: market.symbol,
+        };
+      });
+    }
+
+    return [];
+  }, [markets]);
+
   return (
     <>
       <Stack direction={"row"} spacing={1} pb={"6px"}>
-        <Select value={currentSide} className="main-select" options={type} />
+        <Select
+          value={currentMarket}
+          className="main-select"
+          options={[{ label: "All", value: "all" }, ...newMarkets]}
+          onChange={onChangeMarket}
+        />
 
         {/* <Button
           size="small"
