@@ -11,7 +11,7 @@ export const HeadPage: React.FC<MyPageSeoProps> = (props) => {
 
   return (
     <>
-      <title>{`${title} | TCMP Dex Trading`}</title>
+      <title>{`${title} | Bazaarex`}</title>
       <meta name="description" content={description} />
     </>
   );
