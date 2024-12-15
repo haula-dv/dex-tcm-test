@@ -129,9 +129,9 @@ const SymbolHeader = ({ onSymbolChange, symbol }: IProps) => {
     <>
       <HeadPage
         title={`${
-          isNaN(stream?.["24h_close"])
+          isNaN(stream?.mark_price)
             ? "--"
-            : usdFormatter.format(stream?.["24h_close"])
+            : usdFormatter.format(stream?.mark_price)
         } | ${base}-${perp}`}
       />
 
@@ -181,7 +181,7 @@ const SymbolHeader = ({ onSymbolChange, symbol }: IProps) => {
           pr={1}
         >
           <Typography fontWeight={600} pr={1} whiteSpace={"nowrap"}>
-            {stream ? usdFormatter.format(stream?.["24h_close"]) : "_"}
+            {stream ? usdFormatter.format(stream?.mark_price) : "_"}
           </Typography>
 
           <Stack direction={"row"} spacing={2}>
