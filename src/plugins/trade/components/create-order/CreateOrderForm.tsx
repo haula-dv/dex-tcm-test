@@ -126,7 +126,7 @@ const CreateOrderForm = ({ symbol, isActiveTab = "Buy" }: IProps) => {
   return (
     <>
       <Balance
-        availableWithdraw={collateral.availableBalance}
+        availableWithdraw={availableWithdraw}
         quote={quote}
         wallet={wallet}
         isFristLoading={symbolsInfo.isNil}
@@ -142,7 +142,10 @@ const CreateOrderForm = ({ symbol, isActiveTab = "Buy" }: IProps) => {
             wallet={wallet}
           />
 
-          <AvailableWithdraw balance={availableWithdraw} quote={quote} />
+          <AvailableWithdraw
+            balance={collateral.availableBalance}
+            quote={quote}
+          />
 
           <OrderTypeTab formContext={formContext} />
 
