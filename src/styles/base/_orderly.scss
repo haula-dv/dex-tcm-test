@@ -1,109 +1,109 @@
 .orderly-input-container.orderly-color-base-900 {
-	background-color: #e9e4de !important;
+  background-color: #e9e4de !important;
 }
 
 .light {
-	.orderly-border-divider {
-		border-color: var(--grey50) !important;
-	}
+  .orderly-border-divider {
+    border-color: var(--grey50) !important;
+  }
 }
 
 .orderly-text-trade-loss {
-	color: var(--errorDark) !important;
+  color: var(--errorDark) !important;
 }
 
 .orderly-bg-base-600 {
-	// background-color: #fff !important;
+  // background-color: #fff !important;
 }
 
 .orderly-input-container.orderly-outline-primary {
-	outline: none !important;
-	// outline-color: var(--grey600);
+  outline: none !important;
+  // outline-color: var(--grey600);
 }
 
 .dark.market-popup {
-	.orderly-border-divider {
-		margin: 0px !important;
-		border-color: var(--grey600) !important;
-	}
+  .orderly-border-divider {
+    margin: 0px !important;
+    border-color: var(--grey600) !important;
+  }
 
-	.orderly-input-container {
-		background-color: var(--grey800) !important;
-	}
+  .orderly-input-container {
+    background-color: var(--grey700) !important;
+  }
 
-	span {
-		color: var(--grey50);
-	}
+  span {
+    color: var(--grey50);
+  }
 }
 
 .market-popup {
-	#orderly-markets-sheet-title {
-		padding-top: 4px;
-		padding-bottom: 10px;
-	}
+  #orderly-markets-sheet-title {
+    padding-top: 4px;
+    padding-bottom: 10px;
+  }
 
-	.orderly-py-\[16px\] {
-		padding: 0px !important;
-	}
+  .orderly-py-\[16px\] {
+    padding: 0px !important;
+  }
 
-	.orderly-space-y-\[16px\] > :not([hidden]) ~ :not([hidden]) {
-		margin-top: 6px;
-		margin-bottom: 6px;
-	}
+  .orderly-space-y-\[16px\] > :not([hidden]) ~ :not([hidden]) {
+    margin-top: 6px;
+    margin-bottom: 6px;
+  }
 }
 
 .light.market-popup {
-	.orderly-border-divider {
-		margin: 0px !important;
-	}
+  .orderly-border-divider {
+    margin: 0px !important;
+  }
 
-	.orderly-text-base-contrast {
-		color: var(--grey900);
-	}
+  .orderly-text-base-contrast {
+    color: var(--grey900);
+  }
 
-	.orderly-text-base-contrast-36 {
-		color: var(--grey900);
-	}
+  .orderly-text-base-contrast-36 {
+    color: var(--grey900);
+  }
 
-	.orderly-text-base-contrast-54 {
-		color: var(--grey600);
-	}
+  .orderly-text-base-contrast-54 {
+    color: var(--grey600);
+  }
 
-	.orderly-input-container {
-		background-color: var(--primaryLight) !important;
+  .orderly-input-container {
+    background-color: var(--primaryLight) !important;
 
-		&.orderly-color-base-900 {
-			background-color: #e9e4de !important;
-		}
+    &.orderly-color-base-900 {
+      background-color: #e9e4de !important;
+    }
 
-		&.orderly-outline-primary {
-			outline-color: var(--primaryMain);
-		}
+    &.orderly-outline-primary {
+      outline-color: var(--primaryMain);
+    }
 
-		svg {
-			color: var(--grey900);
-		}
+    svg {
+      color: var(--grey900);
+    }
 
-		input {
-			color: var(--grey900);
+    input {
+      color: var(--grey900);
 
-			&::-webkit-input-placeholder {
-				color: var(--grey500);
-			}
-		}
-	}
+      &::-webkit-input-placeholder {
+        color: var(--grey500);
+      }
+    }
+  }
 }
 
 .dark {
-	.MuiTableCell-root {
-		color: var(--grey50);
-	}
+  .MuiTableCell-root {
+    color: var(--grey50);
+  }
 }
 
 .orderly-dialog-content {
-	background-color: var(--grey800) !important;
+  background-color: var(--grey800) !important;
 
-	.orderly-dialog-title {
-		color: var(--grey50) !important;
-	}
+  .orderly-dialog-title {
+    color: var(--grey50) !important;
+  }
 }
