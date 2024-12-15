@@ -1,7 +1,5 @@
 "use client";
-import { MainButton } from "@/components/button/MainButton";
 import MainCard from "@/components/card/MainCard";
-import IconCollapes from "@/components/icons/collapse";
 import {
   Box,
   Grid,
@@ -134,8 +132,6 @@ const MainFeeTierContainer = () => {
               <TableRow>
                 <TableCell>Tier</TableCell>
                 <TableCell align="center">30 day volume (USDC) </TableCell>
-                <TableCell align="center">or</TableCell>
-                <TableCell align="center">TCMP staking level </TableCell>
                 <TableCell align="right">Maker</TableCell>
                 <TableCell align="right">Taker</TableCell>
               </TableRow>
@@ -143,11 +139,7 @@ const MainFeeTierContainer = () => {
 
             <TableBody>
               {data.map((item, index) => (
-                <TableRow
-                  key={index}
-                  hover
-                  sx={{ bgcolor: index == 0 ? theme.palette.success.main : "" }}
-                >
+                <TableRow key={index}>
                   <TableCell>
                     <Box
                       sx={{ minHeight: "50px" }}
@@ -158,50 +150,10 @@ const MainFeeTierContainer = () => {
                     </Box>
                   </TableCell>
                   <TableCell align="center">{item.volume}</TableCell>
-                  <TableCell align="center">/</TableCell>
-                  <TableCell align="center">
-                    {item.staking ? (
-                      <>
-                        <Typography fontSize={"12px"}>
-                          {item.staking.level}
-                        </Typography>
-                        <Typography
-                          fontSize={"12px"}
-                          sx={{ opacity: ".5" }}
-                          whiteSpace={"nowrap"}
-                        >
-                          {item.staking.des}
-                        </Typography>
-                      </>
-                    ) : (
-                      "--"
-                    )}
-                  </TableCell>
                   <TableCell align="right">{item.maker}</TableCell>
                   <TableCell align="right">{item.Ttaker}</TableCell>
                 </TableRow>
               ))}
-
-              <TableRow>
-                <TableCell></TableCell>
-                <TableCell align="center">
-                  <Box display={"flex"} justifyContent={"center"}>
-                    <MainButton
-                      size="small"
-                      variant="contained"
-                      href="/trading/"
-                      startIcon={<IconCollapes />}
-                    >
-                      Trading
-                    </MainButton>
-                  </Box>
-                </TableCell>
-
-                <TableCell align="center"></TableCell>
-                <TableCell align="center"></TableCell>
-                <TableCell align="right"></TableCell>
-                <TableCell align="right"></TableCell>
-              </TableRow>
             </TableBody>
           </Table>
         </TableContainer>
