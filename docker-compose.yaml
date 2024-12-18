@@ -1,0 +1,16 @@
+version: "3"
+services:
+  bazaarex:
+    container_name: bazaarex
+    build:
+      context: .
+      dockerfile: ./docker/Dockerfile
+    ports:
+      - 3200:3000
+    volumes:
+      - .:/app:rw
+      - /app/node_modules
+    environment:
+      GENERATE_SOURCEMAP: false
+      API_URL: "http://localhost:8057"
+    command: sh -c "yarn install && yarn build && yarn start"
