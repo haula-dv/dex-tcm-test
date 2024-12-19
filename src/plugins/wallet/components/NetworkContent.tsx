@@ -54,17 +54,17 @@ function NetworkContent() {
       await setChain({
         chainId: chainId,
         chainNamespace: "evm",
+      }).then((res) => {
+        localStorage.setItem(
+          TLocalStorage.DEX_ORDERLY_NETWORK,
+          isTestnet ? "testnet" : "mainnet"
+        );
+
+        // realod page
+        setTimeout(() => {
+          window.location.reload();
+        }, 100);
       });
-
-      localStorage.setItem(
-        TLocalStorage.DEX_ORDERLY_NETWORK,
-        isTestnet ? "testnet" : "mainnet"
-      );
-
-      // realod page
-      setTimeout(() => {
-        window.location.reload();
-      }, 100);
     },
     [setChain, wallet]
   );

@@ -19,8 +19,11 @@ function HeaderMobile() {
 
   // Handle connect wallet button
   const handleConnectWallet = async () => {
-    await connect();
-    location.reload();
+    await connect().then((res) => {
+      if (res && res.length > 0) {
+        location.reload();
+      }
+    });
   };
   return (
     <MainAppBar elevation={0} position="sticky">
