@@ -148,6 +148,36 @@ export function OrderlyConfig(ctx?: { url: string; domain: string }) {
         label: "Base Goerli",
         rpcUrl: "https://goerli.base.org",
       },
+      {
+        id: 421614,
+        token: "ETH",
+        label: "Arbitrum Sepolia",
+        rpcUrl: "https://arbitrum-sepolia.gateway.tenderly.co",
+      },
+      {
+        id: 2818,
+        token: "ETH",
+        label: "Morph",
+        rpcUrl: "https://rpc-quicknode.morphl2.io",
+      },
+      {
+        id: 900900900,
+        token: "SOL",
+        label: "Solana",
+        rpcUrl: "https://api.mainnet-beta.solana.co",
+      },
+      {
+        id: 43114,
+        token: "AVAX",
+        label: "Avalanche",
+        rpcUrl: "https://avalanche-c-chain-rpc.publicnode.com",
+      },
+      {
+        id: 1329,
+        token: "SEI",
+        label: "Sei Network",
+        rpcUrl: "https://evm-rpc.sei-apis.com",
+      },
     ],
   };
 
