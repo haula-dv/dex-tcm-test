@@ -52,8 +52,11 @@ export default function WalletContainer() {
 
   // Handle connect wallet button
   const handleConnectWallet = async () => {
-    await connect();
-    location.reload();
+    await connect().then((res) => {
+      if (res && res.length > 0) {
+        location.reload();
+      }
+    });
   };
 
   // Handle close menu account
@@ -172,12 +175,19 @@ export default function WalletContainer() {
                 alignItems={"center"}
                 justifyContent={"center"}
               >
-                <Image
-                  src={wallet.icon}
-                  height={20}
-                  width={20}
-                  alt={wallet.label}
-                />
+                {wallet.icon.startsWith("data:image") ? (
+                  <Image
+                    src={wallet.icon}
+                    height={20}
+                    width={20}
+                    alt={wallet.label}
+                  />
+                ) : (
+                  <div
+                    style={{ padding: "6px" }}
+                    dangerouslySetInnerHTML={{ __html: wallet.icon }}
+                  ></div>
+                )}
               </Box>
             </>
           )}

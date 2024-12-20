@@ -7,60 +7,67 @@ import { IconArrowRight } from "@tabler/icons-react";
 import { useConnectWallet } from "@web3-onboard/react";
 
 interface IProps {
-	estLeverage: number | any | undefined;
-	estLiqPrice: number | any | undefined;
-	quote?: string;
-	symbol: string;
-	quoteDecimals: number;
-	direction: any;
-	openOrderConfirm?: boolean;
+  estLeverage: number | any | undefined;
+  estLiqPrice: number | any | undefined;
+  quote?: string;
+  symbol: string;
+  quoteDecimals: number;
+  direction: any;
+  openOrderConfirm?: boolean;
 }
 
 const Details = ({
-	estLeverage,
-	estLiqPrice,
-	quoteDecimals,
-	quote,
-	direction,
-	openOrderConfirm,
+  estLeverage,
+  estLiqPrice,
+  quoteDecimals,
+  quote,
+  direction,
+  openOrderConfirm,
 }: IProps) => {
-	const [{ wallet, connecting }, connect] = useConnectWallet();
-	const { currentLeverage, mmr } = useMarginRatio();
+  const [{ wallet, connecting }, connect] = useConnectWallet();
+  const { currentLeverage, mmr } = useMarginRatio();
 
-	// Handle connect wallet button
-	const handleConnectWallet = async () => {
-		await connect();
-		location.reload();
-	};
+  // Handle connect wallet button
+  const handleConnectWallet = async () => {
+    await connect().then((res) => {
+      if (res && res.length > 0) {
+        location.reload();
+      }
+    });
+  };
 
-	const formatter = new Intl.NumberFormat("en-US", { maximumFractionDigits: quoteDecimals });
+  const formatter = new Intl.NumberFormat("en-US", {
+    maximumFractionDigits: quoteDecimals,
+  });
 
-	return (
-		<MainCard width="100%" backgroudColor="primaryLight">
-			<Typography pb={"10px"}>Details</Typography>
+  return (
+    <MainCard width="100%" backgroudColor="primaryLight">
+      <Typography pb={"10px"}>Details</Typography>
 
-			<Stack spacing={"6px"} pb={"10px"}>
-				<ItemRow
-					title="Est. Liq. price"
-					value={
-						<>
-							{estLiqPrice ? formatter.format(estLiqPrice) : "-"} {quote}
-						</>
-					}
-				/>
+      <Stack spacing={"6px"} pb={"10px"}>
+        <ItemRow
+          title="Est. Liq. price"
+          value={
+            <>
+              {estLiqPrice ? formatter.format(estLiqPrice) : "-"} {quote}
+            </>
+          }
+        />
 
-				<ItemRow
-					title="Account leverage"
-					value={
-						<Stack direction={"row"} spacing={"6px"} alignItems={"center"}>
-							<Typography>{formatter.format(Math.abs(currentLeverage))}x</Typography>
-							{estLeverage ? <IconArrowRight size={"0.7rem"} /> : ""}
-							<Typography>{estLeverage ? `${estLeverage}x` : ""}</Typography>
-						</Stack>
-					}
-				/>
+        <ItemRow
+          title="Account leverage"
+          value={
+            <Stack direction={"row"} spacing={"6px"} alignItems={"center"}>
+              <Typography>
+                {formatter.format(Math.abs(currentLeverage))}x
+              </Typography>
+              {estLeverage ? <IconArrowRight size={"0.7rem"} /> : ""}
+              <Typography>{estLeverage ? `${estLeverage}x` : ""}</Typography>
+            </Stack>
+          }
+        />
 
-				{/* <ItemRow title="Expected Price" value={estLiqPrice ? formatter.format(estLiqPrice) : '-'} />
+        {/* <ItemRow title="Expected Price" value={estLiqPrice ? formatter.format(estLiqPrice) : '-'} />
 
 				<ItemRow title="Price Impact" value={priceImpact ?? '_'} />
 
@@ -97,21 +104,22 @@ const Details = ({
 						</Box>
 					}
 				/> */}
-			</Stack>
+      </Stack>
 
-			<MainButton
-				fullWidth
-				variant="contained"
-				color={direction == "Sell" ? "error" : "primary"}
-				type={wallet ? "submit" : "button"}
-				disabled={openOrderConfirm}
-				onClick={() => {
-					return wallet ? null : handleConnectWallet();
-				}}>
-				{connecting ? "Connecting..." : wallet ? direction : "Connect wallet"}
-			</MainButton>
-		</MainCard>
-	);
+      <MainButton
+        fullWidth
+        variant="contained"
+        color={direction == "Sell" ? "error" : "primary"}
+        type={wallet ? "submit" : "button"}
+        disabled={openOrderConfirm}
+        onClick={() => {
+          return wallet ? null : handleConnectWallet();
+        }}
+      >
+        {connecting ? "Connecting..." : wallet ? direction : "Connect wallet"}
+      </MainButton>
+    </MainCard>
+  );
 };
 
 export default Details;

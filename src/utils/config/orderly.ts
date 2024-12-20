@@ -1,7 +1,9 @@
 import { Arbitrum, Base, Ethereum, Optimism } from "@orderly.network/types";
+import coinbaseModule from "@web3-onboard/coinbase";
 import injectedModule from "@web3-onboard/injected-wallets";
 import ledgerModule from "@web3-onboard/ledger";
 import metamaskModule from "@web3-onboard/metamask";
+import trustModule from "@web3-onboard/trust";
 import walletConnectModule from "@web3-onboard/walletconnect";
 import { AppInfo } from "../constants/key_store";
 
@@ -37,10 +39,12 @@ export function OrderlyConfig(ctx?: { url: string; domain: string }) {
   const walletConnect = walletConnectModule(wcV2InitOptions);
   const ledger = ledgerModule(ledgerInitOptions as any);
   const injected = injectedModule();
+  const coinbase = coinbaseModule();
+  const trust = trustModule();
 
   const initWeb3Onboard = {
     theme: "light",
-    wallets: [injected, walletConnect, ledger, metamask],
+    wallets: [injected, walletConnect, ledger, metamask, coinbase, trust],
     appMetadata: {
       name: AppInfo.BROKER_NAME,
       icon: "/Orderly.svg",
@@ -143,6 +147,36 @@ export function OrderlyConfig(ctx?: { url: string; domain: string }) {
         token: "ETH",
         label: "Base Goerli",
         rpcUrl: "https://goerli.base.org",
+      },
+      {
+        id: 421614,
+        token: "ETH",
+        label: "Arbitrum Sepolia",
+        rpcUrl: "https://arbitrum-sepolia.gateway.tenderly.co",
+      },
+      {
+        id: 2818,
+        token: "ETH",
+        label: "Morph",
+        rpcUrl: "https://rpc-quicknode.morphl2.io",
+      },
+      {
+        id: 900900900,
+        token: "SOL",
+        label: "Solana",
+        rpcUrl: "https://api.mainnet-beta.solana.co",
+      },
+      {
+        id: 43114,
+        token: "AVAX",
+        label: "Avalanche",
+        rpcUrl: "https://avalanche-c-chain-rpc.publicnode.com",
+      },
+      {
+        id: 1329,
+        token: "SEI",
+        label: "Sei Network",
+        rpcUrl: "https://evm-rpc.sei-apis.com",
       },
     ],
   };

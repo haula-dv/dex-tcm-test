@@ -43,6 +43,7 @@
     "@web3-onboard/ledger": "^2.7.1",
     "@web3-onboard/metamask": "^2.2.0",
     "@web3-onboard/portis": "^2.2.1",
+    "@web3-onboard/trust": "^2.1.2",
     "@web3-onboard/walletconnect": "^2.6.1",
     "@web3-onboard/web3auth": "^2.4.0",
     "@web3modal/wagmi": "^5.0.11",

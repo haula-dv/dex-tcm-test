@@ -77,13 +77,4 @@ export default withPWA({
       },
     ];
   },
-
-  // Các tùy chọn cấu hình khác nếu cần thiết
-  webpack(config, { isServer }) {
-    if (!isServer) {
-      // Các cấu hình riêng cho client-side (trình duyệt)
-      config.optimization.splitChunks.maxSize = 200000; // Giới hạn kích thước chunk tối đa
-    }
-    return config;
-  },
 });

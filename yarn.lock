@@ -4963,6 +4963,13 @@
     "@web3-onboard/core" "^2.21.5"
     use-sync-external-store "1.0.0"
 
+"@web3-onboard/trust@^2.1.2":
+  version "2.1.2"
+  resolved "https://registry.yarnpkg.com/@web3-onboard/trust/-/trust-2.1.2.tgz#324d4f74fe26b04da28a03f3a4456d61e2738eb2"
+  integrity sha512-h8xBi5TZgHRSaSu7R/RjePwCa7f95X2fjfsdzCsia/BZspFeq+TrwgZ2V7xjfbpuGHr4MTzbPfO+kDDcjfI7PQ==
+  dependencies:
+    "@web3-onboard/common" "^2.4.1"
+
 "@web3-onboard/walletconnect@^2.6.1":
   version "2.6.1"
   resolved "https://registry.yarnpkg.com/@web3-onboard/walletconnect/-/walletconnect-2.6.1.tgz#30c04ff2f912afafadd28024152044133ba26643"

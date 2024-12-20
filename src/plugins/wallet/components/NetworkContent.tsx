@@ -29,7 +29,7 @@ function NetworkContent() {
   // Hooks
   const [chains, { findByChainId }] = useChains();
   const [{ connectedChain }, setChain] = useSetChain();
-  const [{ wallet, connecting }, connect, disconnect] = useConnectWallet();
+  const [{ wallet }, connect, disconnect] = useConnectWallet();
 
   // Handle show menu account button
   const handleShowMenu = (event: React.MouseEvent<HTMLElement>) => {
@@ -54,17 +54,17 @@ function NetworkContent() {
       await setChain({
         chainId: chainId,
         chainNamespace: "evm",
+      }).then((res) => {
+        localStorage.setItem(
+          TLocalStorage.DEX_ORDERLY_NETWORK,
+          isTestnet ? "testnet" : "mainnet"
+        );
+
+        // realod page
+        setTimeout(() => {
+          window.location.reload();
+        }, 100);
       });
-
-      localStorage.setItem(
-        TLocalStorage.DEX_ORDERLY_NETWORK,
-        isTestnet ? "testnet" : "mainnet"
-      );
-
-      // realod page
-      setTimeout(() => {
-        window.location.reload();
-      }, 100);
     },
     [setChain, wallet]
   );
@@ -78,6 +78,7 @@ function NetworkContent() {
   }, [currentChain()]);
 
   // Check network
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   const allChains = [...chains.mainnet, ...chains.testnet];
 
   const remapChainIds = useMemo(() => {
@@ -86,7 +87,7 @@ function NetworkContent() {
           return item.network_infos.chain_id;
         })
       : [];
-  }, []);
+  }, [allChains]);
 
   const isSupportChain = useMemo(() => {
     return currentChain()
@@ -94,7 +95,8 @@ function NetworkContent() {
           (it) => it === (currentChain() as any).network_infos.chain_id
         )
       : false;
-  }, []);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [currentChain, remapChainIds, connectedChain]);
 
   return (
     <>
