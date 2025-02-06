@@ -199,7 +199,13 @@ const OverviewContent = ({ isHideValue, setIsHideValue }: any) => {
                     ? usdFormatter.format(positions.aggregated?.unrealPnL)
                     : "0.00"}{" "}
                   <span style={{ fontSize: "12px" }}>
-                    {`${unrealPnLPercentage.toFixed(2)}%`}
+                    (
+                    {`${
+                      isNaN(unrealPnLPercentage)
+                        ? `0.00`
+                        : unrealPnLPercentage.toFixed(2)
+                    }%`}
+                    )
                   </span>
                 </>
               )}

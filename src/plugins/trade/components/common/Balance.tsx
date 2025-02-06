@@ -83,8 +83,6 @@ const Balance = ({
           "Mint success! It might take a while to be received in your Orderly account",
         autoDismiss: 8_000,
       });
-
-      location.reload();
     } catch (err) {
       console.error(err);
       if (update) {
