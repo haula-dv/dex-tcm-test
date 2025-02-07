@@ -423,7 +423,7 @@ const DepositsWithdrawalsContainer = () => {
 export default memo(DepositsWithdrawalsContainer);
 const type = [
   { label: "All", value: "all" },
-  { label: "Deposite", value: "DEPOSIT" },
+  { label: "Deposit", value: "DEPOSIT" },
   { label: "Withdraw", value: "WITHDRAW" },
 ];
 
