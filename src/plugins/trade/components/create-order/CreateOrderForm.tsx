@@ -13,9 +13,11 @@ import {
 import { toast } from "@orderly.network/react";
 import { OrderSide, OrderType } from "@orderly.network/types";
 import { useConnectWallet, useNotifications } from "@web3-onboard/react";
-import { memo, ReactNode, useState } from "react";
+import { memo, ReactNode, useEffect, useMemo, useState } from "react";
 import { useForm } from "react-hook-form";
 import { match } from "ts-pattern";
+import { useStore } from "zustand";
+import { orderBookActivedStore } from "../../store";
 import Balance from "../common/Balance";
 import { Accountleverage } from "./Accountleverage";
 import AvailableWithdraw from "./AvailableWithdraw";
@@ -57,23 +59,29 @@ const CreateOrderForm = ({ symbol, isActiveTab = "Buy" }: IProps) => {
   const symbolInfo = symbolsInfo[symbol]();
   const [baseDecimals, quoteDecimals] = getDecimalsFromTick(symbolInfo);
   const mdUP = useMediaQuery(theme.breakpoints.up("md"));
+  const orderBookActived = useStore(
+    orderBookActivedStore,
+    (state) => state.value
+  );
 
-  const defaultValues: IPlaceOrderValues = {
-    direction: isActiveTab,
-    type: "Limit",
-    triggerPrice: undefined,
-    price: undefined,
-    quantity: undefined,
-    orderSide: undefined,
-    total: undefined,
-  };
+  const defaultValues: IPlaceOrderValues = useMemo(() => {
+    return {
+      direction: isActiveTab,
+      type: "Limit",
+      triggerPrice: undefined,
+      price: undefined,
+      quantity: undefined,
+      orderSide: undefined,
+      total: undefined,
+    };
+  }, [isActiveTab]);
 
   const formContext = useForm<IPlaceOrderValues>({
     defaultValues,
     // mode: "all",
   });
 
-  const { watch } = formContext;
+  const { watch, setValue } = formContext;
 
   const { onSubmit, helper, maxQty, estLeverage, estLiqPrice } = useOrderEntry(
     {
@@ -122,6 +130,16 @@ const CreateOrderForm = ({ symbol, isActiveTab = "Buy" }: IProps) => {
       setOpenOrderConfirm(false);
     }
   };
+
+  useEffect(() => {
+    if (orderBookActived != null) {
+      console.log(orderBookActived);
+      setValue("price", String(orderBookActived), {
+        shouldValidate: true,
+        shouldDirty: false,
+      });
+    }
+  }, [orderBookActived]);
 
   return (
     <>
