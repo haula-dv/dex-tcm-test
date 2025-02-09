@@ -131,14 +131,15 @@ const CreateOrderForm = ({ symbol, isActiveTab = "Buy" }: IProps) => {
     }
   };
 
+  // Watch this field when click on order book item
   useEffect(() => {
     if (orderBookActived != null) {
-      console.log(orderBookActived);
       setValue("price", String(orderBookActived), {
         shouldValidate: true,
         shouldDirty: false,
       });
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [orderBookActived]);
 
   return (
