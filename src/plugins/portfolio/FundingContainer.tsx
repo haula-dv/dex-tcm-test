@@ -4,6 +4,7 @@ import IconLoading from "@/components/icons/loading";
 import IconNotFound from "@/components/icons/NotFound";
 import { ItemRow } from "@/components/ItemRow";
 import { apiClientFetch } from "@/utils/apiClient";
+import { TLocalStorage } from "@/utils/constants/key_store";
 import {
   Box,
   List,
@@ -21,7 +22,7 @@ import {
 } from "@mui/material";
 import { MarketsType, useMarkets } from "@orderly.network/hooks";
 import { Select } from "@orderly.network/react";
-import { useConnectWallet } from "@web3-onboard/react";
+import { useConnectWallet, useSetChain } from "@web3-onboard/react";
 import dayjs from "dayjs";
 import Image from "next/image";
 import { memo, useEffect, useMemo, useState } from "react";
@@ -34,6 +35,7 @@ const FundingContainer = () => {
   const [currentMarket, setCurrentSide] = useState("all");
   const [currentSize, setCurrentSize] = useState(10);
   const [total, setTotal] = useState(0);
+  const [{ connectedChain }, setChain] = useSetChain();
 
   const [filter, setFilter] = useState<any>({
     page: 1,
@@ -41,7 +43,16 @@ const FundingContainer = () => {
     // symbol: "PERP_BTC_USDC",
   });
 
+  const networkId =
+    typeof window == "object"
+      ? localStorage.getItem(TLocalStorage.DEX_ORDERLY_NETWORK)
+      : null;
+
   const onFetchAssetHistory = async () => {
+    if (!networkId) {
+      return;
+    }
+
     const queryString = new URLSearchParams(
       Object.fromEntries(
         Object.entries(filter).map(([key, value]) => [key, String(value)])
@@ -50,7 +61,7 @@ const FundingContainer = () => {
 
     setIsLoading(true);
     await apiClientFetch
-      .GET(wallet, `/funding_fee/history?${queryString}`)
+      .GET(wallet, `/funding_fee/history?${queryString}`, networkId)
       .then((res: any) => {
         setRows(res.data.rows);
         setTotal(res.data.meta.total);
@@ -92,7 +103,7 @@ const FundingContainer = () => {
   useEffect(() => {
     onFetchAssetHistory();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [filter]);
+  }, [filter, networkId]);
 
   const onChangePage = (e: any, page: number) => {
     setFilter({

@@ -4,14 +4,8 @@ import { MainIconButton } from "@/components/button/MainIconButton";
 import IconLoading from "@/components/icons/loading";
 
 import { TLocalStorage } from "@/utils/constants/key_store";
-import { getBaseUrl } from "@/utils/constants/orderly";
 import { formartAddress } from "@/utils/formatters/token";
 import { setColorThemeMode } from "@/utils/helpers";
-import {
-  loadAccountId,
-  loadOrderlyKey,
-  signAndSendRequest,
-} from "@/utils/helpers/orderlyHelper";
 import { Box, Stack, useTheme } from "@mui/material";
 import { useAccount } from "@orderly.network/hooks";
 import { IconMoonStars, IconSun } from "@tabler/icons-react";
@@ -62,58 +56,6 @@ export default function WalletContainer() {
   // Handle close menu account
   const handleToggleAccountMenu = () => {
     setAccountDetailsModal(!openAccountDetailsModal);
-  };
-
-  // Update fee
-  const updateFee = async () => {
-    const orderlyKey: any = loadOrderlyKey(wallet?.accounts[0].address ?? "");
-    const orderlyAccountId: any = loadAccountId(
-      wallet?.accounts[0].address ?? ""
-    );
-
-    await signAndSendRequest(
-      orderlyAccountId,
-      orderlyKey,
-      `${getBaseUrl()}/broker/fee_rate/set`,
-      {
-        method: "POST",
-        body: JSON.stringify({
-          maker_fee_rate: 0.001,
-          taker_fee_rate: 0.002,
-          account_ids: [orderlyAccountId],
-        }),
-      }
-    )
-      .then((res) => {
-        console.log(res);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  };
-
-  const test = async () => {
-    const orderlyKey: any = loadOrderlyKey(wallet?.accounts[0].address ?? "");
-    const accountId: any = loadAccountId(wallet?.accounts[0].address ?? "");
-
-    const res = await signAndSendRequest(
-      accountId ?? "",
-      orderlyKey,
-      `${getBaseUrl()}/broker/fee_rate/set`,
-      {
-        method: "POST",
-        body: JSON.stringify({
-          maker_fee_rate: 0.01,
-          taker_fee_rate: 0.02,
-          account_ids: [
-            `0x447a19c8351818103725a75bc52fb32b38a22b286de783e0eb6ef4d9b0167ae1`,
-          ],
-        }),
-      }
-    );
-
-    const response = await res.json();
-    console.log(response);
   };
 
   // Watch wallet change

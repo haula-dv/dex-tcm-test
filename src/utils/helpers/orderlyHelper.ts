@@ -2,7 +2,6 @@ import { getPublicKey, sign } from "@noble/ed25519";
 import { useSymbolsInfo } from "@orderly.network/hooks";
 import bs58 from "bs58";
 import { encodeBase58 } from "ethers";
-import { isTestnet } from "../constants/orderly";
 import { getDecimalsFromTick } from "../formatters/api";
 
 export const usdFormatter = new Intl.NumberFormat("en-US", {
@@ -50,11 +49,12 @@ export async function signAndSendRequest(
   });
 }
 
-export function loadOrderlyKey(walletAddress: string): Uint8Array | undefined {
+export function loadOrderlyKey(
+  walletAddress: string,
+  networkId: any
+): Uint8Array | undefined {
   let key: any = localStorage.getItem(
-    `${ORDERLY_KEY_LOCAL_STORAGE}${
-      isTestnet() ? "testnet" : "mainnet"
-    }_${walletAddress}`
+    `${ORDERLY_KEY_LOCAL_STORAGE}${networkId}_${walletAddress}`
   );
   key = JSON.parse(key);
 
@@ -62,11 +62,12 @@ export function loadOrderlyKey(walletAddress: string): Uint8Array | undefined {
   return bs58.decode(key.orderlyKey);
 }
 
-export function loadAccountId(walletAddress: string): Uint8Array | undefined {
+export function loadAccountId(
+  walletAddress: string,
+  networkId: any
+): Uint8Array | undefined {
   let key: any = localStorage.getItem(
-    `${ORDERLY_KEY_LOCAL_STORAGE}${
-      isTestnet() ? "testnet" : "mainnet"
-    }_${walletAddress}`
+    `${ORDERLY_KEY_LOCAL_STORAGE}${networkId}_${walletAddress}`
   );
   key = JSON.parse(key);
 

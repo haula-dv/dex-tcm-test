@@ -1,8 +1,9 @@
 "use client";
 import { HeadPage } from "@/components/HeadPage";
 import { apiClientFetch } from "@/utils/apiClient";
+import { TLocalStorage } from "@/utils/constants/key_store";
 import { Grid, useMediaQuery, useTheme } from "@mui/material";
-import { useConnectWallet } from "@web3-onboard/react";
+import { useConnectWallet, useSetChain } from "@web3-onboard/react";
 import dayjs from "dayjs";
 import { useEffect, useState } from "react";
 import AssetsContent from "./AssetsContent";
@@ -32,6 +33,7 @@ const PortfolioMainContainer = () => {
   const [isloading, setIsLoading] = useState(true);
   const [currentDate, setCurrentDate] = useState(7);
   const [isHideValue, setIsHideValue] = useState(false);
+  const [{ connectedChain }, setChain] = useSetChain();
 
   const handleChangeRange = (dateNum: number) => {
     setCurrentDate(Number(dateNum));
@@ -44,10 +46,16 @@ const PortfolioMainContainer = () => {
     });
   };
 
+  const networkId =
+    typeof window == "object"
+      ? localStorage.getItem(TLocalStorage.DEX_ORDERLY_NETWORK)
+      : null;
+
   const fetchDailyStatistic = async () => {
-    if (!wallet) {
+    if (!wallet && !networkId) {
       return;
     }
+
     const queryString = new URLSearchParams(
       Object.fromEntries(
         Object.entries(filter).map(([key, value]) => [key, String(value)])
@@ -55,7 +63,11 @@ const PortfolioMainContainer = () => {
     ).toString();
 
     await apiClientFetch
-      .GET(wallet, `/client/statistics/daily?${queryString}`)
+      .GET(
+        wallet,
+        `/client/statistics/daily?${queryString}`,
+        networkId as string
+      )
       .then((res: any) => {
         setDailys(res.data.rows);
       })
@@ -67,7 +79,7 @@ const PortfolioMainContainer = () => {
   useEffect(() => {
     fetchDailyStatistic();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [filter, wallet]);
+  }, [filter, wallet, networkId]);
 
   return (
     <>

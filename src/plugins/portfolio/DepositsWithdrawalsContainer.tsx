@@ -4,6 +4,7 @@ import IconLoading from "@/components/icons/loading";
 import IconNotFound from "@/components/icons/NotFound";
 import MainTooltip from "@/components/MainTooltip";
 import { apiClientFetch } from "@/utils/apiClient";
+import { TLocalStorage } from "@/utils/constants/key_store";
 import { formartAddress } from "@/utils/formatters/token";
 import { formatQty } from "@/utils/helpers/orderlyHelper";
 import {
@@ -37,6 +38,10 @@ const DepositsWithdrawalsContainer = () => {
   const [rowsDeposite, setRowsDeposite] = useState([]);
   const [rowsDepositeLoading, setRowsDepositeLoading] = useState(true);
   const [total, setTotal] = useState(0);
+  const networkId =
+    typeof window == "object"
+      ? localStorage.getItem(TLocalStorage.DEX_ORDERLY_NETWORK)
+      : null;
 
   const [filter, setFilter] = useState<any>({
     page: 1,
@@ -49,6 +54,10 @@ const DepositsWithdrawalsContainer = () => {
   };
 
   const onFetchAssetHistory = async () => {
+    if (!networkId) {
+      return;
+    }
+
     const queryString = new URLSearchParams(
       Object.fromEntries(
         Object.entries(filter).map(([key, value]) => [key, String(value)])
@@ -57,7 +66,7 @@ const DepositsWithdrawalsContainer = () => {
 
     setRowsDepositeLoading(true);
     await apiClientFetch
-      .GET(wallet, `/asset/history?${queryString}`)
+      .GET(wallet, `/asset/history?${queryString}`, networkId)
       .then((res: any) => {
         setRowsDeposite(res.data.rows);
       })
@@ -93,7 +102,7 @@ const DepositsWithdrawalsContainer = () => {
   useEffect(() => {
     onFetchAssetHistory();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [filter]);
+  }, [filter, networkId]);
 
   const onChangePage = (e: any, page: number) => {
     setFilter({
