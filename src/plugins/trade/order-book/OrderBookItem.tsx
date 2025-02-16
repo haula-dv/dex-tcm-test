@@ -15,9 +15,9 @@ import { useStore } from "zustand";
 import { orderBookActivedStore } from "../store";
 
 interface IProps {
-  price: number;
-  quantity: number;
-  aggregated: number;
+  price: any;
+  quantity: any;
+  aggregated: any;
   totalQuote: number;
   gradient: number;
   isFirstAsk?: boolean;
@@ -58,7 +58,7 @@ const OrderBookItem = ({
         }
         value={
           <Typography fontSize={"12px"} fontWeight={600}>
-            {usdFormatter.format(price)}
+            {price}
           </Typography>
         }
       />
@@ -74,7 +74,7 @@ const OrderBookItem = ({
         }
         value={
           <Typography fontSize={"12px"} fontWeight={600}>
-            {aggregated.toFixed(2)}
+            {aggregated}
           </Typography>
         }
       />
@@ -117,7 +117,7 @@ const OrderBookItem = ({
         <Grid container spacing={1}>
           <Grid item xs={4} md={4}>
             <Typography
-              fontSize={"10px"}
+              fontSize={"12px"}
               fontWeight={600}
               color={
                 isFirstAsk
@@ -126,22 +126,22 @@ const OrderBookItem = ({
               }
               py={"1px"}
             >
-              {usdFormatter.format(price)}
+              {price}
             </Typography>
           </Grid>
 
           <Grid item xs={4} md={3}>
             <Typography
-              fontSize={"10px"}
+              fontSize={"12px"}
               fontWeight={600}
-              textAlign={"center"}
+              textAlign={"end"}
               color={setColorThemeMode(
                 theme.palette.grey[900],
                 theme.palette.common.white
               )}
               py={"1px"}
             >
-              {quantity.toFixed(2)}
+              {quantity}
             </Typography>
           </Grid>
 
@@ -157,17 +157,19 @@ const OrderBookItem = ({
                 } ${gradient}%, transparent ${gradient}%)`,
               }}
               display={"flex"}
-              justifyContent={"center"}
+              justifyContent={"end"}
             >
               <Typography
-                fontSize={"10px"}
+                fontSize={"12px"}
                 fontWeight={600}
+                textAlign={"end"}
+                pr={0.5}
                 color={setColorThemeMode(
                   theme.palette.grey[900],
                   theme.palette.common.white
                 )}
               >
-                {aggregated.toFixed(2)}
+                {aggregated}
               </Typography>
             </Box>
           </Grid>

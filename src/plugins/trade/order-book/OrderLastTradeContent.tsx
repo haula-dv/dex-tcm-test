@@ -3,7 +3,7 @@ import { setColorThemeMode } from "@/utils/helpers";
 import { Grid, Stack, Typography, useTheme } from "@mui/material";
 import { useMarketTradeStream, useSymbolsInfo } from "@orderly.network/hooks";
 import dayjs from "dayjs";
-import { memo } from "react";
+import { memo, useCallback } from "react";
 
 interface IProps {
   symbol: string;
@@ -15,6 +15,12 @@ const OrderLastTradeContent = ({ symbol }: IProps) => {
   const symbolInfo = config ? config[symbol] : ({} as any);
   const { data: tradeHistory, isLoading: tradeHistoryLoading } =
     useMarketTradeStream(symbol);
+
+  const formatPrice = useCallback((quantity: any) => {
+    const [integerPart, decimalPart] = String(quantity).split(".");
+    const formattedInteger = integerPart.replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+    return `${formattedInteger}.${decimalPart}`;
+  }, []);
 
   return (
     <>
@@ -71,7 +77,7 @@ const OrderLastTradeContent = ({ symbol }: IProps) => {
                       }
                       textAlign={"center"}
                     >
-                      {item.price}
+                      {formatPrice(item.price)}
                     </Typography>
                   </Grid>
                   <Grid item xs={4} md={4}>

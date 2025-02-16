@@ -1,104 +1,164 @@
 import IconLoading from "@/components/icons/loading";
+import { getDecimalsFromTick } from "@/utils/formatters/api";
 import { Grid, Stack, Typography } from "@mui/material";
-import { useOrderbookStream } from "@orderly.network/hooks";
-import { memo } from "react";
+import { useOrderbookStream, useSymbolsInfo } from "@orderly.network/hooks";
+import { memo, useCallback, useMemo } from "react";
 import MarkPrice from "./MarkPrice";
 import OrderBookItem from "./OrderBookItem";
 import OrderBookItemNull from "./OrderBookItemNull";
 
 interface IProps {
-	symbol: string;
+  symbol: string;
 }
 
 const OrderBookContentCustom = ({ symbol }: IProps) => {
-	const [data, { isLoading }] = useOrderbookStream(symbol, undefined, {
-		level: 9,
-	});
+  const [data, { isLoading }] = useOrderbookStream(symbol, undefined, {
+    level: 7,
+  });
 
-	if (isLoading) {
-		return <IconLoading />;
-	}
+  const symbolsInfo = useSymbolsInfo();
+  const symbolInfo = symbolsInfo[symbol]();
+  const [baseDecimals, quoteDecimals] = getDecimalsFromTick(symbolInfo);
 
-	const [_, base, quote] = symbol.split("_");
+  const formatQuantity = useCallback(
+    (quantity: number) => {
+      // Format giá trị với dấu phẩy cho UI
+      const formattedValue = Number(quantity).toLocaleString(undefined, {
+        minimumFractionDigits: baseDecimals,
+        maximumFractionDigits: baseDecimals,
+      });
 
-	return (
-		<>
-			<Grid container pb={"6px"}>
-				<Grid item xs={4} md={4}>
-					<Typography width={"100%"} fontSize={"12px"} fontWeight={700}>
-						Price
-					</Typography>
-				</Grid>
+      return formattedValue;
+    },
+    [baseDecimals]
+  );
 
-				<Grid item xs={4} md={3}>
-					<Typography width={"100%"} fontSize={"12px"} textAlign="center" fontWeight={700}>
-						Qty
-					</Typography>
-				</Grid>
+  const formatPrice = useCallback(
+    (quantity: number) => {
+      // Format giá trị với dấu phẩy cho UI
+      const formattedValue = Number(quantity).toLocaleString(undefined, {
+        minimumFractionDigits: quoteDecimals,
+        maximumFractionDigits: quoteDecimals,
+      });
 
-				<Grid item xs={4} md={5}>
-					<Typography width={"100%"} fontSize={"12px"} fontWeight={700} textAlign="center">
-						Total
-					</Typography>
-				</Grid>
-			</Grid>
+      return formattedValue;
+    },
+    [quoteDecimals]
+  );
 
-			<Stack spacing={0.2}>
-				{data.asks?.map(([price, quantity, aggregated, totalQuote], index) => {
-					if (Number.isNaN(price) || Number.isNaN(quantity) || Number.isNaN(aggregated)) {
-						return <OrderBookItemNull key={index} isFirstAsk />;
-					}
+  const formatMarkPrice = useMemo(() => {
+    // Format giá trị với dấu phẩy cho UI
+    const formattedValue = Number(data.markPrice).toLocaleString(undefined, {
+      minimumFractionDigits: quoteDecimals,
+      maximumFractionDigits: quoteDecimals,
+    });
 
-					const gradient = (100 * aggregated) / data.asks?.[0]?.[2] || 1;
+    return formattedValue;
+  }, [data.markPrice, quoteDecimals]);
 
-					return (
-						<OrderBookItem
-							key={index}
-							gradient={gradient}
-							price={price}
-							quantity={quantity}
-							aggregated={aggregated}
-							totalQuote={totalQuote}
-							isFirstAsk
-							base={base}
-							quote={quote}
-						/>
-					);
-				})}
+  if (isLoading) {
+    return <IconLoading />;
+  }
 
-				<MarkPrice
-					markPrice={data.markPrice ?? 0}
-					lastPrice={data && data?.middlePrice ? data.middlePrice : []}
-					asks={data?.bids ?? []}
-					bids={data?.asks ?? []}
-				/>
+  const [_, base, quote] = symbol.split("_");
 
-				{data.bids
-					?.reverse()
-					?.map(([price, quantity, aggregated, totalQuote], index) => {
-						if (Number.isNaN(price) || Number.isNaN(quantity) || Number.isNaN(aggregated)) {
-							return <OrderBookItemNull key={index} />;
-						}
+  return (
+    <>
+      <Grid container pb={"2px"}>
+        <Grid item xs={4} md={4}>
+          <Typography width={"100%"} fontSize={"12px"} fontWeight={700}>
+            Price
+          </Typography>
+        </Grid>
 
-						const gradient = (100 * aggregated) / data.bids?.[0]?.[2] || 1;
+        <Grid item xs={4} md={3}>
+          <Typography
+            width={"100%"}
+            fontSize={"12px"}
+            textAlign="center"
+            fontWeight={700}
+          >
+            Qty
+          </Typography>
+        </Grid>
 
-						return (
-							<OrderBookItem
-								key={index}
-								gradient={gradient}
-								price={price}
-								quantity={quantity}
-								aggregated={aggregated}
-								totalQuote={totalQuote}
-								base={base}
-								quote={quote}
-							/>
-						);
-					})
-					.reverse()}
-			</Stack>
-		</>
-	);
+        <Grid item xs={4} md={5}>
+          <Typography
+            width={"100%"}
+            fontSize={"14px"}
+            fontWeight={700}
+            textAlign="center"
+          >
+            Total
+          </Typography>
+        </Grid>
+      </Grid>
+
+      <Stack spacing={0.2}>
+        {data.asks?.map(([price, quantity, aggregated, totalQuote], index) => {
+          if (
+            Number.isNaN(price) ||
+            Number.isNaN(quantity) ||
+            Number.isNaN(aggregated)
+          ) {
+            return <OrderBookItemNull key={index} isFirstAsk />;
+          }
+
+          const gradient = (100 * aggregated) / data.asks?.[0]?.[2] || 1;
+
+          return (
+            <OrderBookItem
+              key={index}
+              gradient={gradient}
+              price={formatPrice(price)}
+              quantity={formatQuantity(quantity)}
+              aggregated={formatQuantity(aggregated)}
+              totalQuote={totalQuote}
+              isFirstAsk
+              base={base}
+              quote={quote}
+            />
+          );
+        })}
+
+        <MarkPrice
+          markPrice={formatMarkPrice as any}
+          lastPrice={data && data?.middlePrice ? data.middlePrice : []}
+          asks={data?.bids ?? []}
+          bids={data?.asks ?? []}
+          quoteDecimals={quoteDecimals}
+        />
+
+        {data.bids
+          ?.reverse()
+          ?.map(([price, quantity, aggregated, totalQuote], index) => {
+            if (
+              Number.isNaN(price) ||
+              Number.isNaN(quantity) ||
+              Number.isNaN(aggregated)
+            ) {
+              return <OrderBookItemNull key={index} />;
+            }
+
+            const gradient = (100 * aggregated) / data.bids?.[0]?.[2] || 1;
+
+            return (
+              <OrderBookItem
+                key={index}
+                gradient={gradient}
+                price={formatPrice(price)}
+                quantity={formatQuantity(quantity)}
+                aggregated={formatQuantity(aggregated)}
+                totalQuote={totalQuote}
+                base={base}
+                quote={quote}
+              />
+            );
+          })
+          .reverse()}
+      </Stack>
+    </>
+  );
 };
 
 export default memo(OrderBookContentCustom);
