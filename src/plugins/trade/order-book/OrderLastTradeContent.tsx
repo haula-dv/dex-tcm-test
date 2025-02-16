@@ -19,7 +19,7 @@ const OrderLastTradeContent = ({ symbol }: IProps) => {
   const formatPrice = useCallback((quantity: any) => {
     const [integerPart, decimalPart] = String(quantity).split(".");
     const formattedInteger = integerPart.replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-    return `${formattedInteger}.${decimalPart}`;
+    return `${formattedInteger}.${Number(decimalPart) > 0 ? decimalPart : 0}`;
   }, []);
 
   return (
