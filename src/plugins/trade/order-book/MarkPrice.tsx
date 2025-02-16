@@ -69,7 +69,7 @@ const MarkPrice = ({
               : ""
           }`}
         >
-          {middlePrice}
+          {formatMiddlePrice}
         </Typography>
 
         {middlePrice < prevLastPrice && (
