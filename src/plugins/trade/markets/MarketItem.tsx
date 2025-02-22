@@ -8,7 +8,7 @@ import { memo } from "react";
 
 interface IProps {
   index: number;
-  market: WSMessage.Ticker;
+  market: WSMessage.Ticker | any;
   onChangeSymbol: (symbol: string) => void;
 }
 
@@ -31,7 +31,7 @@ const MarketItem = ({ index, market, onChangeSymbol }: IProps) => {
         <TokenIcon url={getImageNextwork(base, "symbol_logo")} />
 
         <Typography fontWeight={600} fontSize={"14px"} whiteSpace={"nowrap"}>
-          {usdFormatter.format((market as any).index_price)}{" "}
+          {usdFormatter.format(market["24h_amount"])}{" "}
           <span style={{ color: theme.palette.grey[400] }}>{quote}</span>
         </Typography>
 

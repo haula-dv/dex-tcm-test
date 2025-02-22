@@ -1,5 +1,6 @@
 import IconLoading from "@/components/icons/loading";
 import { setColorThemeMode } from "@/utils/helpers";
+import { formatMarkPriceNoDecimal } from "@/utils/helpers/format";
 import { Grid, Stack, Typography, useTheme } from "@mui/material";
 import { useMarketTradeStream, useSymbolsInfo } from "@orderly.network/hooks";
 import dayjs from "dayjs";
@@ -77,7 +78,7 @@ const OrderLastTradeContent = ({ symbol }: IProps) => {
                       }
                       textAlign={"center"}
                     >
-                      {formatPrice(item.price)}
+                      {formatMarkPriceNoDecimal(item.price)}
                     </Typography>
                   </Grid>
                   <Grid item xs={4} md={4}>

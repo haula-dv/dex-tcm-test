@@ -7,6 +7,7 @@ import { getDecimalsFromTick } from "@/utils/formatters/api";
 import { usdFormatter } from "@/utils/formatters/number";
 import { spitSymbol } from "@/utils/formatters/token";
 import { setColorThemeMode } from "@/utils/helpers";
+import { formatMarkPriceNoDecimal } from "@/utils/helpers/format";
 import { Box, Stack, Typography, useTheme } from "@mui/material";
 import {
   useFundingRate,
@@ -15,7 +16,7 @@ import {
 } from "@orderly.network/hooks";
 import { Decimal } from "@orderly.network/utils";
 import { IconChevronDown } from "@tabler/icons-react";
-import { memo, useMemo, useState } from "react";
+import { memo, useState } from "react";
 import { MarketsContent } from "../markets/components/MarketContent";
 
 interface IProps {
@@ -103,11 +104,11 @@ const SymbolHeader = ({ onSymbolChange, symbol }: IProps) => {
     },
     {
       label: "Mark",
-      value: stream ? usdFormatter.format(stream.mark_price) : "_",
+      value: stream ? formatMarkPriceNoDecimal(stream.mark_price) : "_",
     },
     {
       label: "Index",
-      value: stream ? usdFormatter.format(stream.index_price) : "_",
+      value: stream ? formatMarkPriceNoDecimal(stream.index_price) : "_",
     },
     {
       label: "24h volume",
@@ -134,24 +135,35 @@ const SymbolHeader = ({ onSymbolChange, symbol }: IProps) => {
     },
   ];
 
-  const formatMarkPrice = useMemo(() => {
-    // Format giá trị với dấu phẩy cho UI
-    const formattedValue = Number(stream?.mark_price).toLocaleString(
-      undefined,
-      {
-        minimumFractionDigits: quoteDecimals,
-        maximumFractionDigits: quoteDecimals,
-      }
-    );
+  // const formatMarkPrice = useMemo(() => {
+  //   if (!stream?.mark_price) return "0";
 
-    return formattedValue;
-  }, [quoteDecimals, stream?.mark_price]);
+  //   // Format giá trị với dấu phẩy cho UI
+  //   // const formattedValue = Number(stream?.mark_price).toLocaleString(
+  //   //   undefined,
+  //   //   {
+  //   //     minimumFractionDigits: quoteDecimals,
+  //   //     maximumFractionDigits: quoteDecimals,
+  //   //   }
+  //   // );
+
+  //   // return formattedValue;
+
+  //   const formattedValue = new Intl.NumberFormat("en-US", {
+  //     minimumFractionDigits: quoteDecimals,
+  //     maximumFractionDigits: quoteDecimals,
+  //   }).format(Number(stream?.mark_price));
+
+  //   return formattedValue;
+  // }, [quoteDecimals, stream?.mark_price]);
 
   return (
     <>
       <HeadPage
         title={`${
-          isNaN(stream?.mark_price) ? "--" : formatMarkPrice
+          isNaN(stream?.mark_price)
+            ? "--"
+            : formatMarkPriceNoDecimal(stream?.mark_price)
         } | ${base}-${perp}`}
       />
 
@@ -201,7 +213,7 @@ const SymbolHeader = ({ onSymbolChange, symbol }: IProps) => {
           pr={1}
         >
           <Typography fontWeight={600} pr={1} whiteSpace={"nowrap"}>
-            {stream ? formatMarkPrice : "_"}
+            {stream ? formatMarkPriceNoDecimal(stream?.mark_price) : "_"}
           </Typography>
 
           <Stack direction={"row"} spacing={2}>

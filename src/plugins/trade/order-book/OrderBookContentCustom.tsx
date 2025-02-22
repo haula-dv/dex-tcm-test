@@ -1,5 +1,6 @@
 import IconLoading from "@/components/icons/loading";
 import { getDecimalsFromTick } from "@/utils/formatters/api";
+import { formatMarkPriceNoDecimal } from "@/utils/helpers/format";
 import { Grid, Stack, Typography } from "@mui/material";
 import { useOrderbookStream, useSymbolsInfo } from "@orderly.network/hooks";
 import { memo, useCallback, useMemo } from "react";
@@ -110,9 +111,9 @@ const OrderBookContentCustom = ({ symbol }: IProps) => {
             <OrderBookItem
               key={index}
               gradient={gradient}
-              price={formatPrice(price)}
-              quantity={formatQuantity(quantity)}
-              aggregated={formatQuantity(aggregated)}
+              price={formatMarkPriceNoDecimal(price)}
+              quantity={formatMarkPriceNoDecimal(quantity)}
+              aggregated={formatMarkPriceNoDecimal(aggregated)}
               totalQuote={totalQuote}
               isFirstAsk
               base={base}
@@ -122,7 +123,7 @@ const OrderBookContentCustom = ({ symbol }: IProps) => {
         })}
 
         <MarkPrice
-          markPrice={formatMarkPrice as any}
+          markPrice={formatMarkPriceNoDecimal(data.markPrice) as any}
           lastPrice={data && data?.middlePrice ? data.middlePrice : []}
           asks={data?.bids ?? []}
           bids={data?.asks ?? []}
@@ -146,9 +147,9 @@ const OrderBookContentCustom = ({ symbol }: IProps) => {
               <OrderBookItem
                 key={index}
                 gradient={gradient}
-                price={formatPrice(price)}
-                quantity={formatQuantity(quantity)}
-                aggregated={formatQuantity(aggregated)}
+                price={formatMarkPriceNoDecimal(price)}
+                quantity={formatMarkPriceNoDecimal(quantity)}
+                aggregated={formatMarkPriceNoDecimal(aggregated)}
                 totalQuote={totalQuote}
                 base={base}
                 quote={quote}

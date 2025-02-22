@@ -1,5 +1,6 @@
 /* eslint-disable react-hooks/rules-of-hooks */
 import MainTooltip from "@/components/MainTooltip";
+import { formatMarkPriceNoDecimal } from "@/utils/helpers/format";
 import { Stack, Typography, useTheme } from "@mui/material";
 import { OrderBookItem } from "@orderly.network/hooks";
 import { Decimal } from "@orderly.network/utils";
@@ -52,7 +53,7 @@ const MarkPrice = ({
       maximumFractionDigits: quoteDecimals,
     });
 
-    return formattedValue;
+    return formatMarkPriceNoDecimal(middlePrice);
   }, [middlePrice, quoteDecimals]);
 
   return (
