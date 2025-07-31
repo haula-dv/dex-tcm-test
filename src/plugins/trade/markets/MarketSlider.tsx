@@ -25,8 +25,6 @@ const MarketSlider = ({ onChangeSymbol }: IProps) => {
     }
   };
 
-  console.log("MarketSlider data:", data);
-
   useEffect(() => {
     const currentRef = itemRef.current;
 
