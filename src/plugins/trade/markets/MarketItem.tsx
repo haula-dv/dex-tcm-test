@@ -31,7 +31,7 @@ const MarketItem = ({ index, market, onChangeSymbol }: IProps) => {
         <TokenIcon url={getImageNextwork(base, "symbol_logo")} />
 
         <Typography fontWeight={600} fontSize={"14px"} whiteSpace={"nowrap"}>
-          {usdFormatter.format(market["24h_amount"])}{" "}
+          {usdFormatter.format(market["index_price"])}{" "}
           <span style={{ color: theme.palette.grey[400] }}>{quote}</span>
         </Typography>
 
