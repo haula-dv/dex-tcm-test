@@ -5,7 +5,7 @@ import { encodeBase58 } from "ethers";
 import { getDecimalsFromTick } from "../formatters/api";
 
 export const usdFormatter = new Intl.NumberFormat("en-US", {
-  maximumFractionDigits: 2,
+  maximumFractionDigits: 6,
 });
 
 export type Scope = "read" | "read,trading";

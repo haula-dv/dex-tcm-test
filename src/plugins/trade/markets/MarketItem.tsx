@@ -1,7 +1,7 @@
 import { getImageNextwork } from "@/common";
 import { TokenIcon } from "@/components/token/TokenIcon";
-import { usdFormatter } from "@/utils/formatters/number";
 import { setColorThemeMode } from "@/utils/helpers";
+import { usdFormatter } from "@/utils/helpers/orderlyHelper";
 import { Box, Stack, Typography, useTheme } from "@mui/material";
 import { WSMessage } from "@orderly.network/types";
 import { memo } from "react";
