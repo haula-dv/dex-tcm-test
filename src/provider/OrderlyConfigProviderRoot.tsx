@@ -19,10 +19,13 @@ const OrderlyConfigProviderRoot = ({ children }: LayoutProps) => {
 
   const { app } = OrderlyConfig();
 
+  // Use environment variable for env if available, otherwise fallback to networkId logic
+  const envFromEnv = process.env.ORDERLY_ENV as ENV_NAME;
   const env =
-    networkId === "mainnet"
+    envFromEnv ||
+    (networkId === "mainnet"
       ? "prod"
-      : HostEnvMap[window.location.hostname] || "staging";
+      : HostEnvMap[window.location.hostname] || "staging");
 
   const configStore = new CustomConfigStore({ networkId, env });
   const contracts = new CustomContractManager(configStore);

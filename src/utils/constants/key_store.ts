@@ -1,6 +1,6 @@
 export class AppInfo {
-  static BROKER_ID = "tcmp";
-  static BROKER_NAME = "Bazaarex";
+  static BROKER_ID = process.env.BROKER_ID;
+  static BROKER_NAME = process.env.BROKER_NAME ?? "Bazaarex";
 }
 
 export const TCMP_ORDERLY_SDK_TITLE_KEY = "tcmp_orderly_sdk_title_key";

@@ -8,7 +8,6 @@ import walletConnectModule from "@web3-onboard/walletconnect";
 import { AppInfo } from "../constants/key_store";
 
 // Replace with your DApp's Infura ID
-const INFURA_ID = "80633e48116943128cbab25e402764ab";
 export const infuraRPC = `https://eth.llamarpc.com`;
 
 export function OrderlyConfig(ctx?: { url: string; domain: string }) {
@@ -186,7 +185,7 @@ export function OrderlyConfig(ctx?: { url: string; domain: string }) {
 
     // Main App
     app: {
-      brokerId: AppInfo.BROKER_ID,
+      brokerId: AppInfo.BROKER_ID ?? "",
       brokerName: AppInfo.BROKER_NAME,
       appIcons: {
         secondary: {
