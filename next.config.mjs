@@ -20,11 +20,6 @@ export default withPWA({
   //   cacheHandler: require.resolve("./cache-handler.js"),
   cacheMaxMemorySize: 0, // disable default in-memory caching
 
-  images: {
-    domains: [process.env.API_URL, process.env.IMAGE_DOMAIN],
-    unoptimized: true,
-  },
-
   sassOptions: {
     includePaths: [path.join(__dirname, "styles")],
   },
