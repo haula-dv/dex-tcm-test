@@ -24,7 +24,7 @@ import {
 } from "@mui/material";
 import { Select, toast } from "@orderly.network/react";
 import { IconCopy } from "@tabler/icons-react";
-import { useConnectWallet } from "@web3-onboard/react";
+import { useWalletConnector } from "@orderly.network/hooks";
 import dayjs from "dayjs";
 import Image from "next/image";
 import { memo, useEffect, useMemo, useState } from "react";
@@ -32,7 +32,7 @@ import { ItemRow } from "../pool/components/TokenSelected";
 
 const DepositsWithdrawalsContainer = () => {
   const theme = useTheme();
-  const [{ wallet, connecting }, connect, disconnect] = useConnectWallet();
+  const { wallet } = useWalletConnector();
   const [currentSide, setCurrentSide] = useState("all");
   const [currentSize, setCurrentSize] = useState(10);
   const [rowsDeposite, setRowsDeposite] = useState([]);

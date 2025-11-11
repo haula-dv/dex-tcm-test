@@ -2,23 +2,18 @@ import { MainButton } from "@/components/button/MainButton";
 import MainCard from "@/components/card/MainCard";
 import { setColorThemeMode } from "@/utils/helpers";
 import { Box, Typography, useTheme } from "@mui/material";
-import { useAccount } from "@orderly.network/hooks";
-import { useConnectWallet } from "@web3-onboard/react";
+import { useWalletConnector } from "@orderly.network/hooks";
+import { useWeb3Modal } from "@web3modal/wagmi/react";
 import { memo } from "react";
 
 const BoxConnectWallet = () => {
-  const [{ wallet, connecting }, connect, disconnect] = useConnectWallet();
-  const { account } = useAccount();
+  const { wallet, connecting } = useWalletConnector();
+  const { open } = useWeb3Modal();
   const theme = useTheme();
 
   // Handle connect wallet button
   const handleConnectWallet = async () => {
-    await connect().then((res) => {
-      if (res && res.length > 0) {
-        localStorage.setItem("networkId", "mainnet");
-        location.reload();
-      }
-    });
+    await open();
   };
 
   if (wallet) {

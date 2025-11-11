@@ -12,7 +12,6 @@ import {
 } from "@orderly.network/hooks";
 import { toast } from "@orderly.network/react";
 import { OrderSide, OrderType } from "@orderly.network/types";
-import { useConnectWallet, useNotifications } from "@web3-onboard/react";
 import { memo, ReactNode, useEffect, useMemo, useState } from "react";
 import { useForm } from "react-hook-form";
 import { match } from "ts-pattern";
@@ -48,10 +47,9 @@ const CreateOrderForm = ({ symbol, isActiveTab = "Buy" }: IProps) => {
 
   // Orderly Hooks
   const symbolsInfo = useSymbolsInfo();
-  const [{ wallet }] = useConnectWallet();
+  const { wallet } = useWalletConnector();
   const { availableWithdraw } = useWithdraw();
   const collateral = useCollateral();
-  const [_0, customNotification] = useNotifications();
   const [_, base, quote] = symbol.split("_");
   const { data: markPrice } = useMarkPrice(symbol);
   const theme = useTheme();

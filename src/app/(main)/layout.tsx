@@ -1,6 +1,5 @@
 "use client";
 import { Header } from "@/components/layouts/Header";
-import HeaderMobile from "@/components/layouts/HeaderMobile";
 import "@/styles/global.scss";
 import { Box, useMediaQuery, useTheme } from "@mui/material";
 import "@orderly.network/react/dist/styles.css";
@@ -25,7 +24,8 @@ export default function RootLayout({
 
   return (
     <div className={theme.palette.mode}>
-      {lgUp ? <Header /> : <HeaderMobile />}
+      {/* {lgUp ? <Header /> : <HeaderMobile />} */}
+      <Header />
 
       <Box position={"relative"}>{children}</Box>
     </div>

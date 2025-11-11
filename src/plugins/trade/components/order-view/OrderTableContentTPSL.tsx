@@ -46,7 +46,7 @@ const OrderTableContentTPSL = ({
   });
 
   const orders = ordersUntyped as API.AlgoOrder[];
-  const { account: accountInfo } = useAccount();
+  // const { account: accountInfo } = useAccount(); // Disabled - not using Orderly account
 
   const handleChange = (event: SelectChangeEvent) => {
     setSide(event.target.value as string);

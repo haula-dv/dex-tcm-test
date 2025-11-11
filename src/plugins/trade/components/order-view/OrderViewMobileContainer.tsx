@@ -6,7 +6,7 @@ import { styled } from "@mui/material/styles";
 import { usePositionStream } from "@orderly.network/hooks";
 import { PositionsView } from "@orderly.network/react";
 import { OrderEntity, OrderStatus } from "@orderly.network/types";
-import { useConnectWallet } from "@web3-onboard/react";
+import { useWalletConnector } from "@orderly.network/hooks";
 import { memo, useState } from "react";
 import OrderTableHistoryMobile from "./mobile/OrderTableHistoryMobile";
 import OrderTableMobileContainer from "./mobile/OrderTableMobileContainer";
@@ -20,7 +20,7 @@ const OrderViewMobileContainer = ({ symbol }: IProps) => {
   const [positions, _info, { refresh, loading }] = usePositionStream(
     open ? "" : symbol
   );
-  const [{ wallet, connecting }, connect, disconnect] = useConnectWallet();
+  const { wallet } = useWalletConnector();
 
   const [position, setPosition] = useState<any>(null);
 

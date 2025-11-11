@@ -1,5 +1,4 @@
 "use client";
-import WalletContainer from "@/plugins/wallet/components/WalletContainer";
 import { setColorThemeMode } from "@/utils/helpers";
 import { Mixins } from "@/utils/themes/custom-theme/mixins";
 import { TSizes } from "@/utils/themes/custom-theme/sizes";
@@ -67,7 +66,8 @@ export const Header = () => {
               ))}
             </Stack>
 
-            <WalletContainer />
+            {/* <WalletContainer /> */}
+            <w3m-button />
           </Stack>
         </Toolbar>
       </Box>

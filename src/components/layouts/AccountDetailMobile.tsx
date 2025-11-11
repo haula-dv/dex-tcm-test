@@ -14,6 +14,7 @@ import {
   useCollateral,
   useDeposit,
   useWithdraw,
+  useWalletConnector,
 } from "@orderly.network/hooks";
 import { toast } from "@orderly.network/react";
 import {
@@ -22,11 +23,7 @@ import {
   IconMoonStars,
   IconSun,
 } from "@tabler/icons-react";
-import {
-  useConnectWallet,
-  useNotifications,
-  useSetChain,
-} from "@web3-onboard/react";
+import { useWeb3Modal } from "@web3modal/wagmi/react";
 import { setZustandValue } from "nes-zustand";
 import Link from "next/link";
 import { useParams, usePathname } from "next/navigation";
@@ -38,7 +35,8 @@ import { DepositWithdrawDialog } from "../deposit/DepositWithdrawDialog";
 import { NavItem } from "./Header";
 
 const AccountDetailMobile = ({ handleClose, open }: any) => {
-  const [{ wallet, connecting }, connect, disconnect] = useConnectWallet();
+  const { wallet, connecting, connectedChain, setChain, disconnect } = useWalletConnector();
+  const { open: openWeb3Modal } = useWeb3Modal();
   const theme = useTheme();
   const themeSelector = useStore(themeSelectorState, (state) => state.value);
 
@@ -58,35 +56,32 @@ const AccountDetailMobile = ({ handleClose, open }: any) => {
     location.reload();
   };
 
-  const [_, { findByChainId }] = useChains();
-  const [{ connectedChain }, setChain] = useSetChain();
-  const [{}, customNotification] = useNotifications();
-  const account = useAccountInstance();
-  const collateral = useCollateral();
+  // Temporarily disabled - requires Orderly SDK
+  // const [_, { findByChainId }] = useChains();
+  // const account = useAccountInstance();
+  // const collateral = useCollateral();
   const [loadingSettle, setLoadingSettle] = useState(false);
   const [isOpenDeposit, setIsOpenDesposit] = useState(false);
   const params = useParams();
   const pathName = usePathname();
 
-  // GET CURRENT CHAIN
-  const currentChain = useMemo(() => {
-    return findByChainId(
-      connectedChain ? idFromHexChainId(connectedChain?.id ?? "") : 1
-    );
-  }, [connectedChain, findByChainId]);
+  // GET CURRENT CHAIN - Disabled
+  // const currentChain = useMemo(() => {
+  //   return findByChainId(connectedChain ? connectedChain.id : 1);
+  // }, [connectedChain, findByChainId]);
 
-  const token = useMemo(() => {
-    return currentChain?.token_infos[0] ?? undefined;
-  }, [currentChain]);
+  // const token = useMemo(() => {
+  //   return currentChain?.token_infos[0] ?? undefined;
+  // }, [currentChain]);
 
-  const deposit = useDeposit({
-    address: token?.address,
-    decimals: token?.decimals,
-    srcToken: token?.symbol,
-    srcChainId: Number(connectedChain?.id),
-  });
+  // const deposit = useDeposit({
+  //   address: token?.address,
+  //   decimals: token?.decimals,
+  //   srcToken: token?.symbol,
+  //   srcChainId: Number(connectedChain?.id),
+  // });
 
-  const { unsettledPnL, availableWithdraw } = useWithdraw();
+  // const { unsettledPnL, availableWithdraw } = useWithdraw();
 
   // Handle disconnect wallet button
   const handleDisconnect = async () => {
@@ -97,7 +92,7 @@ const AccountDetailMobile = ({ handleClose, open }: any) => {
   };
 
   const handleCopy = () => {
-    if (!wallet) return;
+    if (!wallet || !wallet.accounts?.[0]?.address) return;
 
     navigator.clipboard
       .writeText(wallet.accounts[0].address)
@@ -110,33 +105,18 @@ const AccountDetailMobile = ({ handleClose, open }: any) => {
   };
 
   const handleSettle = async () => {
-    setLoadingSettle(true);
-    const { update } = customNotification({
-      eventCode: "settle",
-      type: "pending",
-      message: "Settling PnL...",
-    });
-
-    try {
-      await account.settle();
-      update({
-        eventCode: "settleSuccess",
-        type: "success",
-        message: "Successfully settled PnL!",
-        autoDismiss: 5_000,
-      });
-    } catch (err) {
-      console.error(err);
-
-      update({
-        eventCode: "settleError",
-        type: "error",
-        message: (err as any).message ?? "Something went wrong",
-        autoDismiss: 15_000,
-      });
-    } finally {
-      setLoadingSettle(false);
-    }
+    // Disabled - requires Orderly SDK
+    // setLoadingSettle(true);
+    // const toastId = toast.loading("Settling PnL...");
+    // try {
+    //   await account.settle();
+    //   toast.success("Successfully settled PnL!", { id: toastId });
+    // } catch (err) {
+    //   console.error(err);
+    //   toast.error((err as any).message ?? "Something went wrong", { id: toastId });
+    // } finally {
+    //   setLoadingSettle(false);
+    // }
   };
 
   const handleToggleDesposit = () => {

@@ -15,7 +15,7 @@ import {
 } from "@orderly.network/hooks";
 import { toast } from "@orderly.network/react";
 import { IconPencil } from "@tabler/icons-react";
-import { useConnectWallet } from "@web3-onboard/react";
+import { useWalletConnector } from "@orderly.network/hooks";
 import { useMemo, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { FormContainer } from "react-hook-form-mui";
@@ -24,7 +24,7 @@ export const Accountleverage = ({ symbol }: any) => {
   const [open, setOpen] = useState(false);
   const theme = useTheme();
   const [positions, _info, { refresh, loading }] = usePositionStream();
-  const [{ wallet }] = useConnectWallet();
+  const { wallet } = useWalletConnector();
 
   const { currentLeverage, mmr } = useMarginRatio();
   const { totalCollateral, totalValue } = useCollateral();

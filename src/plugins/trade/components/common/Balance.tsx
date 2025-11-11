@@ -8,11 +8,11 @@ import { usdFormatter } from "@/utils/formatters/number";
 import { setColorThemeMode } from "@/utils/helpers";
 import { TSizes } from "@/utils/themes/custom-theme/sizes";
 import { Box, Skeleton, Stack, Typography, useTheme } from "@mui/material";
-import { useAccount } from "@orderly.network/hooks";
+import { useWalletConnector } from "@orderly.network/hooks";
 import { WalletState } from "@orderly.network/hooks/esm/walletConnectorContext";
-import { useNotifications, useSetChain } from "@web3-onboard/react";
 import Image from "next/image";
 import { memo, useState } from "react";
+import { toast } from "sonner";
 
 interface IProps {
   availableWithdraw: number;
@@ -28,10 +28,8 @@ const Balance = ({
   isFristLoading,
 }: IProps) => {
   // Orderly hooks
-  const [{ connectedChain }] = useSetChain();
-  const { account } = useAccount();
+  const { connectedChain } = useWalletConnector();
   const theme = useTheme();
-  const [_, customNotification] = useNotifications();
 
   const [open, setOpen] = useState(false);
   const networkId = (localStorage.getItem("networkId") ??
@@ -41,11 +39,12 @@ const Balance = ({
 
   // Handle get test USDC
   const handleGetTestUSDC = async () => {
-    const { update } = customNotification({
-      eventCode: "mint",
-      type: "pending",
-      message: "Minting 1k USDC on testnet...",
-    });
+    if (!wallet?.accounts?.[0]?.address) {
+      toast.error("Wallet not connected");
+      return;
+    }
+
+    const toastId = toast.loading("Minting 1k USDC on testnet...");
 
     try {
       const res = await fetch(
@@ -59,7 +58,7 @@ const Balance = ({
           body: JSON.stringify({
             broker_id: AppInfo.BROKER_ID,
             chain_id: String(Number(connectedChain?.id)),
-            user_address: account.address,
+            user_address: wallet.accounts[0].address,
           }),
         }
       );
@@ -76,29 +75,19 @@ const Balance = ({
         throw new Error(message);
       }
 
-      update({
-        eventCode: "mintSuccess",
-        type: "success",
-        message:
-          "Mint success! It might take a while to be received in your Orderly account",
-        autoDismiss: 8_000,
-      });
+      toast.success(
+        "Mint success! It might take a while to be received in your Orderly account",
+        { id: toastId }
+      );
     } catch (err) {
       console.error(err);
-      if (update) {
-        let message: string;
-        if (err instanceof Error) {
-          message = err.message;
-        } else {
-          message = "Mint failed!";
-        }
-        update({
-          eventCode: "mintError",
-          type: "error",
-          message,
-          autoDismiss: 5_000,
-        });
+      let message: string;
+      if (err instanceof Error) {
+        message = err.message;
+      } else {
+        message = "Mint failed!";
       }
+      toast.error(message, { id: toastId });
       throw err;
     }
   };

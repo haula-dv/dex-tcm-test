@@ -6,19 +6,13 @@ import path from "path";
 
 const { __dirname, __filename } = getGlobals(import.meta.url);
 
-import withPWAInit from "@ducanh2912/next-pwa";
-
-const withPWA = withPWAInit({
-  dest: "public",
-});
-
-export default withPWA({
+const nextConfig = {
   // experimental: {
   // 	ppr: "incremental",
   // 	reactCompiler: process.env.CURRENT_ENV === "dev" ? false : true,
   // },
   //   cacheHandler: require.resolve("./cache-handler.js"),
-  cacheMaxMemorySize: 0, // disable default in-memory caching
+  // cacheMaxMemorySize: 0, // disable default in-memory caching
 
   images: {
     domains: [process.env.NEXTWORK_URL],
@@ -80,4 +74,6 @@ export default withPWA({
       },
     ];
   },
-});
+};
+
+export default nextConfig;

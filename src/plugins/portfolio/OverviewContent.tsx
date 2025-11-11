@@ -26,34 +26,36 @@ import {
   IconSquareRoundedArrowDownFilled,
   IconSquareRoundedArrowUpFilled,
 } from "@tabler/icons-react";
-import { useConnectWallet, useSetChain } from "@web3-onboard/react";
+import { useWalletConnector } from "@orderly.network/hooks";
+import { useSetChain } from "@web3-onboard/react";
 import { useMemo, useState } from "react";
 import { FormSlider } from "../trade/components/create-order/Accountleverage";
 
 const OverviewContent = ({ isHideValue, setIsHideValue }: any) => {
   const theme = useTheme();
-  const [_, { findByChainId }] = useChains();
-  const [{ connectedChain }, setChain] = useSetChain();
-  const collateral = useCollateral();
+  // Temporarily disabled - requires Orderly SDK
+  // const [_, { findByChainId }] = useChains();
+  // const [{ connectedChain }, setChain] = useSetChain();
+  // const collateral = useCollateral();
   const [isOpenDeposit, setIsOpenDesposit] = useState(false);
   const [activedTab, setActivedTab] = useState<any>("withdraw");
-  const [positions, _info, { refresh, loading }] = usePositionStream();
-  const [{ wallet, connecting }, connect, disconnect] = useConnectWallet();
+  // const [positions, _info, { refresh, loading }] = usePositionStream();
+  const { wallet } = useWalletConnector();
 
-  // GET CURRENT CHAIN
-  const currentChain = useMemo(() => {
-    return findByChainId(
-      connectedChain ? idFromHexChainId(connectedChain?.id ?? "") : 1
-    );
-  }, [connectedChain, findByChainId]);
+  // GET CURRENT CHAIN - Disabled
+  // const currentChain = useMemo(() => {
+  //   return findByChainId(
+  //     connectedChain ? idFromHexChainId(connectedChain?.id ?? "") : 1
+  //   );
+  // }, [connectedChain, findByChainId]);
 
-  const token = useMemo(() => {
-    return currentChain?.token_infos[0] ?? undefined;
-  }, [currentChain]);
+  // const token = useMemo(() => {
+  //   return currentChain?.token_infos[0] ?? undefined;
+  // }, [currentChain]);
 
-  const { unsettledPnL, availableWithdraw } = useWithdraw();
-  const [maxLeverage, { update, config: leverageLevers, isMutating }] =
-    useLeverage();
+  // const { unsettledPnL, availableWithdraw } = useWithdraw();
+  // const [maxLeverage, { update, config: leverageLevers, isMutating }] =
+  //   useLeverage();
 
   const formatter = new Intl.NumberFormat("en-US", {
     maximumFractionDigits: 2,

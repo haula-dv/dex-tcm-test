@@ -12,7 +12,7 @@ import {
   useTheme,
 } from "@mui/material";
 import { IconArrowsLeftRight, IconCalculatorFilled } from "@tabler/icons-react";
-import { useConnectWallet } from "@web3-onboard/react";
+import { useWalletConnector } from "@orderly.network/hooks";
 import { memo, useState } from "react";
 import DepositsWithdrawalsContainer from "./DepositsWithdrawalsContainer";
 import FundingContainer from "./FundingContainer";
@@ -29,7 +29,7 @@ const PortfolioMobileContainer = () => {
     },
   ];
   const theme = useTheme();
-  const [{ wallet, connecting }, connect, disconnect] = useConnectWallet();
+  const { wallet } = useWalletConnector();
 
   const [currentTab, setCurrentTab] = useState("deposite");
   const handleOnChange = (tab: string) => {

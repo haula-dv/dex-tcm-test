@@ -1,33 +1,24 @@
-import NetworkContent from "@/plugins/wallet/components/NetworkContent";
-import { OrderlyConnect } from "@/plugins/wallet/components/OrderlyConnect";
-import { formartAddress } from "@/utils/formatters/token";
-import { setColorThemeMode } from "@/utils/helpers";
-import { TSizes } from "@/utils/themes/custom-theme/sizes";
-import { IconButton, Stack, Toolbar } from "@mui/material";
-import { IconMenu } from "@tabler/icons-react";
-import { useConnectWallet } from "@web3-onboard/react";
-import Link from "next/link";
+import { useWalletConnector } from "@orderly.network/hooks";
+import { useWeb3Modal } from "@web3modal/wagmi/react";
 import { memo, useState } from "react";
-import { MainButton } from "../button/MainButton";
-import Logo from "../icons/Logo";
-import AccountDetailMobile from "./AccountDetailMobile";
 import { MainAppBar } from "./Header";
 
 function HeaderMobile() {
-  const [{ wallet, connecting }, connect, disconnect] = useConnectWallet();
+  const { wallet, connecting } = useWalletConnector();
+  const { open } = useWeb3Modal();
   const [openAccountDetailsModal, setAccountDetailsModal] = useState(false);
 
   // Handle connect wallet button
   const handleConnectWallet = async () => {
-    await connect().then((res) => {
-      if (res && res.length > 0) {
-        location.reload();
-      }
-    });
+    await open();
   };
+
+  console.log("wallet", wallet);
+  console.log("connecting", connecting);
+
   return (
     <MainAppBar elevation={0} position="sticky">
-      <OrderlyConnect />
+      {/* <OrderlyConnect />
 
       <Toolbar sx={{ px: "10px !important" }}>
         <Stack
@@ -64,7 +55,7 @@ function HeaderMobile() {
                 id="connect-wallet"
                 color={setColorThemeMode("darkGrey", "darkGrey")}
               >
-                {formartAddress(wallet.accounts[0].address)}
+                {formartAddress(wallet.accounts?.[0]?.address || "")}
               </MainButton>
             )}
 
@@ -83,7 +74,7 @@ function HeaderMobile() {
           open={openAccountDetailsModal}
           handleClose={() => setAccountDetailsModal(false)}
         />
-      )}
+      )} */}
     </MainAppBar>
   );
 }

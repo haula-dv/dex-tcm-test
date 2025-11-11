@@ -31,7 +31,7 @@ const FundingContainer = () => {
   const theme = useTheme();
   const [rows, setRows] = useState<any[]>([]);
   const [isLoading, setIsLoading] = useState(false);
-  const [{ wallet, connecting }, connect, disconnect] = useConnectWallet();
+  const { wallet } = useWalletConnector();
   const [currentMarket, setCurrentSide] = useState("all");
   const [currentSize, setCurrentSize] = useState(10);
   const [total, setTotal] = useState(0);

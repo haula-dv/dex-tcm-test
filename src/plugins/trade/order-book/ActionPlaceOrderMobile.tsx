@@ -2,13 +2,13 @@ import { MainButton } from "@/components/button/MainButton";
 import { setColorThemeMode } from "@/utils/helpers";
 import { TSizes } from "@/utils/themes/custom-theme/sizes";
 import { Box, Drawer, Stack, useTheme } from "@mui/material";
-import { useConnectWallet } from "@web3-onboard/react";
+import { useWalletConnector } from "@orderly.network/hooks";
 import { memo, useState } from "react";
 import CreateOrderForm from "../components/create-order/CreateOrderForm";
 
 const ActionPlaceOrderMobile = ({ symbol }: any) => {
   const theme = useTheme();
-  const [{ wallet, connecting }, connect, disconnect] = useConnectWallet();
+  const { wallet } = useWalletConnector();
 
   const [open, setOpen] = useState(false);
 
