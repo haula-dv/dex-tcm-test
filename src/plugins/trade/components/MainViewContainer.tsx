@@ -1,24 +1,39 @@
-import MainCard from "@/components/card/MainCard";
-import BoxConnectWallet from "@/plugins/wallet/components/BoxConnectWallet";
-import { Box, Stack } from "@mui/material";
-import MarketsContainer from "../markets/components/MarketsContainer";
-import MarketSlider from "../markets/MarketSlider";
-import { TradingMainView } from "../trading-view/TradingView";
-import CreateOrderForm from "./create-order/CreateOrderForm";
-import { OrderViewContainer } from "./order-view/OrderViewContainer";
-import SymbolHeader from "./SymbolHeader";
+'use client'
+import { _orderlySymbolKey } from "@/utils/constants/orderly";
+import { Box } from "@mui/material";
+import { SymbolInfoBarFullWidget } from '@orderly.network/markets';
+import dynamic from "next/dynamic";
+const DynamicMainViewContainer = dynamic(() => import("../markets/MarketSlider"), {
+  ssr: false,
+});
 
 interface IProps {
   symbol: string;
-  onSymbolChange: (symbol: string) => void;
 }
 
-export const MainViewContainer = ({ onSymbolChange, symbol }: IProps) => {
+export const MainViewContainer = ({ symbol }: IProps) => {
+  const onSymbolChange = (symbol: string) => {
+    localStorage.setItem(_orderlySymbolKey, symbol);
+    //  router.push(`/trading/perp/${symbol}`);
+    location.replace(`/trading/perp/${symbol}`);
+    //  updateTitle(symbol);
+  };
+
   return (
     <>
-      <MarketSlider onChangeSymbol={onSymbolChange} />
-
+      <DynamicMainViewContainer onChangeSymbol={onSymbolChange} />
       <Box
+        display={"flex"}
+        flexDirection={"row"}
+        px="10px"
+        gap={"10px"}
+        height={"100%"}
+      >
+        <Box display={"flex"} flexDirection={"column"}>
+          <SymbolInfoBarFullWidget symbol={symbol} />
+        </Box>
+      </Box>
+      {/* <Box
         display={"flex"}
         flexDirection={"row"}
         px="10px"
@@ -59,7 +74,7 @@ export const MainViewContainer = ({ onSymbolChange, symbol }: IProps) => {
             <CreateOrderForm symbol={symbol} />
           </MainCard>
         </Stack>
-      </Box>
+      </Box> */}
     </>
   );
 };

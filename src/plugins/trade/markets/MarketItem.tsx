@@ -40,7 +40,7 @@ const MarketItem = ({ index, market, onChangeSymbol }: IProps) => {
           fontSize={"14px"}
           color={
             (market as any).change &&
-            (market as any).change.toString().startsWith("-")
+              (market as any).change.toString().startsWith("-")
               ? theme.palette.error.main
               : theme.palette.success.main
           }

@@ -1,41 +1,31 @@
-"use client";
-import { TCMP_ORDERLY_SDK_TITLE_KEY } from "@/utils/constants/key_store";
-import { _orderlySymbolKey } from "@/utils/constants/orderly";
-import { useMediaQuery, useTheme } from "@mui/material";
-import { useRouter } from "next/navigation";
-import { useCallback, useEffect, useState } from "react";
+import { MainViewContainer } from "@/plugins/trade/components/MainViewContainer";
 
-export default function PerpPage({ params }: { params: { symbol: string } }) {
-  const router = useRouter();
-  const [symbol, setSymbol] = useState(params.symbol);
+export default async function PerpPage({ params }: { params: { symbol: string } }) {
+  // const router = useRouter();
+  const { symbol } = await params;
 
-  useEffect(() => {
-    if (symbol === undefined) {
-      setSymbol(localStorage?.getItem(_orderlySymbolKey)!);
-    }
-  }, [symbol]);
+  // const updateTitle = useCallback(
+  //   (title: string) => {
+  //     var titleElement = document.getElementById(TCMP_ORDERLY_SDK_TITLE_KEY);
+  //     if (titleElement) {
+  //       titleElement.textContent = title ?? symbol.toString();
+  //     }
+  //   },
+  //   [symbol]
+  // );
 
-  const updateTitle = useCallback(
-    (title: string) => {
-      var titleElement = document.getElementById(TCMP_ORDERLY_SDK_TITLE_KEY);
-      if (titleElement) {
-        titleElement.textContent = title ?? symbol.toString();
-      }
-    },
-    [symbol]
-  );
+  // const onSymbolChange = (symbol: string) => {
+  //   localStorage.setItem(_orderlySymbolKey, symbol);
+  //   router.push(`/trading/perp/${symbol}`);
+  //   updateTitle(symbol);
+  // };
 
-  const onSymbolChange = (symbol: string) => {
-    localStorage.setItem(_orderlySymbolKey, symbol);
-    router.push(`/trading/perp/${symbol}`);
-    updateTitle(symbol);
-  };
-
-  const theme = useTheme();
-  const lgUp = useMediaQuery(theme.breakpoints.up("lg"));
+  // const theme = useTheme();
+  // const lgUp = useMediaQuery(theme.breakpoints.up("lg"));
 
   return (
     <>
+      <MainViewContainer symbol={symbol} />
       {/* {lgUp ? (
 				<MainViewContainer symbol={symbol || "PERP_ETH_USDC"} onSymbolChange={onSymbolChange} />
 			) : (

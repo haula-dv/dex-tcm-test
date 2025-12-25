@@ -1,9 +1,11 @@
 import ClientThemeProvider from "@/components/ClientThemeProvider";
 import { Loading } from "@/components/loading/loading";
-import Web3OnboardProviderRoot from "@/provider/WalletConnectProvider";
+import { Providers } from "@/provider/providers";
+import "@orderly.network/ui/dist/styles.css";
 import React from "react";
 import "react-toastify/dist/ReactToastify.css";
 import { Toaster } from "sonner";
+import "./globals.css";
 
 export default function RootLayout({
   children,
@@ -16,7 +18,7 @@ export default function RootLayout({
       <link rel="icon" href="/favicon.ico" sizes="any" />
       <body>
         <ClientThemeProvider>
-          <Web3OnboardProviderRoot>{children}</Web3OnboardProviderRoot>
+          <Providers>{children}</Providers>
 
           <Loading />
           <Toaster closeButton position="top-right" />

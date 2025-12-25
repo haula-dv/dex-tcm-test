@@ -5,8 +5,12 @@ const { __dirname, __filename } = getGlobals(import.meta.url);
 
 const nextConfig = {
   images: {
-    domains: [''],
-    unoptimized: true,
+    remotePatterns: [
+      {
+        protocol: "https",
+        hostname: "oss.orderly.network",
+      },
+    ],
   },
 
   sassOptions: {

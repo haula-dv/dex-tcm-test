@@ -13,7 +13,7 @@ import {
 } from "@mui/material";
 import { styled } from "@mui/material/styles";
 import { useWalletConnector } from "@orderly.network/hooks";
-import { useWeb3Modal } from "@web3modal/wagmi/react";
+import { useAppKit } from "@reown/appkit/react";
 import Link from "next/link";
 import { useParams, usePathname } from "next/navigation";
 import { MainButton } from "../button/MainButton";
@@ -22,7 +22,7 @@ import Logo from "../icons/Logo";
 export const Header = () => {
   const pathName = usePathname();
   const params = useParams();
-  const { open } = useWeb3Modal();
+  const { open } = useAppKit();
   const { wallet, connecting } = useWalletConnector();
 
   const navItems = [
