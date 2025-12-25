@@ -1,21 +1,11 @@
-/**
- * @type {import('next').NextConfig}
- */
 import { getGlobals } from "common-es";
 import path from "path";
 
 const { __dirname, __filename } = getGlobals(import.meta.url);
 
 const nextConfig = {
-  // experimental: {
-  // 	ppr: "incremental",
-  // 	reactCompiler: process.env.CURRENT_ENV === "dev" ? false : true,
-  // },
-  //   cacheHandler: require.resolve("./cache-handler.js"),
-  // cacheMaxMemorySize: 0, // disable default in-memory caching
-
   images: {
-    domains: [process.env.NEXTWORK_URL],
+    domains: [''],
     unoptimized: true,
   },
 
