@@ -1,9 +1,9 @@
-import { FC, PropsWithChildren, useEffect, useState } from "react";
 import { WalletConnectorContext, WalletState } from "@orderly.network/hooks";
 import { ChainNamespace } from "@orderly.network/types";
 import { useAppKit } from "@reown/appkit/react";
-import { useAccount as useWagmiAccount } from "wagmi";
+import { FC, PropsWithChildren, useEffect, useState } from "react";
 import { arbitrum, mainnet } from "viem/chains";
+import { useAccount as useWagmiAccount } from "wagmi";
 
 // Define chains (const assertion for wagmi types)
 const chains = [mainnet, arbitrum] as const;
@@ -25,16 +25,18 @@ export const OrderlyWalletProvider: FC<PropsWithChildren> = ({ children }) => {
             // If no connector, reset wallet state partially or return?
             if (!connector) return;
 
-            const provider = (await connector.getProvider()) as any;
+            const provider = await connector.getProvider()
             const accounts = await connector.getAccounts().then((addresses: readonly string[]) =>
                 addresses.map((addr: string) => ({ address: addr }))
             );
 
+            console.log("accounts", accounts)
+
             let label = "";
             try {
                 // getClient might be undefined on some connectors
-                const client = await connector.getClient?.();
-                if (client) label = client.name;
+                // const client = await connector.getClient()
+                // if (client) label = client.name;
             } catch (e) {
                 // ignore
             }
@@ -42,8 +44,7 @@ export const OrderlyWalletProvider: FC<PropsWithChildren> = ({ children }) => {
             setWallet({
                 ...wallet,
                 accounts,
-                provider,
-                label
+                label,
             });
         };
         run();

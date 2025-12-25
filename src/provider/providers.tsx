@@ -1,41 +1,45 @@
-'use client';
-import { OrderlyWalletProvider } from '@/components/OrderlyWalletProvider';
-import { OrderlyAppProvider } from '@orderly.network/react-app';
-import { WagmiAdapter } from '@reown/appkit-adapter-wagmi';
-import { arbitrum, mainnet, qTestnet } from '@reown/appkit/networks';
-import { createAppKit } from '@reown/appkit/react';
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import { WagmiProvider } from 'wagmi';
+'use client'
+import { OrderlyWalletProvider } from '@/components/OrderlyWalletProvider'
+import { projectId, wagmiAdapter } from '@/config'
+import { OrderlyAppProvider } from '@orderly.network/react-app'
+import { arbitrum, mainnet, qTestnet } from '@reown/appkit/networks'
+import { createAppKit } from '@reown/appkit/react'
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
+import { type ReactNode } from 'react'
+import { cookieToInitialState, WagmiProvider, type Config } from 'wagmi'
 
-const projectId = "8113e540d923482c1bc40bb5e4a14672"
+// Set up queryClient
 const queryClient = new QueryClient()
 
-const metadata = {
-    name: "Bazaarex",
-    description: "Bazaarex",
-    url: "https://bazaarex.com",
-    icons: ["https://bazaarex.com/favicon.ico"],
+if (!projectId) {
+    throw new Error('Project ID is not defined')
 }
 
-export function Providers({ children }: { children: React.ReactNode }) {
-    const chains: any = [mainnet, arbitrum, qTestnet]
-    const wagmiAdapter = new WagmiAdapter({
-        networks: chains,
-        projectId
-    })
+// Set up metadata
+const metadata = {
+    name: 'appkit-example',
+    description: 'AppKit Example',
+    url: 'https://appkitexampleapp.com', // origin must match your domain & subdomain
+    icons: ['https://avatars.githubusercontent.com/u/179229932']
+}
 
-    createAppKit({
-        adapters: [wagmiAdapter],
-        networks: chains,
-        metadata: metadata,
-        projectId,
-        features: {
-            analytics: true,
-        }
-    })
+// Create the modal
+createAppKit({
+    adapters: [wagmiAdapter],
+    projectId,
+    networks: [mainnet, arbitrum, qTestnet],
+    defaultNetwork: mainnet,
+    metadata: metadata,
+    features: {
+        analytics: true // Optional - defaults to your Cloud configuration
+    }
+})
+
+function Providers({ children, cookies }: { children: ReactNode; cookies: string | null }) {
+    const initialState = cookieToInitialState(wagmiAdapter.wagmiConfig as Config, cookies)
 
     return (
-        <WagmiProvider config={wagmiAdapter.wagmiConfig}>
+        <WagmiProvider config={wagmiAdapter.wagmiConfig as Config} initialState={initialState}>
             <QueryClientProvider client={queryClient}>
                 <OrderlyWalletProvider>
                     <OrderlyAppProvider
@@ -48,8 +52,64 @@ export function Providers({ children }: { children: React.ReactNode }) {
                 </OrderlyWalletProvider>
             </QueryClientProvider>
         </WagmiProvider>
-    );
+    )
 }
+
+export default Providers
+
+
+// 'use client';
+// import { OrderlyWalletProvider } from '@/components/OrderlyWalletProvider';
+// import { OrderlyAppProvider } from '@orderly.network/react-app';
+// import { WagmiAdapter } from '@reown/appkit-adapter-wagmi';
+// import { arbitrum, mainnet, qTestnet } from '@reown/appkit/networks';
+// import { createAppKit } from '@reown/appkit/react';
+// import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+// import { WagmiProvider } from 'wagmi';
+
+// const projectId = "8113e540d923482c1bc40bb5e4a14672"
+// const queryClient = new QueryClient()
+
+// const metadata = {
+//     name: "Bazaarex",
+//     description: "Bazaarex",
+//     url: "https://bazaarex.com",
+//     icons: ["https://bazaarex.com/favicon.ico"],
+// }
+
+// export function Providers({ children }: { children: React.ReactNode }) {
+//     const chains: any = [mainnet, arbitrum, qTestnet]
+//     const wagmiAdapter = new WagmiAdapter({
+//         networks: chains,
+//         projectId
+//     })
+
+//     createAppKit({
+//         adapters: [wagmiAdapter],
+//         networks: chains,
+//         metadata: metadata,
+//         projectId,
+//         features: {
+//             analytics: true,
+//         }
+//     })
+
+//     return (
+//         <WagmiProvider config={wagmiAdapter.wagmiConfig}>
+//             <QueryClientProvider client={queryClient}>
+//                 <OrderlyWalletProvider>
+//                     <OrderlyAppProvider
+//                         brokerId="bazaarex"
+//                         brokerName="Bazaarex"
+//                         networkId="testnet"
+//                     >
+//                         {children}
+//                     </OrderlyAppProvider>
+//                 </OrderlyWalletProvider>
+//             </QueryClientProvider>
+//         </WagmiProvider>
+//     );
+// }
 
 
 // 'use client';

@@ -1,8 +1,12 @@
 'use client'
+import MainCard from "@/components/card/MainCard";
 import { _orderlySymbolKey } from "@/utils/constants/orderly";
 import { Box } from "@mui/material";
 import { SymbolInfoBarFullWidget } from '@orderly.network/markets';
 import dynamic from "next/dynamic";
+import { TradingMainView } from "../trading-view/TradingView";
+import { OrderViewContainer } from "./order-view/OrderViewContainer";
+
 const DynamicMainViewContainer = dynamic(() => import("../markets/MarketSlider"), {
   ssr: false,
 });
@@ -20,17 +24,25 @@ export const MainViewContainer = ({ symbol }: IProps) => {
   };
 
   return (
-    <>
+    <div>
       <DynamicMainViewContainer onChangeSymbol={onSymbolChange} />
-      <Box
-        display={"flex"}
-        flexDirection={"row"}
-        px="10px"
-        gap={"10px"}
-        height={"100%"}
-      >
+
+      <Box>
         <Box display={"flex"} flexDirection={"column"}>
-          <SymbolInfoBarFullWidget symbol={symbol} />
+          <SymbolInfoBarFullWidget symbol={symbol} onSymbolChange={(symbol) => onSymbolChange(symbol.symbol)} />
+
+          <MainCard backgroudColor="primary" width="100%">
+            <Box sx={{ height: "calc(-175px + 100vh)", minHeight: "800px" }}>
+              <Box height={"100%"} display={"flex"} flexDirection={"column"}>
+                <TradingMainView
+                  symbol={symbol}
+                  onSymbolChange={onSymbolChange}
+                />
+
+                <OrderViewContainer symbol={symbol} />
+              </Box>
+            </Box>
+          </MainCard>
         </Box>
       </Box>
       {/* <Box
@@ -75,6 +87,6 @@ export const MainViewContainer = ({ symbol }: IProps) => {
           </MainCard>
         </Stack>
       </Box> */}
-    </>
+    </div>
   );
 };

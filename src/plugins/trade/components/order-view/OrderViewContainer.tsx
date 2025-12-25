@@ -1,5 +1,5 @@
+'use client'
 import { Box } from "@mui/material";
-import { DataListView } from "@orderly.network/react";
 // import { DataListView } from "@orderly.network/react/esm/page/trading/desktop/sections/datalist";
 
 interface IProps {
@@ -81,7 +81,7 @@ export const OrderViewContainer = ({ symbol }: IProps) => {
       borderRadius={"16px"}
       className="data-list-view"
     >
-      <DataListView />
+      {/* <DataListWidget /> */}
 
       {/* <MainTab
 				tabs={tabs}

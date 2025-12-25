@@ -1,23 +1,15 @@
-import { getImageNextwork } from "@/common";
-import { MainButton } from "@/components/button/MainButton";
-import { HeadPage } from "@/components/HeadPage";
-import MainTooltip from "@/components/MainTooltip";
-import { TokenIcon } from "@/components/token/TokenIcon";
+'use client'
 import { getDecimalsFromTick } from "@/utils/formatters/api";
 import { usdFormatter } from "@/utils/formatters/number";
-import { spitSymbol } from "@/utils/formatters/token";
-import { setColorThemeMode } from "@/utils/helpers";
 import { formatMarkPriceNoDecimal } from "@/utils/helpers/format";
-import { Box, Stack, Typography, useTheme } from "@mui/material";
+import { useTheme } from "@mui/material";
 import {
   useFundingRate,
   useSymbolsInfo,
-  useTickerStream,
+  useTickerStream
 } from "@orderly.network/hooks";
-import { Decimal } from "@orderly.network/utils";
-import { IconChevronDown } from "@tabler/icons-react";
+import Decimal from "decimal.js-light";
 import { memo, useState } from "react";
-import { MarketsContent } from "../markets/components/MarketContent";
 
 interface IProps {
   symbol: string;
@@ -137,10 +129,10 @@ const SymbolHeader = ({ onSymbolChange, symbol }: IProps) => {
 
   return (
     <>
-      <HeadPage
+      {/* <HeadPage
         title={`${isNaN(stream?.mark_price)
-            ? "--"
-            : formatMarkPriceNoDecimal(stream?.mark_price)
+          ? "--"
+          : formatMarkPriceNoDecimal(stream?.mark_price)
           } | ${base}-${perp}`}
       />
 
@@ -234,7 +226,7 @@ const SymbolHeader = ({ onSymbolChange, symbol }: IProps) => {
           openMarketEl={openMarketEl}
           onSymbolChange={onSymbolChange}
         />
-      )}
+      )} */}
     </>
   );
 };

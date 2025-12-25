@@ -55,7 +55,7 @@ export const Header = () => {
     return `${address.slice(0, 6)}...${address.slice(-4)}`;
   };
 
-  console.log("wallet");
+  console.log("wallet", wallet);
 
   return (
     <MainAppBar elevation={0} position="sticky">
@@ -148,10 +148,10 @@ export const NavItem = styled(Box, {
     borderRadius: "8px",
     backgroundColor: isActived
       ? setColorThemeMode(
-          theme.palette.primary.main,
-          theme.palette.grey[800],
-          theme
-        )
+        theme.palette.primary.main,
+        theme.palette.grey[800],
+        theme
+      )
       : "transparent",
 
     "& .MuiTypography-root": {
@@ -171,10 +171,10 @@ export const NavItem = styled(Box, {
         width: "100%",
         backgroundColor: isActived
           ? setColorThemeMode(
-              theme.palette.common.black,
-              theme.palette.common.white,
-              theme
-            )
+            theme.palette.common.black,
+            theme.palette.common.white,
+            theme
+          )
           : "transparent",
         borderRadius: "4px",
       }),
