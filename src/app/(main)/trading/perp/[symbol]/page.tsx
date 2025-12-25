@@ -1,9 +1,14 @@
-import { MainViewContainer } from "@/plugins/trade/components/MainViewContainer";
+'use client'
+import { useWalletConnector } from '@orderly.network/wallet-connector';
 
-export default async function PerpPage({ params }: { params: { symbol: string } }) {
-  // const router = useRouter();
-  const { symbol } = await params;
+export default function PerpPage() {
+  const { connect, wallet, disconnect } = useWalletConnector();
 
+  useEffect(() => {
+    if (buttonState === 'has-wallet' && onConnect) {
+      onConnect();
+    }
+  }, [buttonState, onConnect]);
   // const updateTitle = useCallback(
   //   (title: string) => {
   //     var titleElement = document.getElementById(TCMP_ORDERLY_SDK_TITLE_KEY);
@@ -25,7 +30,24 @@ export default async function PerpPage({ params }: { params: { symbol: string } 
 
   return (
     <>
-      <MainViewContainer symbol={symbol} />
+      {evmWallet && <div>EVM Wallet: {JSON.stringify(evmWallet.label)}</div>}
+
+      <button
+        onClick={() => {
+          setSolanaModalVisible(true);
+        }}
+      >
+        Connect Solana Wallet
+      </button>
+
+      <button
+        onClick={async () => {
+          await connectWallet();
+        }}
+      >
+        Connect EVM Wallet
+      </button>
+      {/* <MainViewContainer symbol={symbol} /> */}
       {/* {lgUp ? (
 				<MainViewContainer symbol={symbol || "PERP_ETH_USDC"} onSymbolChange={onSymbolChange} />
 			) : (
