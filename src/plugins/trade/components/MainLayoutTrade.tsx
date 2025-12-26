@@ -1,4 +1,5 @@
 'use client'
+import { DataListWidget } from "@orderly.network/trading";
 import dynamic from "next/dynamic";
 
 const DynamicMainViewContainer = dynamic(() => import("./MainViewContainer").then((mod) => mod.MainViewContainer), {
@@ -13,7 +14,7 @@ export const MainLayoutTrade = ({ symbol }: IProps) => {
     return (
         <>
             <DynamicMainViewContainer symbol={symbol} />
-            {/* <DataListWidget /> */}
+            <DataListWidget />
         </>
     )
 }
