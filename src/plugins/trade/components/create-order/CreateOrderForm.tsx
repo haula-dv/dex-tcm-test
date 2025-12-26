@@ -1,6 +1,5 @@
 /* eslint-disable react-hooks/rules-of-hooks */
 import { getDecimalsFromTick } from "@/utils/formatters/api";
-import { getInputPlaceOrder } from "@/utils/helpers";
 import { TSizes } from "@/utils/themes/custom-theme/sizes";
 import { Stack, Typography, useMediaQuery, useTheme } from "@mui/material";
 import {
@@ -8,9 +7,8 @@ import {
   useMarkPrice,
   useOrderEntry,
   useSymbolsInfo,
-  useWithdraw,
+  useWalletConnector
 } from "@orderly.network/hooks";
-import { toast } from "@orderly.network/react";
 import { OrderSide, OrderType } from "@orderly.network/types";
 import { memo, ReactNode, useEffect, useMemo, useState } from "react";
 import { useForm } from "react-hook-form";
@@ -18,13 +16,7 @@ import { match } from "ts-pattern";
 import { useStore } from "zustand";
 import { orderBookActivedStore } from "../../store";
 import Balance from "../common/Balance";
-import { Accountleverage } from "./Accountleverage";
-import AvailableWithdraw from "./AvailableWithdraw";
-import Details from "./Details";
 import InputForm from "./InputForm";
-import ModalConfirmOrder from "./ModalConfirmOrder";
-import OrderDirection from "./OrderDirection";
-import OrderTypeTab from "./OrderTypeTab";
 
 interface IProps {
   symbol: string;
@@ -48,7 +40,8 @@ const CreateOrderForm = ({ symbol, isActiveTab = "Buy" }: IProps) => {
   // Orderly Hooks
   const symbolsInfo = useSymbolsInfo();
   const { wallet } = useWalletConnector();
-  const { availableWithdraw } = useWithdraw();
+  // const { availableWithdraw } = useWithdraw();
+
   const collateral = useCollateral();
   const [_, base, quote] = symbol.split("_");
   const { data: markPrice } = useMarkPrice(symbol);
@@ -81,9 +74,9 @@ const CreateOrderForm = ({ symbol, isActiveTab = "Buy" }: IProps) => {
 
   const { watch, setValue } = formContext;
 
-  const { onSubmit, helper, maxQty, estLeverage, estLiqPrice } = useOrderEntry(
+  const { submit: onSubmit, helper, maxQty, estLeverage, estLiqPrice } = useOrderEntry(
+    symbol,
     {
-      symbol,
       side: match(watch("direction", "Buy"))
         .with("Buy", () => OrderSide.BUY)
         .with("Sell", () => OrderSide.SELL)
@@ -98,7 +91,6 @@ const CreateOrderForm = ({ symbol, isActiveTab = "Buy" }: IProps) => {
       order_price: watch("price", undefined),
       total: watch("total", undefined),
     },
-    { watchOrderbook: true }
   );
 
   // Handle show modal confirm
@@ -108,25 +100,25 @@ const CreateOrderForm = ({ symbol, isActiveTab = "Buy" }: IProps) => {
 
   // Submit form
   const submitForm = async () => {
-    const data = formContext.getValues();
-    setLoading(true);
+    // const data = formContext.getValues();
+    // setLoading(true);
 
-    if (data.type == "Market" || data.type == "StopMarket") {
-      data.price = undefined;
-    }
+    // if (data.type == "Market" || data.type == "StopMarket") {
+    //   data.price = undefined;
+    // }
 
-    try {
-      await onSubmit(getInputPlaceOrder(data, symbol));
+    // try {
+    //   await onSubmit(getInputPlaceOrder(data, symbol));
 
-      if (mdUP) {
-        toast.success("Order successfully created!");
-      }
-    } catch (err) {
-      console.error(`Unhandled error in "submitForm":`, err);
-    } finally {
-      setLoading(false);
-      setOpenOrderConfirm(false);
-    }
+    //   if (mdUP) {
+    //     toast.success("Order successfully created!");
+    //   }
+    // } catch (err) {
+    //   console.error(`Unhandled error in "submitForm":`, err);
+    // } finally {
+    //   setLoading(false);
+    //   setOpenOrderConfirm(false);
+    // }
   };
 
   // Watch this field when click on order book item
@@ -143,17 +135,17 @@ const CreateOrderForm = ({ symbol, isActiveTab = "Buy" }: IProps) => {
   return (
     <>
       <Balance
-        availableWithdraw={availableWithdraw}
+        // availableWithdraw={availableWithdraw}
         quote={quote}
         wallet={wallet}
         isFristLoading={symbolsInfo.isNil}
       />
 
-      <Accountleverage symbol={symbol} />
+      {/* <Accountleverage symbol={symbol} /> */}
 
       <form onSubmit={formContext.handleSubmit(handleConfirmOrder)}>
         <Stack spacing={TSizes.margin_common}>
-          <OrderDirection
+          {/* <OrderDirection
             isActiveTab={isActiveTab}
             formContext={formContext}
             wallet={wallet}
@@ -162,13 +154,13 @@ const CreateOrderForm = ({ symbol, isActiveTab = "Buy" }: IProps) => {
           <AvailableWithdraw
             balance={collateral.availableBalance}
             quote={quote}
-          />
+          /> */}
 
-          <OrderTypeTab formContext={formContext} />
+          {/* <OrderTypeTab formContext={formContext} /> */}
 
           <InputForm
             formContext={formContext}
-            helper={helper}
+            helper={helper as any}
             maxQty={maxQty}
             symbol={symbol}
             symbolsInfo={symbolsInfo}
@@ -176,7 +168,7 @@ const CreateOrderForm = ({ symbol, isActiveTab = "Buy" }: IProps) => {
             wallet={wallet}
           />
 
-          <Details
+          {/* <Details
             estLeverage={estLeverage}
             quoteDecimals={quoteDecimals}
             quote={quote}
@@ -184,10 +176,10 @@ const CreateOrderForm = ({ symbol, isActiveTab = "Buy" }: IProps) => {
             direction={formContext.watch("direction")}
             estLiqPrice={estLiqPrice}
             openOrderConfirm={openOrderConfirm}
-          />
+          /> */}
         </Stack>
 
-        <ModalConfirmOrder
+        {/* <ModalConfirmOrder
           open={openOrderConfirm}
           handleClose={() => setOpenOrderConfirm(false)}
           submitForm={submitForm}
@@ -195,7 +187,7 @@ const CreateOrderForm = ({ symbol, isActiveTab = "Buy" }: IProps) => {
           currentValue={formContext.getValues()}
           loading={loading}
           totalPrice={formContext.watch("total") ?? ""}
-        />
+        /> */}
       </form>
     </>
   );

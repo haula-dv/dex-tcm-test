@@ -85,7 +85,8 @@ export const MainViewContainer = ({ symbol }: IProps) => {
             height="100%"
             heightCard="100%"
           >
-            {/* <DynamicCreateOrderForm symbol={symbol} /> */}
+            {/* <OrderEntryForm /> */}
+            <DynamicCreateOrderForm symbol={symbol} />
           </MainCard>
         </Stack>
       </Box>

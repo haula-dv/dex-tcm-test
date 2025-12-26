@@ -1,5 +1,6 @@
 'use client'
 import { Box } from "@mui/material";
+import { DataListWidget } from "@orderly.network/trading";
 import { memo } from "react";
 
 interface IProps {
@@ -78,11 +79,11 @@ const OrderViewContainer = ({ symbol }: IProps) => {
       height={"20.5617%"}
       minHeight={"320px"}
       overflow={"hidden"}
-      borderRadius={"16px"}
       className="data-list-view"
+      mt={2}
     >
       {/* <DataListView /> */}
-
+      <DataListWidget symbol={symbol} />
 
       {/* <MainTab
 				tabs={tabs}

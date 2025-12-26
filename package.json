@@ -16,6 +16,7 @@
     "@orderly.network/portfolio": "2.8.8",
     "@orderly.network/react-app": "2.8.8",
     "@orderly.network/trading": "2.8.8",
+    "@orderly.network/ui-order-entry": "2.8.8",
     "@orderly.network/trading-leaderboard": "2.8.8",
     "@orderly.network/trading-rewards": "2.8.8",
     "@orderly.network/types": "2.8.8",

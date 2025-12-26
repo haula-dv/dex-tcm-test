@@ -2,40 +2,49 @@ import { MainButton } from "@/components/button/MainButton";
 import MainCard from "@/components/card/MainCard";
 import { DepositWithdrawDialog } from "@/components/deposit/DepositWithdrawDialog";
 import { MainDialog } from "@/components/dialog/MainDialog";
-import { NetworkId } from "@/provider/OrderlyConfigProviderRoot";
 import { AppInfo } from "@/utils/constants/key_store";
-import { usdFormatter } from "@/utils/formatters/number";
 import { setColorThemeMode } from "@/utils/helpers";
+import { supportedEvmChains } from "@/utils/network";
 import { TSizes } from "@/utils/themes/custom-theme/sizes";
 import { Box, Skeleton, Stack, Typography, useTheme } from "@mui/material";
-import { useWalletConnector } from "@orderly.network/hooks";
-import { WalletState } from "@orderly.network/hooks/esm/walletConnectorContext";
+import { WalletState } from "@orderly.network/hooks";
+import { NetworkId } from "@orderly.network/types";
+import { useSetChain } from "@web3-onboard/react";
 import Image from "next/image";
-import { memo, useState } from "react";
+import { memo, useMemo, useState } from "react";
 import { toast } from "sonner";
 
 interface IProps {
-  availableWithdraw: number;
+  // availableWithdraw: number;
   quote: string;
   wallet: WalletState | null;
   isFristLoading: boolean;
 }
 
 const Balance = ({
-  availableWithdraw,
+  // availableWithdraw,
   quote,
   wallet,
   isFristLoading,
 }: IProps) => {
   // Orderly hooks
-  const { connectedChain } = useWalletConnector();
   const theme = useTheme();
 
   const [open, setOpen] = useState(false);
-  const networkId = (localStorage.getItem("networkId") ??
-    "mainnet") as NetworkId;
+  const networkId = typeof window !== "undefined" ? (localStorage.getItem("networkId") ??
+    "mainnet") as NetworkId : "mainnet";
   const [openWithDraw, setOpenWithDraw] = useState(false);
   const [activedTab, setActivedTab] = useState("withdraw");
+  const [{ connectedChain }, setChain] = useSetChain();
+
+  // Get current chain from supportedEvmChains
+  const currentChain = useMemo(() => {
+    return supportedEvmChains.find(
+      ({ id }) => id === connectedChain?.id
+    );
+  }, [connectedChain?.id]);
+
+  console.log("connectedChain", connectedChain);
 
   // Handle get test USDC
   const handleGetTestUSDC = async () => {
@@ -97,6 +106,8 @@ const Balance = ({
     setOpenWithDraw(!openWithDraw);
   };
 
+  console.log("currentChain", currentChain);
+
   return (
     <>
       <MainCard
@@ -119,7 +130,7 @@ const Balance = ({
                 <Skeleton variant="text" width={"100px"} />
               ) : (
                 <Typography fontWeight={600} fontSize={"17px"}>
-                  {usdFormatter.format(availableWithdraw)}{" "}
+                  {/* {usdFormatter.format(availableWithdraw)}{" "} */}
                   <span
                     style={{
                       color: setColorThemeMode(
@@ -134,7 +145,7 @@ const Balance = ({
               )}
             </Stack>
 
-            {networkId == "testnet" && (
+            {currentChain && currentChain?.network === "testnet" && (
               <>
                 <Box mb={TSizes.margin_xs} />
 
