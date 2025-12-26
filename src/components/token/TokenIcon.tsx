@@ -57,8 +57,8 @@ export const TokenIcon = ({ url, size = 20, symbol, fontSize }: IProps) => {
 						width={size}
 						alt=""
 						onError={() => setIsError(true)}
-						// placeholder="blur"
-						// blurDataURL={url}
+						placeholder="blur"
+						blurDataURL={url}
 						style={{
 							overflow: 'hidden',
 							borderRadius: '50%',

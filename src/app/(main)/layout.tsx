@@ -1,10 +1,8 @@
 "use client";
+import { Header } from "@/components/layouts/Header";
 import "@/styles/global.scss";
 import { Box, useMediaQuery, useTheme } from "@mui/material";
 import "@orderly.network/react/dist/styles.css";
-import { useWalletMultiButton } from '@solana/wallet-adapter-base-ui';
-import { useWalletModal } from '@solana/wallet-adapter-react-ui';
-import { useConnectWallet } from '@web3-onboard/react';
 import React, { useEffect } from "react";
 
 export default function RootLayout({
@@ -14,8 +12,6 @@ export default function RootLayout({
 }>) {
   const theme = useTheme();
   const lgUp = useMediaQuery(theme.breakpoints.up("lg"));
-  const [{ wallet: evmWallet }, connectWallet] = useConnectWallet();
-  const { setVisible: setSolanaModalVisible } = useWalletModal();
 
   // Apply theme mode to the body element
   useEffect(() => {
@@ -26,19 +22,11 @@ export default function RootLayout({
     };
   }, [theme.palette.mode]);
 
-  const { buttonState, onConnect } = useWalletMultiButton({
-    onSelectWallet() {
-      setSolanaModalVisible(true);
-    }
-  });
 
   return (
     <div className={theme.palette.mode}>
       {/* {lgUp ? <Header /> : <HeaderMobile />} */}
-      {/* <Header /> */}
-      Heyyyyyyyyyyyyyyyyyyyyy
-
-
+      <Header />
       <Box position={"relative"}>{children}</Box>
     </div>
   );

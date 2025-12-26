@@ -14,11 +14,11 @@ import {
 	useCollateral,
 	useDeposit,
 	useWithdraw,
+	WalletState,
 } from "@orderly.network/hooks";
-import { WalletState } from "@orderly.network/hooks/esm/walletConnectorContext";
 import { toast } from "@orderly.network/react";
 import { IconCopy, IconLogout } from "@tabler/icons-react";
-import { useNotifications, useSetChain } from "@web3-onboard/react";
+import { useConnectWallet, useNotifications, useSetChain, useWallets } from "@web3-onboard/react";
 import { useMemo, useState } from "react";
 import { DepositWithdrawDialog } from "../../../components/deposit/DepositWithdrawDialog";
 import { AccountAvatar } from "./AccountAvatar";
@@ -27,37 +27,36 @@ interface IProps {
 	open: boolean;
 	onClose: () => void;
 	wallet: WalletState;
-	disconnect: (wallet: WalletState) => Promise<WalletState[]>;
 }
 
-export default function AccountDetailPopup({ onClose, open, wallet, disconnect }: IProps) {
-	// Temporarily disabled - requires Orderly SDK
-	// const [_, { findByChainId }] = useChains();
-	// const collateral = useCollateral();
-	// const [{ connectedChain }, setChain] = useSetChain();
-	// const [{}, customNotification] = useNotifications();
-	// const account = useAccountInstance();
-
+export default function AccountDetailPopup({ onClose, open, wallet }: IProps) {
+	const [_, { findByChainId }] = useChains();
+	const collateral = useCollateral();
+	const [{ connectedChain }, setChain] = useSetChain();
+	const [{ }, customNotification] = useNotifications();
+	const account = useAccountInstance();
+	const [_0, _1, disconnect] = useConnectWallet();
+	const connectedWallets = useWallets();
 	const [loadingSettle, setLoadingSettle] = useState(false);
 	const [isOpenDeposit, setIsOpenDesposit] = useState(false);
 
-	// GET CURRENT CHAIN - Disabled
-	// const currentChain = useMemo(() => {
-	// 	return findByChainId(connectedChain ? idFromHexChainId(connectedChain?.id ?? "") : 1);
-	// }, [connectedChain, findByChainId]);
+	// GET CURRENT CHAIN
+	const currentChain = useMemo(() => {
+		return findByChainId(connectedChain ? idFromHexChainId(connectedChain?.id ?? "") : 1);
+	}, [connectedChain, findByChainId]);
 
-	// const token = useMemo(() => {
-	// 	return currentChain?.token_infos[0] ?? undefined;
-	// }, [currentChain]);
+	const token = useMemo(() => {
+		return currentChain?.token_infos[0] ?? undefined;
+	}, [currentChain]);
 
-	// const deposit = useDeposit({
-	// 	address: token?.address,
-	// 	decimals: token?.decimals,
-	// 	srcToken: token?.symbol,
-	// 	srcChainId: Number(connectedChain?.id),
-	// });
+	const deposit = useDeposit({
+		address: token?.address,
+		decimals: token?.decimals,
+		srcToken: token?.symbol,
+		srcChainId: Number(connectedChain?.id),
+	});
 
-	// const { unsettledPnL, availableWithdraw } = useWithdraw();
+	const { unsettledPnL, availableWithdraw } = useWithdraw();
 
 	// Handle disconnect wallet button
 	const handleDisconnect = async () => {
@@ -69,8 +68,6 @@ export default function AccountDetailPopup({ onClose, open, wallet, disconnect }
 	};
 
 	const handleCopy = () => {
-		if (!wallet.accounts?.[0]?.address) return;
-		
 		navigator.clipboard
 			.writeText(wallet.accounts[0].address)
 			.then(() => {
@@ -82,15 +79,15 @@ export default function AccountDetailPopup({ onClose, open, wallet, disconnect }
 	};
 
 	const handleSettle = async () => {
-		// Disabled - requires Orderly SDK
-		// setLoadingSettle(true);
-		// try {
-		// 	await account.settle();
-		// } catch (err: any) {
-		// 	console.log(err);
-		// } finally {
-		// 	setLoadingSettle(false);
-		// }
+		setLoadingSettle(true);
+
+		try {
+			await account.settle();
+		} catch (err: any) {
+			console.log(err);
+		} finally {
+			setLoadingSettle(false);
+		}
 	};
 
 	const handleToggleDesposit = () => {

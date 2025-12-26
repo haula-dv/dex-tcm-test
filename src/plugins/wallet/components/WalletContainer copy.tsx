@@ -1,38 +1,26 @@
 import { themeSelectorState } from "@/common/stores/common";
 import { MainButton } from "@/components/button/MainButton";
+import { MainIconButton } from "@/components/button/MainIconButton";
 import IconLoading from "@/components/icons/loading";
 
-import { MainIconButton } from "@/components/button/MainIconButton";
 import { TLocalStorage } from "@/utils/constants/key_store";
 import { formartAddress } from "@/utils/formatters/token";
 import { setColorThemeMode } from "@/utils/helpers";
 import { Box, Stack, useTheme } from "@mui/material";
-import { useAccountInstance } from "@orderly.network/hooks";
+import { useAccount } from "@orderly.network/hooks";
 import { IconMoonStars, IconSun } from "@tabler/icons-react";
-import { useConnectWallet, useWallets } from "@web3-onboard/react";
+import { useConnectWallet } from "@web3-onboard/react";
 import { setZustandValue } from "nes-zustand";
-import dynamic from "next/dynamic";
 import Image from "next/image";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useStore } from "zustand";
+import AccountDetailPopup from "./AccountDetailPopup";
+import NetworkContent from "./NetworkContent";
 import { OrderlyConnect } from "./OrderlyConnect";
 
-const DynamicNetworkContent = dynamic(() => import("./NetworkContentV2"));
-
 export default function WalletContainer() {
-  const [{ wallet: evmWallet, connecting }, connectWallet] = useConnectWallet();
   const themeSelector = useStore(themeSelectorState, (state) => state.value);
-  const [openAccountDetailsModal, setAccountDetailsModal] = useState(false);
-  const account = useAccountInstance();
-  const connectedWallets = useWallets();
-
   const theme = useTheme();
-  // Handle close menu account
-  const handleToggleAccountMenu = () => {
-    setAccountDetailsModal(!openAccountDetailsModal);
-  };
-
-  console.log('evmWallet', evmWallet);
 
   // Handle change theme mode
   const handleChangeTheme = () => {
@@ -50,28 +38,47 @@ export default function WalletContainer() {
     location.reload();
   };
 
-  // Watch wallet change
-  useEffect(() => {
-    if (Array.isArray(evmWallet?.accounts) && evmWallet.accounts.length > 0) {
-      const item = evmWallet.accounts[0];
-      const chain = evmWallet.chains[0];
+  // Account Details
+  const [openAccountDetailsModal, setAccountDetailsModal] = useState(false);
 
-      account.setAddress(item.address, {
-        provider: evmWallet.provider,
-        chain: {
-          id: chain.id,
-          namespace: chain.namespace as any,
-        },
-        wallet: {
-          name: evmWallet.label,
-        },
-      });
-    }
-  }, [account, evmWallet]);
+  const [{ wallet, connecting }, connect, disconnect] = useConnectWallet();
+  const { account } = useAccount();
+
+  // Handle connect wallet button
+  const handleConnectWallet = async () => {
+    await connect().then((res) => {
+      if (res && res.length > 0) {
+        location.reload();
+      }
+    });
+  };
+
+  // Handle close menu account
+  const handleToggleAccountMenu = () => {
+    setAccountDetailsModal(!openAccountDetailsModal);
+  };
+
+  // Watch wallet change
+  // useEffect(() => {
+  //   if (Array.isArray(wallet?.accounts) && wallet.accounts.length > 0) {
+  //     const item = wallet.accounts[0];
+  //     const chain = wallet.chains[0];
+
+  //     account.setAddress(item.address, {
+  //       provider: wallet.provider,
+  //       chain: {
+  //         id: chain.id,
+  //       },
+  //       wallet: {
+  //         name: wallet.label,
+  //       },
+  //     });
+  //   }
+  // }, [account, wallet]);
 
   return (
     <Stack direction={"row"} spacing={1} alignItems={"center"}>
-      {evmWallet && <DynamicNetworkContent />}
+      {wallet && <NetworkContent />}
 
       {connecting ? (
         <MainButton
@@ -83,9 +90,9 @@ export default function WalletContainer() {
         </MainButton>
       ) : (
         <>
-          {!evmWallet ? (
+          {!wallet ? (
             <MainButton
-              onClick={async () => await connectWallet()}
+              onClick={handleConnectWallet}
               variant="contained"
               color={setColorThemeMode("darkGrey", "white")}
             >
@@ -98,7 +105,7 @@ export default function WalletContainer() {
                 color={setColorThemeMode("darkGrey", "white")}
                 onClick={handleToggleAccountMenu}
               >
-                {formartAddress(evmWallet.accounts[0].address)}
+                {formartAddress(wallet.accounts[0].address)}
               </MainButton>
 
               <Box
@@ -110,17 +117,17 @@ export default function WalletContainer() {
                 alignItems={"center"}
                 justifyContent={"center"}
               >
-                {evmWallet.icon.startsWith("data:image") ? (
+                {wallet.icon.startsWith("data:image") ? (
                   <Image
-                    src={evmWallet.icon}
+                    src={wallet.icon}
                     height={20}
                     width={20}
-                    alt={evmWallet.label}
+                    alt={wallet.label}
                   />
                 ) : (
                   <div
                     style={{ padding: "6px" }}
-                    dangerouslySetInnerHTML={{ __html: evmWallet.icon }}
+                    dangerouslySetInnerHTML={{ __html: wallet.icon }}
                   ></div>
                 )}
               </Box>
@@ -129,13 +136,14 @@ export default function WalletContainer() {
         </>
       )}
 
-      {/* {openAccountDetailsModal && evmWallet && (
+      {openAccountDetailsModal && wallet && (
         <AccountDetailPopup
           open={openAccountDetailsModal}
           onClose={() => setAccountDetailsModal(false)}
-          wallet={evmWallet as any}
+          wallet={wallet}
+          disconnect={disconnect}
         />
-      )} */}
+      )}
 
       <OrderlyConnect />
 

@@ -1,6 +1,6 @@
 import ClientThemeProvider from "@/components/ClientThemeProvider";
 import { Loading } from "@/components/loading/loading";
-import { OrderlyConfigProviderRoot } from "@/provider/MainOrderlyProvider";
+import { OrderlyRootProvider } from "@/provider-2/OrderlyRootProvider";
 import "@orderly.network/ui/dist/styles.css";
 import '@solana/wallet-adapter-react-ui/styles.css';
 import { headers } from "next/headers";
@@ -25,7 +25,7 @@ export default async function RootLayout({
       <body>
         <ClientThemeProvider>
           {/* <Providers cookies={cookies}>{children}</Providers> */}
-          <OrderlyConfigProviderRoot>{children}</OrderlyConfigProviderRoot>
+          <OrderlyRootProvider>{children}</OrderlyRootProvider>
           <Loading />
           <Toaster closeButton position="top-right" />
         </ClientThemeProvider>

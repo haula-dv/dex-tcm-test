@@ -66,8 +66,8 @@ importers:
         specifier: 2.0.7
         version: 2.0.7(bufferutil@4.1.0)(encoding@0.1.13)(fastestsmallesttextencoderdecoder@1.0.22)(got@11.8.6)(typescript@5.9.3)(utf-8-validate@5.0.10)
       '@orderly.network/hooks':
-        specifier: 2.8.8
-        version: 2.8.8(@types/react@19.2.7)(bufferutil@4.1.0)(encoding@0.1.13)(fastestsmallesttextencoderdecoder@1.0.22)(got@11.8.6)(react-dom@19.2.3(react@19.2.3))(react@19.2.3)(typescript@5.9.3)(utf-8-validate@5.0.10)
+        specifier: 2.0.7
+        version: 2.0.7(@types/react@19.2.7)(bufferutil@4.1.0)(encoding@0.1.13)(fastestsmallesttextencoderdecoder@1.0.22)(got@11.8.6)(react-dom@19.2.3(react@19.2.3))(react@19.2.3)(typescript@5.9.3)(utf-8-validate@5.0.10)
       '@orderly.network/i18n':
         specifier: 2.8.8
         version: 2.8.8(react-dom@19.2.3(react@19.2.3))(react-native@0.83.1(@babel/core@7.28.5)(@types/react@19.2.7)(bufferutil@4.1.0)(react@19.2.3)(utf-8-validate@5.0.10))(react@19.2.3)(typescript@5.9.3)
@@ -102,8 +102,8 @@ importers:
         specifier: ^1.5.17
         version: 1.5.17(bufferutil@4.1.0)(react@19.2.3)(utf-8-validate@5.0.10)
       '@orderly.network/types':
-        specifier: 2.8.8
-        version: 2.8.8
+        specifier: 2.0.7
+        version: 2.0.7
       '@orderly.network/ui':
         specifier: 2.8.8
         version: 2.8.8(@types/react-dom@19.2.3(@types/react@19.2.7))(@types/react@19.2.7)(embla-carousel@8.6.0)(react-dom@19.2.3(react@19.2.3))(react@19.2.3)(tailwindcss@4.1.18)
@@ -2048,6 +2048,12 @@ packages:
     peerDependencies:
       react: ^18.2.0
 
+  '@orderly.network/hooks@2.0.7':
+    resolution: {integrity: sha512-qGPTy66xXGn+G+UFZbcVyTuiJA0BuuJo8nNbfpe9wd8qUkZFmLyFI+3cJw3BwrszTJxNBaMPmc6WFuJuMb6RoQ==}
+    peerDependencies:
+      react: '>=18'
+      react-dom: '>=18'
+
   '@orderly.network/hooks@2.8.8':
     resolution: {integrity: sha512-vOC9FqPDeh9xFcW/l2g4+jCO9DwH5A7iDiAI+ClCO1ZKgtLbzbYXLCgJCqif7O6s3z8x6RubTXTWOslWe5N4eA==}
     peerDependencies:
@@ -2070,6 +2076,9 @@ packages:
   '@orderly.network/net@1.5.17':
     resolution: {integrity: sha512-+UieZDrxbeInNLHV0XFGJDSJZRiI9gl/0x9neF+3VKZDp5li09IVVK5dbwcvfPT5Wx7A2oRLeZfJEOrNvHHEDw==}
 
+  '@orderly.network/net@2.0.7':
+    resolution: {integrity: sha512-EpQ99CY2tDhFaQiH1a8N3w7HUEJTV6p3CHhEwsP0WJe7pEXwY+z0LCW8IDrT1lISlTWuJ6nJAwVX/xP7mHPpxg==}
+
   '@orderly.network/net@2.8.8':
     resolution: {integrity: sha512-x2k2oEtT0LBgi1gXc+w07Ojc8CKKE+bOxLxwFCXuPVUurGTpbzekyUdabqKfY6TA7rbqxAAfamoscLmZfMcjkg==}
 
@@ -2078,6 +2087,9 @@ packages:
 
   '@orderly.network/perp@3.3.17':
     resolution: {integrity: sha512-Ejrph+fAIHZYrXwxEOQMk0Nro/qVAVJM/3ymJDOkK9QneyfPX99pu5tUJmkRsmDYU6yPeF97fYP69U0Xu2wENQ==}
+
+  '@orderly.network/perp@4.0.6':
+    resolution: {integrity: sha512-KB4alrjs0lyFM1xdF9CAe2c+xzBzD5IBwxBBt6+MrcWJj368YcqkKAM5eNSFlqQBoqw72Gq2tIELHFMymJnlsg==}
 
   '@orderly.network/perp@4.8.8':
     resolution: {integrity: sha512-AGOpIFOhzK8C8qnJyhwNnbtbxw9B4GQA2sydxAGNaE5e2TsEUzNZIiYK0aX1xkq0Uuj1mjquPKBQ7QndxJcipg==}
@@ -2200,6 +2212,9 @@ packages:
 
   '@orderly.network/utils@1.5.17':
     resolution: {integrity: sha512-STvCexe5vITcyEp8xRDVRQC133xe/UKHqVO/I2Rmux80hb63luuJMrAGz6B6A2kH0CGzlpzr5htWMwqSAznM0Q==}
+
+  '@orderly.network/utils@2.0.7':
+    resolution: {integrity: sha512-iCXTJp5RYVz/VJf3fxjFtIDzjch5SbLkMU55PPaEoxbE4zBG3P1Rz1ZDzlOzS9TXB8x+OKvDtxxwOWo1jxvU2w==}
 
   '@orderly.network/utils@2.8.8':
     resolution: {integrity: sha512-obPjkaLIn8iyeUin7/ORXdhDLfbT1PImeFhgAtgn7Wrirn1wf6XAo7l4N/Y5xTgN/AejzMdMUrgu1jI1Wa1Hig==}
@@ -12835,6 +12850,36 @@ snapshots:
       - bufferutil
       - utf-8-validate
 
+  '@orderly.network/hooks@2.0.7(@types/react@19.2.7)(bufferutil@4.1.0)(encoding@0.1.13)(fastestsmallesttextencoderdecoder@1.0.22)(got@11.8.6)(react-dom@19.2.3(react@19.2.3))(react@19.2.3)(typescript@5.9.3)(utf-8-validate@5.0.10)':
+    dependencies:
+      '@akamfoad/qr': 0.4.0
+      '@amplitude/analytics-browser': 2.11.13
+      '@orderly.network/core': 2.0.7(bufferutil@4.1.0)(encoding@0.1.13)(utf-8-validate@5.0.10)
+      '@orderly.network/default-evm-adapter': 2.0.7(bufferutil@4.1.0)(encoding@0.1.13)(utf-8-validate@5.0.10)
+      '@orderly.network/default-solana-adapter': 2.0.7(bufferutil@4.1.0)(encoding@0.1.13)(fastestsmallesttextencoderdecoder@1.0.22)(got@11.8.6)(typescript@5.9.3)(utf-8-validate@5.0.10)
+      '@orderly.network/net': 2.0.7
+      '@orderly.network/perp': 4.0.6
+      '@orderly.network/types': 2.0.7
+      '@orderly.network/utils': 2.0.7
+      '@orderly.network/web3-provider-ethers': 2.0.7(bufferutil@4.1.0)(encoding@0.1.13)(utf-8-validate@5.0.10)
+      immer: 10.2.0
+      ramda: 0.29.1
+      react: 19.2.3
+      react-dom: 19.2.3(react@19.2.3)
+      swr: 2.2.4(react@19.2.3)
+      use-constant: 1.1.1(react@19.2.3)
+      use-debounce: 9.0.4(react@19.2.3)
+      zustand: 4.5.7(@types/react@19.2.7)(immer@10.2.0)(react@19.2.3)
+    transitivePeerDependencies:
+      - '@types/react'
+      - bufferutil
+      - encoding
+      - fastestsmallesttextencoderdecoder
+      - got
+      - supports-color
+      - typescript
+      - utf-8-validate
+
   '@orderly.network/hooks@2.8.8(@types/react@19.2.7)(bufferutil@4.1.0)(encoding@0.1.13)(fastestsmallesttextencoderdecoder@1.0.22)(got@11.8.6)(react-dom@19.2.3(react@19.2.3))(react@19.2.3)(typescript@5.9.3)(utf-8-validate@5.0.10)':
     dependencies:
       '@akamfoad/qr': 0.4.0
@@ -12904,6 +12949,8 @@ snapshots:
 
   '@orderly.network/net@1.5.17': {}
 
+  '@orderly.network/net@2.0.7': {}
+
   '@orderly.network/net@2.8.8':
     dependencies:
       eventemitter3: 5.0.1
@@ -12937,6 +12984,11 @@ snapshots:
     dependencies:
       '@orderly.network/types': 1.5.17
       '@orderly.network/utils': 1.5.17
+
+  '@orderly.network/perp@4.0.6':
+    dependencies:
+      '@orderly.network/types': 2.0.7
+      '@orderly.network/utils': 2.0.7
 
   '@orderly.network/perp@4.8.8':
     dependencies:
@@ -13562,6 +13614,12 @@ snapshots:
 
   '@orderly.network/utils@1.5.17':
     dependencies:
+      dayjs: 1.11.19
+      decimal.js-light: 2.5.1
+
+  '@orderly.network/utils@2.0.7':
+    dependencies:
+      '@orderly.network/types': 2.0.7
       dayjs: 1.11.19
       decimal.js-light: 2.5.1
 

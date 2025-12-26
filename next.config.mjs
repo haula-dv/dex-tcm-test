@@ -10,6 +10,10 @@ const nextConfig = {
         protocol: "https",
         hostname: "oss.orderly.network",
       },
+      {
+        protocol: "https",
+        hostname: "arbitrum-one.publicnode.com",
+      },
     ],
   },
 

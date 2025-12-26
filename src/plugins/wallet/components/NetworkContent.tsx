@@ -1,20 +1,252 @@
-import { memo } from "react";
+import { getImageNextwork } from "@/common";
+import { MainButton } from "@/components/button/MainButton";
+import { ItemList } from "@/components/list/ItemList";
+import { StyledMenu } from "@/components/menu/StyledMenu";
+import { TokenIcon } from "@/components/token/TokenIcon";
+import { TLocalStorage } from "@/utils/constants/key_store";
+import { idFromHexChainId } from "@/utils/formatters/token";
+import { setColorThemeMode } from "@/utils/helpers";
+import {
+  Divider,
+  Stack,
+  Typography,
+  useMediaQuery,
+  useTheme,
+} from "@mui/material";
+import { useChains } from "@orderly.network/hooks";
+import { IconChevronDown } from "@tabler/icons-react";
+import { useConnectWallet, useSetChain } from "@web3-onboard/react";
+import { memo, useCallback, useEffect, useMemo, useState } from "react";
 
-// NetworkContent component temporarily disabled - useChains requires Orderly SDK
 function NetworkContent() {
-  // const theme = useTheme();
-  // const [networkAnchorEl, setNetworkAnchorEl] = useState<null | HTMLElement>(
-  //   null
-  // );
-  // const openNetworkEl = Boolean(networkAnchorEl);
-  // const upLg = useMediaQuery(theme.breakpoints.up("lg"));
+  const theme = useTheme();
+  const [networkAnchorEl, setNetworkAnchorEl] = useState<null | HTMLElement>(
+    null
+  );
+  const openNetworkEl = Boolean(networkAnchorEl);
+  const upLg = useMediaQuery(theme.breakpoints.up("lg"));
 
   // Hooks
-  // const [chains, { findByChainId }] = useChains();
-  // const { wallet, connectedChain, setChain } = useWalletConnector();
+  const [chains, { findByChainId }] = useChains();
+  const [{ connectedChain }, setChain] = useSetChain();
+  const [{ wallet }, connect, disconnect] = useConnectWallet();
 
-  // All chain-related logic temporarily disabled
-  return null;
+  // Handle show menu account button
+  const handleShowMenu = (event: React.MouseEvent<HTMLElement>) => {
+    setNetworkAnchorEl(event.currentTarget);
+  };
+
+  // GET CURRENT CHAIN
+  const currentChain = useCallback(() => {
+    return findByChainId(
+      connectedChain ? idFromHexChainId(connectedChain?.id ?? "") : 1
+    );
+  }, [connectedChain, findByChainId]);
+
+  // Handle change network
+  const onChainChanged = useCallback(
+    async (chainId: any, isTestnet: boolean) => {
+      if (!wallet) {
+        setNetworkAnchorEl(null);
+        return;
+      }
+
+      await setChain({
+        chainId: chainId,
+        chainNamespace: "evm",
+      }).then((res) => {
+        localStorage.setItem(
+          TLocalStorage.DEX_ORDERLY_NETWORK,
+          isTestnet ? "testnet" : "mainnet"
+        );
+
+        // realod page
+        setTimeout(() => {
+          window.location.reload();
+        }, 100);
+      });
+    },
+    [setChain, wallet]
+  );
+
+  useEffect(() => {
+    const chain = currentChain();
+    if (chain) {
+      const isMainet = chain.network_infos.mainnet;
+      localStorage.setItem("networkId", isMainet ? "mainnet" : "testnet");
+    }
+  }, [connectedChain]);
+
+  const allChains = useMemo(() => {
+    return [...chains.mainnet, ...chains.testnet];
+  }, [chains.mainnet, chains.testnet]);
+
+  const remapChainIds = useMemo(() => {
+    return allChains.length > 0
+      ? allChains.map((item: any) => {
+        return item.network_infos.chain_id;
+      })
+      : [];
+  }, [allChains]);
+
+  const isSupportChain = useMemo(() => {
+    return currentChain()
+      ? remapChainIds.some(
+        (it) => it === (currentChain() as any).network_infos.chain_id
+      )
+      : false;
+  }, [currentChain, remapChainIds, connectedChain]);
+
+  return (
+    <>
+      {chains ? (
+        <MainButton
+          variant={"contained"}
+          endIcon={
+            <IconChevronDown
+              size={"1rem"}
+              color={setColorThemeMode(
+                theme.palette.common.black,
+                theme.palette.common.white
+              )}
+            />
+          }
+          onClick={handleShowMenu}
+          id="network-button"
+          aria-controls={openNetworkEl ? "network-menu" : undefined}
+          aria-haspopup="true"
+          color={isSupportChain ? "inherit" : "warning"}
+          sx={{
+            backgroundColor: isSupportChain
+              ? setColorThemeMode(
+                theme.palette.grey[50],
+                theme.palette.grey[700]
+              )
+              : "",
+            color: setColorThemeMode(
+              theme.palette.common.black,
+              theme.palette.common.white
+            ),
+          }}
+          aria-expanded={openNetworkEl ? "true" : undefined}
+          startIcon={
+            currentChain() ? (
+              <TokenIcon
+                url={getImageNextwork(
+                  currentChain()?.network_infos?.chain_id,
+                  "network_logo"
+                )}
+              />
+            ) : (
+              ""
+            )
+          }
+        >
+          {upLg && (
+            <>
+              {isSupportChain
+                ? currentChain()?.network_infos?.name
+                : "Unsupport Network"}{" "}
+            </>
+          )}
+        </MainButton>
+      ) : null}
+
+      <StyledMenu
+        id="network-menu"
+        MenuListProps={{
+          "aria-labelledby": "network-button",
+        }}
+        anchorEl={networkAnchorEl}
+        open={openNetworkEl}
+        onClose={() => setNetworkAnchorEl(null)}
+      >
+        <Stack pb={1}>
+          <Typography
+            px={1.6}
+            color={setColorThemeMode(
+              theme.palette.grey[600],
+              theme.palette.grey[200]
+            )}
+            py={0.5}
+          >
+            Mainnet
+          </Typography>
+
+          <Stack spacing={0.2} px={0.5} pt={0.5}>
+            {chains.mainnet.map((chain) => (
+              <ItemList
+                key={chain.network_infos.name}
+                primaryText={chain.network_infos.name}
+                borderRadius="6px"
+                disabledBg
+                isHiddenEndIcon
+                size="small"
+                onClick={() =>
+                  onChainChanged(chain.network_infos.chain_id, false)
+                }
+                startIcon={
+                  <TokenIcon
+                    url={getImageNextwork(
+                      chain.network_infos.chain_id,
+                      "network_logo"
+                    )}
+                  />
+                }
+                isSelected={
+                  currentChain()?.network_infos?.chain_id ===
+                  chain.network_infos.chain_id
+                }
+              />
+            ))}
+          </Stack>
+        </Stack>
+
+        <Divider />
+
+        <Stack pt={0.5}>
+          <Typography
+            px={1.6}
+            color={setColorThemeMode(
+              theme.palette.grey[600],
+              theme.palette.grey[200]
+            )}
+            py={0.5}
+          >
+            Testnet
+          </Typography>
+
+          <Stack spacing={0.2} px={0.5} pt={0.5}>
+            {chains.testnet.map((chain) => (
+              <ItemList
+                key={chain.network_infos.name}
+                primaryText={chain.network_infos.name}
+                borderRadius="6px"
+                disabledBg
+                isHiddenEndIcon
+                size="small"
+                onClick={() =>
+                  onChainChanged(chain.network_infos.chain_id, true)
+                }
+                startIcon={
+                  <TokenIcon
+                    url={getImageNextwork(
+                      chain.network_infos.chain_id,
+                      "network_logo"
+                    )}
+                  />
+                }
+                isSelected={
+                  currentChain()?.network_infos?.chain_id ===
+                  chain.network_infos.chain_id
+                }
+              />
+            ))}
+          </Stack>
+        </Stack>
+      </StyledMenu>
+    </>
+  );
 }
 
 export default memo(NetworkContent);

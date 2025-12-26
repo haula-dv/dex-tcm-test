@@ -1,5 +1,5 @@
 "use client";
-import WalletContainer from "@/plugins/wallet/components/WalletContainer";
+import { OrderlyConnect } from "@/plugins/wallet/components/OrderlyConnect";
 import { setColorThemeMode } from "@/utils/helpers";
 import { Mixins } from "@/utils/themes/custom-theme/mixins";
 import { TSizes } from "@/utils/themes/custom-theme/sizes";
@@ -12,13 +12,19 @@ import {
   Typography,
 } from "@mui/material";
 import { styled } from "@mui/material/styles";
+import { useWalletConnector } from "@orderly.network/hooks";
+import { useAppKit } from "@reown/appkit/react";
 import Link from "next/link";
 import { useParams, usePathname } from "next/navigation";
+import { MainButton } from "../button/MainButton";
 import Logo from "../icons/Logo";
 
 export const Header = () => {
   const pathName = usePathname();
   const params = useParams();
+  const { open } = useAppKit();
+  const { wallet, connecting } = useWalletConnector();
+
   const navItems = [
     {
       label: "Trading",
@@ -38,6 +44,18 @@ export const Header = () => {
       ],
     },
   ];
+
+  const handleConnectWallet = async () => {
+    console.log("handleConnectWallet");
+    await open();
+  };
+
+  const formatAddress = (address: string) => {
+    if (!address) return "";
+    return `${address.slice(0, 6)}...${address.slice(-4)}`;
+  };
+
+  console.log("wallet", wallet);
 
   return (
     <MainAppBar elevation={0} position="sticky">
@@ -67,8 +85,35 @@ export const Header = () => {
               ))}
             </Stack>
 
-            <WalletContainer />
+            {/* <WalletContainer /> */}
+            {connecting ? (
+              <MainButton
+                variant="contained"
+                color={setColorThemeMode("darkGrey", "white")}
+                disabled
+              >
+                Connecting...
+              </MainButton>
+            ) : wallet?.accounts?.length && wallet?.accounts?.length > 0 ? (
+              <MainButton
+                variant="contained"
+                color={setColorThemeMode("darkGrey", "white")}
+                onClick={handleConnectWallet}
+              >
+                {formatAddress(wallet?.accounts?.[0]?.address || "")}
+              </MainButton>
+            ) : (
+              <MainButton
+                variant="contained"
+                color={setColorThemeMode("darkGrey", "white")}
+                onClick={handleConnectWallet}
+              >
+                Connect Wallet
+              </MainButton>
+            )}
           </Stack>
+
+          <OrderlyConnect />
         </Toolbar>
       </Box>
     </MainAppBar>

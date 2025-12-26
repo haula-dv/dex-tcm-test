@@ -1,5 +1,4 @@
 'use client'
-import { ChainNamespace } from '@orderly.network/types';
 import { WalletAdapterNetwork } from '@solana/wallet-adapter-base';
 import { ConnectionProvider, WalletProvider } from '@solana/wallet-adapter-react';
 import { WalletModalProvider } from '@solana/wallet-adapter-react-ui';
@@ -25,19 +24,12 @@ const SolanaNetworkContext = createContext<SolanaNetworkContextType | null>(null
 export const useSolanaNetwork = () =>
   useContext<SolanaNetworkContextType>(SolanaNetworkContext as Context<SolanaNetworkContextType>);
 
-const autoConnect =
-  typeof window !== 'undefined' &&
-  window.localStorage.getItem('chain-namespace') === ChainNamespace.solana;
+// Hardcoded network - change to WalletAdapterNetwork.Devnet for testnet
+const SOLANA_NETWORK = WalletAdapterNetwork.Mainnet;
+const autoConnect = false; // Set to true to auto-connect wallet
 
 export const SolanaProvider: FC<{ children: React.ReactNode }> = ({ children }) => {
-  const networkId =
-    typeof window !== 'undefined'
-      ? (window.localStorage.getItem('networkId') as 'testnet' | 'mainnet') ?? 'mainnet'
-      : 'mainnet';
-
-  const [network, setNetwork] = useState(
-    networkId === 'testnet' ? WalletAdapterNetwork.Devnet : WalletAdapterNetwork.Mainnet
-  );
+  const [network, setNetwork] = useState(SOLANA_NETWORK);
 
   const endPoint = useMemo(
     () =>

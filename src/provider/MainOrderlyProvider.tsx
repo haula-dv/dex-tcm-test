@@ -1,33 +1,15 @@
-'use client'
-import { useIsTestnet } from '@/hooks';
-import { OrderlyConfigProvider } from '@orderly.network/hooks';
-import { WalletConnectorProvider } from '@orderly.network/wallet-connector';
-import { WalletAdapterNetwork } from '@solana/wallet-adapter-base';
-import { FC } from 'react';
+import { FC, PropsWithChildren } from "react";
+import { EvmProvider } from "./EvmProvider";
+import { OrderlyProvider } from "./OrderlyProvider";
+import { SolanaProvider } from "./SolanaProvider";
 
-export const OrderlyConfigProviderRoot: FC<{ children: React.ReactNode }> = ({ children }) => {
-    const [isTestnet, networkChanged] = useIsTestnet();
-
-    if (networkChanged && typeof window !== 'undefined') {
-        setTimeout(() => {
-            window.localStorage.setItem('networkId', isTestnet ? 'testnet' : 'mainnet');
-            window.location.reload();
-        }, 1_000);
-    }
-
-    return (
-        <WalletConnectorProvider
-            solanaInitial={{
-                network: isTestnet ? WalletAdapterNetwork.Devnet : WalletAdapterNetwork.Mainnet
-            }}
-        >
-            <OrderlyConfigProvider
-                networkId={isTestnet ? 'testnet' : 'mainnet'}
-                brokerId={process.env.NEXT_PUBLIC_BROKER_ID ?? ''}
-                brokerName={process.env.NEXT_PUBLIC_BROKER_NAME ?? ''}
-            >
-                {children}
-            </OrderlyConfigProvider>
-        </WalletConnectorProvider>
-    );
-};
+// Wrapper component with WagmiProvider
+export const OrderlyConfigProviderRoot: FC<PropsWithChildren> = ({
+    children,
+}) => {
+    return <EvmProvider>
+        <SolanaProvider>
+            <OrderlyProvider>{children}</OrderlyProvider>
+        </SolanaProvider>
+    </EvmProvider>
+}
