@@ -1,14 +1,12 @@
-'use client'
-import { useConnectWallet } from '@web3-onboard/react';
-import { useState } from 'react';
+import { MainLayoutTrade } from "@/plugins/trade/components/MainLayoutTrade";
 
-export default function PerpPage() {
-  const [open, setOpen] = useState(false);
-  const [{ wallet: evmWallet }, connectWallet] = useConnectWallet();
-
+export default async function PerpPage({ params }: { params: { symbol: string } }) {
+  const { symbol } = await params;
+  console.log(symbol);
   return (
     <>
-      {evmWallet && <div>EVM Wallet: {JSON.stringify(evmWallet.label)}</div>}
+      <MainLayoutTrade symbol={symbol} />
+      {/* {evmWallet && <div>EVM Wallet: {JSON.stringify(evmWallet.label)}</div>}
 
       <button
         onClick={async () => {
@@ -19,7 +17,7 @@ export default function PerpPage() {
         }}
       >
         Connect EVM Wallet
-      </button>
+      </button> */}
       {/* <MainViewContainer symbol={symbol} /> */}
       {/* {lgUp ? (
 				<MainViewContainer symbol={symbol || "PERP_ETH_USDC"} onSymbolChange={onSymbolChange} />

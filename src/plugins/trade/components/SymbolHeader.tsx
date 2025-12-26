@@ -1,15 +1,27 @@
 'use client'
+import { getImageNextwork } from "@/common";
+import { MainButton } from "@/components/button/MainButton";
+import { HeadPage } from "@/components/HeadPage";
+import MainTooltip from "@/components/MainTooltip";
+import { TokenIcon } from "@/components/token/TokenIcon";
 import { getDecimalsFromTick } from "@/utils/formatters/api";
 import { usdFormatter } from "@/utils/formatters/number";
+import { spitSymbol } from "@/utils/formatters/token";
+import { setColorThemeMode } from "@/utils/helpers";
 import { formatMarkPriceNoDecimal } from "@/utils/helpers/format";
-import { useTheme } from "@mui/material";
+import { Box, Stack, Typography, useTheme } from "@mui/material";
 import {
   useFundingRate,
   useSymbolsInfo,
   useTickerStream
 } from "@orderly.network/hooks";
+import { IconChevronDown } from "@tabler/icons-react";
 import Decimal from "decimal.js-light";
 import { memo, useState } from "react";
+
+// const DynamicMarketsContent = dynamic(() => import("../markets/components/MarketContent"), {
+//   ssr: false,
+// });
 
 interface IProps {
   symbol: string;
@@ -66,8 +78,10 @@ const SymbolHeader = ({ onSymbolChange, symbol }: IProps) => {
     (stream as any)["24h_change"] != null &&
     stream.index_price != null
   ) {
-    dailyChange = String((stream as any)["24h_change"].toNumber());
-    dailyChangePercentage = (stream as any)["24h_change"]
+    // Wrap in Decimal to ensure we have access to Decimal methods
+    const change24h = new Decimal((stream as any)["24h_change"]);
+    dailyChange = String(change24h.toNumber());
+    dailyChangePercentage = change24h
       .div(stream.index_price)
       .mul(100)
       .toPrecision(4, 2);
@@ -129,7 +143,7 @@ const SymbolHeader = ({ onSymbolChange, symbol }: IProps) => {
 
   return (
     <>
-      {/* <HeadPage
+      <HeadPage
         title={`${isNaN(stream?.mark_price)
           ? "--"
           : formatMarkPriceNoDecimal(stream?.mark_price)
@@ -219,16 +233,16 @@ const SymbolHeader = ({ onSymbolChange, symbol }: IProps) => {
         </Stack>
       </Stack>
 
-      {openMarketEl && (
-        <MarketsContent
-          handleClose={handleClose}
-          marketEl={marketEl}
-          openMarketEl={openMarketEl}
-          onSymbolChange={onSymbolChange}
-        />
-      )} */}
+      {/* <MarketsContent
+        handleClose={handleClose}
+        marketEl={marketEl}
+        openMarketEl={openMarketEl}
+        onSymbolChange={onSymbolChange}
+      /> */}
     </>
   );
 };
 
-export default memo(SymbolHeader);
+const SymbolHeaderComponent = memo(SymbolHeader);
+export { SymbolHeaderComponent as SymbolHeader };
+export default SymbolHeaderComponent;

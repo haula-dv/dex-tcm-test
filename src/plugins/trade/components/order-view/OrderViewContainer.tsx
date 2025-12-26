@@ -1,12 +1,12 @@
 'use client'
 import { Box } from "@mui/material";
-// import { DataListView } from "@orderly.network/react/esm/page/trading/desktop/sections/datalist";
+import { memo } from "react";
 
 interface IProps {
   symbol: string;
 }
 
-export const OrderViewContainer = ({ symbol }: IProps) => {
+const OrderViewContainer = ({ symbol }: IProps) => {
   // const [isShowAllInstrument, setShowAllInstrument] = useState(true);
   // const theme = useTheme();
 
@@ -81,7 +81,8 @@ export const OrderViewContainer = ({ symbol }: IProps) => {
       borderRadius={"16px"}
       className="data-list-view"
     >
-      {/* <DataListWidget /> */}
+      {/* <DataListView /> */}
+
 
       {/* <MainTab
 				tabs={tabs}
@@ -113,3 +114,5 @@ export const OrderViewContainer = ({ symbol }: IProps) => {
     </Box>
   );
 };
+
+export default memo(OrderViewContainer);

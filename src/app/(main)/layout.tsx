@@ -1,9 +1,14 @@
 "use client";
-import { Header } from "@/components/layouts/Header";
+// import { Header } from "@/components/layouts/Header";
 import "@/styles/global.scss";
 import { Box, useMediaQuery, useTheme } from "@mui/material";
 import "@orderly.network/react/dist/styles.css";
+import dynamic from "next/dynamic";
 import React, { useEffect } from "react";
+
+const HeaderMobile = dynamic(() => import("@/components/layouts/Header").then((mod) => mod.Header), {
+  ssr: false,
+});
 
 export default function RootLayout({
   children,
@@ -26,7 +31,7 @@ export default function RootLayout({
   return (
     <div className={theme.palette.mode}>
       {/* {lgUp ? <Header /> : <HeaderMobile />} */}
-      <Header />
+      <HeaderMobile />
       <Box position={"relative"}>{children}</Box>
     </div>
   );

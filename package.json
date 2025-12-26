@@ -28,7 +28,7 @@
     "@orderly.network/core": "^1.5.17",
     "@orderly.network/default-evm-adapter": "2.0.7",
     "@orderly.network/default-solana-adapter": "2.0.7",
-     "@orderly.network/hooks": "2.0.7",
+    "@orderly.network/hooks": "2.0.7",
     "@orderly.network/i18n": "2.8.8",
     "@orderly.network/markets": "2.8.8",
     "@orderly.network/orderly-sdk": "^1.1.12",
@@ -36,7 +36,7 @@
     "@orderly.network/react": "^1.5.17",
     "@orderly.network/react-app": "2.8.8",
     "@orderly.network/referral": "^1.5.17",
-    "@orderly.network/trading": "2.8.8",
+    "@orderly.network/trading": "2.0.7",
     "@orderly.network/trading-leaderboard": "2.8.8",
     "@orderly.network/trading-rewards": "2.8.8",
     "@orderly.network/trading-view": "^1.5.17",
@@ -61,6 +61,7 @@
     "@wagmi/connectors": "^5.11.2",
     "@wagmi/core": "^2.22.1",
     "@web3-onboard/injected-wallets": "^2.11.2",
+    "@web3-onboard/metamask": "^2.2.1",
     "@web3-onboard/react": "^2.10.0",
     "@web3-onboard/walletconnect": "^2.6.1",
     "@web3modal/wagmi": "^5.1.11",
@@ -81,14 +82,14 @@
     "lodash": "^4.17.21",
     "lucide-react": "^0.562.0",
     "nes-zustand": "^0.2.2",
-    "next": "16.1.1",
+    "next": "^15.5.7",
     "next-seo": "^6.5.0",
     "openapi-typescript-codegen": "^0.27.0",
     "query-string": "^9.3.1",
-    "react": "19.2.3",
-    "react-dom": "19.2.3",
+    "react": "^19.2.1",
+    "react-dom": "^19.2.1",
     "react-fast-marquee": "^1.6.5",
-    "react-hook-form": "^7.52.0",
+    "react-hook-form": "^7.53.2",
     "react-hook-form-mui": "^7.0.0",
     "react-infinite-scroll-component": "^6.1.0",
     "react-number-format": "^5.4.0",
@@ -99,7 +100,7 @@
     "simplebar-react": "^3.2.6",
     "sonner": "^1.5.0",
     "swiper": "^11.1.4",
-    "swr": "^2.1.5",
+    "swr": "^2.3.8",
     "ts-pattern": "^5.3.1",
     "use-resize-observer": "^9.1.0",
     "viem": "^2.43.3",
@@ -119,6 +120,14 @@
     "tailwindcss": "^4",
     "typescript": "^5",
     "webpack": "^5.93.0"
+  },
+  "pnpm": {
+    "overrides": {
+      "swr": "^2.3.8",
+      "use-sync-external-store": "^1.2.2",
+      "react@<19": ">=19.2.3",
+      "react-dom@<19": ">=19.2.3"
+    }
   },
   "packageManager": "pnpm@10.11.0+sha512.6540583f41cc5f628eb3d9773ecee802f4f9ef9923cc45b69890fb47991d4b092964694ec3a4f738a420c918a333062c8b925d312f42e4f0c263eb603551f977"
 }

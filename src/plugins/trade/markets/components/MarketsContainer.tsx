@@ -5,7 +5,6 @@ import { setColorThemeMode } from '@/utils/helpers';
 import { Stack, Typography } from '@mui/material';
 import { IconChevronDown, IconChevronUp } from '@tabler/icons-react';
 import { memo, useState } from 'react';
-import { MarketsContent } from './MarketContent';
 
 interface IProps {
 	symbol: string;
@@ -56,14 +55,14 @@ const MarketsContainer = ({ onSymbolChange, symbol }: IProps) => {
 				</Typography>
 			</MainButton>
 
-			{openMarketEl && (
+			{/* {openMarketEl && (
 				<MarketsContent
 					handleClose={handleClose}
 					marketEl={marketEl}
 					openMarketEl={openMarketEl}
 					onSymbolChange={onSymbolChange}
 				/>
-			)}
+			)} */}
 		</Stack>
 	);
 };

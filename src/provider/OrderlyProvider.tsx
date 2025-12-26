@@ -1,7 +1,6 @@
 'use client'
 import { useIsTestnet } from '@/hooks';
 import { DefaultEVMWalletAdapter } from '@orderly.network/default-evm-adapter';
-import { DefaultSolanaWalletAdapter } from '@orderly.network/default-solana-adapter';
 import { OrderlyConfigProvider } from '@orderly.network/hooks';
 import { EthersProvider } from '@orderly.network/web3-provider-ethers';
 import { FC } from 'react';
@@ -24,7 +23,6 @@ export const OrderlyProvider: FC<{ children: React.ReactNode }> = ({ children })
       brokerName={process.env.NEXT_PUBLIC_BROKER_NAME ?? ''}
       walletAdapters={[
         new DefaultEVMWalletAdapter(new EthersProvider()),
-        new DefaultSolanaWalletAdapter() as any
       ]}
     >
       {children}
