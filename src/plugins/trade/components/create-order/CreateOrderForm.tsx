@@ -19,6 +19,7 @@ import { orderBookActivedStore } from "../../store";
 import InputForm from "./InputForm";
 
 const DynamicBalance = dynamic(() => import("../common/Balance"));
+const DynamicAvailableWithdraw = dynamic(() => import("./Accountleverage").then((mod) => mod.default));
 
 interface IProps {
   symbol: string;
@@ -140,7 +141,7 @@ const CreateOrderForm = ({ symbol, isActiveTab = "Buy" }: IProps) => {
         isFristLoading={symbolsInfo.isNil}
       />
 
-      {/* <Accountleverage symbol={symbol} /> */}
+      {/* <DynamicAvailableWithdraw symbol={symbol} /> */}
 
       <form onSubmit={formContext.handleSubmit(handleConfirmOrder)}>
         <Stack spacing={TSizes.margin_common}>
@@ -148,9 +149,9 @@ const CreateOrderForm = ({ symbol, isActiveTab = "Buy" }: IProps) => {
             isActiveTab={isActiveTab}
             formContext={formContext}
             wallet={wallet}
-          />
+          /> */}
 
-          <AvailableWithdraw
+          {/* <AvailableWithdraw
             balance={collateral.availableBalance}
             quote={quote}
           /> */}

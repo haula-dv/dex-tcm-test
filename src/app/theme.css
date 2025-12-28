@@ -1,99 +1,45 @@
 :root {
-  /**
-  It is often used for the color of main elements, such as background color
-  */
-  --oui-color-base-100: 93 83 123;
-  --oui-color-base-200: 81 72 107;
-  --oui-color-base-300: 68 61 89;
-  --oui-color-base-400: 57 52 74;
-  --oui-color-base-500: 51 46 66;
-  --oui-color-base-600: 43 38 56;
-  --oui-color-base-700: 36 32 47;
-  --oui-color-base-800: 29 26 38;
-  --oui-color-base-900: 22 20 28;
-
-  /**
-  primary color, used for buttons, border etc
-  */
-  --oui-color-primary: 182 79 255;
-  --oui-color-primary-light: 208 140 255;
-  --oui-color-primary-darken: 152 62 214;
-
-  /**
-  link color
-  */
-  --oui-color-link: 182 79 255;
-
-
-  --oui-color-secondary: 255 255 255;
-  --oui-color-tertiary: 218 218 218;
-  --oui-color-quaternary: 218 218 218;
-
-  /**
-  error color or destructive action elements
-  */
-  --oui-color-danger: 232 88 175;
-  --oui-color-danger-light: 255 103 191;
-  --oui-color-danger-darken: 199 68 146;
-
-  /**
-  success color or constructive action elements
-  */
-  --oui-color-success: 3 152 134;
-  --oui-color-success-light: 0 181 159;
-  --oui-color-success-darken: 0 119 105;
-
-  /**
-  warning color
-  */
-  --oui-color-warning: 255 207 115;
-  --oui-color-warning-light: 229 199 0;
-  --oui-color-warning-darken: 229 199 0;
-
-  --oui-color-background: 27 32 40;
-  --oui-color-background-contrast: 255 255 255;
-
-  --oui-color-fill: 36 32 47;
-  --oui-color-fill-light: 40 46 58;
-
-  --oui-color-popover: 43 38 56;
-  --oui-color-popover-foreground: 255 255 255;
-
-
-  --oui-color-base-foreground: 255 255 255;
-
-  --oui-color-trading-loss: 255 103 194;
-  --oui-color-trading-loss-contrast: 40 46 58;
-  --oui-color-trading-profit: 0 181 159;
-  --oui-color-trading-profit-contrast: 40 46 58;
-
-  /* rounded */
-  --oui-rounded: 6px;
-  --oui-rounded-sm: 4px;
-  --oui-rounded-lg: 8px;
-  --oui-rounded-full: 9999px;
-
-  --oui-button-shadow: none;
-
-  --oui-font-size-base: 16px;
-
-  --oui-color-divider: 42 46 52;
-
-  --oui-font-family: 'Manrope', sans-serif;
 }
 
 [data-theme="dark"] {
+  .oui-bg-base-2 {
+    background-color: var(--grey200);
+    opacity: 0.2;
+  }
+
+  /* BORDER  */
+  .oui-border-base-2 {
+    border-color: var(--grey200);
+    opacity: 0.2;
+  }
+
+  .oui-bg-danger-darken {
+    background-color: var(--danger) !important;
+  }
+
+  .oui-bg-base-5 {
+    background-color: var(--grey700);
+  }
+
+  .oui-bg-base-6 {
+    background-color: var(--grey600);
+  }
+ 
+  .oui-bg-base-7 {
+    background-color: var(--grey700);
+  }
+
   .oui-input-root {
-    background-color: var(--grey700) !important;
-    border: 1px solid transparent !important;
-    transition: border-color 0.2s ease !important;
+    background-color: var(--darkBrown) !important;
+    border: 1px solid transparent;
+    transition: border-color 0.2s ease;
   }
 
   .oui-input-root:focus-within,
   .oui-input-root:has(input:focus),
   .oui-input-root:has(textarea:focus) {
-    border-color: var(--grey600) !important;
-    outline: none !important;
+    border-color: var(--grey900) !important;
+    outline: none;
   }
 
   .oui-input-root input,
@@ -107,31 +53,330 @@
     box-shadow: none !important;
   }
 
-  .oui-header-list {
-    .oui-bg-base-7 {
-      background-color: var(--grey700) !important;
-    }
-
-    [data-state="active"] {
-      background-color: var(--grey600) !important;
-    }
-  }
-  
   .oui-bg-base-6 {
-    background-color: var(--grey700) !important;
+    background-color: var(--grey700);
   }
 
   .oui-bg-base-8 {
-    background-color: var(--grey800) !important;
+    background-color: var(--grey800);
   }
 
-  .oui-table-thead {
-    background-color: #1d1d1d !important;
+  .oui-bg-success {
+    background-color: var(--success);
   }
 
-  .oui-table-scroll {
-    background-color: var(--grey800) !important;
+  /* TEXT  */
+  .oui-text-primary-light{
+    color: var(--primaryLight) !important;
   }
-  /* .oui-bg-base-9 {
-  } */
+}
+
+/* orderly-order-entry */
+[data-theme="dark"] {
+.orderly-order-entry{
+  /* Slider  */
+  [data-orientation="horizontal"]{
+    .oui-bg-base-2 {
+      background-color: var(--grey700);
+    }
+
+    .oui-border-base-2 {
+      border-color: var(--grey600);
+    }
+
+    .oui-bg-base-6 {
+      background-color: var(--grey600) ;
+    }
+
+    .oui-bg-success {
+      background-color: var(--success) !important;
+    }
+
+    .oui-bg-trade-profit {
+      background-color: var(--success) !important;
+    }
+
+    .oui-border-trade-profit {
+      border-color: var(--success) !important;
+    }
+
+    .oui-border-success {
+      border-color: var(--success) !important;
+      background-color: var(--success) !important;
+    }
+
+    .oui-border-danger {
+      border-color: var(--danger) !important;
+      background-color: var(--danger) !important;
+    }
+
+    .oui-bg-danger {
+      background-color: var(--danger) !important;
+    }
+
+    .oui-text-trade-profit {
+      color: var(--success) !important;
+    }
+
+    .oui-bg-danger-darken {
+      background-color: var(--danger) !important;
+    }
+
+    
+    .oui-input-root {
+      background-color: var(--darkBrown) !important;
+    }
+
+    /* SELL  */
+    .oui-border-trade-loss {
+      border-color: var(--danger) !important;
+    }
+
+    .oui-bg-trade-loss {
+      background-color: var(--danger) !important;
+    }
+  }
+}
+
+.oui-text-trade-loss{
+  color: var(--danger) !important;
+}
+
+
+/* Text  */
+.oui-text-primary {
+  color: var(--primaryMain) !important;
+}
+
+.oui-text-trade-profit {
+  color: var(--success) !important;
+}
+}
+
+/* SWITCH BUTTON / TOGGLE */
+[role="switch"] {
+  cursor: pointer;
+  transition: background-color 0.2s ease, border-color 0.2s ease;
+}
+
+/* Switch unchecked state */
+[role="switch"][data-state="unchecked"] {
+  background-color: var(--grey700) !important;
+  border-color: var(--grey600) !important;
+}
+
+/* Switch checked state */
+[role="switch"][data-state="checked"] {
+  background-color: var(--primaryDark) !important;
+  border-color: var(--primaryDark) !important;
+}
+
+/* Switch thumb (the circle inside) */
+[role="switch"] [data-state="unchecked"] {
+  background-color: var(--grey400) !important;
+}
+
+[role="switch"] [data-state="checked"] {
+  background-color: #fff !important;
+}
+
+/* Hover states */
+[role="switch"][data-state="unchecked"]:hover {
+  background-color: var(--grey600) !important;
+}
+
+[role="switch"][data-state="checked"]:hover {
+  background-color: var(--primaryDark) !important;
+}
+
+[data-testid="oui-testid-orderEntry-pinned-button"]{
+  path{
+    color: var(--primaryDark) !important;
+  }
+}
+/* END SWITCH BUTTON / TOGGLE */
+
+
+/* BORDER */
+.oui-border-primary{
+  border-color: var(--primaryDark);
+}
+
+.oui-outline-danger{
+  outline-color: var(--danger) !important;
+}
+
+/* BUTTON  */
+.oui-bg-primary-darken {
+  background-color: var(--primaryDark) !important;
+}
+
+.oui-bg-success-darken {
+  background-color: var(--success) !important;
+}
+
+/* BG */
+.oui-bg-primary{
+  background-color: var(--primaryDark);
+}
+
+/* LIGHT MODE  */
+[data-theme="light"]{
+ 
+  .oui-bg-base-2 {
+    background-color: var(--grey50);
+  }
+  .oui-bg-base-5 {
+    background-color: var(--grey100);
+  }
+  .oui-bg-base-6 {
+    background-color: var(--grey100);
+  }
+ 
+  .oui-bg-base-7 {
+    background-color: var(--grey100);
+  }
+
+  .oui-bg-base-8 {
+    background-color: var(--grey100);
+  }
+
+  .oui-text-base-contrast{
+    color: var(--grey800);
+  }
+
+  .oui-text-base-contrast-54 {
+    color: var(--grey500);
+  }
+
+  .oui-text-base-contrast-36 {
+    color: var(--grey400);
+  }
+
+  .oui-text-primary-light {
+    color: var(--darkBrown);
+  }
+
+  .oui-border-line-12 {
+    border-color: var(--grey400);
+  }
+
+  .oui-bg-danger-darken {
+    background-color: var(--danger) !important;
+  }
+
+  .oui-button {
+    /* background-color: var(--grey200); */
+  }
+
+  [data-testid="oui-testid-orderEntry-orderType-button"]{
+    /* background-color: var(--success-light) !important;
+    color: var(--success) !important; */
+  }
+
+  .oui-text-trade-profit {
+    color: var(--success) !important;
+  }
+
+  .oui-text-trade-loss {
+    color: var(--danger) !important;
+  }
+
+  /* FORM  */
+ .orderly-order-entry{
+  div > span {
+    color: var(--grey800);
+  }
+  /* Slider  */
+  [data-orientation="horizontal"]{
+    .oui-input-root {
+      background-color: var(--darkBrown) !important;
+    }
+  }
+  }
+/* END FORM  */
+
+/* INPUT  */
+.oui-input-root {
+    background-color: var(--grey50) !important;
+    border: 1px solid var(--grey100);
+    transition: border-color 0.2s ease;
+  }
+
+  .oui-input-root .oui-outline-offset-0 {
+   border: none !important;
+  }
+
+  .oui-input-root:focus-within,
+  .oui-input-root:has(input:focus),
+  .oui-input-root:has(textarea:focus) {
+    border-color: var(--grey400) !important;
+    outline: none;
+  }
+
+  .oui-input-root input,
+  .oui-input-root textarea {
+    outline: none !important;
+    color: var(--grey800);
+  }
+
+  .oui-input-root {
+    svg {
+      path {
+        color: var(--grey600);
+      }
+
+      rect {
+        fill: var(--grey600);
+      }
+    }
+  }
+
+  ::placeholder{
+    color: var(--grey400);
+  }
+
+  .oui-input-root input:focus,
+  .oui-input-root textarea:focus {
+    outline: none !important;
+    box-shadow: none !important;
+  }
+
+  [role="combobox"]{
+   box-shadow: none !important;
+  }
+
+  /* END INPUT  */
+  .oui-dialog-content {
+    background-color: #fff !important;
+    
+    div {
+      color: var(--grey800);
+    }
+
+    span {
+      color: var(--grey800);
+    }
+
+    .oui-dialog-close-btn {
+      svg {
+        color: var(--grey800);
+      }
+    }
+
+    .oui-dialog-title {
+      color: var(--text-primary);
+    }
+  }
+
+  /* TABLIST  */
+  [role="tablist"]{
+    [aria-selected="true"]{
+      background-color: var(--grey200);
+    }
+
+    [aria-selected="false"]{
+      background-color: var(--grey50);
+    }
+  }
 }

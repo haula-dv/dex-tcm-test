@@ -12,25 +12,24 @@ import {
   useMarginRatio,
   usePositionStream,
   useSymbolsInfo,
+  useWalletConnector,
 } from "@orderly.network/hooks";
 import { toast } from "@orderly.network/react";
 import { IconPencil } from "@tabler/icons-react";
-import { useWalletConnector } from "@orderly.network/hooks";
-import { useMemo, useState } from "react";
+import { memo, useMemo, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { FormContainer } from "react-hook-form-mui";
 
-export const Accountleverage = ({ symbol }: any) => {
+const Accountleverage = ({ symbol }: any) => {
   const [open, setOpen] = useState(false);
   const theme = useTheme();
-  const [positions, _info, { refresh, loading }] = usePositionStream();
+  const [positions, _info, { loading }] = usePositionStream();
   const { wallet } = useWalletConnector();
 
   const { currentLeverage, mmr } = useMarginRatio();
   const { totalCollateral, totalValue } = useCollateral();
 
-  const [maxLeverage, { update, config: leverageLevers, isMutating }] =
-    useLeverage();
+  const [maxLeverage, { update, config: leverageLevers, isMutating }] = useLeverage();
 
   const handleToggle = () => {
     setOpen(!open);
@@ -42,10 +41,10 @@ export const Accountleverage = ({ symbol }: any) => {
 
     return leverageLevers.length > 0
       ? leverageLevers.map((id: any, index: any) => {
-          const percentValue = (index * 100) / (length - 1);
+        const percentValue = (index * 100) / (length - 1);
 
-          return { value: percentValue, label: `${id}x` }; // Thêm nhãn cho mỗi marks
-        })
+        return { value: percentValue, label: `${id}x` }; // Thêm nhãn cho mỗi marks
+      })
       : [];
   }, [leverageLevers]);
 
@@ -83,15 +82,15 @@ export const Accountleverage = ({ symbol }: any) => {
             totalMarginRatio == Infinity
               ? 100
               : totalMarginRatio >= 100
-              ? 100
-              : totalMarginRatio
+                ? 100
+                : totalMarginRatio
           }
           background={
             totalMarginRatio == Infinity || isNaN(totalMarginRatio)
               ? theme.palette.success.main
               : totalMarginRatio >= 100
-              ? theme.palette.success.main
-              : theme.palette.warning.main
+                ? theme.palette.success.main
+                : theme.palette.warning.main
           }
           variant="determinate"
         />
@@ -128,8 +127,8 @@ export const Accountleverage = ({ symbol }: any) => {
                     totalMarginRatio == Infinity || isNaN(totalMarginRatio)
                       ? theme.palette.success.main
                       : totalMarginRatio >= 100
-                      ? theme.palette.success.main
-                      : theme.palette.warning.main
+                        ? theme.palette.success.main
+                        : theme.palette.warning.main
                   }
                   fontWeight={600}
                 >
@@ -191,6 +190,8 @@ export const Accountleverage = ({ symbol }: any) => {
     </>
   );
 };
+
+export default memo(Accountleverage);
 
 interface IFormProps {
   open: boolean;

@@ -21,6 +21,10 @@ const DynamicCreateOrderForm = dynamic(() => import("./create-order/CreateOrderF
   ssr: false,
 });
 
+const DynamicOrderEntryForm = dynamic(() => import("./create-order/OrderEntryForm").then((mod) => mod.default), {
+  ssr: false,
+});
+
 const DynamicSymbolHeader = dynamic(
   () => import("./SymbolHeader").then((mod) => mod.default),
   {
@@ -53,7 +57,7 @@ export const MainViewContainer = ({ symbol }: IProps) => {
         height={"100%"}
         width={"100%"}
       >
-        <Box display={"flex"} flexDirection={"column"} width={"100%"}>
+        {/* <Box display={"flex"} flexDirection={"column"} width={"100%"}>
           <DynamicSymbolHeader onSymbolChange={onSymbolChange} symbol={symbol} />
 
           <MainCard backgroudColor="primary" width="100%">
@@ -68,7 +72,7 @@ export const MainViewContainer = ({ symbol }: IProps) => {
               </Box>
             </Box>
           </MainCard>
-        </Box>
+        </Box> */}
 
         <Stack
           spacing={"10px"}
@@ -85,8 +89,8 @@ export const MainViewContainer = ({ symbol }: IProps) => {
             height="100%"
             heightCard="100%"
           >
-            {/* <OrderEntryForm /> */}
-            <DynamicCreateOrderForm symbol={symbol} />
+            <DynamicOrderEntryForm symbol={symbol} />
+            {/* <DynamicCreateOrderForm symbol={symbol} /> */}
           </MainCard>
         </Stack>
       </Box>

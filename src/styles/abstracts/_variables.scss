@@ -2,9 +2,16 @@
 // Abstracts :: Variables
 // ======================================================
 
+:root:has(.dark) {
+  --text-primary: #ffffff;
+}
+
+:root:has(.light) {
+  --text-primary: #262626;
+}
+
 :root {
   --wui-border-radius-m: 8px !important;
-
   --primaryLight: #f7f4f0;
   --primaryMain: #e9e4de;
   --primaryDark: #b37350;
@@ -30,6 +37,8 @@
   --blue: #3b88e9;
   --warning: #ffc700;
   --danger: #ff0000;
+
+  --success-light: #00b5a03f;
 
   --badge-purple-bg: #9162c025;
   --badge-green-bg: #449d5d25;
