@@ -2,53 +2,55 @@ import { MainButton } from "@/components/button/MainButton";
 import MainCard from "@/components/card/MainCard";
 import { DepositWithdrawDialog } from "@/components/deposit/DepositWithdrawDialog";
 import { MainDialog } from "@/components/dialog/MainDialog";
+import { useIsTestnet } from "@/hooks";
 import { AppInfo } from "@/utils/constants/key_store";
+import { usdFormatter } from "@/utils/formatters/number";
 import { setColorThemeMode } from "@/utils/helpers";
-import { supportedEvmChains } from "@/utils/network";
 import { TSizes } from "@/utils/themes/custom-theme/sizes";
 import { Box, Skeleton, Stack, Typography, useTheme } from "@mui/material";
-import { WalletState } from "@orderly.network/hooks";
-import { NetworkId } from "@orderly.network/types";
+import { useAccount, useChains, useWithdraw } from "@orderly.network/hooks";
 import { useSetChain } from "@web3-onboard/react";
 import Image from "next/image";
 import { memo, useMemo, useState } from "react";
 import { toast } from "sonner";
 
 interface IProps {
-  // availableWithdraw: number;
   quote: string;
-  wallet: WalletState | null;
   isFristLoading: boolean;
 }
 
 const Balance = ({
-  // availableWithdraw,
   quote,
-  wallet,
   isFristLoading,
 }: IProps) => {
   // Orderly hooks
   const theme = useTheme();
+  const [isTestnet] = useIsTestnet();
+  const {
+    account,
+    state: { status }
+  } = useAccount();
+  const [chains] = useChains(isTestnet ? 'testnet' : 'mainnet');
+
+  const token = useMemo(
+    () => chains.find((item) => item.network_infos.chain_id === account.chainId)?.token_infos[0],
+    [chains, account.chainId]
+  );
+
+  const { availableBalance } = useWithdraw({
+    decimals: token?.decimals,
+    token: token?.symbol,
+    srcChainId: Number(account.chainId),
+  });
 
   const [open, setOpen] = useState(false);
-  const networkId = typeof window !== "undefined" ? (localStorage.getItem("networkId") ??
-    "mainnet") as NetworkId : "mainnet";
   const [openWithDraw, setOpenWithDraw] = useState(false);
   const [activedTab, setActivedTab] = useState("withdraw");
   const [{ connectedChain }, setChain] = useSetChain();
 
-  // Get current chain from supportedEvmChains
-  const currentChain = useMemo(() => {
-    return supportedEvmChains.find(
-      ({ id }) => id === connectedChain?.id
-    );
-  }, [connectedChain?.id]);
-
-  console.log("connectedChain", connectedChain);
-
   // Handle get test USDC
   const handleGetTestUSDC = async () => {
-    if (!wallet?.accounts?.[0]?.address) {
+    if (!account?.address) {
       toast.error("Wallet not connected");
       return;
     }
@@ -56,21 +58,18 @@ const Balance = ({
     const toastId = toast.loading("Minting 1k USDC on testnet...");
 
     try {
-      const res = await fetch(
-        "https://testnet-operator-evm.orderly.org/v1/faucet/usdc",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-
-          body: JSON.stringify({
-            broker_id: AppInfo.BROKER_ID,
-            chain_id: String(Number(connectedChain?.id)),
-            user_address: wallet.accounts[0].address,
-          }),
-        }
-      );
+      // Use local API route to bypass CORS
+      const res = await fetch("/api/faucet/usdc", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          broker_id: AppInfo.BROKER_ID,
+          chain_id: String(Number(connectedChain?.id)),
+          user_address: account.address,
+        }),
+      });
 
       if (!res.ok) {
         throw new Error(
@@ -106,8 +105,6 @@ const Balance = ({
     setOpenWithDraw(!openWithDraw);
   };
 
-  console.log("currentChain", currentChain);
-
   return (
     <>
       <MainCard
@@ -130,7 +127,7 @@ const Balance = ({
                 <Skeleton variant="text" width={"100px"} />
               ) : (
                 <Typography fontWeight={600} fontSize={"17px"}>
-                  {/* {usdFormatter.format(availableWithdraw)}{" "} */}
+                  {usdFormatter.format(availableBalance)}{" "}
                   <span
                     style={{
                       color: setColorThemeMode(
@@ -145,7 +142,7 @@ const Balance = ({
               )}
             </Stack>
 
-            {currentChain && currentChain?.network === "testnet" && (
+            {isTestnet && (
               <>
                 <Box mb={TSizes.margin_xs} />
 

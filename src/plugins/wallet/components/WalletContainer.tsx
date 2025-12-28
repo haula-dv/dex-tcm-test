@@ -8,6 +8,7 @@ import { formartAddress } from "@/utils/formatters/token";
 import { setColorThemeMode } from "@/utils/helpers";
 import { Box, Stack, useTheme } from "@mui/material";
 import { useAccountInstance } from "@orderly.network/hooks";
+import { ChainNamespace } from "@orderly.network/types";
 import { IconMoonStars, IconSun } from "@tabler/icons-react";
 import { useConnectWallet, useWallets } from "@web3-onboard/react";
 import { setZustandValue } from "nes-zustand";
@@ -20,7 +21,7 @@ import { OrderlyConnect } from "./OrderlyConnect";
 const DynamicNetworkContent = dynamic(() => import("./NetworkContentV2"));
 
 export default function WalletContainer() {
-  const [{ wallet: evmWallet, connecting }, connectWallet] = useConnectWallet();
+  const [{ wallet: currentWallet, connecting }, connectWallet] = useConnectWallet();
   const themeSelector = useStore(themeSelectorState, (state) => state.value);
   const [openAccountDetailsModal, setAccountDetailsModal] = useState(false);
   const account = useAccountInstance();
@@ -31,8 +32,6 @@ export default function WalletContainer() {
   const handleToggleAccountMenu = () => {
     setAccountDetailsModal(!openAccountDetailsModal);
   };
-
-  console.log('evmWallet', evmWallet);
 
   // Handle change theme mode
   const handleChangeTheme = () => {
@@ -52,26 +51,27 @@ export default function WalletContainer() {
 
   // Watch wallet change
   useEffect(() => {
-    if (Array.isArray(evmWallet?.accounts) && evmWallet.accounts.length > 0) {
-      const item = evmWallet.accounts[0];
-      const chain = evmWallet.chains[0];
+    if (Array.isArray(currentWallet?.accounts) && currentWallet.accounts.length > 0) {
+      const item = currentWallet.accounts[0];
+      const currentChainId = currentWallet.chains[0].id;
+      const currentNamespace = currentWallet.chains[0].namespace as ChainNamespace;
 
       account.setAddress(item.address, {
-        provider: evmWallet.provider,
+        provider: currentWallet.provider,
         chain: {
-          id: chain.id,
-          namespace: chain.namespace as any,
+          id: currentChainId,
+          namespace: 'evm' as ChainNamespace,
         },
         wallet: {
-          name: evmWallet.label,
+          name: currentWallet.label,
         },
       });
     }
-  }, [account, evmWallet]);
+  }, [account, currentWallet]);
 
   return (
     <Stack direction={"row"} spacing={1} alignItems={"center"}>
-      {evmWallet && <DynamicNetworkContent />}
+      {currentWallet && <DynamicNetworkContent />}
 
       {connecting ? (
         <MainButton
@@ -83,7 +83,7 @@ export default function WalletContainer() {
         </MainButton>
       ) : (
         <>
-          {!evmWallet ? (
+          {!currentWallet ? (
             <MainButton
               onClick={async () => await connectWallet()}
               variant="contained"
@@ -98,7 +98,7 @@ export default function WalletContainer() {
                 color={setColorThemeMode("darkGrey", "white")}
                 onClick={handleToggleAccountMenu}
               >
-                {formartAddress(evmWallet.accounts[0].address)}
+                {formartAddress(currentWallet.accounts[0].address)}
               </MainButton>
 
               <Box
@@ -110,17 +110,17 @@ export default function WalletContainer() {
                 alignItems={"center"}
                 justifyContent={"center"}
               >
-                {evmWallet.icon.startsWith("data:image") ? (
+                {currentWallet.icon.startsWith("data:image") ? (
                   <Image
-                    src={evmWallet.icon}
+                    src={currentWallet.icon}
                     height={20}
                     width={20}
-                    alt={evmWallet.label}
+                    alt={currentWallet.label}
                   />
                 ) : (
                   <div
                     style={{ padding: "6px" }}
-                    dangerouslySetInnerHTML={{ __html: evmWallet.icon }}
+                    dangerouslySetInnerHTML={{ __html: currentWallet.icon }}
                   ></div>
                 )}
               </Box>

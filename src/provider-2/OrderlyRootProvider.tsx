@@ -1,16 +1,25 @@
 'use client'
 import { AppInfo } from '@/utils/constants/key_store';
-import { supportedEvmChains } from '@/utils/network';
+import { useTheme } from "@mui/material";
+import { useChains } from '@orderly.network/hooks';
 import { OrderlyAppProvider } from "@orderly.network/react-app";
 import { WalletConnectorProvider } from "@orderly.network/wallet-connector";
 import { WalletAdapterNetwork } from "@solana/wallet-adapter-base";
 import injectedModule from '@web3-onboard/injected-wallets';
 import metamaskModule from "@web3-onboard/metamask";
 import walletConnectModule from '@web3-onboard/walletconnect';
-import React, { FC } from "react";
+import React, { FC, useMemo } from "react";
 
 
 export const OrderlyRootProvider: FC<{ children: React.ReactNode }> = ({ children }) => {
+    const theme = useTheme();
+
+    // Determine network mode from localStorage (avoid using useIsTestnet hook here to prevent circular dependency)
+    const networkId = useMemo(() => {
+        if (typeof window === 'undefined') return 'mainnet';
+        return (localStorage.getItem('networkId') ?? 'mainnet') as 'testnet' | 'mainnet';
+    }, []);
+
     const injected = injectedModule();
     const walletConnect = walletConnectModule({
         projectId: process.env.WALLETCONNECT_PROJECT_ID,
@@ -33,19 +42,25 @@ export const OrderlyRootProvider: FC<{ children: React.ReactNode }> = ({ childre
         },
     });
 
-    // Only include Arbitrum and Optimism chains (Orderly Network officially supports these)
-    const orderlyChains = supportedEvmChains
-        .filter((chain) =>
-            chain.label.includes('Arbitrum') || chain.label.includes('Optimism')
-        )
-        .map(({ id, token, label, rpcUrl }) => ({
-            id,
-            token,
-            label,
-            rpcUrl
-        }));
+    const [chains] = useChains()
+
+    const orderlyChains = useMemo(() => {
+        if (!chains || !chains.mainnet || !chains.testnet) return []
+        const allChains = [...chains.mainnet, ...chains.testnet];
+        const remapChainIds = allChains.map((item) => {
+            return {
+                id: item.network_infos.chain_id,
+                token: item.network_infos.currency_symbol,
+                label: item.network_infos.shortName,
+                rpcUrl: item.network_infos.public_rpc_url
+            };
+        })
+
+        return remapChainIds
+    }, [chains])
 
     return (
+
         <WalletConnectorProvider
             evmInitial={{
                 options: {
@@ -57,20 +72,20 @@ export const OrderlyRootProvider: FC<{ children: React.ReactNode }> = ({ childre
                         autoConnectLastWallet: false
                     },
                     appMetadata: {
-                        name: "tcmp-orderly",
-                        description: "tcmp-orderly"
+                        name: AppInfo.BROKER_NAME,
+                        description: AppInfo.BROKER_NAME
                     },
                     chains: orderlyChains,
                     wallets: [injected, walletConnect, metamask],
-                    theme: 'dark',
+                    theme: theme.palette.mode,
                 }
             }}
             solanaInitial={{ network: WalletAdapterNetwork.Mainnet }}
         >
             <OrderlyAppProvider
-                brokerId="orderly"
-                brokerName="Orderly"
-                networkId="testnet"
+                brokerId={AppInfo.BROKER_ID}
+                brokerName={AppInfo.BROKER_NAME}
+                networkId={networkId}
             >
                 {children}
             </OrderlyAppProvider>

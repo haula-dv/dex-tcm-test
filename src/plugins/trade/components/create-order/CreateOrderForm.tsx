@@ -10,13 +10,15 @@ import {
   useWalletConnector
 } from "@orderly.network/hooks";
 import { OrderSide, OrderType } from "@orderly.network/types";
+import dynamic from "next/dynamic";
 import { memo, ReactNode, useEffect, useMemo, useState } from "react";
 import { useForm } from "react-hook-form";
 import { match } from "ts-pattern";
 import { useStore } from "zustand";
 import { orderBookActivedStore } from "../../store";
-import Balance from "../common/Balance";
 import InputForm from "./InputForm";
+
+const DynamicBalance = dynamic(() => import("../common/Balance"));
 
 interface IProps {
   symbol: string;
@@ -40,7 +42,6 @@ const CreateOrderForm = ({ symbol, isActiveTab = "Buy" }: IProps) => {
   // Orderly Hooks
   const symbolsInfo = useSymbolsInfo();
   const { wallet } = useWalletConnector();
-  // const { availableWithdraw } = useWithdraw();
 
   const collateral = useCollateral();
   const [_, base, quote] = symbol.split("_");
@@ -134,10 +135,8 @@ const CreateOrderForm = ({ symbol, isActiveTab = "Buy" }: IProps) => {
 
   return (
     <>
-      <Balance
-        // availableWithdraw={availableWithdraw}
+      <DynamicBalance
         quote={quote}
-        wallet={wallet}
         isFristLoading={symbolsInfo.isNil}
       />
 

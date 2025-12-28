@@ -1,5 +1,5 @@
 export class AppInfo {
-  static BROKER_ID = process.env.BROKER_ID;
+  static BROKER_ID = process.env.BROKER_ID??'';
   static BROKER_NAME = process.env.BROKER_NAME ?? "Bazaarex";
 }
 
