@@ -10,7 +10,6 @@ import metamaskModule from "@web3-onboard/metamask";
 import walletConnectModule from '@web3-onboard/walletconnect';
 import React, { FC, useMemo } from "react";
 
-
 export const OrderlyRootProvider: FC<{ children: React.ReactNode }> = ({ children }) => {
     const theme = useTheme();
 
@@ -27,6 +26,7 @@ export const OrderlyRootProvider: FC<{ children: React.ReactNode }> = ({ childre
         optionalChains: [421614, 11155420],
         dappUrl: process.env.WALLETCONNECT_DAPP_URL,
     });
+    // https://dashboard.walletconnect.com/01692520-64b0-4ed8-8713-cdac19098bff/2202d3e2-19b7-4dd2-954d-3208dfdb639a
 
     const metamask = metamaskModule({
         options: {
@@ -35,7 +35,6 @@ export const OrderlyRootProvider: FC<{ children: React.ReactNode }> = ({ childre
                 name: AppInfo.BROKER_NAME,
                 url: process.env.WALLETCONNECT_DAPP_URL,
             },
-
             useDeeplink: true,
             preferDesktop: false,
             checkInstallationImmediately: false,
@@ -60,7 +59,6 @@ export const OrderlyRootProvider: FC<{ children: React.ReactNode }> = ({ childre
     }, [chains])
 
     return (
-
         <WalletConnectorProvider
             evmInitial={{
                 options: {
@@ -73,7 +71,9 @@ export const OrderlyRootProvider: FC<{ children: React.ReactNode }> = ({ childre
                     },
                     appMetadata: {
                         name: AppInfo.BROKER_NAME,
-                        description: AppInfo.BROKER_NAME
+                        description: AppInfo.BROKER_NAME,
+                        icon: AppInfo.BROKER_LOGO,
+                        logo: AppInfo.BROKER_LOGO,
                     },
                     chains: orderlyChains,
                     wallets: [injected, walletConnect, metamask],
