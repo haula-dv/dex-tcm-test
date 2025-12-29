@@ -2,9 +2,10 @@ import { StyledMenu } from '@/components/menu/StyledMenu';
 import { TSizes } from '@/utils/themes/custom-theme/sizes';
 import { Box, useTheme } from '@mui/material';
 import { MarketsType, useMarkets } from '@orderly.network/hooks';
-import { Markets } from '@orderly.network/react';
 import { API } from '@orderly.network/types';
 import { memo } from 'react';
+
+import { DropDownMarketsWidget } from "@orderly.network/markets";
 
 interface IProps {
 	marketEl: HTMLElement | null;
@@ -44,12 +45,13 @@ const MarketsContent = ({ handleClose, marketEl, openMarketEl, onSymbolChange }:
 				px={TSizes.margin_common}
 				width={'300px'}
 			>
-				<Markets
+				<DropDownMarketsWidget />
+				{/* <Markets
 					dataSource={markets as any[]}
 					onItemClick={(e) => {
 						handleClickMarketItem(e);
 					}}
-				/>
+				/> */}
 			</Box>
 		</StyledMenu>
 	);

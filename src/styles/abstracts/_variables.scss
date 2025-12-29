@@ -53,6 +53,14 @@
   --orderly-font-family: "Inter", sans-serif;
 }
 
+[data-theme="dark"] {
+    --table-header-bg: #222020;
+}
+
+[data-theme="light"] {
+    --table-header-bg: #2626263a;
+}
+
 .orderly-bg-primary {
   background-color: var(--primaryDark) !important;
 }

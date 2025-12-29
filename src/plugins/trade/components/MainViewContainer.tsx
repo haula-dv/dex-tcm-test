@@ -14,7 +14,10 @@ const DynamicTradingMainView = dynamic(() => import("../trading-view/TradingView
 
 const DynamicOrderViewContainer = dynamic(() => import("./order-view/OrderViewContainer").then((mod) => mod.default), {
   ssr: false,
-  loading: () => <div />,
+});
+
+const DynamicMarketsContainer = dynamic(() => import("../markets/components/MarketsContainer").then((mod) => mod.default), {
+  ssr: false,
 });
 
 const DynamicCreateOrderForm = dynamic(() => import("./create-order/CreateOrderForm").then((mod) => mod.default), {
@@ -57,7 +60,7 @@ export const MainViewContainer = ({ symbol }: IProps) => {
         height={"100%"}
         width={"100%"}
       >
-        {/* <Box display={"flex"} flexDirection={"column"} width={"100%"}>
+        <Box display={"flex"} flexDirection={"column"} width={"100%"}>
           <DynamicSymbolHeader onSymbolChange={onSymbolChange} symbol={symbol} />
 
           <MainCard backgroudColor="primary" width="100%">
@@ -72,7 +75,7 @@ export const MainViewContainer = ({ symbol }: IProps) => {
               </Box>
             </Box>
           </MainCard>
-        </Box> */}
+        </Box>
 
         <Stack
           spacing={"10px"}
@@ -81,7 +84,7 @@ export const MainViewContainer = ({ symbol }: IProps) => {
           width={"100%"}
           flexShrink={0}
         >
-          {/* <MarketsContainer onSymbolChange={onSymbolChange} symbol={symbol} /> */}
+          <DynamicMarketsContainer onSymbolChange={onSymbolChange} symbol={symbol} />
           {/* <BoxConnectWallet /> */}
           <MainCard
             backgroudColor="primary"

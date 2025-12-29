@@ -8,6 +8,7 @@ import React from "react";
 import "react-toastify/dist/ReactToastify.css";
 import { Toaster } from "sonner";
 import "./globals.css";
+import "./market-popup.css";
 import "./theme.css";
 
 export default async function RootLayout({
