@@ -4,8 +4,9 @@ import { _orderlySymbolKey } from "@/utils/constants/orderly";
 import { Box, Stack } from "@mui/material";
 import dynamic from "next/dynamic";
 
-const DynamicMainViewContainer = dynamic(() => import("../markets/MarketSlider"), {
+const DynamicMarketSlider = dynamic(() => import("../markets/MarketSlider"), {
   ssr: false,
+  loading: () => <div>Markets loading...</div>,
 });
 
 const DynamicTradingMainView = dynamic(() => import("../trading-view/TradingView"), {
@@ -32,7 +33,7 @@ const DynamicSymbolHeader = dynamic(
   () => import("./SymbolHeader").then((mod) => mod.default),
   {
     ssr: false,
-    loading: () => <div />,
+    loading: () => <div>SymbolHeader loading...</div>,
   }
 );
 
@@ -50,7 +51,7 @@ export const MainViewContainer = ({ symbol }: IProps) => {
 
   return (
     <>
-      <DynamicMainViewContainer onChangeSymbol={onSymbolChange} />
+      <DynamicMarketSlider onChangeSymbol={onSymbolChange} />
 
       <Box
         display={"flex"}

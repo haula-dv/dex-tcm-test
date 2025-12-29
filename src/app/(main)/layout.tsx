@@ -6,8 +6,9 @@ import "@orderly.network/react/dist/styles.css";
 import dynamic from "next/dynamic";
 import React, { useEffect } from "react";
 
-const HeaderMobile = dynamic(() => import("@/components/layouts/Header").then((mod) => mod.Header), {
+const DynamicHeader = dynamic(() => import("@/components/layouts/Header").then((mod) => mod.Header), {
   ssr: false,
+  loading: () => <div>Header loading...</div>,
 });
 
 export default function RootLayout({
@@ -31,7 +32,7 @@ export default function RootLayout({
   return (
     <div className={theme.palette.mode}>
       {/* {lgUp ? <Header /> : <HeaderMobile />} */}
-      <HeaderMobile />
+      <DynamicHeader />
       <Box position={"relative"}>{children}</Box>
     </div>
   );
