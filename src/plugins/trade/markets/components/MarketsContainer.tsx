@@ -58,6 +58,7 @@ const MarketsContainer = ({ onSymbolChange, symbol }: IProps) => {
 					All Markets
 				</Typography>
 			</MainButton> */}
+
 			<DropDownMarketsWidget onSymbolChange={(symbol) => onSymbolChange(symbol.symbol)} symbol={symbol} contentClassName='market-popup market-popup-left' children={
 				<Stack direction={'row'} alignItems={'center'} spacing={1} className='cursor-pointer'>
 					<Typography fontSize={'13px'} fontWeight={600}>
