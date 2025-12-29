@@ -3,22 +3,26 @@ import { setColorThemeMode } from "@/utils/helpers";
 import { Box, useTheme } from "@mui/material";
 import dynamic from "next/dynamic";
 import { memo } from "react";
-import { OrderBookContainer } from "../order-book/OrderBookContainer";
-const SymbolOverviewNoSSR = dynamic(
+
+const DynamicTradingView = dynamic(
   () =>
     import("react-ts-tradingview-widgets").then((w) => w.AdvancedRealTimeChart),
   {
     ssr: false,
   }
 );
+
+const DynamicOrderBookContainer = dynamic(() => import("../order-book/OrderBookContainer").then((w) => w.OrderBookContainer), {
+  ssr: false,
+});
+
 interface IProps {
   symbol: string;
   onSymbolChange: (symbol: string) => void;
 }
 
-export const TradingMainView = ({ symbol, onSymbolChange }: IProps) => {
+const TradingMainView = ({ symbol, onSymbolChange }: IProps) => {
   const theme = useTheme();
-
   const [_, base] = symbol.split("_");
 
   return (
@@ -46,7 +50,7 @@ export const TradingMainView = ({ symbol, onSymbolChange }: IProps) => {
           zIndex={9}
         ></Box>
 
-        <SymbolOverviewNoSSR
+        <DynamicTradingView
           disabled_features={[
             "hide_left_toolbar_by_default",
             "adaptive_logo",
@@ -69,7 +73,7 @@ export const TradingMainView = ({ symbol, onSymbolChange }: IProps) => {
         />
       </Box>
 
-      <OrderBookContainer symbol={symbol} />
+      <DynamicOrderBookContainer symbol={symbol} />
     </Box>
   );
 };
