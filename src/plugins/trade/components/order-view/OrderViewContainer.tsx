@@ -76,8 +76,8 @@ const OrderViewContainer = ({ symbol }: IProps) => {
 
   return (
     <Box
-      height={"20.5617%"}
-      minHeight={"320px"}
+      height={"32%"}
+      minHeight={"300px"}
       overflow={"hidden"}
       className="data-list-view"
       mt={2}

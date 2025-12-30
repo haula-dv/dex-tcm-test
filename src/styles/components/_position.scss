@@ -1,433 +1,462 @@
-.position-head {
-  padding-bottom: 6px !important;
+// .position-head {
+//   padding-bottom: 6px !important;
 
-  .orderly-relative {
-    display: none !important;
-  }
+//   .orderly-relative {
+//     display: none !important;
+//   }
 
-  #orderly-data-list-positions-header {
-    max-width: 220px !important;
+//   #orderly-data-list-positions-header {
+//     max-width: 220px !important;
 
-    .orderly-text-base-contrast-36 {
-      color: var(--grey400);
-    }
+//     .orderly-text-base-contrast-36 {
+//       color: var(--grey400);
+//     }
 
-    .orderly-text-3xs {
-      font-size: 16px !important;
-    }
-  }
+//     .orderly-text-3xs {
+//       font-size: 16px !important;
+//     }
+//   }
 
-  .orderly-bg-base-900 {
-    background-color: var(--primaryLight);
-  }
+//   .orderly-bg-base-900 {
+//     background-color: var(--primaryLight);
+//   }
 
-  .orderly-data-list-filter {
-    display: none !important;
-  }
+//   .orderly-data-list-filter {
+//     display: none !important;
+//   }
 
-  .orderly-px-4 {
-    padding: 0px !important;
-  }
+//   .orderly-px-4 {
+//     padding: 0px !important;
+//   }
+// }
+
+// .dark {
+//   .position-head {
+//     .orderly-bg-base-900 {
+//       background-color: transparent !important;
+//     }
+//   }
+
+//   // .orderly-border-divider {
+//   // 	display: none !important;
+//   // }
+// }
+
+// .orderly-bg-base-900 {
+//   background-color: transparent !important;
+// }
+
+// .portfolio {
+//   .orderly-app-trading-header {
+//     display: none !important;
+//   }
+
+//   .orderly-fixed {
+//     display: none !important;
+//   }
+
+//   .orderly-tabular-nums {
+//     height: 100% !important;
+//     max-width: 100% !important;
+//   }
+
+//   .orderly-h-\[100vh\] {
+//     height: 100% !important;
+//   }
+
+//   .orderly-pb-\[300px\] {
+//     padding-bottom: 0px !important;
+//   }
+
+//   .orderly-ui-table-tr {
+//     cursor: pointer;
+//     transition: 0.6s;
+
+//     &:hover {
+//       background-color: var(--grey100) !important;
+//     }
+//   }
+// }
+
+// .portfolio {
+//   .active {
+//     font-weight: 700 !important;
+//   }
+
+//   .orderly-tab-item.orderly-text-base-contrast {
+//     color: var(--grey900) !important;
+//   }
+
+//   .orderly-text-base-contrast-54 {
+//     color: var(--grey900) !important;
+//   }
+
+//   .orderly-text-base-contrast-36 {
+//     color: var(--grey700) !important;
+//   }
+
+//   .active::after {
+//     background-color: var(--grey900) !important;
+//   }
+
+//   .orderly-text-base-contrast-80 {
+//     color: var(--grey900) !important;
+//   }
+// }
+
+// .dark {
+//   .portfolio {
+//     .orderly-tab-item {
+//       &.orderly-text-base-contrast {
+//         color: var(--white) !important;
+//       }
+
+//       &.orderly-text-base-contrast-36 {
+//         color: var(--grey200) !important;
+//       }
+//     }
+
+//     .active::after {
+//       background-color: var(--white) !important;
+//     }
+
+//     .orderly-text-base-contrast {
+//       color: var(--white) !important;
+//     }
+
+//     .orderly-text-base-contrast-54 {
+//       color: var(--white) !important;
+//     }
+
+//     .orderly-ui-table-tr {
+//       .orderly-ui-table-td {
+//         .orderly-text-base-contrast-80 {
+//           color: var(--grey100) !important;
+//         }
+
+//         .orderly-text-base-contrast-80 {
+//           span {
+//             color: var(--grey100) !important;
+//           }
+//         }
+
+//         .orderly-text-base-contrast-98 {
+//           color: var(--grey100) !important;
+//         }
+//       }
+
+//       &:hover {
+//         background-color: var(--grey900) !important;
+//       }
+//     }
+
+//     .orderly-border-b-divider {
+//       border-color: var(--grey600) !important;
+//     }
+//   }
+// }
+
+// .dark {
+//   .data-list-view {
+//     .orderly-border-b-divider {
+//       border-color: var(--grey700) !important;
+//     }
+
+//     .orderly-border-divider {
+//       border-color: var(--grey700) !important;
+//     }
+
+//     .orderly-ui-table-thead {
+//       thead {
+//         td {
+//           button {
+//             span {
+//               color: var(--grey200) !important;
+//             }
+//           }
+//         }
+//       }
+//     }
+
+//     .orderly-ui-table-td {
+//       background-color: var(--grey800) !important;
+
+//       span {
+//         color: var(--white);
+//       }
+
+//       // Warning
+//       .orderly-text-warning {
+//         color: rgb(
+//           var(--orderly-color-warning) / var(--tw-text-opacity)
+//         ) !important;
+//       }
+
+//       // Green
+//       .orderly-text-trade-profit {
+//         color: rgb(
+//           var(--orderly-color-trading-profit) / var(--tw-text-opacity)
+//         ) !important;
+//       }
+
+//       // INPUT
+//       .orderly-input-container {
+//         background-color: #333333 !important;
+//         border: 1px solid var(--grey700) !important;
+//       }
+//     }
+
+//     // TABLE
+//     .orderly-transition-all {
+//       .orderly-px-3 {
+//         // padding: 0px !important;
+//       }
+//     }
+
+//     .orderly-ui-table-tr {
+//       cursor: pointer;
+//       transition: 0.6s;
+
+//       &:hover {
+//         background-color: var(--grey100) !important;
+//       }
+//     }
+//   }
+
+//   .tabs-list button {
+//     white-space: nowrap !important;
+//   }
+
+//   // TAB
+//   .tabs-list {
+//     white-space: nowrap !important;
+//     [data-active="true"] {
+//       background-color: var(--grey900) !important;
+//     }
+//   }
+
+//   // BASE
+//   .orderly-bg-base-900 {
+//     background-color: var(--grey800) !important;
+//   }
+
+//   .orderly-bg-base-800 {
+//     background-color: var(--grey800) !important;
+//   }
+
+//   .orderly-bg-base-600 {
+//     background-color: var(--grey700) !important;
+//   }
+
+//   .data-list-view {
+//     // border-bottom: 1px solid var(--grey700);
+//     .orderly-grid {
+//       border: 1px solid var(--grey700) !important;
+//     }
+//   }
+// }
+
+// .mobile.data-list-view {
+//   .orderly-tab-header {
+//     overflow-y: auto !important;
+//   }
+// }
+
+// .light {
+//   [data-radix-popper-content-wrapper] {
+//     .orderly-bg-base-600 {
+//       background-color: var(--white) !important;
+//     }
+//   }
+
+//   .data-list-view {
+//     // border-bottom: 1px solid var(--grey50);
+
+//     .orderly-grid {
+//       background-color: var(--primaryLight) !important;
+//       border: 1px solid var(--grey50) !important;
+//     }
+
+//     .orderly-bg-base-600[type="button"] {
+//       background-color: var(--primaryMain) !important;
+//     }
+//   }
+
+//   // TAB
+//   .tabs-list {
+//     [data-active="true"] {
+//       background-color: var(--primaryLight) !important;
+//       color: var(--grey800) !important;
+//     }
+
+//     [data-active="false"] {
+//       color: var(--grey600) !important;
+//     }
+//   }
+
+//   .orderly-border-b-divider {
+//     border-color: var(--primaryMain);
+//   }
+
+//   .orderly-border-divider {
+//     border-color: var(--primaryMain) !important;
+//   }
+
+//   .orderly-ui-table-td {
+//     background-color: var(--primaryLight) !important;
+
+//     span {
+//       color: var(--grey700);
+//     }
+
+//     // Warning
+//     .orderly-text-warning {
+//       color: rgb(
+//         var(--orderly-color-warning) / var(--tw-text-opacity)
+//       ) !important;
+//     }
+
+//     // Green
+//     .orderly-text-trade-profit {
+//       color: rgb(
+//         var(--orderly-color-trading-profit) / var(--tw-text-opacity)
+//       ) !important;
+//     }
+
+//     // INPUT
+//     .orderly-input-container {
+//       background-color: #2626260a !important;
+//       border: 1px solid var(--grey100) !important;
+//     }
+//   }
+
+//   .orderly-bg-base-900 {
+//     background-color: var(--primaryLight);
+//   }
+
+//   .orderly-group:hover .group-hover\:\!orderly-bg-base-800 {
+//     transition: 0.6s;
+//     background-color: var(--primaryMain) !important;
+//     cursor: pointer;
+//   }
+// }
+
+// // Base orderly
+
+// // Tab
+// .data-list-view {
+//   .orderly-tab-header {
+//     padding: 0px !important;
+//     border: 0px !important;
+
+//     .orderly-h-\[48px\] {
+//       height: auto !important;
+//     }
+//   }
+// }
+
+// .tabs-list {
+//   gap: 2px !important;
+
+//   button {
+//     height: 34px !important;
+//     font-size: 12px !important;
+//     border-radius: 8px !important;
+//     padding-left: 10px;
+//     padding-right: 10px;
+//     font-weight: 500 !important;
+//     white-space: nowrap !important;
+//     flex-shrink: 0 !important;
+//   }
+
+//   [data-active="true"] {
+//     background-color: var(--grey900) !important;
+//     border: 0px !important;
+//   }
+
+//   .after\:orderly-bg-base-contrast:after {
+//     background-color: transparent !important;
+//     height: 0px !important;
+//   }
+// }
+
+// // Data list
+// .data-list-view {
+//   .orderly-grid {
+//     border-radius: 12px !important;
+//     overflow: hidden;
+//   }
+
+//   [for="showAll"] {
+//     white-space: nowrap !important;
+//   }
+// }
+
+// .mobile {
+//   button {
+//     font-size: 13px !important;
+//     font-weight: 500 !important;
+//   }
+// }
+
+// #orderly-positions-mobile {
+//   #orderly-data-list-positions-header {
+//     padding-top: 6px !important;
+//     // background-color: transparent !important;
+//     padding-bottom: 6px !important;
+//   }
+
+//   .orderly-list-view-inner {
+//     // background-color: var(--primaryMain) !important;
+//     // border-radius: 8px !important;
+
+//     .orderly-grid {
+//       padding: 6px !important;
+//     }
+//   }
+
+//   .orderly-px-4 {
+//     padding-left: 6px !important;
+//     padding-right: 6px !important;
+//   }
+// }
+
+// .light {
+//   #orderly-positions-mobile {
+//     #orderly-data-list-positions-header {
+//       background-color: var(--primaryLight);
+//     }
+//     .orderly-border-divider {
+//       border-color: var(--primaryLight);
+//     }
+//   }
+// }
+
+[data-theme="dark"] {
+    
 }
 
-.dark {
-  .position-head {
-    .orderly-bg-base-900 {
-      background-color: transparent !important;
-    }
-  }
-
-  // .orderly-border-divider {
-  // 	display: none !important;
-  // }
-}
-
-.orderly-bg-base-900 {
-  background-color: transparent !important;
-}
-
-.portfolio {
-  .orderly-app-trading-header {
-    display: none !important;
-  }
-
-  .orderly-fixed {
-    display: none !important;
-  }
-
-  .orderly-tabular-nums {
-    height: 100% !important;
-    max-width: 100% !important;
-  }
-
-  .orderly-h-\[100vh\] {
-    height: 100% !important;
-  }
-
-  .orderly-pb-\[300px\] {
-    padding-bottom: 0px !important;
-  }
-
-  .orderly-ui-table-tr {
-    cursor: pointer;
-    transition: 0.6s;
-
-    &:hover {
-      background-color: var(--grey100) !important;
-    }
-  }
-}
-
-.portfolio {
-  .active {
-    font-weight: 700 !important;
-  }
-
-  .orderly-tab-item.orderly-text-base-contrast {
-    color: var(--grey900) !important;
-  }
-
-  .orderly-text-base-contrast-54 {
-    color: var(--grey900) !important;
-  }
-
-  .orderly-text-base-contrast-36 {
-    color: var(--grey700) !important;
-  }
-
-  .active::after {
-    background-color: var(--grey900) !important;
-  }
-
-  .orderly-text-base-contrast-80 {
-    color: var(--grey900) !important;
-  }
-}
-
-.dark {
-  .portfolio {
-    .orderly-tab-item {
-      &.orderly-text-base-contrast {
-        color: var(--white) !important;
+[data-theme="light"] {
+    .data-list-view{
+      .oui-tabular-nums {
+        color: var(--grey600);
       }
+      .oui-table-root {
+        border-radius: 12px;
+        overflow: hidden;
 
-      &.orderly-text-base-contrast-36 {
-        color: var(--grey200) !important;
-      }
-    }
-
-    .active::after {
-      background-color: var(--white) !important;
-    }
-
-    .orderly-text-base-contrast {
-      color: var(--white) !important;
-    }
-
-    .orderly-text-base-contrast-54 {
-      color: var(--white) !important;
-    }
-
-    .orderly-ui-table-tr {
-      .orderly-ui-table-td {
-        .orderly-text-base-contrast-80 {
-          color: var(--grey100) !important;
+        span {
+          color: var(--grey700);
+        }
+        .oui-table-thead {
+          border-bottom: 1px solid var(--grey100);
         }
 
-        .orderly-text-base-contrast-80 {
-          span {
-            color: var(--grey100) !important;
-          }
+        .oui-tabular-nums {
+          color: var(--grey700);
         }
 
-        .orderly-text-base-contrast-98 {
-          color: var(--grey100) !important;
-        }
-      }
-
-      &:hover {
-        background-color: var(--grey900) !important;
+        background-color: var(--primaryLight) !important;
       }
     }
-
-    .orderly-border-b-divider {
-      border-color: var(--grey600) !important;
-    }
-  }
-}
-
-.dark {
-  .data-list-view {
-    .orderly-border-b-divider {
-      border-color: var(--grey700) !important;
-    }
-
-    .orderly-border-divider {
-      border-color: var(--grey700) !important;
-    }
-
-    .orderly-ui-table-thead {
-      thead {
-        td {
-          button {
-            span {
-              color: var(--grey200) !important;
-            }
-          }
-        }
-      }
-    }
-
-    .orderly-ui-table-td {
-      background-color: var(--grey800) !important;
-
-      span {
-        color: var(--white);
-      }
-
-      // Warning
-      .orderly-text-warning {
-        color: rgb(
-          var(--orderly-color-warning) / var(--tw-text-opacity)
-        ) !important;
-      }
-
-      // Green
-      .orderly-text-trade-profit {
-        color: rgb(
-          var(--orderly-color-trading-profit) / var(--tw-text-opacity)
-        ) !important;
-      }
-
-      // INPUT
-      .orderly-input-container {
-        background-color: #333333 !important;
-        border: 1px solid var(--grey700) !important;
-      }
-    }
-
-    // TABLE
-    .orderly-transition-all {
-      .orderly-px-3 {
-        // padding: 0px !important;
-      }
-    }
-
-    .orderly-ui-table-tr {
-      cursor: pointer;
-      transition: 0.6s;
-
-      &:hover {
-        background-color: var(--grey100) !important;
-      }
-    }
-  }
-
-  .tabs-list button {
-    white-space: nowrap !important;
-  }
-
-  // TAB
-  .tabs-list {
-    white-space: nowrap !important;
-    [data-active="true"] {
-      background-color: var(--grey900) !important;
-    }
-  }
-
-  // BASE
-  .orderly-bg-base-900 {
-    background-color: var(--grey800) !important;
-  }
-
-  .orderly-bg-base-800 {
-    background-color: var(--grey800) !important;
-  }
-
-  .orderly-bg-base-600 {
-    background-color: var(--grey700) !important;
-  }
-
-  .data-list-view {
-    // border-bottom: 1px solid var(--grey700);
-    .orderly-grid {
-      border: 1px solid var(--grey700) !important;
-    }
-  }
-}
-
-.mobile.data-list-view {
-  .orderly-tab-header {
-    overflow-y: auto !important;
-  }
-}
-
-.light {
-  [data-radix-popper-content-wrapper] {
-    .orderly-bg-base-600 {
-      background-color: var(--white) !important;
-    }
-  }
-
-  .data-list-view {
-    // border-bottom: 1px solid var(--grey50);
-
-    .orderly-grid {
-      background-color: var(--primaryLight) !important;
-      border: 1px solid var(--grey50) !important;
-    }
-
-    .orderly-bg-base-600[type="button"] {
-      background-color: var(--primaryMain) !important;
-    }
-  }
-
-  // TAB
-  .tabs-list {
-    [data-active="true"] {
-      background-color: var(--primaryLight) !important;
-      color: var(--grey800) !important;
-    }
-
-    [data-active="false"] {
-      color: var(--grey600) !important;
-    }
-  }
-
-  .orderly-border-b-divider {
-    border-color: var(--primaryMain);
-  }
-
-  .orderly-border-divider {
-    border-color: var(--primaryMain) !important;
-  }
-
-  .orderly-ui-table-td {
-    background-color: var(--primaryLight) !important;
-
-    span {
-      color: var(--grey700);
-    }
-
-    // Warning
-    .orderly-text-warning {
-      color: rgb(
-        var(--orderly-color-warning) / var(--tw-text-opacity)
-      ) !important;
-    }
-
-    // Green
-    .orderly-text-trade-profit {
-      color: rgb(
-        var(--orderly-color-trading-profit) / var(--tw-text-opacity)
-      ) !important;
-    }
-
-    // INPUT
-    .orderly-input-container {
-      background-color: #2626260a !important;
-      border: 1px solid var(--grey100) !important;
-    }
-  }
-
-  .orderly-bg-base-900 {
-    background-color: var(--primaryLight);
-  }
-
-  .orderly-group:hover .group-hover\:\!orderly-bg-base-800 {
-    transition: 0.6s;
-    background-color: var(--primaryMain) !important;
-    cursor: pointer;
-  }
-}
-
-// Base orderly
-
-// Tab
-.data-list-view {
-  .orderly-tab-header {
-    padding: 0px !important;
-    border: 0px !important;
-
-    .orderly-h-\[48px\] {
-      height: auto !important;
-    }
-  }
-}
-
-.tabs-list {
-  gap: 2px !important;
-
-  button {
-    height: 34px !important;
-    font-size: 12px !important;
-    border-radius: 8px !important;
-    padding-left: 10px;
-    padding-right: 10px;
-    font-weight: 500 !important;
-    white-space: nowrap !important;
-    flex-shrink: 0 !important;
-  }
-
-  [data-active="true"] {
-    background-color: var(--grey900) !important;
-    border: 0px !important;
-  }
-
-  .after\:orderly-bg-base-contrast:after {
-    background-color: transparent !important;
-    height: 0px !important;
-  }
-}
-
-// Data list
-.data-list-view {
-  .orderly-grid {
-    border-radius: 12px !important;
-    overflow: hidden;
-  }
-
-  [for="showAll"] {
-    white-space: nowrap !important;
-  }
-}
-
-.mobile {
-  button {
-    font-size: 13px !important;
-    font-weight: 500 !important;
-  }
-}
-
-#orderly-positions-mobile {
-  #orderly-data-list-positions-header {
-    padding-top: 6px !important;
-    // background-color: transparent !important;
-    padding-bottom: 6px !important;
-  }
-
-  .orderly-list-view-inner {
-    // background-color: var(--primaryMain) !important;
-    // border-radius: 8px !important;
-
-    .orderly-grid {
-      padding: 6px !important;
-    }
-  }
-
-  .orderly-px-4 {
-    padding-left: 6px !important;
-    padding-right: 6px !important;
-  }
-}
-
-.light {
-  #orderly-positions-mobile {
-    #orderly-data-list-positions-header {
-      background-color: var(--primaryLight);
-    }
-    .orderly-border-divider {
-      border-color: var(--primaryLight);
-    }
-  }
 }

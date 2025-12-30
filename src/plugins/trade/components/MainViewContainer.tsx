@@ -46,7 +46,8 @@ export const MainViewContainer = ({ symbol }: IProps) => {
 
   const onSymbolChange = (symbol: string) => {
     localStorage.setItem(_orderlySymbolKey, symbol);
-    router.replace(`/trading/perp/${symbol}`);
+    router.push(`/trading/perp/${symbol}`);
+    // router.refresh();
   };
 
   return (
@@ -84,18 +85,19 @@ export const MainViewContainer = ({ symbol }: IProps) => {
             <DynamicSymbolHeader onSymbolChange={onSymbolChange} symbol={symbol} onLoaded={handleLoaded} />
 
             <MainCard backgroudColor="primary" width="100%">
-              <Box sx={{ height: "calc(-175px + 100vh)", minHeight: "800px" }}>
-                <Box height={"100%"} display={"flex"} flexDirection={"column"}>
-                  <DynamicTradingMainView
-                    key={symbol}
-                    symbol={symbol}
-                    onSymbolChange={onSymbolChange}
-                    onLoaded={handleLoaded}
-                  />
+              {/* sx={{ height: "calc(-180px + 100vh)", minHeight: "800px" }} */}
+              {/* <Box> */}
+              <Box height={"100%"} display={"flex"} flexDirection={"column"}>
+                <DynamicTradingMainView
+                  key={symbol}
+                  symbol={symbol}
+                  onSymbolChange={onSymbolChange}
+                  onLoaded={handleLoaded}
+                />
 
-                  <DynamicOrderViewContainer symbol={symbol} onLoaded={handleLoaded} />
-                </Box>
+                <DynamicOrderViewContainer symbol={symbol} onLoaded={handleLoaded} />
               </Box>
+              {/* </Box> */}
             </MainCard>
           </Box>
 
