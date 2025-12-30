@@ -75,6 +75,31 @@ export const Header = () => {
   );
 };
 
+export const HeaderLoading = () => {
+  return (
+    <MainAppBar elevation={0} position="sticky">
+      <Box px={{ xs: "16px" }}>
+        <Toolbar disableGutters>
+          <Stack
+            direction={"row"}
+            justifyContent={"space-between"}
+            width={"100%"}
+            alignItems={"center"}
+          >
+            <Stack
+              direction={"row"}
+              alignItems={"center"}
+              spacing={TSizes.margin_md}
+            >
+              <Logo width="80px" height="40px" />
+            </Stack>
+          </Stack>
+        </Toolbar>
+      </Box>
+    </MainAppBar>
+  );
+};
+
 export const MainAppBar = styled(AppBar)(({ theme }) => ({
   backgroundColor: setColorThemeMode("#fff", theme.palette.grey[800]),
   zIndex: 10,

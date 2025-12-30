@@ -1,4 +1,5 @@
 "use client";
+import { HeaderLoading } from "@/components/layouts/Header";
 // import { Header } from "@/components/layouts/Header";
 import "@/styles/global.scss";
 import { Box, useMediaQuery, useTheme } from "@mui/material";
@@ -8,7 +9,7 @@ import React, { useEffect } from "react";
 
 const DynamicHeader = dynamic(() => import("@/components/layouts/Header").then((mod) => mod.Header), {
   ssr: false,
-  loading: () => <div>Header loading...</div>,
+  loading: () => <HeaderLoading />,
 });
 
 export default function RootLayout({
@@ -31,7 +32,6 @@ export default function RootLayout({
 
   return (
     <div className={theme.palette.mode}>
-      {/* {lgUp ? <Header /> : <HeaderMobile />} */}
       <DynamicHeader />
       <Box position={"relative"}>{children}</Box>
     </div>

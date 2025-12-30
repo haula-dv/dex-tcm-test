@@ -52,14 +52,17 @@
   --badge-blue-fg: #3b88e9;
 
   --orderly-font-family: "Inter", sans-serif;
+  --color-background: #fff;
 }
 
 [data-theme="dark"] {
     --table-header-bg: #222020;
+    --color-background: #1d1d1d;
 }
 
 [data-theme="light"] {
     --table-header-bg: #2626263a;
+    --color-background: #fff;
 }
 
 .orderly-bg-primary {

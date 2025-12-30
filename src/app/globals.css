@@ -81,3 +81,8 @@ body {
     }
   }
 }
+
+[data-theme="light"] .oui-table-root {
+  background-color: transparent !important;
+  color: var(--grey800) !important;
+}

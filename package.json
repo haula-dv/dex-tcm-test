@@ -25,6 +25,7 @@
     "@orderly.network/utils": "2.8.8",
     "@orderly.network/wallet-connector": "2.8.8",
     "@orderly.network/ui-chain-selector": "2.8.8",
+    "@orderly.network/ui-tradingview": "2.8.8",
     "@orderly.network/ui-transfer": "2.8.8",
     "@orderly.network/core": "^1.5.17",
     "@orderly.network/default-evm-adapter": "2.0.7",

@@ -1,149 +1,125 @@
 'use client'
 import MainCard from "@/components/card/MainCard";
 import { _orderlySymbolKey } from "@/utils/constants/orderly";
-import { Box, Stack } from "@mui/material";
+import { Box, CircularProgress, Stack } from "@mui/material";
 import dynamic from "next/dynamic";
 import { useRouter } from "next/navigation";
+import { useCallback, useEffect, useState } from "react";
 
-const DynamicMarketSlider = dynamic(() => import("../markets/MarketSlider"), {
-  ssr: false,
-  loading: () => <div>Markets loading...</div>,
-});
+// Helper to wrap dynamic components and trigger onLoaded
+const wrapDynamic = (importFunc: () => Promise<any>) => {
+  return dynamic(async () => {
+    const mod = await importFunc();
+    const Component = mod.default;
+    return function WrappedChecked({ onLoaded, ...props }: any) {
+      useEffect(() => {
+        onLoaded?.();
+      }, []);
+      return <Component {...props} />;
+    };
+  }, { ssr: false });
+};
 
-const DynamicTradingMainView = dynamic(() => import("../trading-view/TradingView"), {
-  ssr: false,
-});
-
-const DynamicOrderViewContainer = dynamic(() => import("./order-view/OrderViewContainer").then((mod) => mod.default), {
-  ssr: false,
-});
-
-const DynamicMarketsContainer = dynamic(() => import("../markets/components/MarketsContainer").then((mod) => mod.default), {
-  ssr: false,
-});
-
-const DynamicCreateOrderForm = dynamic(() => import("./create-order/CreateOrderForm").then((mod) => mod.default), {
-  ssr: false,
-});
-
-const DynamicOrderEntryForm = dynamic(() => import("./create-order/OrderEntryForm").then((mod) => mod.default), {
-  ssr: false,
-});
-
-const DynamicSymbolHeader = dynamic(
-  () => import("./SymbolHeader").then((mod) => mod.default),
-  {
-    ssr: false,
-    loading: () => <div>SymbolHeader loading...</div>,
-  }
-);
+const DynamicMarketSlider = wrapDynamic(() => import("../markets/MarketSlider"));
+const DynamicTradingMainView = wrapDynamic(() => import("../trading-view/TradingView"));
+const DynamicOrderViewContainer = wrapDynamic(() => import("./order-view/OrderViewContainer"));
+const DynamicMarketsContainer = wrapDynamic(() => import("../markets/components/MarketsContainer"));
+const DynamicCreateOrderForm = wrapDynamic(() => import("./create-order/CreateOrderForm"));
+const DynamicOrderEntryForm = wrapDynamic(() => import("./create-order/OrderEntryForm"));
+const DynamicSymbolHeader = wrapDynamic(() => import("./SymbolHeader"));
 
 interface IProps {
   symbol: string;
 }
 
+const TOTAL_COMPONENTS = 6;
+
 export const MainViewContainer = ({ symbol }: IProps) => {
   const router = useRouter();
+  const [loadedCount, setLoadedCount] = useState(0);
+
+  const handleLoaded = useCallback(() => {
+    setLoadedCount((prev) => prev + 1);
+  }, []);
+
+  const isLoading = loadedCount < TOTAL_COMPONENTS;
+
   const onSymbolChange = (symbol: string) => {
     localStorage.setItem(_orderlySymbolKey, symbol);
     router.replace(`/trading/perp/${symbol}`);
-    // location.replace(`/trading/perp/${symbol}`);
-    //  updateTitle(symbol);
   };
 
   return (
-    <>
-      <DynamicMarketSlider onChangeSymbol={onSymbolChange} />
-
-      <Box
-        display={"flex"}
-        flexDirection={"row"}
-        px="10px"
-        gap={"10px"}
-        height={"100%"}
-        width={"100%"}
-        pb="10px"
-      >
-        <Box display={"flex"} flexDirection={"column"} width={"100%"}>
-          <DynamicSymbolHeader onSymbolChange={onSymbolChange} symbol={symbol} />
-
-          <MainCard backgroudColor="primary" width="100%">
-            <Box sx={{ height: "calc(-175px + 100vh)", minHeight: "800px" }}>
-              <Box height={"100%"} display={"flex"} flexDirection={"column"}>
-                <DynamicTradingMainView
-                  symbol={symbol}
-                  onSymbolChange={onSymbolChange}
-                />
-
-                <DynamicOrderViewContainer symbol={symbol} />
-              </Box>
-            </Box>
-          </MainCard>
-        </Box>
-
-        <Stack
-          spacing={"10px"}
-          minHeight={"calc(100vh - 200px)"}
-          maxWidth={"300px"}
-          width={"100%"}
-          flexShrink={0}
+    <Box position="relative" width="100%" height="100%">
+      {isLoading && (
+        <Box
+          position="absolute"
+          top={0}
+          left={0}
+          right={0}
+          bottom={0}
+          display="flex"
+          alignItems="center"
+          justifyContent="center"
+          bgcolor="transparent"
+          zIndex={1000}
         >
-          <DynamicMarketsContainer onSymbolChange={onSymbolChange} symbol={symbol} />
-          {/* <BoxConnectWallet /> */}
-          <MainCard
-            backgroudColor="primary"
-            width="100%"
-            height="100%"
-            heightCard="100%"
+          <CircularProgress color="primary" />
+        </Box>
+      )}
+
+      <Box sx={{ opacity: isLoading ? 0 : 1, transition: 'opacity 0.3s ease' }}>
+        <DynamicMarketSlider onChangeSymbol={onSymbolChange} onLoaded={handleLoaded} />
+
+        <Box
+          display={"flex"}
+          flexDirection={"row"}
+          px="10px"
+          gap={"10px"}
+          height={"100%"}
+          width={"100%"}
+          pb="10px"
+        >
+          <Box display={"flex"} flexDirection={"column"} width={"100%"}>
+            <DynamicSymbolHeader onSymbolChange={onSymbolChange} symbol={symbol} onLoaded={handleLoaded} />
+
+            <MainCard backgroudColor="primary" width="100%">
+              <Box sx={{ height: "calc(-175px + 100vh)", minHeight: "800px" }}>
+                <Box height={"100%"} display={"flex"} flexDirection={"column"}>
+                  <DynamicTradingMainView
+                    key={symbol}
+                    symbol={symbol}
+                    onSymbolChange={onSymbolChange}
+                    onLoaded={handleLoaded}
+                  />
+
+                  <DynamicOrderViewContainer symbol={symbol} onLoaded={handleLoaded} />
+                </Box>
+              </Box>
+            </MainCard>
+          </Box>
+
+          <Stack
+            spacing={"10px"}
+            minHeight={"calc(100vh - 200px)"}
+            maxWidth={"300px"}
+            width={"100%"}
+            flexShrink={0}
           >
-            <DynamicOrderEntryForm symbol={symbol} />
-            {/* <DynamicCreateOrderForm symbol={symbol} /> */}
-          </MainCard>
-        </Stack>
+            <DynamicMarketsContainer onSymbolChange={onSymbolChange} symbol={symbol} onLoaded={handleLoaded} />
+            {/* <BoxConnectWallet /> */}
+            <MainCard
+              backgroudColor="primary"
+              width="100%"
+              height="100%"
+              heightCard="100%"
+            >
+              <DynamicOrderEntryForm symbol={symbol} onLoaded={handleLoaded} />
+              {/* <DynamicCreateOrderForm symbol={symbol} onLoaded={handleLoaded} /> */}
+            </MainCard>
+          </Stack>
+        </Box>
       </Box>
-
-      {/* <Box
-        display={"flex"}
-        flexDirection={"row"}
-        px="10px"
-        gap={"10px"}
-        height={"100%"}
-      >
-        <Box display={"flex"} flexDirection={"column"}>
-          <SymbolHeader onSymbolChange={onSymbolChange} symbol={symbol} />
-
-          <MainCard backgroudColor="primary" width="100%">
-            <Box sx={{ height: "calc(-175px + 100vh)", minHeight: "800px" }}>
-              <Box height={"100%"} display={"flex"} flexDirection={"column"}>
-                <TradingMainView
-                  symbol={symbol}
-                  onSymbolChange={onSymbolChange}
-                />
-                <OrderViewContainer symbol={symbol} />
-              </Box>
-            </Box>
-          </MainCard>
-        </Box>
-
-        <Stack
-          spacing={"10px"}
-          minHeight={"calc(100vh - 200px)"}
-          maxWidth={"300px"}
-          width={"100%"}
-          flexShrink={0}
-        >
-          <MarketsContainer onSymbolChange={onSymbolChange} symbol={symbol} />
-          <BoxConnectWallet />
-          <MainCard
-            backgroudColor="primary"
-            width="100%"
-            height="100%"
-            heightCard="100%"
-          >
-            <CreateOrderForm symbol={symbol} />
-          </MainCard>
-        </Stack>
-      </Box> */}
-    </>
+    </Box>
   );
 };

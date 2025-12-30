@@ -403,6 +403,10 @@
   background-image: linear-gradient(90deg, #f7f4f0 0%, #b37350 100%) !important;
 }
 
+.oui-bg-gradient-to-r {
+  background-image: linear-gradient(90deg, #f7f4f05d 0%, #b3735079 100%) !important;
+}
+
 /* CARD */
 [data-theme="dark"] .oui-card-root {
   background-color: var(--grey800) !important;
@@ -410,4 +414,27 @@
 
 [data-theme="light"] .oui-card-root {
   background-color: white !important;
+}
+
+/* TAB */
+[data-theme="dark"]  {
+  /* .oui-header-list{
+    [data-state="active"]{
+      background-color: var(--darkBrown) !important;
+      border: 1px solid var(--grey700) !important;
+    }
+    [data-state="inactive"]{
+      background-color: transparent !important;
+      border: 1px solid transparent !important;
+    }
+  } */
+}
+
+[data-theme="light"]  {
+  .oui-header-list{
+    [data-state="active"]{
+      background-color: var(--grey100) !important;
+      border: 1px solid var(--grey100) !important;
+    }
+  }
 }
