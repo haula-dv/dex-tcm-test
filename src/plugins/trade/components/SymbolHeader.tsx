@@ -1,12 +1,8 @@
 'use client'
-import { getImageNextwork } from "@/common";
-import { MainButton } from "@/components/button/MainButton";
 import { HeadPage } from "@/components/HeadPage";
 import MainTooltip from "@/components/MainTooltip";
-import { TokenIcon } from "@/components/token/TokenIcon";
 import { getDecimalsFromTick } from "@/utils/formatters/api";
 import { usdFormatter } from "@/utils/formatters/number";
-import { spitSymbol } from "@/utils/formatters/token";
 import { setColorThemeMode } from "@/utils/helpers";
 import { formatMarkPriceNoDecimal } from "@/utils/helpers/format";
 import { Box, Stack, Typography, useTheme } from "@mui/material";
@@ -15,6 +11,7 @@ import {
   useSymbolsInfo,
   useTickerStream
 } from "@orderly.network/hooks";
+import { DropDownMarketsWidget } from "@orderly.network/markets";
 import { IconChevronDown } from "@tabler/icons-react";
 import Decimal from "decimal.js-light";
 import { memo, useState } from "react";
@@ -159,7 +156,15 @@ const SymbolHeader = ({ onSymbolChange, symbol }: IProps) => {
         height={"30px"}
         width={"100%"}
       >
-        <MainButton
+        <DropDownMarketsWidget onSymbolChange={(symbol) => onSymbolChange(symbol.symbol)} symbol={symbol} contentClassName='market-popup market-popup-right' children={
+          <Stack direction={'row'} alignItems={'center'} spacing={1} className='cursor-pointer'>
+            <Typography fontSize={'13px'} fontWeight={600} whiteSpace={'nowrap'}>
+              {`${base}-${perp}`}
+            </Typography>
+            <IconChevronDown size="1.2rem" />
+          </Stack>
+        } />
+        {/* <MainButton
           startIcon={
             <TokenIcon
               url={getImageNextwork(
@@ -179,7 +184,7 @@ const SymbolHeader = ({ onSymbolChange, symbol }: IProps) => {
           sx={{ flexShrink: 0 }}
         >
           {`${base}-${perp}`}
-        </MainButton>
+        </MainButton> */}
 
         <Box
           height={"20px"}

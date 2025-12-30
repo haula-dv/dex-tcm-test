@@ -11,8 +11,6 @@ interface IProps {
 
 export const MainLayoutTrade = ({ symbol }: IProps) => {
     return (
-        <>
-            <DynamicMainViewContainer symbol={symbol} />
-        </>
+        <DynamicMainViewContainer symbol={symbol} />
     )
 }

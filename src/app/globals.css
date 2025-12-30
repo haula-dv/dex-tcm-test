@@ -52,7 +52,7 @@ body {
 /* table */
 [data-theme="dark"] {
   .oui-table-root {
-    background-color: var(--grey800);
+    background-color: var(--grey800) !important;
     .oui-table-scroll {
       .oui-table-thead {
         background-color: var(--table-header-bg);
@@ -75,7 +75,7 @@ body {
     border: 1px solid var(--grey700); */
     /* border-radius: 12px; */
     /* overflow: hidden; */
-
+    background-color: var(--grey800);
     .oui-table-pagination {
       margin-bottom: 12px;
     }

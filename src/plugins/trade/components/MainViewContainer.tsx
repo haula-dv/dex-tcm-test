@@ -3,6 +3,7 @@ import MainCard from "@/components/card/MainCard";
 import { _orderlySymbolKey } from "@/utils/constants/orderly";
 import { Box, Stack } from "@mui/material";
 import dynamic from "next/dynamic";
+import { useRouter } from "next/navigation";
 
 const DynamicMarketSlider = dynamic(() => import("../markets/MarketSlider"), {
   ssr: false,
@@ -42,10 +43,11 @@ interface IProps {
 }
 
 export const MainViewContainer = ({ symbol }: IProps) => {
+  const router = useRouter();
   const onSymbolChange = (symbol: string) => {
     localStorage.setItem(_orderlySymbolKey, symbol);
-    //  router.push(`/trading/perp/${symbol}`);
-    location.replace(`/trading/perp/${symbol}`);
+    router.replace(`/trading/perp/${symbol}`);
+    // location.replace(`/trading/perp/${symbol}`);
     //  updateTitle(symbol);
   };
 
@@ -60,6 +62,7 @@ export const MainViewContainer = ({ symbol }: IProps) => {
         gap={"10px"}
         height={"100%"}
         width={"100%"}
+        pb="10px"
       >
         <Box display={"flex"} flexDirection={"column"} width={"100%"}>
           <DynamicSymbolHeader onSymbolChange={onSymbolChange} symbol={symbol} />
