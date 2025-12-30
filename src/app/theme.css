@@ -17,12 +17,20 @@
     background-color: var(--danger) !important;
   }
 
+  .oui-bg-base-4 {
+    background-color: var(--grey600);
+  }
+
   .oui-bg-base-5 {
     background-color: var(--grey700);
   }
 
   .oui-bg-base-6 {
     background-color: var(--grey600);
+  }
+
+  .oui-bg-base-9 {
+    background-color: var(--greyBase900);
   }
  
   .oui-bg-base-7 {
@@ -226,6 +234,11 @@
   .oui-bg-base-2 {
     background-color: var(--grey50);
   }
+
+  .oui-bg-base-4 {
+    background-color: var(--grey50);
+  }
+
   .oui-bg-base-5 {
     background-color: var(--grey100);
   }
@@ -379,4 +392,22 @@
       background-color: var(--grey50);
     }
   }
+}
+
+/* BRAND GRADIENT */
+.oui-gradient-brand {
+  background-image: linear-gradient(90deg, #f7f4f0 0%, #b37350 100%) !important;
+}
+
+.oui-gradient-primary{
+  background-image: linear-gradient(90deg, #f7f4f0 0%, #b37350 100%) !important;
+}
+
+/* CARD */
+[data-theme="dark"] .oui-card-root {
+  background-color: var(--grey800) !important;
+}
+
+[data-theme="light"] .oui-card-root {
+  background-color: white !important;
 }
