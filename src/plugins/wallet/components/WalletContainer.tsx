@@ -16,6 +16,7 @@ import dynamic from "next/dynamic";
 import Image from "next/image";
 import { useEffect, useState } from "react";
 import { useStore } from "zustand";
+import AccountDetailPopup from "./AccountDetailPopup";
 import { OrderlyConnect } from "./OrderlyConnect";
 
 const DynamicNetworkContent = dynamic(() => import("./NetworkContentV2"));
@@ -129,13 +130,13 @@ export default function WalletContainer() {
         </>
       )}
 
-      {/* {openAccountDetailsModal && evmWallet && (
+      {openAccountDetailsModal && currentWallet && (
         <AccountDetailPopup
           open={openAccountDetailsModal}
           onClose={() => setAccountDetailsModal(false)}
-          wallet={evmWallet as any}
+          wallet={currentWallet as any}
         />
-      )} */}
+      )}
 
       <OrderlyConnect />
 

@@ -31,6 +31,7 @@ export const DepositWithdrawDialog = ({ open, onClose, activedTab = "deposit" }:
 			maxWidth="xs"
 			title="Deposit / Withdraw"
 			isDivider>
+			{/* <DepositAndWithdraw activeTab={activedTab} /> */}
 			<MainTab tabs={tabs} defaultValue={activedTab}>
 				<Box className={themeSelector.activeMode} mt="-10px !important">
 					<TabPanel value="deposit" sx={{ p: 0 }}>
