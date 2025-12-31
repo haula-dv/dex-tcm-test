@@ -27,6 +27,7 @@ const DynamicMarketsContainer = wrapDynamic(() => import("../markets/components/
 const DynamicCreateOrderForm = wrapDynamic(() => import("./create-order/CreateOrderForm"));
 const DynamicOrderEntryForm = wrapDynamic(() => import("./create-order/OrderEntryForm"));
 const DynamicSymbolHeader = wrapDynamic(() => import("./SymbolHeader"));
+const DynamicBoxConnectWallet = wrapDynamic(() => import("@/plugins/wallet/components/BoxConnectWallet"));
 
 interface IProps {
   symbol: string;
@@ -46,8 +47,9 @@ export const MainViewContainer = ({ symbol }: IProps) => {
 
   const onSymbolChange = (symbol: string) => {
     localStorage.setItem(_orderlySymbolKey, symbol);
-    router.push(`/trading/perp/${symbol}`);
+    // router.push(`/trading/perp/${symbol}`);
     // router.refresh();
+    location.replace(`/trading/perp/${symbol}`);
   };
 
   return (
@@ -84,40 +86,33 @@ export const MainViewContainer = ({ symbol }: IProps) => {
           <Box display={"flex"} flexDirection={"column"} width={"100%"}>
             <DynamicSymbolHeader onSymbolChange={onSymbolChange} symbol={symbol} onLoaded={handleLoaded} />
 
-            <MainCard backgroudColor="primary" width="100%">
-              {/* sx={{ height: "calc(-180px + 100vh)", minHeight: "800px" }} */}
-              {/* <Box> */}
-              <Box height={"100%"} display={"flex"} flexDirection={"column"}>
-                <DynamicTradingMainView
-                  key={symbol}
-                  symbol={symbol}
-                  onSymbolChange={onSymbolChange}
-                  onLoaded={handleLoaded}
-                />
-
-                <DynamicOrderViewContainer symbol={symbol} onLoaded={handleLoaded} />
-              </Box>
-              {/* </Box> */}
+            <MainCard backgroudColor="primary" width="100%" height="calc(100vh - 400px)">
+              <DynamicTradingMainView
+                key={symbol}
+                symbol={symbol}
+                onSymbolChange={onSymbolChange}
+                onLoaded={handleLoaded}
+              />
             </MainCard>
+
+            <DynamicOrderViewContainer symbol={symbol} onSymbolChange={onSymbolChange} onLoaded={handleLoaded} />
           </Box>
 
           <Stack
             spacing={"10px"}
-            minHeight={"calc(100vh - 200px)"}
             maxWidth={"300px"}
             width={"100%"}
             flexShrink={0}
           >
             <DynamicMarketsContainer onSymbolChange={onSymbolChange} symbol={symbol} onLoaded={handleLoaded} />
-            {/* <BoxConnectWallet /> */}
+
+            <DynamicBoxConnectWallet />
+
             <MainCard
               backgroudColor="primary"
               width="100%"
-              height="100%"
-              heightCard="100%"
             >
               <DynamicOrderEntryForm symbol={symbol} onLoaded={handleLoaded} />
-              {/* <DynamicCreateOrderForm symbol={symbol} onLoaded={handleLoaded} /> */}
             </MainCard>
           </Stack>
         </Box>

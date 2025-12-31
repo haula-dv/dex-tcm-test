@@ -433,7 +433,12 @@
 // }
 
 [data-theme="dark"] {
-    
+
+    .data-list-view{
+      .oui-bg-base-9 {
+        background-color: var(--grey800) !important;
+      }
+    }
 }
 
 [data-theme="light"] {

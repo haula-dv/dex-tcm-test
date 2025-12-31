@@ -13,16 +13,19 @@ function OrderEntryForm({ symbol }: IOrderEntryFormProps) {
     const symbolsInfo = useSymbolsInfo();
 
     return (
-        <div>
+        <>
             <DynamicBalance
                 quote={quote}
                 isFristLoading={symbolsInfo.isNil}
             />
 
             <div className="orderly-order-entry">
-                <OrderEntryWidget symbol={symbol} />
+                <OrderEntryWidget
+                    symbol={symbol}
+                    key={symbol}
+                />
             </div>
-        </div>
+        </>
     );
 }
 export default memo(OrderEntryForm);
