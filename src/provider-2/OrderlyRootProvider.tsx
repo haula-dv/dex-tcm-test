@@ -1,4 +1,5 @@
 'use client'
+import { useOrderlyConfig } from '@/utils/config/tcmp-cofig';
 import { AppInfo } from '@/utils/constants/key_store';
 import { useTheme } from "@mui/material";
 import { useChains } from '@orderly.network/hooks';
@@ -58,6 +59,8 @@ export const OrderlyRootProvider: FC<{ children: React.ReactNode }> = ({ childre
         return remapChainIds
     }, [chains])
 
+    const config = useOrderlyConfig()
+
     return (
         <WalletConnectorProvider
             evmInitial={{
@@ -86,6 +89,7 @@ export const OrderlyRootProvider: FC<{ children: React.ReactNode }> = ({ childre
                 brokerId={AppInfo.BROKER_ID}
                 brokerName={AppInfo.BROKER_NAME}
                 networkId={networkId}
+                appIcons={config.orderlyAppProvider.appIcons}
             >
                 {children}
             </OrderlyAppProvider>

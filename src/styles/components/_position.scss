@@ -463,5 +463,28 @@
 
         background-color: var(--primaryLight) !important;
       }
+
+      .oui-table-tbody-td {
+        color: var(--grey700);
+      }
     }
-}
+
+    [data-testid="oui-testid-dataList-pending-cancelAll-button"]{
+      &:hover {
+        background-color: var(--grey100) !important;
+      }
+    }
+
+    .oui-table-tbody{
+      .oui-border-b-line-4 {
+        border-color: var(--grey100) !important;
+      }
+    }
+  }
+
+  // .oui-input-root{
+  //   #_r_89_{
+  //     outline: none !important;
+  //     border: none !important;
+  //   }
+  // }

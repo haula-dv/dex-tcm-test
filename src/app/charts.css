@@ -1,0 +1,44 @@
+[data-theme="light"] .recharts-responsive-container {
+
+    /* Axis Lines & Ticks */
+    .recharts-cartesian-axis-line,
+    .recharts-cartesian-axis-tick-line {
+        stroke: var(--grey800) !important;
+    }
+
+    /* Grid Lines */
+    .recharts-cartesian-grid line {
+        stroke: var(--grey400) !important;
+    }
+
+    /* Text Labels */
+    text {
+        fill: var(--grey800) !important;
+    }
+}
+
+[data-theme="light"] {
+    .recharts-cartesian-grid-horizontal line {
+        stroke: var(--grey800) !important;
+    }
+}
+
+[data-theme="light"] {
+    #portfolio-overview-performance {
+        .oui-border-line-6 {
+            border: none
+        }
+
+        .oui-gradient-neutral {
+            background-image: linear-gradient(to right, var(--grey50), var(--grey50)) !important;
+        }
+    }
+
+    .oui-table-tbody-td {
+        color: var(--grey700);
+
+        .oui-text-white {
+            color: var(--grey600) !important;
+        }
+    }
+}

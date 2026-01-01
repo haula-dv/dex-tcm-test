@@ -1,5 +1,19 @@
 [data-theme="light"] {
     .oui-dialog-content {
         background-color: white !important;
+        
+        .oui-text-white {
+            color: var(--grey500) !important;
+        }
+    }
+
+    .oui-dialog-close-btn {
+        .oui-text-white {
+            color: var(--grey500) !important;
+        }
+        svg {
+            color: var(--grey500) !important;
+            fill: var(--grey500) !important;
+        }
     }
 }

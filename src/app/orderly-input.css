@@ -39,4 +39,11 @@
   ::placeholder {
     color: var(--grey400);
   }
+
+  .oui-input-root:focus-within,
+.oui-input-root:has(input:focus),
+.oui-input-root:has(textarea:focus) {
+    border-color: var(--grey200) !important;
+    outline: none;
+  }
 }

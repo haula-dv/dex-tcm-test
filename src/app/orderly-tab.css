@@ -1,3 +1,69 @@
 [data-theme="light"] .oui-tab-trigger {
     background-color: var(--grey50) !important;
+    border: 1px solid var(--grey100) !important;
+    opacity: 0.6;
+
+    &:hover {
+        opacity: 1;
+    }
+
+}
+
+[data-theme="light"] .oui-tab-trigger[data-state="active"] {
+    background-color: var(--primaryDark) !important;
+    border: 1px solid var(--grey100) !important;
+    opacity: 1;
+    color: var(--white) !important;
+
+    span {
+        color: var(--white) !important;
+    }
+}
+
+/* DROPBOX  */
+[data-theme='light'] {
+    .oui-group[role="combobox"] {
+        background-color: var(--grey50) !important;
+        border-color: var(--grey100) !important;
+        box-shadow: none !important;
+    }
+
+    [role='checkbox'] {
+        border-color: var(--grey300);
+    }
+
+    [role='checkbox'][data-state='checked'] {
+        border-color: var(--success) !important;
+        background-color: var(--success) !important;
+    }
+
+    .oui-datepicker-trigger {
+        background-color: var(--grey50) !important;
+        border-color: var(--grey100) !important;
+        box-shadow: none !important;
+    }
+
+    .oui-table-thead-th {
+        background-color: var(--grey50) !important;
+    }
+}
+
+/* ORDER  */
+[data-theme='light'] {
+    [data-testid="oui-testid-orderEntry-additional-button"] {
+        svg {
+            fill: var(--grey500);
+        }
+    }
+
+    [data-testid="oui-testid-portfolio-assets-deposit-btn"] {
+        span {
+
+            color: var(--white) !important;
+        }
+
+        svg {
+            fill: var(--white) !important;
+        }
+    }
 }

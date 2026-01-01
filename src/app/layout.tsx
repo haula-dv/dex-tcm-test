@@ -7,13 +7,14 @@ import { headers } from "next/headers";
 import React from "react";
 import "react-toastify/dist/ReactToastify.css";
 import { Toaster } from "sonner";
+import "./charts.css";
 import "./color.css";
 import "./globals.css";
 import "./market-popup.css";
 import "./orderly-dialog.css";
 import "./orderly-input.css";
 import "./orderly-tab.css";
-// import "./theme.css";
+import "./theme.css";
 
 export default async function RootLayout({
   children,
