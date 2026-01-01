@@ -83,7 +83,10 @@ export const MainViewContainer = ({ symbol }: IProps) => {
           width={"100%"}
           pb="10px"
         >
-          <Box display={"flex"} flexDirection={"column"} width={"100%"}>
+          <Box display={"flex"} flexDirection={"column"}
+            width={"calc(100% - 350px)"}
+            flexShrink={0}
+          >
             <DynamicSymbolHeader onSymbolChange={onSymbolChange} symbol={symbol} onLoaded={handleLoaded} />
 
             <MainCard backgroudColor="primary" width="100%" height="calc(100vh - 400px)">
@@ -100,20 +103,17 @@ export const MainViewContainer = ({ symbol }: IProps) => {
 
           <Stack
             spacing={"10px"}
-            maxWidth={"300px"}
-            width={"100%"}
+            width={"350px"}
             flexShrink={0}
+            pr={1}
+            position={'sticky'}
+            top={'100px'}
           >
             <DynamicMarketsContainer onSymbolChange={onSymbolChange} symbol={symbol} onLoaded={handleLoaded} />
 
             <DynamicBoxConnectWallet />
 
-            <MainCard
-              backgroudColor="primary"
-              width="100%"
-            >
-              <DynamicOrderEntryForm symbol={symbol} onLoaded={handleLoaded} />
-            </MainCard>
+            <DynamicOrderEntryForm symbol={symbol} onLoaded={handleLoaded} />
           </Stack>
         </Box>
       </Box>

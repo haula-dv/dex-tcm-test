@@ -1,0 +1,5 @@
+[data-theme="light"] {
+    .oui-dialog-content {
+        background-color: white !important;
+    }
+}

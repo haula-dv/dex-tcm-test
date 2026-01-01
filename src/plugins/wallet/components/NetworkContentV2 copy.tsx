@@ -1,18 +1,19 @@
 import { getImageNextwork } from "@/common";
 import { MainButton } from "@/components/button/MainButton";
+import { ItemList } from "@/components/list/ItemList";
 import { StyledMenu } from "@/components/menu/StyledMenu";
 import { TokenIcon } from "@/components/token/TokenIcon";
-import { useIsTestnet } from "@/hooks";
 import { TLocalStorage } from "@/utils/constants/key_store";
 import { idFromHexChainId } from "@/utils/formatters/token";
 import { setColorThemeMode } from "@/utils/helpers";
 import {
-  Box,
+  Divider,
+  Stack,
+  Typography,
   useMediaQuery,
-  useTheme
+  useTheme,
 } from "@mui/material";
 import { useChains } from "@orderly.network/hooks";
-import { ChainSelectorWidget } from "@orderly.network/ui-chain-selector";
 import { IconChevronDown } from "@tabler/icons-react";
 import { useConnectWallet, useSetChain } from "@web3-onboard/react";
 import { memo, useCallback, useEffect, useMemo, useState } from "react";
@@ -97,8 +98,6 @@ function NetworkContentV2() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [currentChain, remapChainIds, connectedChain]);
 
-  const [isTestnet] = useIsTestnet();
-
   return (
     <>
       {chains ? (
@@ -163,11 +162,7 @@ function NetworkContentV2() {
         open={openNetworkEl}
         onClose={() => setNetworkAnchorEl(null)}
       >
-        <Box p={1}>
-          <ChainSelectorWidget variant="compact" isWrongNetwork={!isSupportChain} networkId={isTestnet ? 'testnet' : 'mainnet'} onChainChangeAfter={(chainId, isTestnet) => onChainChanged(chainId, isTestnet.isTestnet)} />
-        </Box>
-
-        {/* <Stack pb={1}>
+        <Stack pb={1}>
           <Typography
             px={1.6}
             color={setColorThemeMode(
@@ -249,7 +244,7 @@ function NetworkContentV2() {
               />
             ))}
           </Stack>
-        </Stack> */}
+        </Stack>
       </StyledMenu>
     </>
   );
