@@ -2,8 +2,6 @@ import { getImageNextwork } from "@/common";
 import { MainButton } from "@/components/button/MainButton";
 import { StyledMenu } from "@/components/menu/StyledMenu";
 import { TokenIcon } from "@/components/token/TokenIcon";
-import { useIsTestnet } from "@/hooks";
-import { TLocalStorage } from "@/utils/constants/key_store";
 import { idFromHexChainId } from "@/utils/formatters/token";
 import { setColorThemeMode } from "@/utils/helpers";
 import {
@@ -15,7 +13,7 @@ import { useAccount, useChains } from "@orderly.network/hooks";
 import { ChainSelectorWidget } from "@orderly.network/ui-chain-selector";
 import { IconChevronDown } from "@tabler/icons-react";
 import { useConnectWallet, useSetChain } from "@web3-onboard/react";
-import { memo, useCallback, useEffect, useMemo, useState } from "react";
+import { memo, useCallback, useMemo, useState } from "react";
 
 interface INetworkContentV2Props {
   isMobile?: boolean;
@@ -32,7 +30,7 @@ function NetworkContentV2({ isMobile = false }: INetworkContentV2Props) {
   // Hooks
   const [chains, { findByChainId }] = useChains();
   const [{ connectedChain }, setChain] = useSetChain();
-  const [{ wallet }, connect, disconnect] = useConnectWallet();
+  const [{ wallet }] = useConnectWallet();
 
   // Handle show menu account button
   const handleShowMenu = (event: React.MouseEvent<HTMLElement>) => {
@@ -40,13 +38,17 @@ function NetworkContentV2({ isMobile = false }: INetworkContentV2Props) {
   };
 
   const { account } = useAccount();
+  const DEFAULT_CHAIN = 1
 
-  // GET CURRENT CHAIN
-  const currentChain = useCallback(() => {
+  // GET CURRENT CHAIN - use useMemo instead of useCallback to avoid hook order issues
+  const currentChainValue = useMemo(() => {
     return findByChainId(
-      connectedChain ? idFromHexChainId(connectedChain?.id ?? "") : 1
+      connectedChain ? idFromHexChainId(connectedChain?.id ?? "") : DEFAULT_CHAIN
     );
   }, [connectedChain, findByChainId]);
+
+  // Keep as function for backward compatibility
+  const currentChain = useCallback(() => currentChainValue, [currentChainValue]);
 
   // Handle change network
   const onChainChanged = useCallback(
@@ -55,15 +57,12 @@ function NetworkContentV2({ isMobile = false }: INetworkContentV2Props) {
         setNetworkAnchorEl(null);
         return;
       }
+
       await setChain({
         chainId: chainId,
         chainNamespace: "evm",
       }).then(async (res) => {
-        localStorage.setItem(
-          TLocalStorage.DEX_ORDERLY_NETWORK,
-          isTestnet ? "testnet" : "mainnet"
-        );
-
+        localStorage.setItem("networkId", !isTestnet ? "mainnet" : "testnet");
         await account.switchChainId(chainId);
         // realod page
         setTimeout(() => {
@@ -71,20 +70,14 @@ function NetworkContentV2({ isMobile = false }: INetworkContentV2Props) {
         }, 400);
       });
     },
-    [setChain, wallet]
+    [setChain, wallet, account]
   );
 
-  useEffect(() => {
-    if (currentChain()) {
-      const isMainet = currentChain()?.network_infos.mainnet;
-      localStorage.setItem("networkId", isMainet ? "mainnet" : "testnet");
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [currentChain()]);
-
   // Check network
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  const allChains = [...chains.mainnet, ...chains.testnet];
+  const allChains = useMemo(() => {
+    if (!chains || !chains.mainnet || !chains.testnet) return []
+    return [...chains.mainnet, ...chains.testnet];
+  }, [chains])
 
   const remapChainIds = useMemo(() => {
     return allChains.length > 0
@@ -95,15 +88,13 @@ function NetworkContentV2({ isMobile = false }: INetworkContentV2Props) {
   }, [allChains]);
 
   const isSupportChain = useMemo(() => {
-    return currentChain()
+    return currentChainValue
       ? remapChainIds.some(
-        (it) => it === (currentChain() as any).network_infos.chain_id
+        (it) => it === currentChainValue.network_infos.chain_id
       )
       : false;
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [currentChain, remapChainIds, connectedChain]);
+  }, [currentChainValue, remapChainIds]);
 
-  const [isTestnet] = useIsTestnet();
   return (
     <>
       {chains ? (
@@ -170,7 +161,7 @@ function NetworkContentV2({ isMobile = false }: INetworkContentV2Props) {
         onClose={() => setNetworkAnchorEl(null)}
       >
         <Box p={1}>
-          <ChainSelectorWidget variant="compact" isWrongNetwork={!isSupportChain} onChainChangeAfter={(chainId, isTestnet) => onChainChanged(chainId, isTestnet.isTestnet)} />
+          <ChainSelectorWidget variant="compact" isWrongNetwork={!isSupportChain} onChainChangeBefore={(chainId, isTestnet) => onChainChanged(chainId, isTestnet.isTestnet)} onChainChangeAfter={(chainId, isTestnet) => onChainChanged(chainId, isTestnet.isTestnet)} />
         </Box>
 
         {/* <Stack pb={1}>

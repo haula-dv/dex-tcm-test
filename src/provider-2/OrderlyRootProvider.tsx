@@ -13,7 +13,6 @@ import React, { FC, useMemo } from "react";
 
 export const OrderlyRootProvider: FC<{ children: React.ReactNode }> = ({ children }) => {
     const theme = useTheme();
-
     // Determine network mode from localStorage (avoid using useIsTestnet hook here to prevent circular dependency)
     const networkId = useMemo(() => {
         if (typeof window === 'undefined') return 'mainnet';
@@ -73,6 +72,14 @@ export const OrderlyRootProvider: FC<{ children: React.ReactNode }> = ({ childre
         <WalletConnectorProvider
             evmInitial={{
                 options: {
+                    appMetadata: {
+                        name: AppInfo.BROKER_NAME,
+                        description: AppInfo.BROKER_NAME,
+                        icon: AppInfo.BROKER_LOGO,
+                        logo: AppInfo.BROKER_LOGO,
+                    },
+                    wallets: [injected, walletConnect, metamask],
+                    chains: orderlyChains,
                     accountCenter: {
                         desktop: { enabled: false },
                         mobile: { enabled: false }
@@ -80,14 +87,6 @@ export const OrderlyRootProvider: FC<{ children: React.ReactNode }> = ({ childre
                     connect: {
                         autoConnectLastWallet: false
                     },
-                    appMetadata: {
-                        name: AppInfo.BROKER_NAME,
-                        description: AppInfo.BROKER_NAME,
-                        icon: AppInfo.BROKER_LOGO,
-                        logo: AppInfo.BROKER_LOGO,
-                    },
-                    chains: orderlyChains,
-                    wallets: [injected, walletConnect, metamask],
                     theme: theme.palette.mode,
                 }
             }}
