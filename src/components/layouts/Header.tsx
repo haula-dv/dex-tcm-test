@@ -10,15 +10,23 @@ import {
   Stack,
   Toolbar,
   Typography,
+  useMediaQuery,
+  useTheme,
 } from "@mui/material";
 import { styled } from "@mui/material/styles";
+import dynamic from "next/dynamic";
 import Link from "next/link";
 import { useParams, usePathname } from "next/navigation";
 import Logo from "../icons/Logo";
 
+const HeaderMobile = dynamic(() => import("./HeaderMobile"), { ssr: false });
+
 export const Header = () => {
   const pathName = usePathname();
   const params = useParams();
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down("lg"));
+
   const navItems = [
     {
       label: "Trading",
@@ -38,6 +46,10 @@ export const Header = () => {
       ],
     },
   ];
+
+  if (isMobile) {
+    return <HeaderMobile />;
+  }
 
   return (
     <MainAppBar elevation={0} position="sticky">

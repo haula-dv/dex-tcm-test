@@ -17,7 +17,11 @@ import { IconChevronDown } from "@tabler/icons-react";
 import { useConnectWallet, useSetChain } from "@web3-onboard/react";
 import { memo, useCallback, useEffect, useMemo, useState } from "react";
 
-function NetworkContentV2() {
+interface INetworkContentV2Props {
+  isMobile?: boolean;
+}
+
+function NetworkContentV2({ isMobile = false }: INetworkContentV2Props) {
   const theme = useTheme();
   const [networkAnchorEl, setNetworkAnchorEl] = useState<null | HTMLElement>(
     null
@@ -104,6 +108,7 @@ function NetworkContentV2() {
       {chains ? (
         <MainButton
           variant={"contained"}
+          size={isMobile ? "small" : "medium"}
           endIcon={
             <IconChevronDown
               size={"1rem"}

@@ -65,7 +65,7 @@ const MainTab = ({
 
         {rightSideTab}
       </Stack>
-      <Box pt="10px">{children}</Box>
+      <Box>{children}</Box>
     </TabContext>
   );
 };

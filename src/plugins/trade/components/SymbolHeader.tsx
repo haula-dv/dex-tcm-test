@@ -152,7 +152,6 @@ const SymbolHeader = ({ onSymbolChange, symbol }: IProps) => {
         spacing={1.5}
         alignItems={"center"}
         pl={"4px"}
-        mb="8px"
         height={"30px"}
         width={"100%"}
       >

@@ -1,80 +1,77 @@
-import { useWalletConnector } from "@orderly.network/hooks";
-import { useWeb3Modal } from "@web3modal/wagmi/react";
+import WalletContainer from "@/plugins/wallet/components/WalletContainer";
+import {
+  IconButton,
+  Stack,
+  Toolbar
+} from "@mui/material";
+import { IconMenu2 } from "@tabler/icons-react";
+import Link from "next/link";
+import { useParams } from "next/navigation";
 import { memo, useState } from "react";
+import Logo from "../icons/Logo";
 import { MainAppBar } from "./Header";
+import { MobileDrawer } from "./MobileDrawer";
 
 function HeaderMobile() {
-  const { wallet, connecting } = useWalletConnector();
-  const { open } = useWeb3Modal();
-  const [openAccountDetailsModal, setAccountDetailsModal] = useState(false);
+  const [openDrawer, setOpenDrawer] = useState(false);
+  const params = useParams();
 
-  // Handle connect wallet button
-  const handleConnectWallet = async () => {
-    await open();
-  };
-
-  console.log("wallet", wallet);
-  console.log("connecting", connecting);
+  const navItems = [
+    {
+      label: "Trading",
+      to: "/trading/perp",
+      actived: [`/trading/perp/${params.symbol}`],
+    },
+    {
+      label: "Portfolio",
+      to: "/portfolio",
+      actived: [
+        "/portfolio",
+        "/portfolio/api-key",
+        "/portfolio/fee-tier",
+        "/portfolio/orders",
+        "/portfolio/positions",
+        "/portfolio/setting",
+      ],
+    },
+  ];
 
   return (
     <MainAppBar elevation={0} position="sticky">
-      {/* <OrderlyConnect />
-
-      <Toolbar sx={{ px: "10px !important" }}>
+      <Toolbar sx={{ px: "16px !important" }} disableGutters>
         <Stack
           direction={"row"}
           width={"100%"}
-          spacing={TSizes.margin_sm}
           alignItems={"center"}
           justifyContent={"space-between"}
+          ml={'-6px'}
         >
-          <Link href={"/trading"}>
-            <Logo width="80px" height="40px" />
-          </Link>
-
-          <Stack
-            direction={"row"}
-            spacing={"6px"}
-            alignItems={"center"}
-            className="mobile-header-wrapper"
-          >
-            <NetworkContent />
-
-            {!wallet ? (
-              <MainButton
-                variant="contained"
-                id="connect-wallet"
-                onClick={handleConnectWallet}
-                isLoading={connecting}
-              >
-                Connect Wallet
-              </MainButton>
-            ) : (
-              <MainButton
-                variant="contained"
-                id="connect-wallet"
-                color={setColorThemeMode("darkGrey", "darkGrey")}
-              >
-                {formartAddress(wallet.accounts?.[0]?.address || "")}
-              </MainButton>
-            )}
-
+          {/* Left Side: Hamburger + Logo */}
+          <Stack direction={"row"} alignItems={"center"} spacing={1}>
             <IconButton
               size="small"
-              onClick={() => setAccountDetailsModal(true)}
+              onClick={() => setOpenDrawer(true)}
+              edge="start"
+              color="inherit"
+              aria-label="menu"
             >
-              <IconMenu />
+              <IconMenu2 height={18} width={18} />
             </IconButton>
+            <Link href={"/trading"}>
+              <Logo width="60px" height="32px" />
+            </Link>
           </Stack>
+
+          {/* Right Side: Wallet Container (Network + Account) */}
+          <WalletContainer isMobile={true} />
         </Stack>
       </Toolbar>
 
-      {openAccountDetailsModal && (
-        <AccountDetailMobile
-          open={openAccountDetailsModal}
-          handleClose={() => setAccountDetailsModal(false)}
-        />
-      )} */}
+      <MobileDrawer
+        open={openDrawer}
+        onClose={() => setOpenDrawer(false)}
+        navItems={navItems}
+      />
     </MainAppBar>
   );
 }

@@ -21,7 +21,11 @@ import { OrderlyConnect } from "./OrderlyConnect";
 
 const DynamicNetworkContent = dynamic(() => import("./NetworkContentV2"));
 
-export default function WalletContainer() {
+interface IWalletContainerProps {
+  isMobile?: boolean;
+}
+
+export default function WalletContainer({ isMobile = false }: IWalletContainerProps) {
   const [{ wallet: currentWallet, connecting }, connectWallet] = useConnectWallet();
   const themeSelector = useStore(themeSelectorState, (state) => state.value);
   const [openAccountDetailsModal, setAccountDetailsModal] = useState(false);
@@ -72,12 +76,13 @@ export default function WalletContainer() {
 
   return (
     <Stack direction={"row"} spacing={1} alignItems={"center"}>
-      {currentWallet && <DynamicNetworkContent />}
+      {currentWallet && <DynamicNetworkContent isMobile={isMobile} />}
 
       {connecting ? (
         <MainButton
           startIcon={<IconLoading height="20px" width="20px" />}
           variant="contained"
+          size={isMobile ? "small" : "medium"}
           color={setColorThemeMode("darkGrey", "white")}
         >
           Connecting
@@ -88,6 +93,7 @@ export default function WalletContainer() {
             <MainButton
               onClick={async () => await connectWallet()}
               variant="contained"
+              size={isMobile ? "small" : "medium"}
               color={setColorThemeMode("darkGrey", "white")}
             >
               Connect to Wallet
@@ -96,35 +102,38 @@ export default function WalletContainer() {
             <>
               <MainButton
                 variant="contained"
+                size={isMobile ? "small" : "medium"}
                 color={setColorThemeMode("darkGrey", "white")}
                 onClick={handleToggleAccountMenu}
               >
                 {formartAddress(currentWallet.accounts[0].address)}
               </MainButton>
 
-              <Box
-                height={"40px"}
-                width={"40px"}
-                bgcolor={theme.palette.info.light}
-                borderRadius={"50%"}
-                display={"flex"}
-                alignItems={"center"}
-                justifyContent={"center"}
-              >
-                {currentWallet.icon.startsWith("data:image") ? (
-                  <Image
-                    src={currentWallet.icon}
-                    height={20}
-                    width={20}
-                    alt={currentWallet.label}
-                  />
-                ) : (
-                  <div
-                    style={{ padding: "6px" }}
-                    dangerouslySetInnerHTML={{ __html: currentWallet.icon }}
-                  ></div>
-                )}
-              </Box>
+              {!isMobile && (
+                <Box
+                  height={"40px"}
+                  width={"40px"}
+                  bgcolor={theme.palette.info.light}
+                  borderRadius={"50%"}
+                  display={"flex"}
+                  alignItems={"center"}
+                  justifyContent={"center"}
+                >
+                  {currentWallet.icon.startsWith("data:image") ? (
+                    <Image
+                      src={currentWallet.icon}
+                      height={20}
+                      width={20}
+                      alt={currentWallet.label}
+                    />
+                  ) : (
+                    <div
+                      style={{ padding: "6px" }}
+                      dangerouslySetInnerHTML={{ __html: currentWallet.icon }}
+                    ></div>
+                  )}
+                </Box>
+              )}
             </>
           )}
         </>
@@ -140,9 +149,11 @@ export default function WalletContainer() {
 
       <OrderlyConnect />
 
-      <MainIconButton onClick={handleChangeTheme} color="inherit">
-        {themeSelector.activeMode == "light" ? <IconSun /> : <IconMoonStars />}
-      </MainIconButton>
+      {!isMobile && (
+        <MainIconButton onClick={handleChangeTheme} color="inherit">
+          {themeSelector.activeMode == "light" ? <IconSun /> : <IconMoonStars />}
+        </MainIconButton>
+      )}
     </Stack>
   );
 }

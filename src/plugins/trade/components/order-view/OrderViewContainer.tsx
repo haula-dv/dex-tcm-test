@@ -78,7 +78,7 @@ const OrderViewContainer = ({ symbol, onSymbolChange }: IProps) => {
 
   return (
     <Box
-      pt={1}
+      pt={{ xs: 0, md: 1 }}
       className="data-list-view"
     >
       <MainCard backgroudColor="primary" width="100%" height="350px">

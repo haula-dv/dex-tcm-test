@@ -28,10 +28,10 @@ export const OrderBookContainer = ({ symbol }: IProps) => {
 	return (
 		<Box
 			flexShrink={0}
-			width={{ xs: "220px", lg: "280px" }}
+			width={{ xs: "100%", lg: "280px" }}
 			height="100%"
 			overflow={"hidden"}
-			ml={"10px"}
+			ml={{ xs: "0", lg: "10px" }}
 			borderRadius={TSizes.borderRadius}>
 			<Stack direction={"row"} spacing={"6px"} height={"48px"} width={"100%"}>
 				<MainTab tabs={tabs} onChange={handleChange} fullWidth height={TSizes.buttonHeight} />
