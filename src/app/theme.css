@@ -85,3 +85,17 @@
 .oui-text-danger {
   color: var(--danger) !important;
 }
+
+
+/* BRAND GRADIENT */
+.oui-gradient-brand {
+  background-image: linear-gradient(90deg, #f7f4f0 0%, #b37350 100%) !important;
+}
+
+.oui-gradient-primary {
+  background-image: linear-gradient(90deg, #f7f4f0 0%, #b37350 100%) !important;
+}
+
+.oui-bg-gradient-to-r {
+  background-image: linear-gradient(90deg, #f7f4f0cc 0%, #b37350cc 100%) !important;
+}

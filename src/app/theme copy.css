@@ -29,7 +29,7 @@
   .oui-bg-base-9 {
     background-color: var(--greyBase900);
   }
- 
+
   .oui-bg-base-7 {
     background-color: var(--grey700);
   }
@@ -71,91 +71,92 @@
   }
 
   /* TEXT  */
-  .oui-text-primary-light{
+  .oui-text-primary-light {
     color: var(--primaryLight) !important;
   }
 }
 
 /* orderly-order-entry */
 [data-theme="dark"] {
-.orderly-order-entry{
-  /* Slider  */
-  [data-orientation="horizontal"]{
-    .oui-bg-base-2 {
-      background-color: var(--grey700);
-    }
+  .orderly-order-entry {
 
-    .oui-border-base-2 {
-      border-color: var(--grey600);
-    }
+    /* Slider  */
+    [data-orientation="horizontal"] {
+      .oui-bg-base-2 {
+        background-color: var(--grey700);
+      }
 
-    .oui-bg-base-6 {
-      background-color: var(--grey600) ;
-    }
+      .oui-border-base-2 {
+        border-color: var(--grey600);
+      }
 
-    .oui-bg-success {
-      background-color: var(--success) !important;
-    }
+      .oui-bg-base-6 {
+        background-color: var(--grey600);
+      }
 
-    .oui-bg-trade-profit {
-      background-color: var(--success) !important;
-    }
+      .oui-bg-success {
+        background-color: var(--success) !important;
+      }
 
-    .oui-border-trade-profit {
-      border-color: var(--success) !important;
-    }
+      .oui-bg-trade-profit {
+        background-color: var(--success) !important;
+      }
 
-    .oui-border-success {
-      border-color: var(--success) !important;
-      background-color: var(--success) !important;
-    }
+      .oui-border-trade-profit {
+        border-color: var(--success) !important;
+      }
 
-    .oui-border-danger {
-      border-color: var(--danger) !important;
-      background-color: var(--danger) !important;
-    }
+      .oui-border-success {
+        border-color: var(--success) !important;
+        background-color: var(--success) !important;
+      }
 
-    .oui-bg-danger {
-      background-color: var(--danger) !important;
-    }
+      .oui-border-danger {
+        border-color: var(--danger) !important;
+        background-color: var(--danger) !important;
+      }
 
-    .oui-text-trade-profit {
-      color: var(--success) !important;
-    }
+      .oui-bg-danger {
+        background-color: var(--danger) !important;
+      }
 
-    .oui-bg-danger-darken {
-      background-color: var(--danger) !important;
-    }
+      .oui-text-trade-profit {
+        color: var(--success) !important;
+      }
 
-    
-    .oui-input-root {
-      background-color: var(--darkBrown) !important;
-    }
+      .oui-bg-danger-darken {
+        background-color: var(--danger) !important;
+      }
 
-    /* SELL  */
-    .oui-border-trade-loss {
-      border-color: var(--danger) !important;
-    }
 
-    .oui-bg-trade-loss {
-      background-color: var(--danger) !important;
+      .oui-input-root {
+        background-color: var(--darkBrown) !important;
+      }
+
+      /* SELL  */
+      .oui-border-trade-loss {
+        border-color: var(--danger) !important;
+      }
+
+      .oui-bg-trade-loss {
+        background-color: var(--danger) !important;
+      }
     }
   }
-}
 
-.oui-text-trade-loss{
-  color: var(--danger) !important;
-}
+  .oui-text-trade-loss {
+    color: var(--danger) !important;
+  }
 
 
-/* Text  */
-.oui-text-primary {
-  color: var(--primaryMain) !important;
-}
+  /* Text  */
+  .oui-text-primary {
+    color: var(--primaryMain) !important;
+  }
 
-.oui-text-trade-profit {
-  color: var(--success) !important;
-}
+  .oui-text-trade-profit {
+    color: var(--success) !important;
+  }
 }
 
 /* SWITCH BUTTON / TOGGLE */
@@ -194,20 +195,21 @@
   background-color: var(--primaryDark) !important;
 }
 
-[data-testid="oui-testid-orderEntry-pinned-button"]{
-  path{
+[data-testid="oui-testid-orderEntry-pinned-button"] {
+  path {
     color: var(--primaryDark) !important;
   }
 }
+
 /* END SWITCH BUTTON / TOGGLE */
 
 
 /* BORDER */
-.oui-border-primary{
+.oui-border-primary {
   border-color: var(--primaryDark);
 }
 
-.oui-outline-danger{
+.oui-outline-danger {
   outline-color: var(--danger) !important;
 }
 
@@ -221,13 +223,13 @@
 }
 
 /* BG */
-.oui-bg-primary{
+.oui-bg-primary {
   background-color: var(--primaryDark);
 }
 
 /* LIGHT MODE  */
-[data-theme="light"]{
- 
+[data-theme="light"] {
+
   .oui-bg-base-2 {
     background-color: var(--grey50);
   }
@@ -239,10 +241,11 @@
   .oui-bg-base-5 {
     background-color: var(--grey100);
   }
+
   .oui-bg-base-6 {
     background-color: var(--grey100);
   }
- 
+
   .oui-bg-base-7 {
     background-color: var(--grey100);
   }
@@ -251,7 +254,7 @@
     background-color: var(--grey100);
   }
 
-  .oui-text-base-contrast{
+  .oui-text-base-contrast {
     color: var(--grey800);
   }
 
@@ -279,7 +282,7 @@
     /* background-color: var(--grey200); */
   }
 
-  [data-testid="oui-testid-orderEntry-orderType-button"]{
+  [data-testid="oui-testid-orderEntry-orderType-button"] {
     /* background-color: var(--success-light) !important;
     color: var(--success) !important; */
   }
@@ -293,28 +296,30 @@
   }
 
   /* FORM  */
- .orderly-order-entry{
-  div > span {
-    color: var(--grey800);
-  }
-  /* Slider  */
-  [data-orientation="horizontal"]{
-    .oui-input-root {
-      background-color: var(--darkBrown) !important;
+  .orderly-order-entry {
+    div>span {
+      color: var(--grey800);
+    }
+
+    /* Slider  */
+    [data-orientation="horizontal"] {
+      .oui-input-root {
+        background-color: var(--darkBrown) !important;
+      }
     }
   }
-  }
-/* END FORM  */
 
-/* INPUT  */
-.oui-input-root {
+  /* END FORM  */
+
+  /* INPUT  */
+  .oui-input-root {
     background-color: var(--grey50) !important;
     border: 1px solid var(--grey100);
     transition: border-color 0.2s ease;
   }
 
   .oui-input-root .oui-outline-offset-0 {
-   border: none !important;
+    border: none !important;
   }
 
   .oui-input-root:focus-within,
@@ -342,7 +347,7 @@
     }
   }
 
-  ::placeholder{
+  ::placeholder {
     color: var(--grey400);
   }
 
@@ -352,14 +357,14 @@
     box-shadow: none !important;
   }
 
-  [role="combobox"]{
-   box-shadow: none !important;
+  [role="combobox"] {
+    box-shadow: none !important;
   }
 
   /* END INPUT  */
   .oui-dialog-content {
     background-color: #fff !important;
-    
+
     div {
       color: var(--grey800);
     }
@@ -380,12 +385,12 @@
   }
 
   /* TABLIST  */
-  [role="tablist"]{
-    [aria-selected="true"]{
+  [role="tablist"] {
+    [aria-selected="true"] {
       background-color: var(--grey200);
     }
 
-    [aria-selected="false"]{
+    [aria-selected="false"] {
       background-color: var(--grey50);
     }
   }
@@ -396,7 +401,7 @@
   background-image: linear-gradient(90deg, #f7f4f0 0%, #b37350 100%) !important;
 }
 
-.oui-gradient-primary{
+.oui-gradient-primary {
   background-image: linear-gradient(90deg, #f7f4f0 0%, #b37350 100%) !important;
 }
 
@@ -414,7 +419,7 @@
 }
 
 /* TAB */
-[data-theme="dark"]  {
+[data-theme="dark"] {
   /* .oui-header-list{
     [data-state="active"]{
       background-color: var(--darkBrown) !important;
@@ -426,14 +431,12 @@
     }
   } */
 
-  #radix-_r_a_-content-Assets{
-   
-  }
+  #radix-_r_a_-content-Assets {}
 }
 
-[data-theme="light"]  {
-  .oui-header-list{
-    [data-state="active"]{
+[data-theme="light"] {
+  .oui-header-list {
+    [data-state="active"] {
       background-color: var(--grey100) !important;
       border: 1px solid var(--grey100) !important;
     }
@@ -445,6 +448,7 @@
 [data-theme="dark"] {
   .oui-table-root {
     background-color: var(--grey800) !important;
+
     .oui-table-scroll {
       .oui-table-thead {
         background-color: var(--table-header-bg);
@@ -456,18 +460,19 @@
     }
   }
 
-  .oui-table-tbody{
+  .oui-table-tbody {
     .oui-table-tbody-td {
       background-color: var(--grey800);
     }
   }
-  
-  #oui-desktop-positions-content{
+
+  #oui-desktop-positions-content {
     /* border-top: none !important;
     border: 1px solid var(--grey700); */
     /* border-radius: 12px; */
     /* overflow: hidden; */
     background-color: var(--grey800);
+
     .oui-table-pagination {
       margin-bottom: 12px;
     }
@@ -492,6 +497,7 @@
 
 /* Style chart for Light Mode */
 [data-theme="light"] .recharts-responsive-container {
+
   /* Axis Lines & Ticks */
   .recharts-cartesian-axis-line,
   .recharts-cartesian-axis-tick-line {
