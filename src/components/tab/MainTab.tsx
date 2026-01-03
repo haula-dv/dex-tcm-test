@@ -1,7 +1,7 @@
 import { setColorThemeMode } from "@/utils/helpers";
 import { TSizes } from "@/utils/themes/custom-theme/sizes";
 import TabContext from "@mui/lab/TabContext";
-import { Button, Stack } from "@mui/material";
+import { Box, Button, Stack } from "@mui/material";
 import { styled } from "@mui/material/styles";
 import { memo, ReactElement, ReactNode, useState } from "react";
 
@@ -65,7 +65,7 @@ const MainTab = ({
 
         {rightSideTab}
       </Stack>
-      <>{children}</>
+      <Box>{children}</Box>
     </TabContext>
   );
 };

@@ -1,0 +1,195 @@
+"use client";
+import { OrderlyConnect } from "@/plugins/wallet/components/OrderlyConnect";
+import { setColorThemeMode } from "@/utils/helpers";
+import { Mixins } from "@/utils/themes/custom-theme/mixins";
+import { TSizes } from "@/utils/themes/custom-theme/sizes";
+import {
+  AppBar,
+  Box,
+  BoxProps,
+  Stack,
+  Toolbar,
+  Typography,
+} from "@mui/material";
+import { styled } from "@mui/material/styles";
+import { useWalletConnector } from "@orderly.network/hooks";
+import { useAppKit } from "@reown/appkit/react";
+import Link from "next/link";
+import { useParams, usePathname } from "next/navigation";
+import { MainButton } from "../button/MainButton";
+import Logo from "../icons/Logo";
+
+export const Header = () => {
+  const pathName = usePathname();
+  const params = useParams();
+  const { open } = useAppKit();
+  const { wallet, connecting } = useWalletConnector();
+
+  const navItems = [
+    {
+      label: "Trading",
+      to: "/trading/perp",
+      actived: [`/trading/perp/${params.symbol}`],
+    },
+    {
+      label: "Portfolio",
+      to: "/portfolio",
+      actived: [
+        "/portfolio",
+        "/portfolio/api-key",
+        "/portfolio/fee-tier",
+        "/portfolio/orders",
+        "/portfolio/positions",
+        "/portfolio/setting",
+      ],
+    },
+  ];
+
+  const handleConnectWallet = async () => {
+    console.log("handleConnectWallet");
+    await open();
+  };
+
+  const formatAddress = (address: string) => {
+    if (!address) return "";
+    return `${address.slice(0, 6)}...${address.slice(-4)}`;
+  };
+
+  console.log("wallet", wallet);
+
+  return (
+    <MainAppBar elevation={0} position="sticky">
+      <Box px={{ xs: "16px" }}>
+        <Toolbar disableGutters>
+          <Stack
+            direction={"row"}
+            justifyContent={"space-between"}
+            width={"100%"}
+            alignItems={"center"}
+          >
+            <Stack
+              direction={"row"}
+              alignItems={"center"}
+              spacing={TSizes.margin_md}
+            >
+              <Link href={"/trading/"}>
+                <Logo width="80px" height="40px" />
+              </Link>
+
+              {navItems.map((navItem) => (
+                <Link key={navItem.label} href={navItem.to}>
+                  <NavItem isActived={navItem.actived.includes(pathName)}>
+                    <Typography>{navItem.label}</Typography>
+                  </NavItem>
+                </Link>
+              ))}
+            </Stack>
+
+            {/* <WalletContainer /> */}
+            {connecting ? (
+              <MainButton
+                variant="contained"
+                color={setColorThemeMode("darkGrey", "white")}
+                disabled
+              >
+                Connecting...
+              </MainButton>
+            ) : wallet?.accounts?.length && wallet?.accounts?.length > 0 ? (
+              <MainButton
+                variant="contained"
+                color={setColorThemeMode("darkGrey", "white")}
+                onClick={handleConnectWallet}
+              >
+                {formatAddress(wallet?.accounts?.[0]?.address || "")}
+              </MainButton>
+            ) : (
+              <MainButton
+                variant="contained"
+                color={setColorThemeMode("darkGrey", "white")}
+                onClick={handleConnectWallet}
+              >
+                Connect Wallet
+              </MainButton>
+            )}
+          </Stack>
+
+          <OrderlyConnect />
+        </Toolbar>
+      </Box>
+    </MainAppBar>
+  );
+};
+
+export const MainAppBar = styled(AppBar)(({ theme }) => ({
+  backgroundColor: setColorThemeMode("#fff", theme.palette.grey[800]),
+  zIndex: 10,
+  height: "56px",
+  borderRadius: "0px",
+  top: 0,
+  "& .MuiToolbar-root": {
+    height: "56px",
+    minHeight: "auto",
+  },
+}));
+
+interface INavItemProps extends BoxProps {
+  isActived: boolean;
+}
+
+export const NavItem = styled(Box, {
+  shouldForwardProp: (prop) => prop !== "isActived",
+})<INavItemProps>(({ theme, isActived }) => ({
+  cursor: "pointer",
+  position: "relative",
+  display: "flex",
+  alignItems: "center",
+
+  [theme.breakpoints.down("md")]: {
+    borderRadius: "8px",
+    backgroundColor: isActived
+      ? setColorThemeMode(
+        theme.palette.primary.main,
+        theme.palette.grey[800],
+        theme
+      )
+      : "transparent",
+
+    "& .MuiTypography-root": {
+      fontSize: "13px !important",
+      fontWeight: 500,
+    },
+  },
+
+  [theme.breakpoints.up("md")]: {
+    height: "56px",
+    "&:after": {
+      ...Mixins.boxFullMixin({
+        top: "auto",
+        bottom: 0,
+        left: 0,
+        height: "2px",
+        width: "100%",
+        backgroundColor: isActived
+          ? setColorThemeMode(
+            theme.palette.common.black,
+            theme.palette.common.white,
+            theme
+          )
+          : "transparent",
+        borderRadius: "4px",
+      }),
+    },
+  },
+  "& .MuiTypography-root": {
+    color: setColorThemeMode(
+      theme.palette.common.black,
+      theme.palette.common.white,
+      theme
+    ),
+    fontSize: "14px",
+    fontWeight: 700,
+    padding: "6px 12px",
+    borderRadius: TSizes.borderRadius,
+    transition: theme.transitions.create(["background-color"]),
+  },
+}));

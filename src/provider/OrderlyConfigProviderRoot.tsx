@@ -1,48 +1,106 @@
-import { LayoutProps } from "@/common";
-import { CustomConfigStore, ENV_NAME } from "@/utils/config/CustomConfigStore";
-import { CustomContractManager } from "@/utils/config/CustomContract";
-import { OrderlyConfig } from "@/utils/config/orderly";
-import { OrderlyAppProvider } from "@orderly.network/react";
+import { WalletConnectorContext, WalletState } from "@orderly.network/hooks";
+import { ChainNamespace } from "@orderly.network/types";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import {
+  createWeb3Modal,
+  defaultWagmiConfig,
+  useWeb3Modal,
+} from "@web3modal/wagmi/react";
+import { FC, PropsWithChildren, useEffect, useState } from "react";
+import { WagmiProvider, useAccount as useWagmiAccount } from "wagmi";
+import { arbitrum, mainnet } from "wagmi/chains";
 
-export type NetworkId = "testnet" | "mainnet";
+// 1. Get projectId at https://cloud.reown.com/
+const projectId = "8113e540d923482c1bc40bb5e4a14672";
+// https://dashboard.reown.com/01692520-64b0-4ed8-8713-cdac19098bff/b388c9a0-eab5-4efd-afb0-1a4631495b7a
 
-const HostEnvMap: Record<string, ENV_NAME> = {
-  "dev-sdk-demo.orderly.network": "dev",
-  "qa-sdk-demo.orderly.network": "qa",
-  "sdk-demo-iap.orderly.network": "staging",
-  localhost: "staging",
+// 2. Create wagmiConfig
+const metadata = {
+  name: "Bazaarex",
+  description: "Bazaarex",
+  url: "https://bazaarex.com",
+  icons: ["https://bazaarex.com/favicon.ico"],
 };
 
-const OrderlyConfigProviderRoot = ({ children }: LayoutProps) => {
-  const networkId = (localStorage.getItem("networkId") ??
-    "mainnet") as NetworkId;
+const chains = [mainnet, arbitrum] as any;
+export const wagmiConfig = defaultWagmiConfig({ chains, projectId, metadata });
 
-  const { app } = OrderlyConfig();
+// 3. Create modal
+createWeb3Modal({ wagmiConfig, projectId });
 
-  // Use environment variable for env if available, otherwise fallback to networkId logic
-  const envFromEnv = process.env.ORDERLY_ENV as ENV_NAME;
-  const env =
-    envFromEnv ||
-    (networkId === "mainnet"
-      ? "prod"
-      : HostEnvMap[window.location.hostname] || "staging");
+// 4. Create QueryClient for React Query
+const queryClient = new QueryClient();
 
-  const configStore = new CustomConfigStore({ networkId, env });
-  const contracts = new CustomContractManager(configStore);
+// Inner component that uses Wagmi hooks
+const OrderlyConfigProviderInner: FC<PropsWithChildren> = ({ children }) => {
+  const [wallet, setWallet] = useState<WalletState>({
+    chains: chains.map((chain: any) => ({
+      namespace: ChainNamespace.evm,
+      id: chain.id,
+    })),
+    accounts: [],
+    icon: "",
+    label: "",
+    provider: null as any,
+  });
+
+  const { open } = useWeb3Modal();
+  const { address, isConnecting, chain, connector, status } = useWagmiAccount();
+
+  useEffect(() => {
+    const run = async () => {
+      if (!connector) return;
+      const accounts = await connector.getAccounts();
+      const provider = await connector.getProvider();
+      const client = await connector.getClient?.();
+
+      setWallet((prevWallet) => ({
+        ...prevWallet,
+        accounts: accounts.map((addr) => ({ address: addr })),
+        provider: provider as any,
+        label: client?.name ?? "",
+      }));
+    };
+    run();
+  }, [address, connector]);
 
   return (
-    <OrderlyAppProvider
-      configStore={configStore}
-      networkId={networkId}
-      brokerId={app.brokerId}
-      brokerName={app.brokerName}
-      appIcons={app.appIcons}
-      shareOptions={app.shareOptions}
-      theme={"light"}
+    <WalletConnectorContext.Provider
+      value={{
+        connect: () => {
+          return open().then(() => []);
+        },
+        disconnect: async () => {
+          connector?.disconnect();
+          return [];
+        },
+        setChain: async ({ chainId }) => {
+          return connector?.switchChain?.({ chainId: Number(chainId) });
+        },
+        chains,
+        connectedChain: chain
+          ? { id: chain.id, namespace: ChainNamespace.evm }
+          : null,
+        namespace: ChainNamespace.evm,
+        connecting: isConnecting,
+        settingChain: status === "reconnecting",
+        wallet,
+      }}
     >
       {children}
-    </OrderlyAppProvider>
+    </WalletConnectorContext.Provider>
   );
 };
 
-export default OrderlyConfigProviderRoot;
+// Wrapper component with WagmiProvider
+export const OrderlyConfigProviderRoot: FC<PropsWithChildren> = ({
+  children,
+}) => {
+  return (
+    <WagmiProvider config={wagmiConfig}>
+      <QueryClientProvider client={queryClient}>
+        <OrderlyConfigProviderInner>{children}</OrderlyConfigProviderInner>
+      </QueryClientProvider>
+    </WagmiProvider>
+  );
+};

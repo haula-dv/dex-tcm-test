@@ -1,23 +1,24 @@
-import { getImageNextwork } from "@/common";
-import { MainButton } from "@/components/button/MainButton";
+'use client'
 import { HeadPage } from "@/components/HeadPage";
 import MainTooltip from "@/components/MainTooltip";
-import { TokenIcon } from "@/components/token/TokenIcon";
 import { getDecimalsFromTick } from "@/utils/formatters/api";
 import { usdFormatter } from "@/utils/formatters/number";
-import { spitSymbol } from "@/utils/formatters/token";
 import { setColorThemeMode } from "@/utils/helpers";
 import { formatMarkPriceNoDecimal } from "@/utils/helpers/format";
 import { Box, Stack, Typography, useTheme } from "@mui/material";
 import {
   useFundingRate,
   useSymbolsInfo,
-  useTickerStream,
+  useTickerStream
 } from "@orderly.network/hooks";
-import { Decimal } from "@orderly.network/utils";
+import { DropDownMarketsWidget } from "@orderly.network/markets";
 import { IconChevronDown } from "@tabler/icons-react";
+import Decimal from "decimal.js-light";
 import { memo, useState } from "react";
-import { MarketsContent } from "../markets/components/MarketContent";
+
+// const DynamicMarketsContent = dynamic(() => import("../markets/components/MarketContent"), {
+//   ssr: false,
+// });
 
 interface IProps {
   symbol: string;
@@ -74,8 +75,10 @@ const SymbolHeader = ({ onSymbolChange, symbol }: IProps) => {
     (stream as any)["24h_change"] != null &&
     stream.index_price != null
   ) {
-    dailyChange = String((stream as any)["24h_change"].toNumber());
-    dailyChangePercentage = (stream as any)["24h_change"]
+    // Wrap in Decimal to ensure we have access to Decimal methods
+    const change24h = new Decimal((stream as any)["24h_change"]);
+    dailyChange = String(change24h.toNumber());
+    dailyChangePercentage = change24h
       .div(stream.index_price)
       .mul(100)
       .toPrecision(4, 2);
@@ -135,36 +138,13 @@ const SymbolHeader = ({ onSymbolChange, symbol }: IProps) => {
     },
   ];
 
-  // const formatMarkPrice = useMemo(() => {
-  //   if (!stream?.mark_price) return "0";
-
-  //   // Format giá trị với dấu phẩy cho UI
-  //   // const formattedValue = Number(stream?.mark_price).toLocaleString(
-  //   //   undefined,
-  //   //   {
-  //   //     minimumFractionDigits: quoteDecimals,
-  //   //     maximumFractionDigits: quoteDecimals,
-  //   //   }
-  //   // );
-
-  //   // return formattedValue;
-
-  //   const formattedValue = new Intl.NumberFormat("en-US", {
-  //     minimumFractionDigits: quoteDecimals,
-  //     maximumFractionDigits: quoteDecimals,
-  //   }).format(Number(stream?.mark_price));
-
-  //   return formattedValue;
-  // }, [quoteDecimals, stream?.mark_price]);
-
   return (
     <>
       <HeadPage
-        title={`${
-          isNaN(stream?.mark_price)
-            ? "--"
-            : formatMarkPriceNoDecimal(stream?.mark_price)
-        } | ${base}-${perp}`}
+        title={`${isNaN(stream?.mark_price)
+          ? "--"
+          : formatMarkPriceNoDecimal(stream?.mark_price)
+          } | ${base}-${perp}`}
       />
 
       <Stack
@@ -172,11 +152,18 @@ const SymbolHeader = ({ onSymbolChange, symbol }: IProps) => {
         spacing={1.5}
         alignItems={"center"}
         pl={"4px"}
-        mb="8px"
         height={"30px"}
         width={"100%"}
       >
-        <MainButton
+        <DropDownMarketsWidget onSymbolChange={(symbol) => onSymbolChange(symbol.symbol)} symbol={symbol} contentClassName='market-popup market-popup-right' children={
+          <Stack direction={'row'} alignItems={'center'} spacing={1} className='cursor-pointer'>
+            <Typography fontSize={'13px'} fontWeight={600} whiteSpace={'nowrap'}>
+              {`${base}-${perp}`}
+            </Typography>
+            <IconChevronDown size="1.2rem" />
+          </Stack>
+        } />
+        {/* <MainButton
           startIcon={
             <TokenIcon
               url={getImageNextwork(
@@ -196,7 +183,7 @@ const SymbolHeader = ({ onSymbolChange, symbol }: IProps) => {
           sx={{ flexShrink: 0 }}
         >
           {`${base}-${perp}`}
-        </MainButton>
+        </MainButton> */}
 
         <Box
           height={"20px"}
@@ -250,16 +237,16 @@ const SymbolHeader = ({ onSymbolChange, symbol }: IProps) => {
         </Stack>
       </Stack>
 
-      {openMarketEl && (
-        <MarketsContent
-          handleClose={handleClose}
-          marketEl={marketEl}
-          openMarketEl={openMarketEl}
-          onSymbolChange={onSymbolChange}
-        />
-      )}
+      {/* <MarketsContent
+        handleClose={handleClose}
+        marketEl={marketEl}
+        openMarketEl={openMarketEl}
+        onSymbolChange={onSymbolChange}
+      /> */}
     </>
   );
 };
 
-export default memo(SymbolHeader);
+const SymbolHeaderComponent = memo(SymbolHeader);
+export { SymbolHeaderComponent as SymbolHeader };
+export default SymbolHeaderComponent;

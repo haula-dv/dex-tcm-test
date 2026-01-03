@@ -1,26 +1,42 @@
 import { themeSelectorState } from "@/common/stores/common";
 import { MainButton } from "@/components/button/MainButton";
-import { MainIconButton } from "@/components/button/MainIconButton";
 import IconLoading from "@/components/icons/loading";
 
+import { MainIconButton } from "@/components/button/MainIconButton";
 import { TLocalStorage } from "@/utils/constants/key_store";
 import { formartAddress } from "@/utils/formatters/token";
 import { setColorThemeMode } from "@/utils/helpers";
 import { Box, Stack, useTheme } from "@mui/material";
-import { useAccount } from "@orderly.network/hooks";
+import { useAccountInstance } from "@orderly.network/hooks";
+import { ChainNamespace } from "@orderly.network/types";
 import { IconMoonStars, IconSun } from "@tabler/icons-react";
-import { useConnectWallet } from "@web3-onboard/react";
+import { useConnectWallet, useWallets } from "@web3-onboard/react";
 import { setZustandValue } from "nes-zustand";
+import dynamic from "next/dynamic";
 import Image from "next/image";
 import { useEffect, useState } from "react";
 import { useStore } from "zustand";
 import AccountDetailPopup from "./AccountDetailPopup";
-import NetworkContent from "./NetworkContent";
 import { OrderlyConnect } from "./OrderlyConnect";
 
-export default function WalletContainer() {
+const DynamicNetworkContent = dynamic(() => import("./NetworkContentV2"));
+
+interface IWalletContainerProps {
+  isMobile?: boolean;
+}
+
+export default function WalletContainer({ isMobile = false }: IWalletContainerProps) {
+  const [{ wallet: currentWallet, connecting }, connectWallet] = useConnectWallet();
   const themeSelector = useStore(themeSelectorState, (state) => state.value);
+  const [openAccountDetailsModal, setAccountDetailsModal] = useState(false);
+  const account = useAccountInstance();
+  const connectedWallets = useWallets();
+
   const theme = useTheme();
+  // Handle close menu account
+  const handleToggleAccountMenu = () => {
+    setAccountDetailsModal(!openAccountDetailsModal);
+  };
 
   // Handle change theme mode
   const handleChangeTheme = () => {
@@ -38,62 +54,46 @@ export default function WalletContainer() {
     location.reload();
   };
 
-  // Account Details
-  const [openAccountDetailsModal, setAccountDetailsModal] = useState(false);
-
-  const [{ wallet, connecting }, connect, disconnect] = useConnectWallet();
-  const { account } = useAccount();
-
-  // Handle connect wallet button
-  const handleConnectWallet = async () => {
-    await connect().then((res) => {
-      if (res && res.length > 0) {
-        location.reload();
-      }
-    });
-  };
-
-  // Handle close menu account
-  const handleToggleAccountMenu = () => {
-    setAccountDetailsModal(!openAccountDetailsModal);
-  };
-
   // Watch wallet change
   useEffect(() => {
-    if (Array.isArray(wallet?.accounts) && wallet.accounts.length > 0) {
-      const item = wallet.accounts[0];
-      const chain = wallet.chains[0];
+    if (Array.isArray(currentWallet?.accounts) && currentWallet.accounts.length > 0) {
+      const item = currentWallet.accounts[0];
+      const currentChainId = currentWallet.chains[0].id;
+      const currentNamespace = currentWallet.chains[0].namespace as ChainNamespace;
 
       account.setAddress(item.address, {
-        provider: wallet.provider,
+        provider: currentWallet.provider,
         chain: {
-          id: chain.id,
+          id: currentChainId,
+          namespace: 'evm' as ChainNamespace,
         },
         wallet: {
-          name: wallet.label,
+          name: currentWallet.label,
         },
       });
     }
-  }, [account, wallet]);
+  }, [account, currentWallet]);
 
   return (
     <Stack direction={"row"} spacing={1} alignItems={"center"}>
-      {wallet && <NetworkContent />}
+      {currentWallet && <DynamicNetworkContent isMobile={isMobile} />}
 
       {connecting ? (
         <MainButton
           startIcon={<IconLoading height="20px" width="20px" />}
           variant="contained"
+          size={isMobile ? "small" : "medium"}
           color={setColorThemeMode("darkGrey", "white")}
         >
           Connecting
         </MainButton>
       ) : (
         <>
-          {!wallet ? (
+          {!currentWallet ? (
             <MainButton
-              onClick={handleConnectWallet}
+              onClick={async () => await connectWallet()}
               variant="contained"
+              size={isMobile ? "small" : "medium"}
               color={setColorThemeMode("darkGrey", "white")}
             >
               Connect to Wallet
@@ -102,54 +102,58 @@ export default function WalletContainer() {
             <>
               <MainButton
                 variant="contained"
+                size={isMobile ? "small" : "medium"}
                 color={setColorThemeMode("darkGrey", "white")}
                 onClick={handleToggleAccountMenu}
               >
-                {formartAddress(wallet.accounts[0].address)}
+                {formartAddress(currentWallet.accounts[0].address)}
               </MainButton>
 
-              <Box
-                height={"40px"}
-                width={"40px"}
-                bgcolor={theme.palette.info.light}
-                borderRadius={"50%"}
-                display={"flex"}
-                alignItems={"center"}
-                justifyContent={"center"}
-              >
-                {wallet.icon.startsWith("data:image") ? (
-                  <Image
-                    src={wallet.icon}
-                    height={20}
-                    width={20}
-                    alt={wallet.label}
-                  />
-                ) : (
-                  <div
-                    style={{ padding: "6px" }}
-                    dangerouslySetInnerHTML={{ __html: wallet.icon }}
-                  ></div>
-                )}
-              </Box>
+              {!isMobile && (
+                <Box
+                  height={"40px"}
+                  width={"40px"}
+                  bgcolor={theme.palette.info.light}
+                  borderRadius={"50%"}
+                  display={"flex"}
+                  alignItems={"center"}
+                  justifyContent={"center"}
+                >
+                  {currentWallet.icon.startsWith("data:image") ? (
+                    <Image
+                      src={currentWallet.icon}
+                      height={20}
+                      width={20}
+                      alt={currentWallet.label}
+                    />
+                  ) : (
+                    <div
+                      style={{ padding: "6px" }}
+                      dangerouslySetInnerHTML={{ __html: currentWallet.icon }}
+                    ></div>
+                  )}
+                </Box>
+              )}
             </>
           )}
         </>
       )}
 
-      {openAccountDetailsModal && wallet && (
+      {openAccountDetailsModal && currentWallet && (
         <AccountDetailPopup
           open={openAccountDetailsModal}
           onClose={() => setAccountDetailsModal(false)}
-          wallet={wallet}
-          disconnect={disconnect}
+          wallet={currentWallet as any}
         />
       )}
 
       <OrderlyConnect />
 
-      <MainIconButton onClick={handleChangeTheme} color="inherit">
-        {themeSelector.activeMode == "light" ? <IconSun /> : <IconMoonStars />}
-      </MainIconButton>
+      {!isMobile && (
+        <MainIconButton onClick={handleChangeTheme} color="inherit">
+          {themeSelector.activeMode == "light" ? <IconSun /> : <IconMoonStars />}
+        </MainIconButton>
+      )}
     </Stack>
   );
 }

@@ -12,7 +12,7 @@ import { Box, Divider, Skeleton, Stack, Typography, useTheme } from "@mui/materi
 import { useMarkPrice, useOrderEntry, useSymbolsInfo } from "@orderly.network/hooks";
 import { OrderSide, OrderType } from "@orderly.network/types";
 import { IconHelp } from "@tabler/icons-react";
-import { useConnectWallet, useNotifications } from "@web3-onboard/react";
+import { useWalletConnector } from "@orderly.network/hooks";
 import { setZustandValue } from "nes-zustand";
 import { useCallback, useMemo, useState } from "react";
 import { useStore } from "zustand";
@@ -22,7 +22,7 @@ import { ButtonSwapToggle } from "./SwapIconToggle";
 import { TransationSubmittedCard } from "./TransationSubmittedCard";
 
 export const SwapContainer = () => {
-	const [{ wallet, connecting }, connect, disconnect] = useConnectWallet();
+	const { wallet } = useWalletConnector();
 	const theme = useTheme();
 	const [loading, setLoading] = useState(false);
 

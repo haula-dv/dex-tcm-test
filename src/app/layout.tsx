@@ -1,16 +1,30 @@
 import ClientThemeProvider from "@/components/ClientThemeProvider";
 import { Loading } from "@/components/loading/loading";
-import Web3OnboardProviderRoot from "@/provider/WalletConnectProvider";
+import { OrderlyRootProvider } from "@/provider-2/OrderlyRootProvider";
+import "@orderly.network/ui/dist/styles.css";
+import '@solana/wallet-adapter-react-ui/styles.css';
+import { headers } from "next/headers";
 import Script from "next/script";
 import React from "react";
 import "react-toastify/dist/ReactToastify.css";
 import { Toaster } from "sonner";
+import "./charts.css";
+import "./color.css";
+import "./globals.css";
+import "./market-popup.css";
+import "./orderly-dialog.css";
+import "./orderly-input.css";
+import "./orderly-tab.css";
+import "./theme.css";
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const headersObj = await headers()
+  const cookies = headersObj.get('cookie')
+
   return (
     <html lang="en">
       <head>
@@ -32,8 +46,8 @@ export default function RootLayout({
         </Script>
 
         <ClientThemeProvider>
-          <Web3OnboardProviderRoot>{children}</Web3OnboardProviderRoot>
-
+          {/* <Providers cookies={cookies}>{children}</Providers> */}
+          <OrderlyRootProvider>{children}</OrderlyRootProvider>
           <Loading />
           <Toaster closeButton position="top-right" />
         </ClientThemeProvider>

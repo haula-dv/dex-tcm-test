@@ -3,7 +3,8 @@ import { HeadPage } from "@/components/HeadPage";
 import { apiClientFetch } from "@/utils/apiClient";
 import { TLocalStorage } from "@/utils/constants/key_store";
 import { Grid, useMediaQuery, useTheme } from "@mui/material";
-import { useConnectWallet, useSetChain } from "@web3-onboard/react";
+import { useWalletConnector } from "@orderly.network/hooks";
+import { useSetChain } from "@web3-onboard/react";
 import dayjs from "dayjs";
 import { useEffect, useState } from "react";
 import AssetsContent from "./AssetsContent";
@@ -20,7 +21,7 @@ export const dateRange = [
 const PortfolioMainContainer = () => {
   const theme = useTheme();
   const mdUp = useMediaQuery(theme.breakpoints.down("md"));
-  const [{ wallet, connecting }, connect, disconnect] = useConnectWallet();
+  const { wallet } = useWalletConnector();
   const cheat = "2024-08-22";
   const [filter, setFilter] = useState<any>({
     page: 1,

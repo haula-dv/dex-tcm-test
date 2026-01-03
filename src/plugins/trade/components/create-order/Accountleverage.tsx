@@ -8,58 +8,58 @@ import { getDecimalsFromTick } from "@/utils/formatters/api";
 import { Box, Divider, Stack, Typography, useTheme } from "@mui/material";
 import {
   useCollateral,
-  useLeverage,
   useMarginRatio,
+  useMaxLeverage,
   usePositionStream,
-  useSymbolsInfo,
+  useSymbolsInfo
 } from "@orderly.network/hooks";
 import { toast } from "@orderly.network/react";
+import { modal } from "@orderly.network/ui";
+import { LeverageWidgetWithDialogId } from "@orderly.network/ui-leverage";
 import { IconPencil } from "@tabler/icons-react";
-import { useConnectWallet } from "@web3-onboard/react";
-import { useMemo, useState } from "react";
+import { memo, useMemo, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { FormContainer } from "react-hook-form-mui";
-
-export const Accountleverage = ({ symbol }: any) => {
+const Accountleverage = ({ symbol }: {
+  symbol: string;
+}) => {
   const [open, setOpen] = useState(false);
   const theme = useTheme();
-  const [positions, _info, { refresh, loading }] = usePositionStream();
-  const [{ wallet }] = useConnectWallet();
-
+  const [positions, _info, { loading }] = usePositionStream();
   const { currentLeverage, mmr } = useMarginRatio();
   const { totalCollateral, totalValue } = useCollateral();
 
-  const [maxLeverage, { update, config: leverageLevers, isMutating }] =
-    useLeverage();
-
+  // const [maxLeverage, { update, config: leverageLevers, isMutating }] = useLeverage();
+  const maxLeverage = useMaxLeverage(symbol)
   const handleToggle = () => {
     setOpen(!open);
   };
 
-  // Remap for matching with marks
-  const newLeverageLevers = useMemo(() => {
-    const length = leverageLevers.length;
+  // // Remap for matching with marks
+  // const newLeverageLevers = useMemo(() => {
+  //   const length = leverageLevers.length;
 
-    return leverageLevers.length > 0
-      ? leverageLevers.map((id: any, index: any) => {
-          const percentValue = (index * 100) / (length - 1);
+  //   return leverageLevers.length > 0
+  //     ? leverageLevers.map((id: any, index: any) => {
+  //       const percentValue = (index * 100) / (length - 1);
 
-          return { value: percentValue, label: `${id}x` }; // Thêm nhãn cho mỗi marks
-        })
-      : [];
-  }, [leverageLevers]);
+  //       return { value: percentValue, label: `${id}x` }; // Thêm nhãn cho mỗi marks
+  //     })
+  //     : [];
+  // }, [leverageLevers]);
 
-  // Initial value for slider
-  const leverageValue = useMemo(() => {
-    const index: any = newLeverageLevers.find(
-      (item: any) => item.label === `${maxLeverage}x`
-    );
-    if (!index) {
-      return 0;
-    }
+  // // Initial value for slider
+  // const leverageValue = useMemo(() => {
+  //   const index: any = newLeverageLevers.find(
+  //     (item: any) => item.label === `${maxLeverage}x`
+  //   );
+  //   if (!index) {
+  //     return 0;
+  //   }
 
-    return index.value;
-  }, [maxLeverage, newLeverageLevers]);
+  //   return index.value;
+  // }, [maxLeverage, newLeverageLevers]);
+
 
   const symbolsInfo = useSymbolsInfo();
   const symbolInfo = symbolsInfo[symbol]();
@@ -83,15 +83,15 @@ export const Accountleverage = ({ symbol }: any) => {
             totalMarginRatio == Infinity
               ? 100
               : totalMarginRatio >= 100
-              ? 100
-              : totalMarginRatio
+                ? 100
+                : totalMarginRatio
           }
           background={
             totalMarginRatio == Infinity || isNaN(totalMarginRatio)
               ? theme.palette.success.main
               : totalMarginRatio >= 100
-              ? theme.palette.success.main
-              : theme.palette.warning.main
+                ? theme.palette.success.main
+                : theme.palette.warning.main
           }
           variant="determinate"
         />
@@ -128,8 +128,8 @@ export const Accountleverage = ({ symbol }: any) => {
                     totalMarginRatio == Infinity || isNaN(totalMarginRatio)
                       ? theme.palette.success.main
                       : totalMarginRatio >= 100
-                      ? theme.palette.success.main
-                      : theme.palette.warning.main
+                        ? theme.palette.success.main
+                        : theme.palette.warning.main
                   }
                   fontWeight={600}
                 >
@@ -162,10 +162,16 @@ export const Accountleverage = ({ symbol }: any) => {
               {maxLeverage ? (
                 <>
                   <Typography>
-                    {formatter.format(Math.abs(currentLeverage))}x /{" "}
+                    {currentLeverage && formatter.format(Math.abs(currentLeverage))}x /{" "}
                     {maxLeverage}x
                   </Typography>
-                  <Box className="pointer" onClick={handleToggle}>
+                  <Box className="pointer"
+                    onClick={() => {
+                      modal.show(LeverageWidgetWithDialogId, {
+                        currentLeverage: 5
+                      });
+                    }}
+                  >
                     <IconPencil size={"1.1rem"} />
                   </Box>
                 </>
@@ -178,7 +184,7 @@ export const Accountleverage = ({ symbol }: any) => {
       </MainCard>
       <Box pb={"10px"} />
 
-      {open && (
+      {/* {open && (
         <FormSlider
           handleToggle={handleToggle}
           open={open}
@@ -187,10 +193,12 @@ export const Accountleverage = ({ symbol }: any) => {
           newLeverageLevers={newLeverageLevers}
           update={update}
         />
-      )}
+      )} */}
     </>
   );
 };
+
+export default memo(Accountleverage);
 
 interface IFormProps {
   open: boolean;

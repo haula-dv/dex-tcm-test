@@ -16,7 +16,7 @@ import {
   useTheme,
 } from "@mui/material";
 import { OrderEntity } from "@orderly.network/types";
-import { useEffect, useMemo, useState } from "react";
+import { memo, useEffect, useMemo, useState } from "react";
 import { UseFormReturn } from "react-hook-form";
 import { match } from "ts-pattern";
 import { IPlaceOrderValues } from "./CreateOrderForm";
@@ -32,7 +32,7 @@ interface IProps {
       value: any
     ) => Partial<OrderEntity>;
     validator: (values: Partial<OrderEntity>) => any;
-  };
+  } | any;
   maxQty: number;
   markPrice: number;
   wallet: any;
@@ -207,7 +207,7 @@ function InputForm({
         sx={{
           mt:
             formContext.watch("type") === "StopLimit" ||
-            formContext.watch("type") === "StopMarket"
+              formContext.watch("type") === "StopMarket"
               ? "0px"
               : "-10px !important",
         }}
@@ -360,4 +360,4 @@ function InputForm({
   );
 }
 
-export default InputForm;
+export default memo(InputForm);

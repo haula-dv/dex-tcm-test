@@ -1,12 +1,15 @@
+'use client'
+import MainCard from "@/components/card/MainCard";
 import { Box } from "@mui/material";
-import { DataListView } from "@orderly.network/react";
-// import { DataListView } from "@orderly.network/react/esm/page/trading/desktop/sections/datalist";
+import { DataListWidget } from "@orderly.network/trading";
+import { memo } from "react";
 
 interface IProps {
   symbol: string;
+  onSymbolChange: (symbol: string) => void;
 }
 
-export const OrderViewContainer = ({ symbol }: IProps) => {
+const OrderViewContainer = ({ symbol, onSymbolChange }: IProps) => {
   // const [isShowAllInstrument, setShowAllInstrument] = useState(true);
   // const theme = useTheme();
 
@@ -75,13 +78,13 @@ export const OrderViewContainer = ({ symbol }: IProps) => {
 
   return (
     <Box
-      height={"20.5617%"}
-      minHeight={"320px"}
-      overflow={"hidden"}
-      borderRadius={"16px"}
+      pt={{ xs: 0, md: 1 }}
       className="data-list-view"
     >
-      <DataListView />
+      <MainCard backgroudColor="primary" width="100%" height="350px">
+        {/* <DataListView /> */}
+        <DataListWidget symbol={symbol} onSymbolChange={(symbol) => onSymbolChange(symbol.symbol)} />
+      </MainCard>
 
       {/* <MainTab
 				tabs={tabs}
@@ -113,3 +116,5 @@ export const OrderViewContainer = ({ symbol }: IProps) => {
     </Box>
   );
 };
+
+export default memo(OrderViewContainer);

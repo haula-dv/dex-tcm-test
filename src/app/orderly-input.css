@@ -1,0 +1,49 @@
+[data-theme="dark"] {
+    .oui-input-root {
+    background-color: var(--darkBrown) !important;
+    border: 1px solid var(--grey700);
+    transition: border-color 0.2s ease;
+    }
+
+.oui-input-root:focus-within,
+.oui-input-root:has(input:focus),
+.oui-input-root:has(textarea:focus) {
+    border-color: var(--grey600) !important;
+    outline: none;
+  }
+
+  .oui-input-root input,
+  .oui-input-root textarea {
+    outline: none !important;
+  }
+
+  .oui-input-root input:focus,
+  .oui-input-root textarea:focus {
+    outline: none !important;
+    box-shadow: none !important;
+  }
+}
+
+[data-theme="light"]{
+    .oui-input-root {
+    background-color: var(--grey50) !important;
+    border: 1px solid var(--grey100);
+    transition: border-color 0.2s ease;
+    }
+
+    .oui-input-root input,
+    .oui-input-root textarea {
+    outline: none !important;
+    color: var(--grey800);
+}
+  ::placeholder {
+    color: var(--grey400);
+  }
+
+  .oui-input-root:focus-within,
+.oui-input-root:has(input:focus),
+.oui-input-root:has(textarea:focus) {
+    border-color: var(--grey200) !important;
+    outline: none;
+  }
+}

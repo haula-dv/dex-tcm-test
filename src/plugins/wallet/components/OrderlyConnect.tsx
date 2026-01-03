@@ -1,12 +1,17 @@
 "use client";
+import { MainButton } from "@/components/button/MainButton";
+import { MainDialog } from "@/components/dialog/MainDialog";
+import { Box, Divider, Stack, Typography } from "@mui/material";
 import { useAccount } from "@orderly.network/hooks";
 import { AccountStatusEnum } from "@orderly.network/types";
+import { IconCheck } from "@tabler/icons-react";
 import { useConnectWallet, useNotifications, useSetChain } from "@web3-onboard/react";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 
 let timer: number | undefined;
 
 export const OrderlyConnect = () => {
+	const [open, setOpen] = useState(false);
 	const [{ wallet }] = useConnectWallet();
 
 	const { account, state } = useAccount();
@@ -21,6 +26,19 @@ export const OrderlyConnect = () => {
 
 	const isRegistered = state.status >= AccountStatusEnum.SignedIn;
 	const hasOrderlyKey = state.status >= AccountStatusEnum.EnableTrading;
+
+	// Auto-open dialog when wallet connected but not fully set up
+	useEffect(() => {
+		if (timer != null) {
+			clearTimeout(timer);
+		}
+		timer = setTimeout(() => {
+			if (state.status < AccountStatusEnum.EnableTrading && wallet != null) {
+				setOpen(true);
+				timer = undefined;
+			}
+		}, 3_000) as unknown as number;
+	}, [state, wallet]);
 
 	// Handle Register Account
 	const handleRegisterAccount = async () => {
@@ -49,14 +67,21 @@ export const OrderlyConnect = () => {
 		}
 	};
 
-	const handleOrderkyKey = async () => {
+	const handleOrderlyKey = async () => {
+		console.log('[OrderlyConnect] Starting key generation...');
+		console.log('[OrderlyConnect] Current state:', state);
+		console.log('[OrderlyConnect] Connected chain:', connectedChain);
+		console.log('[OrderlyConnect] Account address:', account.address);
+
 		const { update } = customNotification({
 			eventCode: "orderlyKey",
 			type: "pending",
 			message: "Registering Orderly key...",
 		});
 		try {
+			console.log('[OrderlyConnect] Calling account.createOrderlyKey(365)...');
 			await account.createOrderlyKey(365);
+			console.log('[OrderlyConnect] Key created successfully!');
 			update({
 				eventCode: "orderlyKeySuccess",
 				type: "success",
@@ -64,37 +89,93 @@ export const OrderlyConnect = () => {
 				autoDismiss: 5_000,
 			});
 		} catch (err) {
-			console.error(err);
+			console.error('[OrderlyConnect] Key generation error:', err);
+			console.error('[OrderlyConnect] Error details:', {
+				message: err instanceof Error ? err.message : 'Unknown error',
+				stack: err instanceof Error ? err.stack : undefined,
+			});
 			update({
 				eventCode: "orderlyKeyError",
 				type: "error",
-				message: "Key registration failed!",
-				autoDismiss: 5_000,
+				message: `Key registration failed! ${err instanceof Error ? err.message : 'Unknown error'}`,
+				autoDismiss: 10_000,
 			});
 			throw err;
 		}
 	};
 
-	useEffect(() => {
-		if (timer != null) {
-			clearTimeout(timer);
-		}
-
-		timer = setTimeout(() => {
-			if (state.status < AccountStatusEnum.EnableTrading && wallet != null) {
-				if (!isRegistered) {
-					handleRegisterAccount();
+	return (
+		<MainDialog
+			open={open}
+			handleClose={() => {
+				// Only allow close if fully set up
+				if (isRegistered && hasOrderlyKey) {
+					setOpen(false);
 				}
+			}}
+			title="Connect with Orderly Network"
+			maxWidth="sm"
+			isDivider
+		>
+			<Stack spacing={3}>
+				{/* Step 1: Register Account */}
+				<Box>
+					<Typography variant="body2" mb={2} color="text.secondary">
+						Step 1: Register your account on Orderly Network
+					</Typography>
+					<MainButton
+						fullWidth
+						variant={isRegistered ? "outlined" : "contained"}
+						color={isRegistered ? "success" : "primary"}
+						disabled={isRegistered}
+						onClick={handleRegisterAccount}
+						startIcon={isRegistered ? <IconCheck size={20} /> : null}
+					>
+						{isRegistered ? "Account Registered ✓" : "Register Account"}
+					</MainButton>
+				</Box>
 
-				if (!hasOrderlyKey && state.status >= AccountStatusEnum.SignedIn) {
-					handleOrderkyKey();
-				}
+				<Divider />
 
-				timer = undefined;
-			}
-		}, 3_000) as unknown as number;
-		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [state]);
+				{/* Step 2: Create Orderly Key */}
+				<Box>
+					<Typography variant="body2" mb={2} color="text.secondary">
+						Step 2: Create a trading key pair. It will be stored in your browser&apos;s local
+						storage and is unique per device.
+					</Typography>
+					<MainButton
+						fullWidth
+						variant={hasOrderlyKey ? "outlined" : "contained"}
+						color={hasOrderlyKey ? "success" : "primary"}
+						disabled={hasOrderlyKey || !isRegistered}
+						onClick={handleOrderlyKey}
+						startIcon={hasOrderlyKey ? <IconCheck size={20} /> : null}
+					>
+						{hasOrderlyKey ? "Trading Key Created ✓" : "Create Trading Key"}
+					</MainButton>
+				</Box>
 
-	return <></>;
+				{/* Done message */}
+				{isRegistered && hasOrderlyKey && (
+					<>
+						<Divider />
+						<Box textAlign="center">
+							<Typography variant="body1" color="success.main" fontWeight={600}>
+								All set! You can now start trading 🎉
+							</Typography>
+							<MainButton
+								fullWidth
+								variant="outlined"
+								color="primary"
+								onClick={() => setOpen(false)}
+								sx={{ mt: 2 }}
+							>
+								Close
+							</MainButton>
+						</Box>
+					</>
+				)}
+			</Stack>
+		</MainDialog>
+	);
 };

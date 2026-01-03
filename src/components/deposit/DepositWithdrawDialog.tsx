@@ -7,7 +7,7 @@ import { TSizes } from "@/utils/themes/custom-theme/sizes";
 import TabPanel from "@mui/lab/TabPanel";
 import { Box } from "@mui/material";
 import { styled } from "@mui/material/styles";
-import { Deposit, Withdraw } from "@orderly.network/react";
+import { DepositFormWidget, WithdrawFormWidget } from "@orderly.network/ui-transfer";
 import { useStore } from "zustand";
 
 interface IProps {
@@ -31,14 +31,15 @@ export const DepositWithdrawDialog = ({ open, onClose, activedTab = "deposit" }:
 			maxWidth="xs"
 			title="Deposit / Withdraw"
 			isDivider>
+			{/* <DepositAndWithdraw activeTab={activedTab} /> */}
 			<MainTab tabs={tabs} defaultValue={activedTab}>
 				<Box className={themeSelector.activeMode} mt="-10px !important">
 					<TabPanel value="deposit" sx={{ p: 0 }}>
-						<Deposit onOk={onClose} onCancel={onClose} />
+						<DepositFormWidget close={onClose} />
 					</TabPanel>
 
 					<TabPanel value="withdraw" sx={{ p: 0 }}>
-						<Withdraw onOk={onClose} onCancel={onClose} />
+						<WithdrawFormWidget close={onClose} />
 					</TabPanel>
 				</Box>
 			</MainTab>

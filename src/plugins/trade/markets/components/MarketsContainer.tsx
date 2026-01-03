@@ -1,11 +1,14 @@
 import { getImageNextwork } from '@/common';
-import { MainButton } from '@/components/button/MainButton';
 import { TokenIcon } from '@/components/token/TokenIcon';
-import { setColorThemeMode } from '@/utils/helpers';
 import { Stack, Typography } from '@mui/material';
-import { IconChevronDown, IconChevronUp } from '@tabler/icons-react';
+import { DropDownMarketsWidget } from '@orderly.network/markets';
+import { IconChevronDown } from '@tabler/icons-react';
+import dynamic from 'next/dynamic';
 import { memo, useState } from 'react';
-import { MarketsContent } from './MarketContent';
+
+const DynamicMarketsContent = dynamic(() => import("./MarketContent").then((mod) => mod.default), {
+	ssr: false,
+});
 
 interface IProps {
 	symbol: string;
@@ -41,7 +44,7 @@ const MarketsContainer = ({ onSymbolChange, symbol }: IProps) => {
 				</Typography>
 			</Stack>
 
-			<MainButton
+			{/* <MainButton
 				variant="textLink"
 				id="market-button"
 				aria-controls={openMarketEl ? 'market-menu' : undefined}
@@ -54,10 +57,19 @@ const MarketsContainer = ({ onSymbolChange, symbol }: IProps) => {
 				<Typography fontSize={'13px'} fontWeight={600}>
 					All Markets
 				</Typography>
-			</MainButton>
+			</MainButton> */}
+
+			<DropDownMarketsWidget onSymbolChange={(symbol) => onSymbolChange(symbol.symbol)} symbol={symbol} contentClassName='market-popup market-popup-left' children={
+				<Stack direction={'row'} alignItems={'center'} spacing={1} className='cursor-pointer'>
+					<Typography fontSize={'13px'} fontWeight={600}>
+						All Markets
+					</Typography>
+					<IconChevronDown size="1.2rem" />
+				</Stack>
+			} />
 
 			{openMarketEl && (
-				<MarketsContent
+				<DynamicMarketsContent
 					handleClose={handleClose}
 					marketEl={marketEl}
 					openMarketEl={openMarketEl}

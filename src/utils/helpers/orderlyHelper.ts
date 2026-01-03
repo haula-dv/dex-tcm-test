@@ -1,7 +1,6 @@
 import { getPublicKey, sign } from "@noble/ed25519";
 import { useSymbolsInfo } from "@orderly.network/hooks";
 import bs58 from "bs58";
-import { encodeBase58 } from "ethers";
 import { getDecimalsFromTick } from "../formatters/api";
 
 export const usdFormatter = new Intl.NumberFormat("en-US", {
@@ -31,7 +30,7 @@ export async function signAndSendRequest(
   if (init?.body) {
     message += init.body;
   }
-  const orderlySignature = await sign(encoder.encode(message), orderlyKey);
+  const orderlySignature = await sign(encoder.encode(message), orderlyKey as Uint8Array);
 
   return fetch(input, {
     headers: {
@@ -41,7 +40,7 @@ export async function signAndSendRequest(
           : "application/x-www-form-urlencoded",
       "orderly-timestamp": String(timestamp),
       "orderly-account-id": accountId,
-      "orderly-key": `ed25519:${encodeBase58(await getPublicKey(orderlyKey))}`,
+      "orderly-key": `ed25519:${bs58.encode(await getPublicKey(orderlyKey as Uint8Array))}`,
       "orderly-signature": base64EncodeURL(orderlySignature),
       ...(init?.headers ?? {}),
     },

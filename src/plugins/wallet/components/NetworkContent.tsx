@@ -70,32 +70,31 @@ function NetworkContent() {
   );
 
   useEffect(() => {
-    if (currentChain()) {
-      const isMainet = currentChain()?.network_infos.mainnet;
+    const chain = currentChain();
+    if (chain) {
+      const isMainet = chain.network_infos.mainnet;
       localStorage.setItem("networkId", isMainet ? "mainnet" : "testnet");
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [currentChain()]);
+  }, [connectedChain]);
 
-  // Check network
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  const allChains = [...chains.mainnet, ...chains.testnet];
+  const allChains = useMemo(() => {
+    return [...chains.mainnet, ...chains.testnet];
+  }, [chains.mainnet, chains.testnet]);
 
   const remapChainIds = useMemo(() => {
     return allChains.length > 0
       ? allChains.map((item: any) => {
-          return item.network_infos.chain_id;
-        })
+        return item.network_infos.chain_id;
+      })
       : [];
   }, [allChains]);
 
   const isSupportChain = useMemo(() => {
     return currentChain()
       ? remapChainIds.some(
-          (it) => it === (currentChain() as any).network_infos.chain_id
-        )
+        (it) => it === (currentChain() as any).network_infos.chain_id
+      )
       : false;
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [currentChain, remapChainIds, connectedChain]);
 
   return (
@@ -120,9 +119,9 @@ function NetworkContent() {
           sx={{
             backgroundColor: isSupportChain
               ? setColorThemeMode(
-                  theme.palette.grey[50],
-                  theme.palette.grey[700]
-                )
+                theme.palette.grey[50],
+                theme.palette.grey[700]
+              )
               : "",
             color: setColorThemeMode(
               theme.palette.common.black,
@@ -166,8 +165,8 @@ function NetworkContent() {
           <Typography
             px={1.6}
             color={setColorThemeMode(
-              useTheme().palette.grey[600],
-              useTheme().palette.grey[200]
+              theme.palette.grey[600],
+              theme.palette.grey[200]
             )}
             py={0.5}
           >
@@ -209,8 +208,8 @@ function NetworkContent() {
           <Typography
             px={1.6}
             color={setColorThemeMode(
-              useTheme().palette.grey[600],
-              useTheme().palette.grey[200]
+              theme.palette.grey[600],
+              theme.palette.grey[200]
             )}
             py={0.5}
           >

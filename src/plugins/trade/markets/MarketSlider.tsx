@@ -111,9 +111,9 @@ const Wrapper = styled(Box, {
     width: "100px",
     background: showBefore
       ? `linear-gradient(to right, ${setColorThemeMode(
-          theme.palette.primary.light,
-          "#322D2B"
-        )}, transparent)`
+        theme.palette.primary.light,
+        "#322D2B"
+      )}, transparent)`
       : "transparent",
     pointerEvents: "none",
     transition: "0.6s",

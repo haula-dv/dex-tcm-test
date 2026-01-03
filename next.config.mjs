@@ -1,28 +1,20 @@
-/**
- * @type {import('next').NextConfig}
- */
 import { getGlobals } from "common-es";
 import path from "path";
 
 const { __dirname, __filename } = getGlobals(import.meta.url);
 
-import withPWAInit from "@ducanh2912/next-pwa";
-
-const withPWA = withPWAInit({
-  dest: "public",
-});
-
-export default withPWA({
-  // experimental: {
-  // 	ppr: "incremental",
-  // 	reactCompiler: process.env.CURRENT_ENV === "dev" ? false : true,
-  // },
-  //   cacheHandler: require.resolve("./cache-handler.js"),
-  cacheMaxMemorySize: 0, // disable default in-memory caching
-
+const nextConfig = {
   images: {
-    domains: [process.env.NEXTWORK_URL],
-    unoptimized: true,
+    remotePatterns: [
+      {
+        protocol: "https",
+        hostname: "oss.orderly.network",
+      },
+      {
+        protocol: "https",
+        hostname: "arbitrum-one.publicnode.com",
+      },
+    ],
   },
 
   sassOptions: {
@@ -31,14 +23,17 @@ export default withPWA({
 
   env: {
     CURRENT_ENV: process.env.CURRENT_ENV,
-    API_URL: process.env.API_URL,
-    TOKEN_API_URL: process.env.TOKEN_API_URL,
-    BROKER_ID: process.env.BROKER_ID,
     NEXTWORK_URL: process.env.NEXTWORK_URL,
-    ORDERLY_ENV: process.env.ORDERLY_ENV,
-    ORDERLY_API_KEY: process.env.ORDERLY_API_KEY,
-    ORDERLY_SECRET: process.env.ORDERLY_SECRET,
+    
+    BROKER_NAME: process.env.BROKER_NAME,
+    BROKER_ID: process.env.BROKER_ID,
+
+    WALLETCONNECT_PROJECT_ID: process.env.WALLETCONNECT_PROJECT_ID,
+    WALLETCONNECT_DAPP_URL: process.env.WALLETCONNECT_DAPP_URL,
+
+    APP_URL: process.env.APP_URL,
   },
+// # https://dashboard.walletconnect.com/01692520-64b0-4ed8-8713-cdac19098bff/2202d3e2-19b7-4dd2-954d-3208dfdb639a
 
   reactStrictMode: false,
 
@@ -80,4 +75,6 @@ export default withPWA({
       },
     ];
   },
-});
+};
+
+export default nextConfig;

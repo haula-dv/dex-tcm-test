@@ -1,32 +1,27 @@
-import { isTestnet } from '@/utils/lib/network';
+'use client'
+import { isTestnet } from '@/utils/network';
 import { useSetChain } from '@web3-onboard/react';
 import { useEffect, useState } from 'react';
 
 export function useIsTestnet() {
-	const [networkId, setNetworkId] = useState<'testnet' | 'mainnet'>();
-	const [{ connectedChain }] = useSetChain();
+  const [networkId, setNetworkId] = useState<'testnet' | 'mainnet'>('mainnet');
+  const [{ connectedChain: connectedEvmChain }] = useSetChain();
 
-	let testnet: boolean;
-	if (connectedChain != null) {
-		testnet = isTestnet(connectedChain);
-	} else if (typeof window !== 'undefined') {
-		testnet = window.localStorage.getItem('networkId') === 'testnet';
-	} else {
-		testnet = false;
-	}
-	const networkChanged = (testnet && networkId === 'mainnet') || (!testnet && networkId === 'testnet');
+  // Only check EVM chain for testnet (Solana removed)
+  let testnet: boolean;
+  if (connectedEvmChain != null) {
+    testnet = isTestnet(connectedEvmChain.id);
+  } else {
+    testnet = false;
+  }
+  
+  const networkChanged =
+    (testnet && networkId === 'mainnet') || (!testnet && networkId === 'testnet');
 
-	useEffect(() => {
-		if (typeof window !== 'undefined') {
-			setNetworkId((window.localStorage.getItem('networkId') as 'testnet' | 'mainnet') ?? 'mainnet');
-		}
-	}, []);
+  useEffect(() => {
+    setNetworkId(testnet ? 'testnet' : 'mainnet');
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [connectedEvmChain]);
 
-	useEffect(() => {
-		if (connectedChain == null) return;
-		setNetworkId(testnet ? 'testnet' : 'mainnet');
-		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [connectedChain]);
-
-	return [testnet, networkChanged];
+  return [testnet, networkChanged];
 }

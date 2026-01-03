@@ -10,15 +10,23 @@ import {
   Stack,
   Toolbar,
   Typography,
+  useMediaQuery,
+  useTheme,
 } from "@mui/material";
 import { styled } from "@mui/material/styles";
+import dynamic from "next/dynamic";
 import Link from "next/link";
 import { useParams, usePathname } from "next/navigation";
 import Logo from "../icons/Logo";
 
+const HeaderMobile = dynamic(() => import("./HeaderMobile"), { ssr: false });
+
 export const Header = () => {
   const pathName = usePathname();
   const params = useParams();
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down("lg"));
+
   const navItems = [
     {
       label: "Trading",
@@ -38,6 +46,10 @@ export const Header = () => {
       ],
     },
   ];
+
+  if (isMobile) {
+    return <HeaderMobile />;
+  }
 
   return (
     <MainAppBar elevation={0} position="sticky">
@@ -75,6 +87,31 @@ export const Header = () => {
   );
 };
 
+export const HeaderLoading = () => {
+  return (
+    <MainAppBar elevation={0} position="sticky">
+      <Box px={{ xs: "16px" }}>
+        <Toolbar disableGutters>
+          <Stack
+            direction={"row"}
+            justifyContent={"space-between"}
+            width={"100%"}
+            alignItems={"center"}
+          >
+            <Stack
+              direction={"row"}
+              alignItems={"center"}
+              spacing={TSizes.margin_md}
+            >
+              <Logo width="80px" height="40px" />
+            </Stack>
+          </Stack>
+        </Toolbar>
+      </Box>
+    </MainAppBar>
+  );
+};
+
 export const MainAppBar = styled(AppBar)(({ theme }) => ({
   backgroundColor: setColorThemeMode("#fff", theme.palette.grey[800]),
   zIndex: 10,
@@ -103,10 +140,10 @@ export const NavItem = styled(Box, {
     borderRadius: "8px",
     backgroundColor: isActived
       ? setColorThemeMode(
-          theme.palette.primary.main,
-          theme.palette.grey[800],
-          theme
-        )
+        theme.palette.primary.main,
+        theme.palette.grey[800],
+        theme
+      )
       : "transparent",
 
     "& .MuiTypography-root": {
@@ -126,10 +163,10 @@ export const NavItem = styled(Box, {
         width: "100%",
         backgroundColor: isActived
           ? setColorThemeMode(
-              theme.palette.common.black,
-              theme.palette.common.white,
-              theme
-            )
+            theme.palette.common.black,
+            theme.palette.common.white,
+            theme
+          )
           : "transparent",
         borderRadius: "4px",
       }),

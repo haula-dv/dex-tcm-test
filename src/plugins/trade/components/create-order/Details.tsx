@@ -2,9 +2,9 @@ import { MainButton } from "@/components/button/MainButton";
 import MainCard from "@/components/card/MainCard";
 import { ItemRow } from "@/plugins/pool/components/TokenSelected";
 import { Stack, Typography } from "@mui/material";
-import { useMarginRatio } from "@orderly.network/hooks";
+import { useMarginRatio, useWalletConnector } from "@orderly.network/hooks";
 import { IconArrowRight } from "@tabler/icons-react";
-import { useConnectWallet } from "@web3-onboard/react";
+import { useWeb3Modal } from "@web3modal/wagmi/react";
 
 interface IProps {
   estLeverage: number | any | undefined;
@@ -24,16 +24,13 @@ const Details = ({
   direction,
   openOrderConfirm,
 }: IProps) => {
-  const [{ wallet, connecting }, connect] = useConnectWallet();
+  const { wallet } = useWalletConnector();
+  const { open } = useWeb3Modal();
   const { currentLeverage, mmr } = useMarginRatio();
 
   // Handle connect wallet button
   const handleConnectWallet = async () => {
-    await connect().then((res) => {
-      if (res && res.length > 0) {
-        location.reload();
-      }
-    });
+    await open();
   };
 
   const formatter = new Intl.NumberFormat("en-US", {

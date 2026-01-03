@@ -5,18 +5,16 @@ import { setColorThemeMode } from "@/utils/helpers";
 import { TSizes } from "@/utils/themes/custom-theme/sizes";
 import TabPanel from "@mui/lab/TabPanel";
 import { Box, Divider, useMediaQuery, useTheme } from "@mui/material";
-import { useAccount } from "@orderly.network/hooks";
-import { AccountStatusEnum } from "@orderly.network/types";
-import { useConnectWallet } from "@web3-onboard/react";
+import { useWalletConnector } from "@orderly.network/hooks";
 import { memo } from "react";
 import MarketSlider from "../markets/MarketSlider";
 import ActionPlaceOrderMobile from "../order-book/ActionPlaceOrderMobile";
 import OrderBookMobileContainer from "../order-book/OrderBookMobileContainer";
 import TradingViewMobile from "../trading-view/TradingViewMobile";
-import DataListMobile from "./order-view/DataListMobile";
-import DataListMobileEmpty from "./order-view/mobile/DataListMobileEmpty";
-import { OrderViewContainer } from "./order-view/OrderViewContainer";
 import SymbolHeader from "./SymbolHeader";
+import DataListMobile from "./order-view/DataListMobile";
+import { OrderViewContainer } from "./order-view/OrderViewContainer";
+import DataListMobileEmpty from "./order-view/mobile/DataListMobileEmpty";
 
 interface IProps {
   symbol: string;
@@ -24,10 +22,7 @@ interface IProps {
 }
 
 const MainViewMobileContainer = ({ onSymbolChange, symbol }: IProps) => {
-  const [{ wallet, connecting }, connect, disconnect] = useConnectWallet();
-  const { account, state } = useAccount();
-  const isRegistered = state.status >= AccountStatusEnum.SignedIn;
-  const hasOrderlyKey = state.status >= AccountStatusEnum.EnableTrading;
+  const { wallet } = useWalletConnector();
 
   const tabs: ITab[] = [
     {
@@ -89,7 +84,7 @@ const MainViewMobileContainer = ({ onSymbolChange, symbol }: IProps) => {
           >
             <OrderViewContainer symbol={symbol} />
           </Box>
-        ) : wallet && isRegistered && hasOrderlyKey ? (
+        ) : wallet ? (
           <DataListMobile symbol={symbol} />
         ) : (
           <DataListMobileEmpty />

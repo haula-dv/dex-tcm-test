@@ -1,14 +1,14 @@
-"use client";
-import { HeadPage } from "@/components/HeadPage";
-import MainPositionContainer from "@/plugins/positions/components/MainPositionContainer";
+import { PageTitleMap, PathEnum } from "@/utils/constant";
+import { generatePageTitle } from "@/utils/utils";
+import { Metadata } from "next";
+import dynamic from "next/dynamic";
 
-const FeeTierPage = () => {
-  return (
-    <>
-      <HeadPage title="Position" />
-      <MainPositionContainer />
-    </>
-  );
+const DynamicPositionsView = dynamic(() => import("./view"));
+
+export const metadata: Metadata = {
+  title: generatePageTitle(PageTitleMap[PathEnum.Positions]),
 };
 
-export default FeeTierPage;
+export default function PositionsPage() {
+  return <DynamicPositionsView />;
+}

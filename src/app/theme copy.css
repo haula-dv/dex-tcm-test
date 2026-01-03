@@ -1,0 +1,516 @@
+[data-theme="dark"] {
+  .oui-bg-base-2 {
+    background-color: var(--grey200);
+    opacity: 0.2;
+  }
+
+  /* BORDER  */
+  .oui-border-base-2 {
+    border-color: var(--grey200);
+    opacity: 0.2;
+  }
+
+  .oui-bg-danger-darken {
+    background-color: var(--danger) !important;
+  }
+
+  .oui-bg-base-4 {
+    background-color: var(--grey600);
+  }
+
+  .oui-bg-base-5 {
+    background-color: var(--grey700);
+  }
+
+  .oui-bg-base-6 {
+    background-color: var(--grey600);
+  }
+
+  .oui-bg-base-9 {
+    background-color: var(--greyBase900);
+  }
+
+  .oui-bg-base-7 {
+    background-color: var(--grey700);
+  }
+
+  .oui-input-root {
+    background-color: var(--darkBrown) !important;
+    border: 1px solid var(--grey700);
+    transition: border-color 0.2s ease;
+  }
+
+  .oui-input-root:focus-within,
+  .oui-input-root:has(input:focus),
+  .oui-input-root:has(textarea:focus) {
+    border-color: var(--grey600) !important;
+    outline: none;
+  }
+
+  .oui-input-root input,
+  .oui-input-root textarea {
+    outline: none !important;
+  }
+
+  .oui-input-root input:focus,
+  .oui-input-root textarea:focus {
+    outline: none !important;
+    box-shadow: none !important;
+  }
+
+  .oui-bg-base-6 {
+    background-color: var(--grey700);
+  }
+
+  .oui-bg-base-8 {
+    background-color: var(--grey800);
+  }
+
+  .oui-bg-success {
+    background-color: var(--success);
+  }
+
+  /* TEXT  */
+  .oui-text-primary-light {
+    color: var(--primaryLight) !important;
+  }
+}
+
+/* orderly-order-entry */
+[data-theme="dark"] {
+  .orderly-order-entry {
+
+    /* Slider  */
+    [data-orientation="horizontal"] {
+      .oui-bg-base-2 {
+        background-color: var(--grey700);
+      }
+
+      .oui-border-base-2 {
+        border-color: var(--grey600);
+      }
+
+      .oui-bg-base-6 {
+        background-color: var(--grey600);
+      }
+
+      .oui-bg-success {
+        background-color: var(--success) !important;
+      }
+
+      .oui-bg-trade-profit {
+        background-color: var(--success) !important;
+      }
+
+      .oui-border-trade-profit {
+        border-color: var(--success) !important;
+      }
+
+      .oui-border-success {
+        border-color: var(--success) !important;
+        background-color: var(--success) !important;
+      }
+
+      .oui-border-danger {
+        border-color: var(--danger) !important;
+        background-color: var(--danger) !important;
+      }
+
+      .oui-bg-danger {
+        background-color: var(--danger) !important;
+      }
+
+      .oui-text-trade-profit {
+        color: var(--success) !important;
+      }
+
+      .oui-bg-danger-darken {
+        background-color: var(--danger) !important;
+      }
+
+
+      .oui-input-root {
+        background-color: var(--darkBrown) !important;
+      }
+
+      /* SELL  */
+      .oui-border-trade-loss {
+        border-color: var(--danger) !important;
+      }
+
+      .oui-bg-trade-loss {
+        background-color: var(--danger) !important;
+      }
+    }
+  }
+
+  .oui-text-trade-loss {
+    color: var(--danger) !important;
+  }
+
+
+  /* Text  */
+  .oui-text-primary {
+    color: var(--primaryMain) !important;
+  }
+
+  .oui-text-trade-profit {
+    color: var(--success) !important;
+  }
+}
+
+/* SWITCH BUTTON / TOGGLE */
+[role="switch"] {
+  cursor: pointer;
+  transition: background-color 0.2s ease, border-color 0.2s ease;
+}
+
+/* Switch unchecked state */
+[role="switch"][data-state="unchecked"] {
+  background-color: var(--grey700) !important;
+  border-color: var(--grey600) !important;
+}
+
+/* Switch checked state */
+[role="switch"][data-state="checked"] {
+  background-color: var(--primaryDark) !important;
+  border-color: var(--primaryDark) !important;
+}
+
+/* Switch thumb (the circle inside) */
+[role="switch"] [data-state="unchecked"] {
+  background-color: var(--grey400) !important;
+}
+
+[role="switch"] [data-state="checked"] {
+  background-color: #fff !important;
+}
+
+/* Hover states */
+[role="switch"][data-state="unchecked"]:hover {
+  background-color: var(--grey600) !important;
+}
+
+[role="switch"][data-state="checked"]:hover {
+  background-color: var(--primaryDark) !important;
+}
+
+[data-testid="oui-testid-orderEntry-pinned-button"] {
+  path {
+    color: var(--primaryDark) !important;
+  }
+}
+
+/* END SWITCH BUTTON / TOGGLE */
+
+
+/* BORDER */
+.oui-border-primary {
+  border-color: var(--primaryDark);
+}
+
+.oui-outline-danger {
+  outline-color: var(--danger) !important;
+}
+
+/* BUTTON  */
+.oui-bg-primary-darken {
+  background-color: var(--primaryDark) !important;
+}
+
+.oui-bg-success-darken {
+  background-color: var(--success) !important;
+}
+
+/* BG */
+.oui-bg-primary {
+  background-color: var(--primaryDark);
+}
+
+/* LIGHT MODE  */
+[data-theme="light"] {
+
+  .oui-bg-base-2 {
+    background-color: var(--grey50);
+  }
+
+  .oui-bg-base-4 {
+    background-color: var(--grey50);
+  }
+
+  .oui-bg-base-5 {
+    background-color: var(--grey100);
+  }
+
+  .oui-bg-base-6 {
+    background-color: var(--grey100);
+  }
+
+  .oui-bg-base-7 {
+    background-color: var(--grey100);
+  }
+
+  .oui-bg-base-8 {
+    background-color: var(--grey100);
+  }
+
+  .oui-text-base-contrast {
+    color: var(--grey800);
+  }
+
+  .oui-text-base-contrast-54 {
+    color: var(--grey500);
+  }
+
+  .oui-text-base-contrast-36 {
+    color: var(--grey400);
+  }
+
+  .oui-text-primary-light {
+    color: var(--darkBrown);
+  }
+
+  .oui-border-line-12 {
+    border-color: var(--grey400);
+  }
+
+  .oui-bg-danger-darken {
+    background-color: var(--danger) !important;
+  }
+
+  .oui-button {
+    /* background-color: var(--grey200); */
+  }
+
+  [data-testid="oui-testid-orderEntry-orderType-button"] {
+    /* background-color: var(--success-light) !important;
+    color: var(--success) !important; */
+  }
+
+  .oui-text-trade-profit {
+    color: var(--success) !important;
+  }
+
+  .oui-text-trade-loss {
+    color: var(--danger) !important;
+  }
+
+  /* FORM  */
+  .orderly-order-entry {
+    div>span {
+      color: var(--grey800);
+    }
+
+    /* Slider  */
+    [data-orientation="horizontal"] {
+      .oui-input-root {
+        background-color: var(--darkBrown) !important;
+      }
+    }
+  }
+
+  /* END FORM  */
+
+  /* INPUT  */
+  .oui-input-root {
+    background-color: var(--grey50) !important;
+    border: 1px solid var(--grey100);
+    transition: border-color 0.2s ease;
+  }
+
+  .oui-input-root .oui-outline-offset-0 {
+    border: none !important;
+  }
+
+  .oui-input-root:focus-within,
+  .oui-input-root:has(input:focus),
+  .oui-input-root:has(textarea:focus) {
+    border-color: var(--grey400) !important;
+    outline: none;
+  }
+
+  .oui-input-root input,
+  .oui-input-root textarea {
+    outline: none !important;
+    color: var(--grey800);
+  }
+
+  .oui-input-root {
+    svg {
+      path {
+        color: var(--grey600);
+      }
+
+      rect {
+        fill: var(--grey600);
+      }
+    }
+  }
+
+  ::placeholder {
+    color: var(--grey400);
+  }
+
+  .oui-input-root input:focus,
+  .oui-input-root textarea:focus {
+    outline: none !important;
+    box-shadow: none !important;
+  }
+
+  [role="combobox"] {
+    box-shadow: none !important;
+  }
+
+  /* END INPUT  */
+  .oui-dialog-content {
+    background-color: #fff !important;
+
+    div {
+      color: var(--grey800);
+    }
+
+    span {
+      color: var(--grey800);
+    }
+
+    .oui-dialog-close-btn {
+      svg {
+        color: var(--grey800);
+      }
+    }
+
+    .oui-dialog-title {
+      color: var(--text-primary);
+    }
+  }
+
+  /* TABLIST  */
+  [role="tablist"] {
+    [aria-selected="true"] {
+      background-color: var(--grey200);
+    }
+
+    [aria-selected="false"] {
+      background-color: var(--grey50);
+    }
+  }
+}
+
+/* BRAND GRADIENT */
+.oui-gradient-brand {
+  background-image: linear-gradient(90deg, #f7f4f0 0%, #b37350 100%) !important;
+}
+
+.oui-gradient-primary {
+  background-image: linear-gradient(90deg, #f7f4f0 0%, #b37350 100%) !important;
+}
+
+.oui-bg-gradient-to-r {
+  background-image: linear-gradient(90deg, #f7f4f0cc 0%, #b37350cc 100%) !important;
+}
+
+/* CARD */
+[data-theme="dark"] .oui-card-root {
+  background-color: var(--grey800) !important;
+}
+
+[data-theme="light"] .oui-card-root {
+  background-color: white !important;
+}
+
+/* TAB */
+[data-theme="dark"] {
+  /* .oui-header-list{
+    [data-state="active"]{
+      background-color: var(--darkBrown) !important;
+      border: 1px solid var(--grey700) !important;
+    }
+    [data-state="inactive"]{
+      background-color: transparent !important;
+      border: 1px solid transparent !important;
+    }
+  } */
+
+  #radix-_r_a_-content-Assets {}
+}
+
+[data-theme="light"] {
+  .oui-header-list {
+    [data-state="active"] {
+      background-color: var(--grey100) !important;
+      border: 1px solid var(--grey100) !important;
+    }
+  }
+}
+
+
+/* table */
+[data-theme="dark"] {
+  .oui-table-root {
+    background-color: var(--grey800) !important;
+
+    .oui-table-scroll {
+      .oui-table-thead {
+        background-color: var(--table-header-bg);
+      }
+
+      .oui-table-thead-th {
+        background-color: var(--table-header-bg);
+      }
+    }
+  }
+
+  .oui-table-tbody {
+    .oui-table-tbody-td {
+      background-color: var(--grey800);
+    }
+  }
+
+  #oui-desktop-positions-content {
+    /* border-top: none !important;
+    border: 1px solid var(--grey700); */
+    /* border-radius: 12px; */
+    /* overflow: hidden; */
+    background-color: var(--grey800);
+
+    .oui-table-pagination {
+      margin-bottom: 12px;
+    }
+  }
+}
+
+[data-theme="light"] .oui-table-root {
+  background-color: transparent !important;
+  color: var(--grey800) !important;
+}
+
+
+/* ORDER PAGE  */
+[data-theme="dark"] .orderly-orders-page {
+  background-color: var(--grey800) !important;
+}
+
+/* Recharts Text */
+/* .recharts-text {
+  fill: var(--grey800) !important;
+} */
+
+/* Style chart for Light Mode */
+[data-theme="light"] .recharts-responsive-container {
+
+  /* Axis Lines & Ticks */
+  .recharts-cartesian-axis-line,
+  .recharts-cartesian-axis-tick-line {
+    stroke: var(--grey800) !important;
+  }
+
+  /* Grid Lines */
+  .recharts-cartesian-grid line {
+    stroke: var(--grey200) !important;
+  }
+
+  /* Text Labels */
+  text {
+    fill: var(--grey800) !important;
+  }
+}
