@@ -149,18 +149,18 @@ export const OrderlyConnect = () => {
 		try {
 			// Use createOrderlyKey from useAccount hook - true means remember/persist key
 			// On mobile, this might redirect to MetaMask app and the promise may not resolve
+
+			// Create a promise race with timeout for better UX on mobile
 			const keyPromise = createOrderlyKey(true);
+			const timeoutPromise = new Promise((_, reject) => {
+				setTimeout(() => {
+					reject(new Error('Request timeout - please check your wallet app'));
+				}, 60000); // 60 second timeout
+			});
 
-			// Set a timeout to check if we need to handle mobile redirect case
-			const timeoutId = setTimeout(() => {
-				// If still pending after 30 seconds, assume mobile redirect happened
-				// The visibility change handler will take care of updating the notification
-				console.log('Key creation timeout - likely mobile redirect');
-			}, 30000);
+			// Race between key creation and timeout
+			await Promise.race([keyPromise, timeoutPromise]);
 
-			await keyPromise;
-
-			clearTimeout(timeoutId);
 			pendingOperationRef.current = { type: null };
 
 			update({
@@ -173,11 +173,20 @@ export const OrderlyConnect = () => {
 			console.error("createOrderlyKey error:", err);
 			pendingOperationRef.current = { type: null };
 
+			const errorMessage = err instanceof Error
+				? err.message
+				: 'Key registration failed!';
+
+			// Provide helpful message for timeout
+			const displayMessage = errorMessage.includes('timeout')
+				? 'Request timed out. Please open your MetaMask app and approve the transaction.'
+				: errorMessage;
+
 			update({
 				eventCode: 'orderlyKeyError',
 				type: 'error',
-				message: err instanceof Error ? err.message : 'Key registration failed!',
-				autoDismiss: 5_000
+				message: displayMessage,
+				autoDismiss: 8_000 // Longer display for error messages
 			});
 		}
 	};

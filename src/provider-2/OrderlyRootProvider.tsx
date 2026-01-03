@@ -23,7 +23,7 @@ export const OrderlyRootProvider: FC<{ children: React.ReactNode }> = ({ childre
     const injected = injectedModule();
     const walletConnect = walletConnectModule({
         projectId: process.env.WALLETCONNECT_PROJECT_ID,
-        requiredChains: [10, 42161],
+        requiredChains: [10, 42161, 1],
         optionalChains: [421614, 11155420],
         dappUrl: process.env.WALLETCONNECT_DAPP_URL,
     });
@@ -36,9 +36,15 @@ export const OrderlyRootProvider: FC<{ children: React.ReactNode }> = ({ childre
                 name: AppInfo.BROKER_NAME,
                 url: process.env.WALLETCONNECT_DAPP_URL,
             },
+            // Enable deeplink for auto-redirect back to website after signing
             useDeeplink: true,
+            // Use mobile app for better UX
             preferDesktop: false,
             checkInstallationImmediately: false,
+            // Important: This helps with auto-redirect
+            i18nOptions: {
+                enabled: true
+            }
         },
     });
 
