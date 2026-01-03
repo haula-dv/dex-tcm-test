@@ -12,7 +12,7 @@ let timer: number | undefined;
 
 export const OrderlyConnect = () => {
 	const [open, setOpen] = useState(false);
-	const { account, state } = useAccount();
+	const { account, state, createOrderlyKey } = useAccount();
 	const [{ connectedChain }] = useSetChain();
 	const [_, customNotification] = useNotifications();
 
@@ -65,6 +65,34 @@ export const OrderlyConnect = () => {
 	const isRegistered = state.status >= AccountStatusEnum.SignedIn;
 	const hasOrderlyKey = state.status >= AccountStatusEnum.EnableTrading;
 
+	// Handle Create Orderly Key
+	const handleCreateOrderlyKey = async () => {
+		const { update } = customNotification({
+			eventCode: 'orderlyKey',
+			type: 'pending',
+			message: 'Registering Orderly key...'
+		});
+
+		try {
+			// Use createOrderlyKey from useAccount hook - true means remember/persist key
+			await createOrderlyKey(true);
+			update({
+				eventCode: 'orderlyKeySuccess',
+				type: 'success',
+				message: 'Key registration complete!',
+				autoDismiss: 5_000
+			});
+		} catch (err) {
+			console.error("createOrderlyKey error:", err);
+			update({
+				eventCode: 'orderlyKeyError',
+				type: 'error',
+				message: err instanceof Error ? err.message : 'Key registration failed!',
+				autoDismiss: 5_000
+			});
+		}
+	};
+
 	return (
 		<MainDialog
 			open={open}
@@ -109,40 +137,10 @@ export const OrderlyConnect = () => {
 						variant={hasOrderlyKey ? "outlined" : "contained"}
 						color={hasOrderlyKey ? "success" : "primary"}
 						disabled={hasOrderlyKey || !isRegistered}
-						onClick={async () => {
-							const { update } = customNotification({
-								eventCode: 'orderlyKey',
-								type: 'pending',
-								message: 'Registering Orderly key...'
-							});
-
-							try {
-								await account.createOrderlyKey(365);
-								update({
-									eventCode: 'orderlyKeySuccess',
-									type: 'success',
-									message: 'Key registration complete!',
-									autoDismiss: 5_000
-								});
-							} catch (err) {
-								console.error("createOrderlyKey error:", err);
-								update({
-									eventCode: 'orderlyKeyError',
-									type: 'error',
-									message: err instanceof Error ? err.message : 'Key registration failed!',
-									autoDismiss: 5_000
-								});
-							}
-						}}
-						startIcon={
-							hasOrderlyKey ? (
-								<IconCheck size={20} />
-							) : null
-						}
+						onClick={handleCreateOrderlyKey}
+						startIcon={hasOrderlyKey ? <IconCheck size={20} /> : null}
 					>
-						{hasOrderlyKey
-							? "Trading Key Created ✓"
-							: "Create Trading Key"}
+						{hasOrderlyKey ? "Trading Key Created ✓" : "Create Trading Key"}
 					</MainButton>
 				</Box>
 

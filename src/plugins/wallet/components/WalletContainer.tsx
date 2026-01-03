@@ -75,7 +75,7 @@ export default function WalletContainer({ isMobile = false }: IWalletContainerPr
 
   return (
     <Stack direction={"row"} spacing={1} alignItems={"center"}>
-      {currentWallet && <DynamicNetworkContent isMobile={isMobile} />}
+      <DynamicNetworkContent isMobile={isMobile} />
 
       {connecting ? (
         <MainButton
