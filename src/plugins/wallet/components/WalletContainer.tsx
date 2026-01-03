@@ -17,7 +17,6 @@ import Image from "next/image";
 import { useEffect, useState } from "react";
 import { useStore } from "zustand";
 import AccountDetailPopup from "./AccountDetailPopup";
-import { OrderlyConnect } from "./OrderlyConnect";
 
 const DynamicNetworkContent = dynamic(() => import("./NetworkContentV2"));
 
@@ -147,7 +146,6 @@ export default function WalletContainer({ isMobile = false }: IWalletContainerPr
         />
       )}
 
-      <OrderlyConnect />
 
       {!isMobile && (
         <MainIconButton onClick={handleChangeTheme} color="inherit">

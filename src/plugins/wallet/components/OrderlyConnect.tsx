@@ -1,7 +1,6 @@
 "use client";
 import { MainButton } from "@/components/button/MainButton";
 import { MainDialog } from "@/components/dialog/MainDialog";
-import IconLoading from "@/components/icons/loading";
 import { Box, Divider, Stack, Typography } from "@mui/material";
 import { useAccount } from "@orderly.network/hooks";
 import { AccountStatusEnum } from "@orderly.network/types";
@@ -13,7 +12,6 @@ let timer: number | undefined;
 
 export const OrderlyConnect = () => {
 	const [open, setOpen] = useState(false);
-	const [isGeneratingKey, setIsGeneratingKey] = useState(false);
 	const { account, state } = useAccount();
 	const [{ connectedChain }] = useSetChain();
 	const [_, customNotification] = useNotifications();
@@ -110,9 +108,8 @@ export const OrderlyConnect = () => {
 						fullWidth
 						variant={hasOrderlyKey ? "outlined" : "contained"}
 						color={hasOrderlyKey ? "success" : "primary"}
-						disabled={hasOrderlyKey || !isRegistered || isGeneratingKey}
+						disabled={hasOrderlyKey || !isRegistered}
 						onClick={async () => {
-							setIsGeneratingKey(true);
 							const { update } = customNotification({
 								eventCode: 'orderlyKey',
 								type: 'pending',
@@ -120,20 +117,7 @@ export const OrderlyConnect = () => {
 							});
 
 							try {
-								console.log("Starting createOrderlyKey...");
-
-								// Create a promise that rejects after 30 seconds
-								const timeoutPromise = new Promise((_, reject) => {
-									setTimeout(() => reject(new Error('Request timed out. Please check your wallet.')), 30000);
-								});
-
-								// Race the api call against the timeout
-								await Promise.race([
-									account.createOrderlyKey(365),
-									timeoutPromise
-								]);
-
-								console.log("createOrderlyKey finished");
+								await account.createOrderlyKey(365);
 								update({
 									eventCode: 'orderlyKeySuccess',
 									type: 'success',
@@ -148,23 +132,17 @@ export const OrderlyConnect = () => {
 									message: err instanceof Error ? err.message : 'Key registration failed!',
 									autoDismiss: 5_000
 								});
-							} finally {
-								setIsGeneratingKey(false);
 							}
 						}}
 						startIcon={
 							hasOrderlyKey ? (
 								<IconCheck size={20} />
-							) : isGeneratingKey ? (
-								<IconLoading width={20} height={20} />
 							) : null
 						}
 					>
 						{hasOrderlyKey
 							? "Trading Key Created ✓"
-							: isGeneratingKey
-								? "Creating Key..."
-								: "Create Trading Key"}
+							: "Create Trading Key"}
 					</MainButton>
 				</Box>
 

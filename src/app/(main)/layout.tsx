@@ -1,5 +1,6 @@
 "use client";
 import { HeaderLoading } from "@/components/layouts/Header";
+import { OrderlyConnect } from "@/plugins/wallet/components/OrderlyConnect";
 // import { Header } from "@/components/layouts/Header";
 import "@/styles/global.scss";
 import { Box, useMediaQuery, useTheme } from "@mui/material";
@@ -33,6 +34,7 @@ export default function RootLayout({
   return (
     <div className={theme.palette.mode}>
       <DynamicHeader />
+      <OrderlyConnect />
       <Box position={"relative"}>{children}</Box>
     </div>
   );
