@@ -1,5 +1,6 @@
 "use client";
 import { MainButton } from "@/components/button/MainButton";
+import PendingButton from "@/components/button/PendingButton";
 import { MainDialog } from "@/components/dialog/MainDialog";
 import { Box, Divider, Stack, Typography } from "@mui/material";
 import { useAccount } from "@orderly.network/hooks";
@@ -47,7 +48,7 @@ export const OrderlyConnect = () => {
 				}
 			}}
 			title="Connect with Orderly Network"
-			maxWidth="sm"
+			maxWidth="xs"
 			isDivider
 		>
 			<Stack spacing={3}>
@@ -100,10 +101,7 @@ export const OrderlyConnect = () => {
 						Step 2: Create a trading key pair. It will be stored in your browser&apos;s local
 						storage and is unique per device.
 					</Typography>
-					<MainButton
-						fullWidth
-						variant={hasOrderlyKey ? "outlined" : "contained"}
-						color={hasOrderlyKey ? "success" : "primary"}
+					<PendingButton
 						disabled={hasOrderlyKey || !isRegistered}
 						onClick={async () => {
 							const { update } = customNotification({
@@ -128,12 +126,13 @@ export const OrderlyConnect = () => {
 									autoDismiss: 5_000
 								});
 								throw err;
+							} finally {
+								setOpen(false);
 							}
 						}}
-						startIcon={hasOrderlyKey ? <IconCheck size={20} /> : null}
 					>
 						{hasOrderlyKey ? "Trading Key Created ✓" : "Create Trading Key"}
-					</MainButton>
+					</PendingButton>
 				</Box>
 
 				{/* Done message */}
