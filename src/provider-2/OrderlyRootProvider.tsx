@@ -72,20 +72,20 @@ export const OrderlyRootProvider: FC<{ children: React.ReactNode }> = ({ childre
         <WalletConnectorProvider
             evmInitial={{
                 options: {
+                    wallets: [injected, walletConnect, metamask],
+                    chains: orderlyChains,
                     appMetadata: {
                         name: AppInfo.BROKER_NAME,
                         description: AppInfo.BROKER_NAME,
                         icon: AppInfo.BROKER_LOGO,
                         logo: AppInfo.BROKER_LOGO,
                     },
-                    wallets: [injected, walletConnect, metamask],
-                    chains: orderlyChains,
                     accountCenter: {
                         desktop: { enabled: false },
                         mobile: { enabled: false }
                     },
                     connect: {
-                        autoConnectLastWallet: false
+                        autoConnectLastWallet: true
                     },
                     theme: theme.palette.mode,
                 }

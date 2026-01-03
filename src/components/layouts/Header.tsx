@@ -14,12 +14,11 @@ import {
   useTheme,
 } from "@mui/material";
 import { styled } from "@mui/material/styles";
-import dynamic from "next/dynamic";
 import Link from "next/link";
 import { useParams, usePathname } from "next/navigation";
 import Logo from "../icons/Logo";
+import HeaderMobile from "./HeaderMobile";
 
-const HeaderMobile = dynamic(() => import("./HeaderMobile"), { ssr: false });
 
 export const Header = () => {
   const pathName = usePathname();

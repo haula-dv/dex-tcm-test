@@ -7,18 +7,17 @@ import { TLocalStorage } from "@/utils/constants/key_store";
 import { formartAddress } from "@/utils/formatters/token";
 import { setColorThemeMode } from "@/utils/helpers";
 import { Box, Stack, useTheme } from "@mui/material";
-import { useAccountInstance } from "@orderly.network/hooks";
+import { useAccountInstance, useWalletConnector } from "@orderly.network/hooks";
 import { ChainNamespace } from "@orderly.network/types";
 import { IconMoonStars, IconSun } from "@tabler/icons-react";
 import { useConnectWallet } from "@web3-onboard/react";
 import { setZustandValue } from "nes-zustand";
-import dynamic from "next/dynamic";
 import Image from "next/image";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useStore } from "zustand";
 import AccountDetailPopup from "./AccountDetailPopup";
+import NetworkContentV2 from "./NetworkContentV2";
 
-const DynamicNetworkContent = dynamic(() => import("./NetworkContentV2"));
 
 interface IWalletContainerProps {
   isMobile?: boolean;
@@ -29,6 +28,8 @@ export default function WalletContainer({ isMobile = false }: IWalletContainerPr
   const themeSelector = useStore(themeSelectorState, (state) => state.value);
   const [openAccountDetailsModal, setAccountDetailsModal] = useState(false);
   const account = useAccountInstance();
+  const { connectedChain: connectedEvmChain } = useWalletConnector();
+  const evmAddress = useMemo(() => currentWallet?.accounts[0].address, [currentWallet]);
 
   const theme = useTheme();
   // Handle close menu account
@@ -54,26 +55,28 @@ export default function WalletContainer({ isMobile = false }: IWalletContainerPr
 
   // Watch wallet change
   useEffect(() => {
-    if (Array.isArray(currentWallet?.accounts) && currentWallet.accounts.length > 0) {
-      const item = currentWallet.accounts[0];
-      const currentChainId = currentWallet.chains[0].id;
+    if (!currentWallet || !connectedEvmChain || !evmAddress) return;
 
-      account.setAddress(item.address, {
-        provider: currentWallet.provider,
-        chain: {
-          id: currentChainId,
-          namespace: 'evm' as ChainNamespace,
-        },
-        wallet: {
-          name: currentWallet.label,
-        },
-      });
-    }
+    const item = currentWallet.accounts[0];
+    const currentChainId = currentWallet.chains[0].id;
+
+    account.setAddress(item.address, {
+      provider: currentWallet.provider,
+      chain: {
+        id: currentChainId,
+        namespace: 'evm' as ChainNamespace,
+      },
+      wallet: {
+        name: currentWallet.label,
+      },
+    }).then(() => {
+      window.localStorage.setItem('chain-namespace', ChainNamespace.evm);
+    })
   }, [account, currentWallet]);
 
   return (
     <Stack direction={"row"} spacing={1} alignItems={"center"}>
-      <DynamicNetworkContent isMobile={isMobile} />
+      <NetworkContentV2 isMobile={isMobile} />
 
       {connecting ? (
         <MainButton
