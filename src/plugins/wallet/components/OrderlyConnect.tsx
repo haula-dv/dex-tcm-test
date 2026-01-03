@@ -134,7 +134,31 @@ export const OrderlyConnect = () => {
 						variant={hasOrderlyKey ? "outlined" : "contained"}
 						color={hasOrderlyKey ? "success" : "primary"}
 						disabled={hasOrderlyKey || !isRegistered}
-						onClick={handleOrderlyKey}
+						onClick={async () => {
+							const { update } = customNotification({
+								eventCode: 'orderlyKey',
+								type: 'pending',
+								message: 'Registering Orderly key...'
+							});
+							try {
+								await account.createOrderlyKey(365);
+								update({
+									eventCode: 'orderlyKeySuccess',
+									type: 'success',
+									message: 'Key registration complete!',
+									autoDismiss: 5_000
+								});
+							} catch (err) {
+								console.error(err);
+								update({
+									eventCode: 'orderlyKeyError',
+									type: 'error',
+									message: 'Key registration failed!',
+									autoDismiss: 5_000
+								});
+								throw err;
+							}
+						}}
 						startIcon={hasOrderlyKey ? <IconCheck size={20} /> : null}
 					>
 						{hasOrderlyKey ? "Trading Key Created ✓" : "Create Trading Key"}
