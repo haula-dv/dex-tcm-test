@@ -151,7 +151,7 @@ export const OrderlyConnect = () => {
 			// On mobile, this might redirect to MetaMask app and the promise may not resolve
 
 			// Create a promise race with timeout for better UX on mobile
-			const keyPromise = createOrderlyKey(true);
+			const keyPromise = account.createOrderlyKey(365)
 			const timeoutPromise = new Promise((_, reject) => {
 				setTimeout(() => {
 					reject(new Error('Request timeout - please check your wallet app'));
