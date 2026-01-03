@@ -10,7 +10,7 @@ import { Box, Stack, useTheme } from "@mui/material";
 import { useAccountInstance } from "@orderly.network/hooks";
 import { ChainNamespace } from "@orderly.network/types";
 import { IconMoonStars, IconSun } from "@tabler/icons-react";
-import { useConnectWallet, useWallets } from "@web3-onboard/react";
+import { useConnectWallet } from "@web3-onboard/react";
 import { setZustandValue } from "nes-zustand";
 import dynamic from "next/dynamic";
 import Image from "next/image";
@@ -29,7 +29,6 @@ export default function WalletContainer({ isMobile = false }: IWalletContainerPr
   const themeSelector = useStore(themeSelectorState, (state) => state.value);
   const [openAccountDetailsModal, setAccountDetailsModal] = useState(false);
   const account = useAccountInstance();
-  const connectedWallets = useWallets();
 
   const theme = useTheme();
   // Handle close menu account
@@ -58,7 +57,6 @@ export default function WalletContainer({ isMobile = false }: IWalletContainerPr
     if (Array.isArray(currentWallet?.accounts) && currentWallet.accounts.length > 0) {
       const item = currentWallet.accounts[0];
       const currentChainId = currentWallet.chains[0].id;
-      const currentNamespace = currentWallet.chains[0].namespace as ChainNamespace;
 
       account.setAddress(item.address, {
         provider: currentWallet.provider,

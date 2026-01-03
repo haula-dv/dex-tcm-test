@@ -11,7 +11,7 @@ import {
   useMediaQuery,
   useTheme
 } from "@mui/material";
-import { useChains } from "@orderly.network/hooks";
+import { useAccount, useChains } from "@orderly.network/hooks";
 import { ChainSelectorWidget } from "@orderly.network/ui-chain-selector";
 import { IconChevronDown } from "@tabler/icons-react";
 import { useConnectWallet, useSetChain } from "@web3-onboard/react";
@@ -39,6 +39,8 @@ function NetworkContentV2({ isMobile = false }: INetworkContentV2Props) {
     setNetworkAnchorEl(event.currentTarget);
   };
 
+  const { account } = useAccount();
+
   // GET CURRENT CHAIN
   const currentChain = useCallback(() => {
     return findByChainId(
@@ -53,20 +55,20 @@ function NetworkContentV2({ isMobile = false }: INetworkContentV2Props) {
         setNetworkAnchorEl(null);
         return;
       }
-
       await setChain({
         chainId: chainId,
         chainNamespace: "evm",
-      }).then((res) => {
+      }).then(async (res) => {
         localStorage.setItem(
           TLocalStorage.DEX_ORDERLY_NETWORK,
           isTestnet ? "testnet" : "mainnet"
         );
 
+        await account.switchChainId(chainId);
         // realod page
         setTimeout(() => {
           window.location.reload();
-        }, 100);
+        }, 400);
       });
     },
     [setChain, wallet]
@@ -170,7 +172,7 @@ function NetworkContentV2({ isMobile = false }: INetworkContentV2Props) {
         onClose={() => setNetworkAnchorEl(null)}
       >
         <Box p={1}>
-          <ChainSelectorWidget variant="compact" isWrongNetwork={!isSupportChain} networkId={isTestnet ? 'testnet' : 'mainnet'} onChainChangeAfter={(chainId, isTestnet) => onChainChanged(chainId, isTestnet.isTestnet)} />
+          <ChainSelectorWidget variant="compact" isWrongNetwork={!isSupportChain} onChainChangeAfter={(chainId, isTestnet) => onChainChanged(chainId, isTestnet.isTestnet)} />
         </Box>
 
         {/* <Stack pb={1}>

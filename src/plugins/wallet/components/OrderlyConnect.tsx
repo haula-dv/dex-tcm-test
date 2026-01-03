@@ -6,7 +6,7 @@ import { useAccount } from "@orderly.network/hooks";
 import { AccountStatusEnum } from "@orderly.network/types";
 import { IconCheck } from "@tabler/icons-react";
 import { useNotifications, useSetChain } from "@web3-onboard/react";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 let timer: number | undefined;
 
@@ -16,10 +16,74 @@ export const OrderlyConnect = () => {
 	const [{ connectedChain }] = useSetChain();
 	const [_, customNotification] = useNotifications();
 
+	// Track pending operations for mobile wallet recovery
+	const pendingOperationRef = useRef<{ type: 'register' | 'key' | null, update?: any }>({ type: null });
+	const previousStatusRef = useRef(state.status);
+
 	useEffect(() => {
 		if (!connectedChain) return;
 		account.switchChainId(connectedChain.id);
 	}, [connectedChain, account]);
+
+	// Detect when user returns from MetaMask app and check if operation succeeded
+	useEffect(() => {
+		const handleVisibilityChange = () => {
+			if (document.visibilityState === 'visible' && pendingOperationRef.current.type) {
+				// Wait a bit for state to update after returning to page
+				setTimeout(() => {
+					const hasOrderlyKey = state.status >= AccountStatusEnum.EnableTrading;
+					const isRegistered = state.status >= AccountStatusEnum.SignedIn;
+
+					// Check if key creation succeeded while we were away
+					if (pendingOperationRef.current.type === 'key' && hasOrderlyKey) {
+						console.log('Orderly key creation succeeded on mobile');
+						if (pendingOperationRef.current.update) {
+							pendingOperationRef.current.update({
+								eventCode: 'orderlyKeySuccess',
+								type: 'success',
+								message: 'Key registration complete!',
+								autoDismiss: 5_000
+							});
+						}
+						pendingOperationRef.current = { type: null };
+					}
+					// Check if registration succeeded while we were away
+					else if (pendingOperationRef.current.type === 'register' && isRegistered) {
+						console.log('Orderly registration succeeded on mobile');
+						if (pendingOperationRef.current.update) {
+							pendingOperationRef.current.update({
+								eventCode: 'registerSuccess',
+								type: 'success',
+								message: 'Registration complete!',
+								autoDismiss: 5_000
+							});
+						}
+						pendingOperationRef.current = { type: null };
+					}
+				}, 1000);
+			}
+		};
+
+		document.addEventListener('visibilitychange', handleVisibilityChange);
+		return () => document.removeEventListener('visibilitychange', handleVisibilityChange);
+	}, [state.status]);
+
+	// Auto-clear pending operations if status changes externally
+	useEffect(() => {
+		if (previousStatusRef.current !== state.status) {
+			const hasOrderlyKey = state.status >= AccountStatusEnum.EnableTrading;
+			const isRegistered = state.status >= AccountStatusEnum.SignedIn;
+
+			// Clear pending operation if status changed to success
+			if (pendingOperationRef.current.type === 'key' && hasOrderlyKey) {
+				pendingOperationRef.current = { type: null };
+			} else if (pendingOperationRef.current.type === 'register' && isRegistered) {
+				pendingOperationRef.current = { type: null };
+			}
+
+			previousStatusRef.current = state.status;
+		}
+	}, [state.status]);
 
 
 	// Auto-open dialog when wallet connected but not fully set up
@@ -42,8 +106,13 @@ export const OrderlyConnect = () => {
 			type: "pending",
 			message: "Registering account...",
 		});
+
+		// Store for mobile wallet recovery
+		pendingOperationRef.current = { type: 'register', update };
+
 		try {
 			await account.createAccount();
+			pendingOperationRef.current = { type: null };
 			update({
 				eventCode: "registerSuccess",
 				type: "success",
@@ -52,6 +121,7 @@ export const OrderlyConnect = () => {
 			});
 		} catch (err) {
 			console.error(err);
+			pendingOperationRef.current = { type: null };
 			update({
 				eventCode: "registerError",
 				type: "error",
@@ -73,9 +143,26 @@ export const OrderlyConnect = () => {
 			message: 'Registering Orderly key...'
 		});
 
+		// Store for mobile wallet recovery
+		pendingOperationRef.current = { type: 'key', update };
+
 		try {
 			// Use createOrderlyKey from useAccount hook - true means remember/persist key
-			await createOrderlyKey(true);
+			// On mobile, this might redirect to MetaMask app and the promise may not resolve
+			const keyPromise = createOrderlyKey(true);
+
+			// Set a timeout to check if we need to handle mobile redirect case
+			const timeoutId = setTimeout(() => {
+				// If still pending after 30 seconds, assume mobile redirect happened
+				// The visibility change handler will take care of updating the notification
+				console.log('Key creation timeout - likely mobile redirect');
+			}, 30000);
+
+			await keyPromise;
+
+			clearTimeout(timeoutId);
+			pendingOperationRef.current = { type: null };
+
 			update({
 				eventCode: 'orderlyKeySuccess',
 				type: 'success',
@@ -84,6 +171,8 @@ export const OrderlyConnect = () => {
 			});
 		} catch (err) {
 			console.error("createOrderlyKey error:", err);
+			pendingOperationRef.current = { type: null };
+
 			update({
 				eventCode: 'orderlyKeyError',
 				type: 'error',
