@@ -60,6 +60,12 @@
   }
 }
 
+[data-theme='dark'] {
+  .oui-bg-base-9 {
+    background-color: var(--grey800);
+  }
+}
+
 .oui-text-success {
   color: var(--success) !important;
 }

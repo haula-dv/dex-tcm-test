@@ -44,7 +44,6 @@ function HeaderMobile() {
           width={"100%"}
           alignItems={"center"}
           justifyContent={"space-between"}
-          ml={'-6px'}
         >
           {/* Left Side: Hamburger + Logo */}
           <Stack direction={"row"} alignItems={"center"} spacing={1}>
