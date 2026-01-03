@@ -68,7 +68,7 @@ export default function RootLayout({
     },
     {
       name: "Fee tier",
-      href: "/portfolio/fee-tier",
+      href: "/portfolio/fee",
       icon: <IconFeetier />,
     },
     {
