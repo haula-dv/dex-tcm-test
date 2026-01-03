@@ -23,9 +23,9 @@ export const OrderlyRootProvider: FC<{ children: React.ReactNode }> = ({ childre
     const injected = injectedModule();
     const walletConnect = walletConnectModule({
         projectId: process.env.WALLETCONNECT_PROJECT_ID,
-        requiredChains: [10, 42161, 1],
+        requiredChains: [10, 42161],
         optionalChains: [421614, 11155420],
-        dappUrl: process.env.WALLETCONNECT_DAPP_URL,
+        dappUrl: process.env.WALLETCONNECT_DAPP_URL ?? 'https://dex-tcm-test.vercel.app',
     });
     // https://dashboard.walletconnect.com/01692520-64b0-4ed8-8713-cdac19098bff/2202d3e2-19b7-4dd2-954d-3208dfdb639a
 
@@ -34,7 +34,7 @@ export const OrderlyRootProvider: FC<{ children: React.ReactNode }> = ({ childre
             extensionOnly: false,
             dappMetadata: {
                 name: AppInfo.BROKER_NAME,
-                url: process.env.WALLETCONNECT_DAPP_URL,
+                url: process.env.WALLETCONNECT_DAPP_URL ?? 'https://dex-tcm-test.vercel.app',
             },
             // Enable deeplink for auto-redirect back to website after signing
             useDeeplink: true,
@@ -66,6 +66,8 @@ export const OrderlyRootProvider: FC<{ children: React.ReactNode }> = ({ childre
     }, [chains])
 
     const config = useOrderlyConfig()
+
+    console.log("DAPP_URL", process.env.WALLETCONNECT_DAPP_URL)
 
     return (
         <WalletConnectorProvider

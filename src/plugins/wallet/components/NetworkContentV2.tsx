@@ -104,8 +104,6 @@ function NetworkContentV2({ isMobile = false }: INetworkContentV2Props) {
   }, [currentChain, remapChainIds, connectedChain]);
 
   const [isTestnet] = useIsTestnet();
-
-  console.log("isSupportChain", chains);
   return (
     <>
       {chains ? (
