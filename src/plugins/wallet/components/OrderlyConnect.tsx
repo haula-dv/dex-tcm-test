@@ -5,18 +5,15 @@ import { Box, Divider, Stack, Typography } from "@mui/material";
 import { useAccount } from "@orderly.network/hooks";
 import { AccountStatusEnum } from "@orderly.network/types";
 import { IconCheck } from "@tabler/icons-react";
-import { useConnectWallet, useNotifications, useSetChain } from "@web3-onboard/react";
+import { useNotifications, useSetChain } from "@web3-onboard/react";
 import { useEffect, useState } from "react";
 
 let timer: number | undefined;
 
 export const OrderlyConnect = () => {
 	const [open, setOpen] = useState(false);
-	const [{ wallet }] = useConnectWallet();
-
 	const { account, state } = useAccount();
 	const [{ connectedChain }] = useSetChain();
-
 	const [_, customNotification] = useNotifications();
 
 	useEffect(() => {
@@ -33,12 +30,12 @@ export const OrderlyConnect = () => {
 			clearTimeout(timer);
 		}
 		timer = setTimeout(() => {
-			if (state.status < AccountStatusEnum.EnableTrading && wallet != null) {
+			if (state.status < AccountStatusEnum.EnableTrading && account.address != null) {
 				setOpen(true);
 				timer = undefined;
 			}
 		}, 3_000) as unknown as number;
-	}, [state, wallet]);
+	}, [state, setOpen, account]);
 
 	// Handle Register Account
 	const handleRegisterAccount = async () => {
@@ -68,37 +65,26 @@ export const OrderlyConnect = () => {
 	};
 
 	const handleOrderlyKey = async () => {
-		console.log('[OrderlyConnect] Starting key generation...');
-		console.log('[OrderlyConnect] Current state:', state);
-		console.log('[OrderlyConnect] Connected chain:', connectedChain);
-		console.log('[OrderlyConnect] Account address:', account.address);
-
 		const { update } = customNotification({
-			eventCode: "orderlyKey",
-			type: "pending",
-			message: "Registering Orderly key...",
+			eventCode: 'orderlyKey',
+			type: 'pending',
+			message: 'Registering Orderly key...'
 		});
 		try {
-			console.log('[OrderlyConnect] Calling account.createOrderlyKey(365)...');
 			await account.createOrderlyKey(365);
-			console.log('[OrderlyConnect] Key created successfully!');
 			update({
-				eventCode: "orderlyKeySuccess",
-				type: "success",
-				message: "Key registration complete!",
-				autoDismiss: 5_000,
+				eventCode: 'orderlyKeySuccess',
+				type: 'success',
+				message: 'Key registration complete!',
+				autoDismiss: 5_000
 			});
 		} catch (err) {
-			console.error('[OrderlyConnect] Key generation error:', err);
-			console.error('[OrderlyConnect] Error details:', {
-				message: err instanceof Error ? err.message : 'Unknown error',
-				stack: err instanceof Error ? err.stack : undefined,
-			});
+			console.error(err);
 			update({
-				eventCode: "orderlyKeyError",
-				type: "error",
-				message: `Key registration failed! ${err instanceof Error ? err.message : 'Unknown error'}`,
-				autoDismiss: 10_000,
+				eventCode: 'orderlyKeyError',
+				type: 'error',
+				message: 'Key registration failed!',
+				autoDismiss: 5_000
 			});
 			throw err;
 		}

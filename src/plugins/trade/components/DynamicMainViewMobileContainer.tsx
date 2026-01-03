@@ -28,7 +28,7 @@ function PureMainViewMobileContainer({ symbol }: IProps) {
         location.replace(`/trading/perp/${symbol}`);
     };
 
-    const [valueTab, setValueTab] = useState<any>("orderbook");
+    const [valueTab, setValueTab] = useState<any>("chart");
 
     const tabs: ITab[] = [
         { label: "Chart", value: "chart" },
