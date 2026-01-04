@@ -1,5 +1,4 @@
 "use client";
-import WalletContainer from "@/plugins/wallet/components/WalletContainer";
 import { setColorThemeMode } from "@/utils/helpers";
 import { Mixins } from "@/utils/themes/custom-theme/mixins";
 import { TSizes } from "@/utils/themes/custom-theme/sizes";
@@ -14,11 +13,15 @@ import {
   useTheme,
 } from "@mui/material";
 import { styled } from "@mui/material/styles";
+import dynamic from "next/dynamic";
 import Link from "next/link";
 import { useParams, usePathname } from "next/navigation";
 import Logo from "../icons/Logo";
 import HeaderMobile from "./HeaderMobile";
 
+const DynamicWalletContainer = dynamic(() => import("@/plugins/wallet/components/WalletContainer").then((mod) => mod.default), {
+  ssr: false,
+});
 
 export const Header = () => {
   const pathName = usePathname();
@@ -78,7 +81,7 @@ export const Header = () => {
               ))}
             </Stack>
 
-            <WalletContainer />
+            <DynamicWalletContainer />
           </Stack>
         </Toolbar>
       </Box>

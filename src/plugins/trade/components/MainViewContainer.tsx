@@ -47,9 +47,9 @@ export const MainViewContainer = ({ symbol }: IProps) => {
 
   const onSymbolChange = (symbol: string) => {
     localStorage.setItem(_orderlySymbolKey, symbol);
-    // router.push(`/trading/perp/${symbol}`);
-    // router.refresh();
-    location.replace(`/trading/perp/${symbol}`);
+    router.push(`/trading/perp/${symbol}`);
+    router.refresh();
+    // location.replace(`/trading/perp/${symbol}`);
   };
 
   return (

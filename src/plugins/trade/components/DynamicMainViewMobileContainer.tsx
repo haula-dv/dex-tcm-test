@@ -3,26 +3,51 @@ import MainCard from "@/components/card/MainCard";
 import MainTab from "@/components/tab/MainTab";
 import { _orderlySymbolKey } from "@/utils/constants/orderly";
 import { TSizes } from "@/utils/themes/custom-theme/sizes";
-import { Box, IconButton, Stack } from "@mui/material";
+import { Box, CircularProgress, IconButton, Stack } from "@mui/material";
 import { ChevronDown } from "lucide-react";
 import dynamic from "next/dynamic";
-import { memo, useState } from "react";
-const DynamicMarketSlider = dynamic(() => import("../markets/MarketSlider"));
-const DynamicSymbolHeader = dynamic(() => import("./SymbolHeader"));
-const DynamicOrderBookContainer = dynamic(() => import("../order-book/OrderBookContainer").then((w) => w.OrderBookContainer), {
-    ssr: false,
-});
-const DynamicTimeChart = dynamic(() => import("./TimeChart").then((w) => w.TimeChart), {
-    ssr: false,
-});
-const DynamicOrderEntryForm = dynamic(() => import("./create-order/OrderEntryForm"));
-const DynamicOrderViewContainer = dynamic(() => import("./order-view/OrderViewContainer"));
+import { memo, useCallback, useEffect, useState } from "react";
+
+// Wrapper that tracks loading without passing onLoaded to child
+const createTrackedComponent = (importFn: () => Promise<any>, onLoaded: () => void) => {
+    const Component = dynamic(importFn, { ssr: false });
+
+    return function TrackedComponent(props: any) {
+        useEffect(() => {
+            onLoaded();
+        }, []);
+        return <Component {...props} />;
+    };
+};
 
 interface IProps {
     symbol: string;
 }
 
+const TOTAL_COMPONENTS = 6;
+
 function PureMainViewMobileContainer({ symbol }: IProps) {
+    const [loadedCount, setLoadedCount] = useState(0);
+    const [components, setComponents] = useState<any>(null);
+
+    const handleLoaded = useCallback(() => {
+        setLoadedCount((prev) => prev + 1);
+    }, []);
+
+    // Create tracked components only once
+    useEffect(() => {
+        setComponents({
+            MarketSlider: createTrackedComponent(() => import("../markets/MarketSlider"), handleLoaded),
+            SymbolHeader: createTrackedComponent(() => import("./SymbolHeader"), handleLoaded),
+            OrderBook: createTrackedComponent(() => import("../order-book/OrderBookContainer").then(w => w.OrderBookContainer), handleLoaded),
+            TimeChart: createTrackedComponent(() => import("./TimeChart").then(w => w.TimeChart), handleLoaded),
+            OrderEntry: createTrackedComponent(() => import("./create-order/OrderEntryForm"), handleLoaded),
+            OrderView: createTrackedComponent(() => import("./order-view/OrderViewContainer"), handleLoaded),
+        });
+    }, [handleLoaded]);
+
+    const isLoading = loadedCount < TOTAL_COMPONENTS || !components;
+
     const onSymbolChange = (symbol: string) => {
         localStorage.setItem(_orderlySymbolKey, symbol);
         location.replace(`/trading/perp/${symbol}`);
@@ -44,35 +69,60 @@ function PureMainViewMobileContainer({ symbol }: IProps) {
         setIsShowTab(!isShowTab);
     };
 
-    return <>
-        <DynamicMarketSlider onChangeSymbol={onSymbolChange} />
-        <Stack spacing={1} px={1}>
-            <MainCard backgroudColor="primary">
-                <DynamicSymbolHeader onSymbolChange={onSymbolChange} symbol={symbol} />
-            </MainCard>
+    if (!components) return null;
 
-            <MainCard backgroudColor="primary">
-                <MainTab fullWidth={false} tabs={tabs} onChange={handleChange} height={TSizes.buttonHeightSmall} rightSideTab={<IconButton onClick={handleShowTab}>
-                    <ChevronDown size={'1rem'} />
-                </IconButton>}>
-                    <Box display={isShowTab ? 'block' : 'none'}>
-                        <Box height={'440px'} display={valueTab === "chart" ? "block" : "none"} borderRadius={'14px'} overflow={'hidden'}>
-                            <DynamicTimeChart symbol={symbol} />
-                        </Box>
+    const { MarketSlider, SymbolHeader, OrderBook, TimeChart, OrderEntry, OrderView } = components;
 
-                        <Box display={valueTab === "orderbook" ? "block" : "none"}>
-                            <DynamicOrderBookContainer symbol={symbol} />
-                        </Box>
-                    </Box>
-                </MainTab>
-            </MainCard>
+    return (
+        <Box position="relative" width="100%" height="100%">
+            {isLoading && (
+                <Box
+                    position="absolute"
+                    top={0}
+                    left={0}
+                    right={0}
+                    bottom={0}
+                    display="flex"
+                    alignItems="center"
+                    justifyContent="center"
+                    bgcolor="rgba(0,0,0,0.3)"
+                    zIndex={1000}
+                >
+                    <CircularProgress color="primary" />
+                </Box>
+            )}
 
-            <DynamicOrderEntryForm symbol={symbol} />
+            <Box sx={{ opacity: isLoading ? 0.3 : 1, transition: 'opacity 0.3s ease' }}>
+                <MarketSlider onChangeSymbol={onSymbolChange} />
+                <Stack spacing={1} px={1}>
+                    <MainCard backgroudColor="primary">
+                        <SymbolHeader onSymbolChange={onSymbolChange} symbol={symbol} />
+                    </MainCard>
 
-            <DynamicOrderViewContainer symbol={symbol} onSymbolChange={onSymbolChange} />
-            <div style={{ paddingTop: '10px' }}></div>
-        </Stack>
-    </>;
+                    <MainCard backgroudColor="primary">
+                        <MainTab fullWidth={false} tabs={tabs} onChange={handleChange} height={TSizes.buttonHeightSmall} rightSideTab={<IconButton onClick={handleShowTab}>
+                            <ChevronDown size={'1rem'} />
+                        </IconButton>}>
+                            <Box display={isShowTab ? 'block' : 'none'}>
+                                <Box height={'440px'} display={valueTab === "chart" ? "block" : "none"} borderRadius={'14px'} overflow={'hidden'}>
+                                    <TimeChart symbol={symbol} />
+                                </Box>
+
+                                <Box display={valueTab === "orderbook" ? "block" : "none"}>
+                                    <OrderBook symbol={symbol} />
+                                </Box>
+                            </Box>
+                        </MainTab>
+                    </MainCard>
+
+                    <OrderEntry symbol={symbol} />
+
+                    <OrderView symbol={symbol} onSymbolChange={onSymbolChange} />
+                    <div style={{ paddingTop: '10px' }}></div>
+                </Stack>
+            </Box>
+        </Box>
+    );
 }
 
 export const MainViewMobileContainer = memo(PureMainViewMobileContainer, (prevProps, nextProps) => {

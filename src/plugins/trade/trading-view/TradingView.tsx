@@ -81,4 +81,6 @@ const TradingMainView = ({ symbol, onSymbolChange }: IProps) => {
   );
 };
 
-export default memo(TradingMainView);
+export default memo(TradingMainView, (prevProps, nextProps) => {
+  return prevProps.symbol === nextProps.symbol;
+});

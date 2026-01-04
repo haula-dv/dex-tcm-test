@@ -3,7 +3,7 @@ import { HeaderLoading } from "@/components/layouts/Header";
 import { OrderlyConnect } from "@/plugins/wallet/components/OrderlyConnect";
 // import { Header } from "@/components/layouts/Header";
 import "@/styles/global.scss";
-import { Box, useMediaQuery, useTheme } from "@mui/material";
+import { Box, useTheme } from "@mui/material";
 import "@orderly.network/react/dist/styles.css";
 import dynamic from "next/dynamic";
 import React, { createContext, useContext, useEffect } from "react";
@@ -32,7 +32,6 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   const theme = useTheme();
-  const lgUp = useMediaQuery(theme.breakpoints.up("lg"));
 
   // Apply theme mode to the body element
   useEffect(() => {
@@ -42,7 +41,6 @@ export default function RootLayout({
       document.body.classList.remove(theme.palette.mode);
     };
   }, [theme.palette.mode]);
-
 
   const { modal, openModal, hasOrderlyKey, isRegistered } = OrderlyConnect();
 

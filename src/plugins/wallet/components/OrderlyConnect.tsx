@@ -27,12 +27,14 @@ export const OrderlyConnect = () => {
 	useEffect(() => {
 		if (hasOrderlyKey) {
 			setOpen(false);
+			return;
 		}
 
-		if (isRegistered && !hasOrderlyKey) {
-			setOpen(true);
+		if (!account.address) {
+			setOpen(false);
+			return;
 		}
-	}, [hasOrderlyKey, isRegistered])
+	}, [hasOrderlyKey, account.address])
 
 	return {
 		modal: (
