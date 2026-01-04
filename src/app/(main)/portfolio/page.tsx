@@ -6,6 +6,7 @@
 
 // // https://orderly.network/docs/build-on-evm/evm-api/restful-api/private/get-asset-history#get-asset-history
 
+'use client';
 import { PageTitleMap, PathEnum } from "@/utils/constant";
 import { generatePageTitle } from "@/utils/utils";
 import { Metadata } from "next";
