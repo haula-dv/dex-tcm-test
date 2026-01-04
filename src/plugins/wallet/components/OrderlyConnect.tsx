@@ -3,7 +3,7 @@ import { MainDialog } from "@/components/dialog/MainDialog";
 import { useAccount } from "@orderly.network/hooks";
 import { AccountStatusEnum } from "@orderly.network/types";
 import { WalletConnectorWidget } from "@orderly.network/ui-connector";
-import { useNotifications, useSetChain } from "@web3-onboard/react";
+import { useSetChain } from "@web3-onboard/react";
 import { useEffect, useState } from "react";
 
 let timer: number | undefined;
@@ -12,7 +12,6 @@ export const OrderlyConnect = () => {
 	const [open, setOpen] = useState(false);
 	const { account, state } = useAccount();
 	const [{ connectedChain }] = useSetChain();
-	const [_, customNotification] = useNotifications();
 
 	useEffect(() => {
 		if (!connectedChain) return;
@@ -29,7 +28,11 @@ export const OrderlyConnect = () => {
 		if (hasOrderlyKey) {
 			setOpen(false);
 		}
-	}, [hasOrderlyKey])
+
+		if (isRegistered && !hasOrderlyKey) {
+			setOpen(true);
+		}
+	}, [hasOrderlyKey, isRegistered])
 
 	return {
 		modal: (

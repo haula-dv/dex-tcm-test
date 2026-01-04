@@ -22,8 +22,14 @@ export const OrderlyRootProvider: FC<{ children: React.ReactNode }> = ({ childre
     const injected = injectedModule();
     const walletConnect = walletConnectModule({
         projectId: process.env.WALLETCONNECT_PROJECT_ID,
-        requiredChains: [10, 42161, 1, 8453],
-        optionalChains: [421614, 11155420, 8453],
+        requiredChains: [10, 42161, 1, 8453, 1329, 143, 146,
+            1514, 2741, 2818, 34443, 42161, 43114, 5000, 56,
+            80094, 8453, 900900900, 98866, 11124, 421614, 901901901, 97
+        ],
+        optionalChains: [421614, 11155420, 8453, 1329, 143, 146,
+            1514, 2741, 2818, 34443, 42161, 43114, 5000, 56,
+            80094, 8453, 900900900, 98866, 11124, 421614, 901901901, 97
+        ],
         dappUrl: process.env.WALLETCONNECT_DAPP_URL ?? 'https://dex-tcm-test.vercel.app',
     });
     // https://dashboard.walletconnect.com/01692520-64b0-4ed8-8713-cdac19098bff/2202d3e2-19b7-4dd2-954d-3208dfdb639a
@@ -61,8 +67,6 @@ export const OrderlyRootProvider: FC<{ children: React.ReactNode }> = ({ childre
     }, [chains])
 
     const config = useOrderlyConfig()
-
-    console.log("orderlyChains", orderlyChains)
 
     return (
         <WalletConnectorProvider
