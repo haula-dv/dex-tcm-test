@@ -35,15 +35,11 @@ export const OrderlyRootProvider: FC<{ children: React.ReactNode }> = ({ childre
                 name: AppInfo.BROKER_NAME,
                 url: process.env.WALLETCONNECT_DAPP_URL ?? 'https://dex-tcm-test.vercel.app',
             },
-            // Enable deeplink for auto-redirect back to website after signing
-            useDeeplink: true,
-            // Use mobile app for better UX
-            preferDesktop: false,
+            // Disable deeplink to prevent "Open in app" prompts on mobile
+            useDeeplink: false,
+            // Prefer desktop mode for stability
+            preferDesktop: true,
             checkInstallationImmediately: false,
-            // Important: This helps with auto-redirect
-            i18nOptions: {
-                enabled: true
-            }
         },
     });
 
