@@ -18,6 +18,18 @@ export const OrderlyConnect = () => {
 		account.switchChainId(connectedChain.id);
 	}, [connectedChain, account]);
 
+	useEffect(() => {
+		if (timer != null) {
+			clearTimeout(timer);
+		}
+		timer = setTimeout(() => {
+			if (state.status < AccountStatusEnum.EnableTrading && account.address != null) {
+				setOpen(true);
+				timer = undefined;
+			}
+		}, 3_000) as unknown as number;
+	}, [state, setOpen, account]);
+
 	const isRegistered = state.status >= AccountStatusEnum.SignedIn;
 	const hasOrderlyKey = state.status >= AccountStatusEnum.EnableTrading;
 
@@ -27,14 +39,8 @@ export const OrderlyConnect = () => {
 	useEffect(() => {
 		if (hasOrderlyKey) {
 			setOpen(false);
-			return;
 		}
-
-		if (!account.address) {
-			setOpen(false);
-			return;
-		}
-	}, [hasOrderlyKey, account.address])
+	}, [hasOrderlyKey])
 
 	return {
 		modal: (

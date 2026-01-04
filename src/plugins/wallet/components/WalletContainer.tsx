@@ -76,17 +76,9 @@ export default function WalletContainer({ isMobile = false }: IWalletContainerPr
     })
   }, [account, currentWallet]);
 
-  useEffect(() => {
-    if (account.address && isRegistered && !hasOrderlyKey) {
-      setTimeout(() => {
-        openModal();
-      }, 1000)
-    }
-  }, [account.address, isRegistered, hasOrderlyKey])
-
   return (
     <Stack direction={"row"} spacing={1} alignItems={"center"}>
-      {evmAddress && <NetworkContentV2 isMobile={isMobile} />}
+      <NetworkContentV2 isMobile={isMobile} />
 
       {connecting ? (
         <MainButton

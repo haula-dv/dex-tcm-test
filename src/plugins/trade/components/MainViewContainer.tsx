@@ -1,4 +1,5 @@
 'use client'
+import { useOrderlyConnectModal } from "@/app/(main)/layout";
 import MainCard from "@/components/card/MainCard";
 import { _orderlySymbolKey } from "@/utils/constants/orderly";
 import { Box, CircularProgress, Stack } from "@mui/material";
@@ -42,6 +43,7 @@ export const MainViewContainer = ({ symbol }: IProps) => {
   const handleLoaded = useCallback(() => {
     setLoadedCount((prev) => prev + 1);
   }, []);
+  const { openModal, hasOrderlyKey, isRegistered } = useOrderlyConnectModal();
 
   const isLoading = loadedCount < TOTAL_COMPONENTS;
 
