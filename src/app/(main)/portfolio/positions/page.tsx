@@ -3,7 +3,7 @@ import { generatePageTitle } from "@/utils/utils";
 import { Metadata } from "next";
 import dynamic from "next/dynamic";
 
-const DynamicPositionsView = dynamic(() => import("./view"));
+const DynamicPositionsView = dynamic(() => import("./view"), { ssr: false });
 
 export const metadata: Metadata = {
   title: generatePageTitle(PageTitleMap[PathEnum.Positions]),

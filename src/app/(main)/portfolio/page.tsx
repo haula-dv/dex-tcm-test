@@ -11,7 +11,7 @@ import { generatePageTitle } from "@/utils/utils";
 import { Metadata } from "next";
 import dynamic from "next/dynamic";
 
-const DynamicPortfolioView = dynamic(() => import("./view"));
+const DynamicPortfolioView = dynamic(() => import("./view"), { ssr: false });
 
 export const metadata: Metadata = {
   title: generatePageTitle(PageTitleMap[PathEnum.Portfolio]),
