@@ -2,6 +2,7 @@ import { themeSelectorState } from "@/common/stores/common";
 import { MainButton } from "@/components/button/MainButton";
 import IconLoading from "@/components/icons/loading";
 
+import { useOrderlyConnectModal } from "@/app/(main)/layout";
 import { MainIconButton } from "@/components/button/MainIconButton";
 import { TLocalStorage } from "@/utils/constants/key_store";
 import { formartAddress } from "@/utils/formatters/token";
@@ -30,6 +31,7 @@ export default function WalletContainer({ isMobile = false }: IWalletContainerPr
   const account = useAccountInstance();
   const { connectedChain: connectedEvmChain } = useWalletConnector();
   const evmAddress = useMemo(() => currentWallet?.accounts[0].address, [currentWallet]);
+  const { openModal, hasOrderlyKey, isRegistered } = useOrderlyConnectModal();
 
   const theme = useTheme();
   // Handle close menu account
@@ -100,14 +102,26 @@ export default function WalletContainer({ isMobile = false }: IWalletContainerPr
             </MainButton>
           ) : (
             <>
-              <MainButton
-                variant="contained"
-                size={isMobile ? "small" : "medium"}
-                color={setColorThemeMode("darkGrey", "white")}
-                onClick={handleToggleAccountMenu}
-              >
-                {formartAddress(currentWallet.accounts[0].address)}
-              </MainButton>
+              {/* Show Enable Trading button if no key, otherwise show address */}
+              {!hasOrderlyKey ? (
+                <MainButton
+                  onClick={openModal}
+                  variant="contained"
+                  size={isMobile ? "small" : "medium"}
+                  color="primary"
+                >
+                  Enable Trading
+                </MainButton>
+              ) : (
+                <MainButton
+                  variant="contained"
+                  size={isMobile ? "small" : "medium"}
+                  color={setColorThemeMode("darkGrey", "white")}
+                  onClick={handleToggleAccountMenu}
+                >
+                  {formartAddress(currentWallet.accounts[0].address)}
+                </MainButton>
+              )}
 
               {!isMobile && (
                 <Box
