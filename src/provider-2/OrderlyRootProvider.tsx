@@ -72,7 +72,7 @@ export const OrderlyRootProvider: FC<{ children: React.ReactNode }> = ({ childre
         <WalletConnectorProvider
             evmInitial={{
                 options: {
-                    wallets: [injected, walletConnect, metamask],
+                    wallets: [injected, walletConnect],
                     chains: orderlyChains,
                     appMetadata: {
                         name: AppInfo.BROKER_NAME,
