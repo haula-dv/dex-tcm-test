@@ -1,28 +1,30 @@
 FROM node:18 AS builder
 
-# Cài đặt Git
+# Cài đặt Git và pnpm
 RUN apt-get update && apt-get install -y git
+RUN npm install -g pnpm
 
 WORKDIR /app
 
-COPY package.json yarn.lock ./
+COPY package.json pnpm-lock.yaml pnpm-workspace.yaml ./
 
-RUN yarn install
+RUN pnpm install
 
 COPY . .
 
-RUN yarn build
+RUN pnpm build
 
 FROM node:18-slim
 
 RUN apt-get update && apt-get install -y git
+RUN npm install -g pnpm
 
 WORKDIR /app
 
-COPY --from=builder /app/package.json /app/yarn.lock /app/.next/ /app/public/ /app/node_modules/ ./
+COPY --from=builder /app/package.json /app/pnpm-lock.yaml /app/.next/ /app/public/ /app/node_modules/ ./
 
-RUN yarn install --production
+RUN pnpm install --prod
 
 EXPOSE 3000
 
-CMD ["yarn", "start"]
+CMD ["pnpm", "start"]
