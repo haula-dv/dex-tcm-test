@@ -13,4 +13,4 @@ services:
     environment:
       GENERATE_SOURCEMAP: false
       API_URL: "https://api.orderly.org/v1/public"
-    command: sh -c "yarn install && yarn build && yarn start"
+    command: sh -c "pnpm install && pnpm build && pnpm start"
